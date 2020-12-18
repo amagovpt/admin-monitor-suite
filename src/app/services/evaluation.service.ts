@@ -381,9 +381,9 @@ export class EvaluationService {
 
     let csvContent = evaluation.data.rawUrl + '\r\n';
     csvContent += evaluation.data.date + '\r\n';
-    csvContent += labels.join(',') + '\r\n';
+    csvContent += labels.join(';') + '\r\n';
     for (const row of data || []) {
-      csvContent += row.join(',') + '\r\n';
+      csvContent += row.join(';') + '\r\n';
     }
 
     return csvContent;
