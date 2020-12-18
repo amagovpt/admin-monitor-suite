@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChooseObservatoryPagesDialogComponent } from './choose-observatory-pages-dialog.component';
 
@@ -6,7 +6,7 @@ describe('ChooseObservatoryPagesDialogComponent', () => {
   let component: ChooseObservatoryPagesDialogComponent;
   let fixture: ComponentFixture<ChooseObservatoryPagesDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChooseObservatoryPagesDialogComponent ]
     })

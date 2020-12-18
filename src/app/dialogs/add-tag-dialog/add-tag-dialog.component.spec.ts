@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AddTagDialogComponent } from './add-tag-dialog.component';
 
@@ -6,7 +6,7 @@ describe('AddTagDialogComponent', () => {
   let component: AddTagDialogComponent;
   let fixture: ComponentFixture<AddTagDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddTagDialogComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AddCrawlerPagesDialogComponent } from './add-crawler-pages-dialog.component';
 
@@ -6,7 +6,7 @@ describe('AddCrawlerPagesDialogComponent', () => {
   let component: AddCrawlerPagesDialogComponent;
   let fixture: ComponentFixture<AddCrawlerPagesDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddCrawlerPagesDialogComponent ]
     })

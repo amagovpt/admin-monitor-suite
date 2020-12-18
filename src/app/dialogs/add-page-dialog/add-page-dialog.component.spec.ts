@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AddPageDialogComponent } from './add-page-dialog.component';
 
@@ -6,7 +6,7 @@ describe('AddPageDialogComponent', () => {
   let component: AddPageDialogComponent;
   let fixture: ComponentFixture<AddPageDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddPageDialogComponent ]
     })

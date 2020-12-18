@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChoosePagesToReEvaluateDialogComponent } from './choose-pages-to-re-evaluate-dialog.component';
 
@@ -6,7 +6,7 @@ describe('ChoosePagesToReEvaluateDialogComponent', () => {
   let component: ChoosePagesToReEvaluateDialogComponent;
   let fixture: ComponentFixture<ChoosePagesToReEvaluateDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChoosePagesToReEvaluateDialogComponent ]
     })

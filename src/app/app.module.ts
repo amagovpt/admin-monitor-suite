@@ -238,7 +238,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ObserversModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false }
+      { enableTracing: false, relativeLinkResolution: 'legacy' }
     ),
     TranslateModule.forRoot({
       loader: {
