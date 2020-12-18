@@ -14,6 +14,15 @@
           <mat-card-content fxLayout="column">
             <br>
             <mat-form-field>
+              <label for="login_endpoint">
+                {{ "LOGIN.endpoint_label" | translate }}
+              </label>
+              <input id="login_endpoint" matInput type="text" formControlName="endpoint" required>
+              <mat-error *ngIf="loginForm.controls.endpoint.hasError('required')" [innerHTML]="'MISC.required_field' | translate">
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
               <label for="login_username">
                 {{ "LOGIN.username_label" | translate }}
               </label>

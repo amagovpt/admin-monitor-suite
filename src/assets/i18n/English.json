@@ -5,6 +5,7 @@
   },
   "LOGIN": {
     "title": "Login",
+    "endpoint_label": "Machine IP to connect",
     "username_label": "Username",
     "password_label": "Password",
     "email_error": "The e-mail is not valid. <strong>E.g. name@service.com</strong>",

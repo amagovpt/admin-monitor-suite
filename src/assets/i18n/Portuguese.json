@@ -5,6 +5,7 @@
   },
   "LOGIN": {
     "title": "Iniciar sessão",
+    "endpoint_label": "IP da máquina a se ligar",
     "username_label": "Utilizador",
     "password_label": "Palavra-chave",
     "email_error": "Introduza um email válido. <strong>Ex.: nome@serviço.com</strong>",
@@ -900,13 +901,13 @@
     "RESULT_LIST": {
       "title": "Escolha as páginas a importar",
       "uri_label": "Páginas",
-      "import":  "Importar",
+      "import": "Importar",
       "observ": "Observatório",
       "cancel": "Cancelar",
       "submit": "Adicionar",
       "submitting": "A adicionar...",
       "total": "Total:",
-      "selected": "Selecionadas:" 
+      "selected": "Selecionadas:"
     },
     "reset": "Limpar",
     "submit": "Procurar",
