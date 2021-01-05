@@ -38,7 +38,7 @@
     "js-beautify": "^1.11.0",
     "lodash.orderby": "^4.6.0",
     "ngx-gauge": "^1.1.0",
-    "rxjs": "^6.6.0",
+    "rxjs": "^6.6.3",
     "socket.io": "^2.3.0",
     "tslib": "^2.0.0",
     "web-animations-js": "^2.3.2",
