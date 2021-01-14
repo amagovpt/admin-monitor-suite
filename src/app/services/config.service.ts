@@ -20,7 +20,7 @@ export class ConfigService {
     if (endpoint === "localhost") {
       this.server = "http://localhost:3000";
     } else {
-      this.server = "http://" + endpoint + "/api";
+      this.server = endpoint + "/api";
     }
   }
 
