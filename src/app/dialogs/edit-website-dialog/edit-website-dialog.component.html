@@ -42,6 +42,45 @@
       </mat-form-field>
     </div>
     <div fxLayout="row">
+      <div class="add-declaration-block" fxLayout="row" fxFlex>
+        <mat-form-field fxFlex>
+          <label for="website_declaration_input">{{ "WEBSITES_PAGE.UPDATE.declaration_label" | translate }}</label>
+          <mat-select id="website_declaration_input" formControlName="declaration">
+            <mat-option [value]="">
+            </mat-option>
+            <mat-option [value]="1">
+              {{ "WEBSITES_PAGE.UPDATE.declaration_non_conform" | translate }}
+            </mat-option>
+            <mat-option [value]="2">
+              {{ "WEBSITES_PAGE.UPDATE.declaration_partial_conform" | translate }}
+            </mat-option>
+            <mat-option [value]="3">
+              {{ "WEBSITES_PAGE.UPDATE.declaration_conform" | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <span fxFlex="5"></span>
+      <div class="add-stamp-block" fxLayout="row" fxFlex>
+        <mat-form-field fxFlex>
+          <label for="website_stamp_input">{{ "WEBSITES_PAGE.UPDATE.stamp_label" | translate }}</label>
+          <mat-select id="website_stamp_input" formControlName="stamp">
+            <mat-option [value]="">
+            </mat-option>
+            <mat-option [value]="1">
+              {{ "WEBSITES_PAGE.UPDATE.stamp_bronze" | translate }}
+            </mat-option>
+            <mat-option [value]="2">
+              {{ "WEBSITES_PAGE.UPDATE.stamp_silver" | translate }}
+            </mat-option>
+            <mat-option [value]="3">
+              {{ "WEBSITES_PAGE.UPDATE.stamp_gold" | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row">
       <div class="add-entity-block" *ngIf="!loadingEntities" fxLayout="row" fxFlex>
         <mat-form-field fxFlex>
           <label for="website_entity_input">{{ "WEBSITES_PAGE.UPDATE.entity_label" | translate }}</label>
