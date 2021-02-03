@@ -85,8 +85,9 @@
     </button>
   </mat-card-actions>
 </mat-card>
-<app-top-five-errors [data]="tagEntity.errors"></app-top-five-errors>
-<app-top-five-best-practices [data]="tagEntity.success"></app-top-five-best-practices>
+<app-top-five-errors *ngIf="!loading && !error" [data]="tagEntity.errors"></app-top-five-errors>
+<app-top-five-best-practices *ngIf="!loading && !error" [data]="tagEntity.success"></app-top-five-best-practices>
 <br *ngIf="!loading && !error">
 <app-accessibility-plot *ngIf="!loading && !error" [data]="tagEntity.getAllWebsiteScores()"></app-accessibility-plot>
+<app-success-criteria-counter *ngIf="!loading && !error" [data]="tagEntity"></app-success-criteria-counter>
 <app-loading *ngIf="loading"></app-loading>

@@ -25,6 +25,10 @@
         "title": "Utilizador",
         "subtitle": "Criar um novo utilizador"
       },
+      "directory": {
+        "title": "Dirétoria",
+        "subtitle": "Criar uma nova dirétoria"
+      },
       "tag": {
         "title": "Categoria",
         "subtitle": "Criar uma nova categoria"
@@ -119,6 +123,12 @@
     "accessibility_plot": {
       "title": "Mancha de acessibilidade",
       "label": "Distribuição de pontuações"
+    },
+    "success_criteria_counter": {
+      "title": "Contagem de práticas por critério de sucesso",
+      "good_practices": "Melhores práticas",
+      "bad_practices": "Más práticas",
+      "sc": "Critério de sucesso"
     }
   },
   "DIGITAL_STAMP": {
@@ -288,6 +298,24 @@
       "messages": {
         "success": "Utilizador apagado com sucesso",
         "error": "Erro ao apagar utilizador"
+      }
+    }
+  },
+  "DIRECTORIES_PAGE": {
+    "ADD": {
+      "title": "Criar uma nova directoria",
+      "name_label": "Nome",
+      "name_exists": "O nome inserido já existe",
+      "observatorio_label": "Mostrar esta dirétoria no Observatório",
+      "tags_label": "Selecione as categorias para formar a nova dirétoria",
+      "method_label": "Escolha como formar a dirétoria",
+      "cross_tags_label": "Cruzamento de categorias",
+      "join_tags_label": "Junção de categorias",
+      "reset": "Limpar",
+      "submit": "Criar",
+      "messages": {
+        "success": "Dirétoria criada com sucesso",
+        "error": "Erro ao criar a dirétoria"
       }
     }
   },
@@ -1242,6 +1270,9 @@
     "win_01": "Pop-up windows"
   },
   "CSV": {
+    "tag": "Categoria",
+    "entity": "Entidade",
+    "website": "Sitio web",
     "scorerror": "Erro",
     "scorewar": "Aviso",
     "scoreok": "Sucesso",
@@ -1249,7 +1280,9 @@
     "level": "Nivel de Conformidade",
     "criteria": "Critério",
     "desc": "Descrição",
-    "count": "Número de ocorrências"
+    "count": "Número de ocorrências",
+    "value": "Valor",
+    "date": "Data"
   },
   "TESTS_RESULTS": {
     "a_01a": {

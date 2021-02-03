@@ -1,0 +1,27 @@
+<mat-card class="mat-typography" *ngIf="!loading">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ "STATISTICS.success_criteria_counter.title" | translate }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-around start">
+      <div>
+        <h2>{{ "STATISTICS.success_criteria_counter.good_practices" | translate }}</h2>
+        <mat-list>
+          <mat-list-item *ngFor="let s of scsSuccess; let i = index;">
+            <span class="bold">{{ "STATISTICS.success_criteria_counter.sc" | translate }} {{ s }}:</span><span>{{ scs.success[s] }}</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div>
+        <h2>{{ "STATISTICS.success_criteria_counter.bad_practices" | translate }}</h2>
+        <mat-list>
+          <mat-list-item *ngFor="let s of scsErrors; let i = index;">
+            <span class="bold">{{ "STATISTICS.success_criteria_counter.sc" | translate }} {{ s }}:</span><span>{{ scs.errors[s] }}</span>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

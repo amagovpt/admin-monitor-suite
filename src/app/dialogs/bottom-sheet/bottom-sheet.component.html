@@ -11,6 +11,11 @@
     <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.user.subtitle" | translate }}</span>
   </a>
 
+  <a href="#" mat-list-item (click)="openAddDirectoryDialog($event)">
+    <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.directory.title" | translate }}</span>
+    <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.directory.subtitle" | translate }}</span>
+  </a>
+  
   <a href="#" mat-list-item (click)="openAddTagDialog($event)">
     <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.tag.title" | translate }}</span>
     <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.tag.subtitle" | translate }}</span>

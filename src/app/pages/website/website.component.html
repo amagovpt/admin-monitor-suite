@@ -45,6 +45,8 @@
 <br>
 <app-accessibility-plot *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject.getAllScores()"></app-accessibility-plot>
 <br>
+<app-success-criteria-counter *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject"></app-success-criteria-counter>
+<br>
 <app-list-of-domains *ngIf="!loading && !error && !errorNoActiveDomains && user === 'admin'" [domains]="domains" (refreshDomains)="refreshDomains($event)"></app-list-of-domains>
 <app-list-of-pages-user *ngIf="!loading && !error && user !== 'admin'" [pages]="pages"></app-list-of-pages-user>
 <app-loading *ngIf="loading"></app-loading>

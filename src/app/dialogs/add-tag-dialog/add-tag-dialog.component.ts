@@ -1,36 +1,49 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormControlName, FormBuilder, Validators, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { Observable, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import * as _ from 'lodash';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormGroupDirective,
+  NgForm,
+} from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { Location } from "@angular/common";
+import { Observable, of } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import * as _ from "lodash";
 
-import { CreateService } from '../../services/create.service';
-import { GetService } from '../../services/get.service';
-import { VerifyService } from '../../services/verify.service';
-import { MessageService } from '../../services/message.service';
+import { CreateService } from "../../services/create.service";
+import { GetService } from "../../services/get.service";
+import { VerifyService } from "../../services/verify.service";
+import { MessageService } from "../../services/message.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
   }
 }
 
 @Component({
-  selector: 'app-add-tag-dialog',
-  templateUrl: './add-tag-dialog.component.html',
-  styleUrls: ['./add-tag-dialog.component.css']
+  selector: "app-add-tag-dialog",
+  templateUrl: "./add-tag-dialog.component.html",
+  styleUrls: ["./add-tag-dialog.component.css"],
 })
 export class AddTagDialogComponent implements OnInit {
-
   matcher: ErrorStateMatcher;
 
   loadingWebsites: boolean;
@@ -45,7 +58,7 @@ export class AddTagDialogComponent implements OnInit {
 
   filteredWebsites: Observable<any[]>;
 
-  @ViewChild('websiteInput') websiteInput: ElementRef;
+  @ViewChild("websiteInput") websiteInput: ElementRef;
 
   tagForm: FormGroup;
   websites: any;
@@ -63,11 +76,13 @@ export class AddTagDialogComponent implements OnInit {
     this.matcher = new MyErrorStateMatcher();
 
     this.tagForm = new FormGroup({
-      name: new FormControl('', [
-        Validators.required
-      ], this.nameValidator.bind(this)),
+      name: new FormControl(
+        "",
+        [Validators.required],
+        this.nameValidator.bind(this)
+      ),
       observatory: new FormControl(),
-      websites: new FormControl()
+      websites: new FormControl(),
     });
 
     this.selectedWebsites = [];
@@ -77,16 +92,18 @@ export class AddTagDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.get.listOfOfficialWebsites()
-      .subscribe(websites => {
-        if (websites !== null) {
-          this.websites = websites;
-          this.filteredWebsites = this.tagForm.controls.websites.valueChanges.pipe(
-            startWith(null),
-            map((website: any | null) => website ? this.filterWebsite(website) : this.websites.slice()));
-        }
-        this.loadingWebsites = false;
-      });
+    this.get.listOfOfficialWebsites().subscribe((websites) => {
+      if (websites !== null) {
+        this.websites = websites;
+        this.filteredWebsites = this.tagForm.controls.websites.valueChanges.pipe(
+          startWith(null),
+          map((website: any | null) =>
+            website ? this.filterWebsite(website) : this.websites.slice()
+          )
+        );
+      }
+      this.loadingWebsites = false;
+    });
   }
 
   resetForm(): void {
@@ -99,33 +116,32 @@ export class AddTagDialogComponent implements OnInit {
 
     const name = this.tagForm.value.name;
     const observatory = this.tagForm.value.observatory ? 1 : 0;
-    const websites = JSON.stringify(_.map(this.selectedWebsites, 'WebsiteId'));
+    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
 
     const formData = {
       name,
       observatory,
-      websites
+      websites,
     };
 
     this.loadingCreate = true;
 
-    this.create.newTag(formData)
-      .subscribe(success => {
-        if (success !== null) {
-          if (success) {
-            this.message.show('TAGS_PAGE.ADD.messages.success');
+    this.create.newTag(formData).subscribe((success) => {
+      if (success !== null) {
+        if (success) {
+          this.message.show("TAGS_PAGE.ADD.messages.success");
 
-            if (this.location.path() !== '/console/tags') {
-              this.router.navigateByUrl('/console/tags');
-            } else {
-              window.location.reload();
-            }
-
-            this.dialogRef.close();
+          if (this.location.path() !== "/console/tags") {
+            this.router.navigateByUrl("/console/tags");
+          } else {
+            window.location.reload();
           }
+
+          this.dialogRef.close();
         }
-        this.loadingCreate = false;
-      });
+      }
+      this.loadingCreate = false;
+    });
   }
 
   removeWebsite(website: any): void {
@@ -137,15 +153,19 @@ export class AddTagDialogComponent implements OnInit {
   }
 
   filterWebsite(name: string) {
-    return this.websites.filter(website =>
-        _.includes(website.Name.toLowerCase(), name.toLowerCase()));
+    return this.websites.filter((website) =>
+      _.includes(website.Name.toLowerCase(), name.toLowerCase())
+    );
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
-    const index = _.findIndex(this.websites, w => w['Name'] === event.option.viewValue);
+    const index = _.findIndex(
+      this.websites,
+      (w) => w["Name"] === event.option.viewValue
+    );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
-      this.websiteInput.nativeElement.value = '';
+      this.websiteInput.nativeElement.value = "";
       this.tagForm.controls.websites.setValue(null);
     }
   }
@@ -153,7 +173,7 @@ export class AddTagDialogComponent implements OnInit {
   nameValidator(control: AbstractControl): Observable<any> {
     const name = _.trim(control.value);
 
-    if (name !== '') {
+    if (name !== "") {
       return this.verify.tagNameExists(name);
     } else {
       return of(null);

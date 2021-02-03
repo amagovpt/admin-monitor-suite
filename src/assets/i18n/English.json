@@ -25,6 +25,10 @@
         "title": "User",
         "subtitle": "Create a new user"
       },
+      "directory": {
+        "title": "Directory",
+        "subtitle": "Create a new directory"
+      },
       "tag": {
         "title": "Tag",
         "subtitle": "Create a new tag"
@@ -119,6 +123,12 @@
     "accessibility_plot": {
       "title": "Accessibility plot",
       "label": "Score distribution"
+    },
+    "success_criteria_counter": {
+      "title": "Practices counter by success criteria",
+      "good_practices": "Best pratices",
+      "bad_practices": "Bad practices",
+      "sc": "Success criteria"
     }
   },
   "DIGITAL_STAMP": {
@@ -288,6 +298,24 @@
       "messages": {
         "success": "User deleted successfully",
         "error": "Error deleting user"
+      }
+    }
+  },
+  "DIRECTORIES_PAGE": {
+    "ADD": {
+      "title": "Create a new directory",
+      "name_label": "Name",
+      "name_exists": "The inserted name already exists",
+      "observatorio_label": "Show this directory in the Observatory",
+      "tags_label": "Choose the tags to form the new directory",
+      "method_label": "Choose how to form the directory",
+      "cross_tags_label": "Cross tags",
+      "join_tags_label": "Join tags",
+      "reset": "Reset",
+      "submit": "Create",
+      "messages": {
+        "success": "Directory successfully created",
+        "error": "Error creating directory"
       }
     }
   },
@@ -1244,6 +1272,9 @@
     "win_01": "Pop-up windows"
   },
   "CSV": {
+    "tag": "Category",
+    "entity": "Entity",
+    "website": "Website",
     "scorerror": "Error",
     "scorewar": "Warning",
     "scoreok": "Success",
@@ -1251,7 +1282,9 @@
     "level": "Level",
     "criteria": "Criteria",
     "desc": "Description",
-    "count": "Number of occurrences"
+    "count": "Number of occurrences",
+    "value": "Value",
+    "date": "Date"
   },
   "TESTS_RESULTS": {
     "a_01a": {

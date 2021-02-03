@@ -1,21 +1,20 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { GetService } from '../../../services/get.service';
-import { TagEntity } from '../../../models/tag-entity.object';
-import { Website } from 'app/models/website.object';
-import * as _ from 'lodash';
-import { ScoreDistributionDialogComponent } from 'app/dialogs/score-distribution-dialog/score-distribution-dialog.component';
-import { ErrorDistributionDialogComponent } from 'app/dialogs/error-distribution-dialog/error-distribution-dialog.component';
-import { CorrectionDistributionDialogComponent } from 'app/dialogs/correction-distribution-dialog/correction-distribution-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
+import { GetService } from "../../../services/get.service";
+import { TagEntity } from "../../../models/tag-entity.object";
+import { Website } from "../../../models/website.object";
+import * as _ from "lodash";
+import { ScoreDistributionDialogComponent } from "../../..//dialogs/score-distribution-dialog/score-distribution-dialog.component";
+import { ErrorDistributionDialogComponent } from "../../..//dialogs/error-distribution-dialog/error-distribution-dialog.component";
+import { CorrectionDistributionDialogComponent } from "../../..//dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-entity-statistics',
-  templateUrl: './entity-statistics.component.html',
-  styleUrls: ['./entity-statistics.component.css']
+  selector: "app-entity-statistics",
+  templateUrl: "./entity-statistics.component.html",
+  styleUrls: ["./entity-statistics.component.css"],
 })
 export class EntityStatisticsComponent implements OnInit {
-
-  @Input('entity') entity: string;
+  @Input("entity") entity: string;
 
   loading: boolean;
   error: boolean;
@@ -43,12 +42,16 @@ export class EntityStatisticsComponent implements OnInit {
   websitesWithoutErrorsAAA: number;
   websitesWithoutErrorsAAAPercentage: string;
 
-  constructor(private get: GetService, private dialog: MatDialog, private cd: ChangeDetectorRef) {
+  constructor(
+    private get: GetService,
+    private dialog: MatDialog,
+    private cd: ChangeDetectorRef
+  ) {
     this.thresholdConfig = {
-      '0': {color: 'red'},
-      '2.5': {color: 'orange'},
-      '5': {color: 'yellow'},
-      '7.5': {color: 'green'}
+      "0": { color: "red" },
+      "2.5": { color: "orange" },
+      "5": { color: "yellow" },
+      "7.5": { color: "green" },
     };
 
     this.score = 0;
@@ -65,68 +68,75 @@ export class EntityStatisticsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get.listOfEntityWebsitePages(this.entity)
-      .subscribe(pages => {
-        if (pages.length > 0) {
-          this.pages = pages;
+    this.get.listOfEntityWebsitePages(this.entity).subscribe((pages) => {
+      if (pages.length > 0) {
+        this.pages = pages;
 
-          this.tagEntity = this.createTagEntity(_.clone(this.pages));
-          this.score = this.tagEntity.getScore();
+        this.tagEntity = this.createTagEntity(_.clone(this.pages));
+        this.score = this.tagEntity.getScore();
 
-          this.nPages = this.pages.length;
-          this.nWebsites = this.tagEntity.websites.length;
+        this.nPages = this.pages.length;
+        this.nWebsites = this.tagEntity.websites.length;
 
-          const size = _.size(this.tagEntity.websites);
-          this.newest_page = this.tagEntity.websites[0].recentPage;
-          this.oldest_page = this.tagEntity.websites[0].oldestPage;
+        const size = _.size(this.tagEntity.websites);
+        this.newest_page = this.tagEntity.websites[0].recentPage;
+        this.oldest_page = this.tagEntity.websites[0].oldestPage;
 
-          for (let i = 0 ; i < size ; i++) {
-            if (this.tagEntity.websites[i].A !== 0) {
-              this.websitesWithoutErrorsA++;
-            }
-
-            if (this.tagEntity.websites[i].AA !== 0) {
-              this.websitesWithoutErrorsAA++;
-            }
-
-            if (this.tagEntity.websites[i].AAA !== 0) {
-              this.websitesWithoutErrorsAAA++;
-            }
-
-            this.websitesWithoutErrors = this.websitesWithoutErrorsA + this.websitesWithoutErrorsAA + this.websitesWithoutErrorsAAA;
-            this.websitesWithErrors = size - this.websitesWithErrors;
-
-            if (this.tagEntity.websites[i].recentPage > this.newest_page) {
-              this.newest_page = this.tagEntity.websites[i].recentPage;
-            } else if (this.tagEntity.websites[i].oldestPage < this.oldest_page) {
-              this.oldest_page = this.tagEntity.websites[i].oldestPage;
-            }
+        for (let i = 0; i < size; i++) {
+          if (this.tagEntity.websites[i].A !== 0) {
+            this.websitesWithoutErrorsA++;
           }
 
-          this.websitesWithoutErrors = size - this.websitesWithErrors;
+          if (this.tagEntity.websites[i].AA !== 0) {
+            this.websitesWithoutErrorsAA++;
+          }
 
-          this.websitesWithErrorsPercentage = ((this.websitesWithErrors / size) * 100).toFixed(1) + '%';
-          this.websitesWithoutErrorsPercentage = ((this.websitesWithoutErrors / size) * 100).toFixed(1) + '%';
-          this.websitesWithoutErrorsAPercentage = ((this.websitesWithoutErrorsA / size) * 100).toFixed(1) + '%';
-          this.websitesWithoutErrorsAAPercentage = ((this.websitesWithoutErrorsAA / size) * 100).toFixed(1) + '%';
-          this.websitesWithoutErrorsAAAPercentage = ((this.websitesWithoutErrorsAAA / size) * 100).toFixed(1) + '%';
-        } else {
-          this.error = true;
+          if (this.tagEntity.websites[i].AAA !== 0) {
+            this.websitesWithoutErrorsAAA++;
+          }
+
+          this.websitesWithoutErrors =
+            this.websitesWithoutErrorsA +
+            this.websitesWithoutErrorsAA +
+            this.websitesWithoutErrorsAAA;
+          this.websitesWithErrors = size - this.websitesWithErrors;
+
+          if (this.tagEntity.websites[i].recentPage > this.newest_page) {
+            this.newest_page = this.tagEntity.websites[i].recentPage;
+          } else if (this.tagEntity.websites[i].oldestPage < this.oldest_page) {
+            this.oldest_page = this.tagEntity.websites[i].oldestPage;
+          }
         }
 
-        this.loading = false;
+        this.websitesWithoutErrors = size - this.websitesWithErrors;
 
-        this.cd.detectChanges();
-      });
+        this.websitesWithErrorsPercentage =
+          ((this.websitesWithErrors / size) * 100).toFixed(1) + "%";
+        this.websitesWithoutErrorsPercentage =
+          ((this.websitesWithoutErrors / size) * 100).toFixed(1) + "%";
+        this.websitesWithoutErrorsAPercentage =
+          ((this.websitesWithoutErrorsA / size) * 100).toFixed(1) + "%";
+        this.websitesWithoutErrorsAAPercentage =
+          ((this.websitesWithoutErrorsAA / size) * 100).toFixed(1) + "%";
+        this.websitesWithoutErrorsAAAPercentage =
+          ((this.websitesWithoutErrorsAAA / size) * 100).toFixed(1) + "%";
+      } else {
+        this.error = true;
+      }
+
+      this.loading = false;
+
+      this.cd.detectChanges();
+    });
   }
 
   openScoreDistributionDialog(): void {
     this.dialog.open(ScoreDistributionDialogComponent, {
       data: {
         number: this.tagEntity.websites.length,
-        tagEntity: this.tagEntity
+        tagEntity: this.tagEntity,
       },
-      width: '60vw'
+      width: "60vw",
     });
   }
 
@@ -135,9 +145,9 @@ export class EntityStatisticsComponent implements OnInit {
       data: {
         pagesLength: this.pages.length,
         tagEntity: this.tagEntity,
-        inTagsPage: true
+        inTagsPage: true,
       },
-      width: '80vw'
+      width: "80vw",
     });
   }
 
@@ -146,9 +156,9 @@ export class EntityStatisticsComponent implements OnInit {
       data: {
         pagesLength: this.pages.length,
         tagEntity: this.tagEntity,
-        inTagsPage: true
+        inTagsPage: true,
       },
-      width: '80vw'
+      width: "80vw",
     });
   }
 
@@ -162,7 +172,7 @@ export class EntityStatisticsComponent implements OnInit {
         websites.push(wb.WebsiteId);
       }
     }
-    
+
     for (const website of websites || []) {
       const newWebsite = this.createWebsite(website, pages);
       newTag.addWebsite(newWebsite);
@@ -186,7 +196,7 @@ export class EntityStatisticsComponent implements OnInit {
           A: p.A,
           AA: p.AA,
           AAA: p.AAA,
-          evaluation_date: p.Evaluation_Date
+          evaluation_date: p.Evaluation_Date,
         });
       }
     });

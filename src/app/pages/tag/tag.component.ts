@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import * as _ from 'lodash';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
+import * as _ from "lodash";
 
-import { GetService } from '../../services/get.service';
-import { MessageService } from '../../services/message.service';
+import { GetService } from "../../services/get.service";
+import { MessageService } from "../../services/message.service";
+import { EvaluationService } from "../../services/evaluation.service";
 
 @Component({
-  selector: 'app-tag',
-  templateUrl: './tag.component.html',
-  styleUrls: ['./tag.component.css']
+  selector: "app-tag",
+  templateUrl: "./tag.component.html",
+  styleUrls: ["./tag.component.css"],
 })
 export class TagComponent implements OnInit, OnDestroy {
-
   loading: boolean;
   error: boolean;
 
@@ -25,6 +25,7 @@ export class TagComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private get: GetService,
+    private evaluation: EvaluationService,
     private cd: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -32,8 +33,8 @@ export class TagComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.activatedRoute.params.subscribe(params => {
-      this.user = params.user || 'admin';
+    this.sub = this.activatedRoute.params.subscribe((params) => {
+      this.user = params.user || "admin";
       this.tag = params.tag;
 
       this.getListOfTagWebsites();
@@ -50,16 +51,33 @@ export class TagComponent implements OnInit, OnDestroy {
   }
 
   private getListOfTagWebsites(): void {
-    this.get.listOfTagWebsites(this.user, this.tag)
-      .subscribe(websites => {
-        if (websites !== null) {
-          this.websites = websites;
-        } else {
-          this.error = true;
-        }
+    this.get.listOfTagWebsites(this.user, this.tag).subscribe((websites) => {
+      if (websites !== null) {
+        this.websites = websites;
+      } else {
+        this.error = true;
+      }
 
-        this.loading = false;
-        this.cd.detectChanges();
-      });
+      this.loading = false;
+      this.cd.detectChanges();
+    });
+  }
+
+  downloadAllPagesCSV(): void {
+    this.evaluation.downloadTagCSV(
+      this.websites
+        .filter((w) => w.Show_in_Observatorio === 1)
+        .map((w) => w.Url),
+      true,
+      this.tag
+    );
+  }
+
+  downloadObservatoryCSV(): void {
+    this.evaluation.downloadTagCSV(
+      this.websites.map((w) => w.Url),
+      false,
+      this.tag
+    );
   }
 }

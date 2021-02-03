@@ -101,6 +101,8 @@ import { AccessibilityPlotComponent } from './global/accessibility-plot/accessib
 import { CorrectionDistributionDialogComponent } from './dialogs/correction-distribution-dialog/correction-distribution-dialog.component';
 import { EntityStatisticsComponent } from './pages/entity/entity-statistics/entity-statistics.component';
 import { TagStatisticsComponent } from './pages/tag/tag-statistics/tag-statistics.component';
+import { AddDirectoryDialogComponent } from './dialogs/add-directory-dialog/add-directory-dialog.component';
+import { SuccessCriteriaCounterComponent } from './global/success-criteria-counter/success-criteria-counter.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent, canActivate: [NoAuthGuard] },
@@ -224,7 +226,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccessibilityPlotComponent,
     CorrectionDistributionDialogComponent,
     EntityStatisticsComponent,
-    TagStatisticsComponent
+    TagStatisticsComponent,
+    AddDirectoryDialogComponent,
+    SuccessCriteriaCounterComponent
   ],
   imports: [
     BrowserModule,
