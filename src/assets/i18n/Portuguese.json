@@ -26,8 +26,8 @@
         "subtitle": "Criar um novo utilizador"
       },
       "directory": {
-        "title": "Dirétoria",
-        "subtitle": "Criar uma nova dirétoria"
+        "title": "Diretório",
+        "subtitle": "Criar uma nova diretório"
       },
       "tag": {
         "title": "Categoria",
@@ -303,19 +303,19 @@
   },
   "DIRECTORIES_PAGE": {
     "ADD": {
-      "title": "Criar uma nova directoria",
+      "title": "Criar um novo diretório",
       "name_label": "Nome",
       "name_exists": "O nome inserido já existe",
-      "observatorio_label": "Mostrar esta dirétoria no Observatório",
-      "tags_label": "Selecione as categorias para formar a nova dirétoria",
-      "method_label": "Escolha como formar a dirétoria",
+      "observatorio_label": "Mostrar este diretório no Observatório",
+      "tags_label": "Selecione as categorias para formar o novo diretório",
+      "method_label": "Escolha como formar a diretório",
       "cross_tags_label": "Cruzamento de categorias",
       "join_tags_label": "Junção de categorias",
       "reset": "Limpar",
       "submit": "Criar",
       "messages": {
-        "success": "Dirétoria criada com sucesso",
-        "error": "Erro ao criar a dirétoria"
+        "success": "Diretório criada com sucesso",
+        "error": "Erro ao criar a diretório"
       }
     }
   },
