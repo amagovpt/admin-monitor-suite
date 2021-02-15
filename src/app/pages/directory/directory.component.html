@@ -1,0 +1,44 @@
+<mat-card class="mat-typography">
+  <mat-card-header fxLayout="row" fxLayoutAlign="center center">
+    <mat-card-title>
+      <h1>{{ "DIRECTORIES_PAGE.title" | translate }} {{ directory }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <a mat-icon-button class="tools" [routerLink]="['/console', 'directories']" matTooltip="{{ 'RESULTS.actions.back' | translate }}">
+       <mat-icon aria-label="'RESULTS.actions.back' | translate">arrow_back</mat-icon>
+    </a>
+    <span fxFlex></span>
+    <button mat-icon-button class="tools" [matMenuTriggerFor]="menu" matTooltip="{{ 'RESULTS.actions.download' | translate }}">
+      <mat-icon aria-label="'RESULTS.actions.download' | translate">file_download</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="allPages">
+        {{ "DOMAINS_PAGE.download.allPages" | translate }}
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="observatory">
+        {{ "DOMAINS_PAGE.download.observatory" | translate }}
+      </button>
+    </mat-menu>
+    <mat-menu #allPages="matMenu">
+      <button mat-menu-item (click)="downloadAllPagesCSV()">
+        <a download="eval.csv">CSV</a>
+      </button>
+    </mat-menu>
+    <mat-menu #observatory="matMenu">
+      <button mat-menu-item (click)="downloadObservatoryCSV()">
+        <a download="eval.csv">CSV</a>
+      </button>
+    </mat-menu>
+  </mat-card-actions>
+</mat-card>
+<br>
+<app-directory-statistics [directory]="directory"></app-directory-statistics>
+<br>
+<app-list-of-tags *ngIf="!loadingTags && !errorTags" [directory]="directory" [tags]="tags" (refreshTags)="refreshTags($event)"></app-list-of-tags>
+<br>
+<app-list-of-websites *ngIf="!loadingWebsites && !errorWebsites" [directory]="directory" [websites]="websites" (refreshWebsites)="refreshWebsites($event)"></app-list-of-websites>
+<app-loading *ngIf="loadingTags"></app-loading>
+<app-error *ngIf="errorTags"></app-error>
+<app-loading *ngIf="loadingWebsites"></app-loading>
+<app-error *ngIf="errorWebsites"></app-error>

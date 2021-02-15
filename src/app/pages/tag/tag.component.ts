@@ -4,7 +4,6 @@ import { Subscription } from "rxjs";
 import * as _ from "lodash";
 
 import { GetService } from "../../services/get.service";
-import { MessageService } from "../../services/message.service";
 import { EvaluationService } from "../../services/evaluation.service";
 
 @Component({
@@ -65,9 +64,7 @@ export class TagComponent implements OnInit, OnDestroy {
 
   downloadAllPagesCSV(): void {
     this.evaluation.downloadTagCSV(
-      this.websites
-        .filter((w) => w.Show_in_Observatorio === 1)
-        .map((w) => w.Url),
+      this.websites.map((w) => w.Url),
       true,
       this.tag
     );

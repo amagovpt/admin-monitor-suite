@@ -1,18 +1,21 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Inject } from "@angular/core";
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from "@angular/material/dialog";
+import { FormControl, Validators } from "@angular/forms";
 
-import { EvaluationService } from '../../services/evaluation.service';
+import { EvaluationService } from "../../services/evaluation.service";
 
-import { BackgroundEvaluationsInformationDialogComponent } from '../background-evaluations-information-dialog/background-evaluations-information-dialog.component';
+import { BackgroundEvaluationsInformationDialogComponent } from "../background-evaluations-information-dialog/background-evaluations-information-dialog.component";
 
 @Component({
-  selector: 'app-choose-pages-to-re-evaluate-dialog',
-  templateUrl: './choose-pages-to-re-evaluate-dialog.component.html',
-  styleUrls: ['./choose-pages-to-re-evaluate-dialog.component.css']
+  selector: "app-choose-pages-to-re-evaluate-dialog",
+  templateUrl: "./choose-pages-to-re-evaluate-dialog.component.html",
+  styleUrls: ["./choose-pages-to-re-evaluate-dialog.component.css"],
 })
 export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
-
   pages: FormControl;
 
   constructor(
@@ -21,40 +24,64 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<ChoosePagesToReEvaluateDialogComponent>
   ) {
-    this.pages = new FormControl('all', [Validators.required]);
+    this.pages = new FormControl("all", [Validators.required]);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   reEvaluatePages(e: any): void {
     e.preventDefault();
 
-    if (this.data.dialog === 'website') {
-      this.evaluation.reEvaluateWebsitePages({ domainId: this.data.info, option: this.pages.value })
-        .subscribe(result => {
+    if (this.data.dialog === "website") {
+      this.evaluation
+        .reEvaluateWebsitePages({
+          domainId: this.data.info,
+          option: this.pages.value,
+        })
+        .subscribe((result) => {
           if (result) {
             this.openInformationDialog();
           } else {
-            alert('Error');
+            alert("Error");
           }
         });
-    } else if (this.data.dialog === 'entity') {
-      this.evaluation.reEvaluateEntityWebsitePages({ entityId: this.data.info, option: this.pages.value })
-        .subscribe(result => {
+    } else if (this.data.dialog === "entity") {
+      this.evaluation
+        .reEvaluateEntityWebsitePages({
+          entityId: this.data.info,
+          option: this.pages.value,
+        })
+        .subscribe((result) => {
           if (result) {
             this.openInformationDialog();
           } else {
-            alert('Error');
+            alert("Error");
           }
         });
-    } else if (this.data.dialog === 'tag') {
-      this.evaluation.reEvaluateTagWebsitePages({ tagId: this.data.info, option: this.pages.value })
-        .subscribe(result => {
+    } else if (this.data.dialog === "tag") {
+      this.evaluation
+        .reEvaluateTagWebsitePages({
+          tagId: this.data.info,
+          option: this.pages.value,
+        })
+        .subscribe((result) => {
           if (result) {
             this.openInformationDialog();
           } else {
-            alert('Error');
+            alert("Error");
+          }
+        });
+    } else if (this.data.dialog === "directory") {
+      this.evaluation
+        .reEvaluateDirectoryWebsitePages({
+          directoryId: this.data.info,
+          option: this.pages.value,
+        })
+        .subscribe((result) => {
+          if (result) {
+            this.openInformationDialog();
+          } else {
+            alert("Error");
           }
         });
     }
@@ -63,7 +90,7 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
 
   private openInformationDialog(): void {
     const data = {
-      width: '40vw',
+      width: "40vw",
     };
     this.dialog.open(BackgroundEvaluationsInformationDialogComponent, data);
   }

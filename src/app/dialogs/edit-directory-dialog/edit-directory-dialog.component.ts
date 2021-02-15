@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
 import {
   AbstractControl,
   FormControl,
@@ -9,18 +15,16 @@ import {
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { MatDialogRef } from "@angular/material/dialog";
-import { Router } from "@angular/router";
-import { Location } from "@angular/common";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Observable, of } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
 
-import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
 import { VerifyService } from "../../services/verify.service";
+import { UpdateService } from "../../services/update.service";
+import { DeleteService } from "../../services/delete.service";
 import { MessageService } from "../../services/message.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -39,15 +43,16 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: "app-add-directory-dialog",
-  templateUrl: "./add-directory-dialog.component.html",
-  styleUrls: ["./add-directory-dialog.component.css"],
+  selector: "app-edit-directory-dialog",
+  templateUrl: "./edit-directory-dialog.component.html",
+  styleUrls: ["./edit-directory-dialog.component.css"],
 })
-export class AddDirectoryDialogComponent implements OnInit {
+export class EditDirectoryDialogComponent implements OnInit {
   matcher: ErrorStateMatcher;
 
+  loadingInfo: boolean;
   loadingTags: boolean;
-  loadingCreate: boolean;
+  loadingUpdate: boolean;
 
   visible = true;
   selectable = false;
@@ -58,40 +63,72 @@ export class AddDirectoryDialogComponent implements OnInit {
 
   filteredTags: Observable<any[]>;
 
-  @ViewChild("tagInput") tagInput: ElementRef;
-
-  directoryForm: FormGroup;
   tags: any;
   selectedTags: any;
 
+  directoryForm: FormGroup;
+
+  copyDirectoryForm: FormGroup;
+
+  defaultDirectory: any;
+
+  @ViewChild("tagInput") tagInput: ElementRef;
+
   constructor(
-    private create: CreateService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<EditDirectoryDialogComponent>,
     private get: GetService,
+    private update: UpdateService,
+    private deleteService: DeleteService,
     private verify: VerifyService,
-    private message: MessageService,
-    private router: Router,
-    private location: Location,
-    private dialogRef: MatDialogRef<AddDirectoryDialogComponent>
+    private message: MessageService
   ) {
+    this.defaultDirectory = {};
+    this.tags = [];
+
     this.matcher = new MyErrorStateMatcher();
 
     this.directoryForm = new FormGroup({
-      name: new FormControl(
-        "",
-        [Validators.required],
-        this.nameValidator.bind(this)
-      ),
+      name: new FormControl("", Validators.required),
       observatory: new FormControl(),
       tags: new FormControl(),
     });
 
-    this.selectedTags = [];
+    this.copyDirectoryForm = new FormGroup({
+      name: new FormControl("", Validators.required),
+    });
 
+    this.loadingInfo = true;
     this.loadingTags = true;
-    this.loadingCreate = false;
+    this.loadingUpdate = false;
+
+    this.selectedTags = [];
   }
 
   ngOnInit(): void {
+    this.get.directoryInfo(this.data.id).subscribe((directory) => {
+      if (directory !== null) {
+        this.defaultDirectory = _.cloneDeep(directory);
+
+        this.directoryForm.controls.name.setValue(directory.Name);
+        this.directoryForm.controls.observatory.setValue(
+          directory.Show_in_Observatory
+        );
+        this.selectedTags = directory.tags;
+
+        this.copyDirectoryForm.controls.name.setValue(directory.Name);
+
+        this.directoryForm.controls.name.setAsyncValidators(
+          this.nameValidator.bind(this)
+        );
+        this.copyDirectoryForm.controls.name.setAsyncValidators(
+          this.nameValidator.bind(this)
+        );
+      }
+
+      this.loadingUpdate = false;
+    });
+
     this.get.listOfOfficialTags().subscribe((tags) => {
       if (tags !== null) {
         this.tags = tags;
@@ -105,42 +142,53 @@ export class AddDirectoryDialogComponent implements OnInit {
     });
   }
 
-  resetForm(): void {
-    this.directoryForm.reset();
-    this.selectedTags = [];
+  deleteDirectory(): void {
+    this.deleteService
+      .directory({ directoryId: this.data.id })
+      .subscribe((success) => {
+        if (success !== null) {
+          this.message.show("DIRECTORIES_PAGE.DELETE.messages.success");
+          this.dialogRef.close(true);
+        }
+      });
   }
 
-  createDirectory(e): void {
+  updateDirectory(e): void {
     e.preventDefault();
 
     const name = this.directoryForm.value.name;
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
+
+    const defaultTags = JSON.stringify(
+      _.map(this.defaultDirectory.tags, "TagId")
+    );
     const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
 
     const formData = {
+      directoryId: this.data.id,
       name,
       observatory,
+      defaultTags,
       tags,
     };
 
-    this.loadingCreate = true;
+    this.loadingUpdate = true;
 
-    this.create.newDirectory(formData).subscribe((success) => {
+    this.update.directory(formData).subscribe((success) => {
       if (success !== null) {
-        if (success) {
-          this.message.show("DIRECTORIES_PAGE.ADD.messages.success");
-
-          if (this.location.path() !== "/console/directories") {
-            this.router.navigateByUrl("/console/directories");
-          } else {
-            window.location.reload();
-          }
-
-          this.dialogRef.close();
-        }
+        this.message.show("DIRECTORIES_PAGE.UPDATE.messages.success");
+        this.dialogRef.close(true);
       }
-      this.loadingCreate = false;
+      this.loadingUpdate = false;
     });
+  }
+
+  setDefault(): void {
+    this.directoryForm.controls.name.setValue(this.defaultDirectory.Name);
+    this.directoryForm.controls.observatory.setValue(
+      this.defaultDirectory.Show_in_Observatory
+    );
+    this.selectedTags = _.clone(this.defaultDirectory.tags);
   }
 
   removeTag(tag: any): void {
@@ -162,7 +210,11 @@ export class AddDirectoryDialogComponent implements OnInit {
       this.tags,
       (t) => t["Name"] === event.option.viewValue
     );
-    if (!_.includes(this.selectedTags, this.tags[index])) {
+    const index2 = _.findIndex(
+      this.selectedTags,
+      (t) => t["Name"] === event.option.viewValue
+    );
+    if (index2 < 0) {
       this.selectedTags.push(this.tags[index]);
       this.tagInput.nativeElement.value = "";
       this.directoryForm.controls.tags.setValue(null);
@@ -172,7 +224,7 @@ export class AddDirectoryDialogComponent implements OnInit {
   nameValidator(control: AbstractControl): Observable<any> {
     const name = _.trim(control.value);
 
-    if (name !== "") {
+    if (name !== "" && name !== this.defaultDirectory.Name) {
       return this.verify.tagNameExists(name);
     } else {
       return of(null);

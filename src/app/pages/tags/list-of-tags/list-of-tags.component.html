@@ -1,10 +1,11 @@
-<mat-card class="mat-typography" *ngIf="!error" [hidden]="loading">
+<mat-card class="mat-typography">
   <mat-card-header>
     <mat-card-title>
       <h1>{{ "TAGS_PAGE.LIST.title" | translate }}</h1>
     </mat-card-title>
     <mat-card-subtitle>
-      <h2>{{ "TAGS_PAGE.LIST.subtitle" | translate }}</h2>
+      <h2 *ngIf="!directory">{{ "TAGS_PAGE.LIST.subtitle" | translate }}</h2>
+      <h2 *ngIf="directory">{{ "TAGS_PAGE.LIST.subtitle2" | translate }} {{ directory }}</h2>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -24,15 +25,6 @@
 
     <mat-table #table [dataSource]="dataSource" matSort>
 
-      <!--<ng-container matColumnDef="TagId">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "TAGS_PAGE.LIST.table.id_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{element.TagId}}
-        </mat-cell>
-      </ng-container>-->
-
       <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
           {{ "TAGS_PAGE.LIST.table.name_label" | translate }}
@@ -43,30 +35,6 @@
           </a>
         </mat-cell>
       </ng-container>
-
-      <ng-container matColumnDef="Show_in_Observatorio">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
-          {{ "TAGS_PAGE.LIST.table.observatorio_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element" fxFlex="10">
-          <mat-icon *ngIf="element.Show_in_Observatorio" class="md-24" aria-label="">check</mat-icon>
-          <mat-icon *ngIf="!element.Show_in_Observatorio" class="md-24" aria-label="">clear</mat-icon>
-        </mat-cell>
-      </ng-container>
-
-      <!--<ng-container matColumnDef="User">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
-          {{ "TAGS_PAGE.LIST.table.user_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element" fxFlex="20">
-          <a *ngIf="element.User" [routerLink]="['/console', 'user', element.User]">
-            <strong>{{element.User}}</strong>
-          </a>
-          <span *ngIf="!element.User">
-            Admin
-          </span>
-        </mat-cell>
-      </ng-container>-->
 
       <ng-container matColumnDef="Creation_Date">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
@@ -107,18 +75,6 @@
           </button>
         </mat-cell>
       </ng-container>
-
-      <!--<ng-container matColumnDef="see">
-        <mat-header-cell *matHeaderCellDef fxFlex="10"></mat-header-cell>
-        <mat-cell *matCellDef="let element" fxFlex="10">
-          <button *ngIf="element.User" mat-icon-button matTooltip="{{ 'TAGS_PAGE.LIST.table.see_tooltip' | translate }}" [routerLink]="['/console', 'tag', element.User, element.Name]">
-            <mat-icon class="md-24" aria-label="">visibility</mat-icon>
-          </button>
-          <button *ngIf="!element.User" mat-icon-button matTooltip="{{ 'TAGS_PAGE.LIST.table.see_tooltip' | translate }}" [routerLink]="['/console', 'tag', 'admin', element.Name]">
-            <mat-icon class="md-24" aria-label="">visibility</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>-->
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

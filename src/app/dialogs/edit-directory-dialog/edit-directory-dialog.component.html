@@ -1,16 +1,16 @@
 <div fxLayout="row">
-  <h1 class="mat-display-1" mat-dialog-title>{{ "DIRECTORIES_PAGE.ADD.title" | translate }}</h1>
+  <h1 class="mat-display-1" mat-dialog-title>{{ "DIRECTORIES_PAGE.UPDATE.title" | translate }}</h1>
   <span fxFlex></span>
   <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
     <mat-icon aria-hidden="false">close</mat-icon>
   </button>
 </div>
-<form (submit)="createDirectory($event)" [formGroup]="directoryForm" novalidate>
+<form (submit)="updateDirectory($event)" [formGroup]="directoryForm" novalidate>
   <mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
-    <div class="add-directory-block" fxLayout="column">
+    <div class="edit-directory-block" fxLayout="column">
       <mat-form-field>
         <label for="directory_name_input">{{ "DIRECTORIES_PAGE.ADD.name_label" | translate }}</label>
-        <input id="directory_name_input" matInput formControlName="name" [errorStateMatcher]="matcher" cdkFocusInitial required>
+        <input id="directory_name_input" matInput formControlName="name" [errorStateMatcher]="matcher" autofocus required>
         <button type="button" *ngIf="directoryForm.value.name" matSuffix mat-icon-button aria-label="Clear"
           (click)="directoryForm.controls.name.reset()">
           <mat-icon aria-hidden="false">close</mat-icon>
@@ -20,19 +20,19 @@
         </mat-error>
         <mat-error *ngIf="directoryForm.controls.name.hasError('required')" [innerHTML]="'MISC.required_field' | translate">
         </mat-error>
-        <mat-error *ngIf="directoryForm.controls.name.hasError('notTakenName')">{{ "DIRECTORIES_PAGE.ADD.name_exists" | translate }}
-        </mat-error>
+        <mat-error *ngIf="directoryForm.controls.name.hasError('notTakenName')">{{ "DIRECTORIES_PAGE.ADD.name_exists" |
+                translate }}</mat-error>
       </mat-form-field>
     </div>
-    <div class="add-observatorio-block">
-      <mat-checkbox color="primary" formControlName="observatory">
+    <div class="edit-observatorio-block">
+      <mat-checkbox formControlName="observatory">
         {{ "DIRECTORIES_PAGE.ADD.observatorio_label" | translate }}
       </mat-checkbox>
     </div>
-    <div class="add-tags-block" *ngIf="!loadingTags" fxLayout="column" fxLayoutAlign="start stretch">
+    <div class="edit-tags-block" *ngIf="!loadingTags" fxLayout="column" fxLayoutAlign="start stretch">
       <mat-form-field>
-        <label for="direcrory_tags_input">{{ "DIRECTORIES_PAGE.ADD.tags_label" | translate }}</label>
-        <mat-chip-list #tagsChipList required>
+        <label for="directory_tags_input">{{ "DIRECTORIES_PAGE.UPDATE.tags_label" | translate }}</label>
+        <mat-chip-list #tagsChipList>
           <mat-chip *ngFor="let tag of selectedTags" [selectable]="selectable" [removable]="removable"
             (removed)="removeTag(tag)">
             {{tag.Name}}
@@ -40,9 +40,9 @@
           </mat-chip>
           <input id="directory_tags_input" #tagInput formControlName="tags" [matAutocomplete]="auto2"
             [matChipInputFor]="tagsChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"/>
+            [matChipInputAddOnBlur]="addOnBlur" />
           <button type="button" *ngIf="selectedTags.length > 0" matSuffix mat-icon-button aria-label="Clear"
-            (click)="selectedTAgs = []">
+            (click)="selectedTags = []">
             <mat-icon aria-hidden="false">close</mat-icon>
           </button>
         </mat-chip-list>
@@ -51,19 +51,23 @@
             {{ tag.Name }}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="directoryForm.controls.tags.hasError('required')" [innerHTML]="'MISC.required_field' | translate">
-        </mat-error>
       </mat-form-field>
     </div>
   </mat-dialog-content>
-  <mat-dialog-actions fxLayout="row">
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" type="button" (click)="deleteDirectory()">
+      {{ "DIRECTORIES_PAGE.UPDATE.delete.submit" | translate }}
+    </button>
     <span fxFlex></span>
-    <button mat-raised-button color="warn" type="button" (click)="resetForm()">
-      {{ "DIRECTORIES_PAGE.ADD.reset" | translate }}
+    <button mat-raised-button color="accent" type="button" (click)="setDefault()">
+      {{ "DIRECTORIES_PAGE.UPDATE.default" | translate }}
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="directoryForm.invalid" *ngIf="!loadingCreate">
-      {{ "DIRECTORIES_PAGE.ADD.submit" | translate }}
+    <span fxFlex="2"></span>
+    <button mat-raised-button color="primary" type="submit" [disabled]="directoryForm.controls.name.invalid"
+      *ngIf="!loadingUpdate">
+      {{ "DIRECTORIES_PAGE.UPDATE.submit" | translate }}
     </button>
-    <span *ngIf="loadingCreate"><strong>{{ "MISC.loading" | translate }}</strong></span>
+    <span *ngIf="loadingUpdate"><strong>{{ "MISC.loading" | translate }}</strong></span>
   </mat-dialog-actions>
 </form>
+

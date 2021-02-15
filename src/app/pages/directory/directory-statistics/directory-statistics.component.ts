@@ -3,18 +3,19 @@ import { GetService } from "../../../services/get.service";
 import { TagEntity } from "../../../models/tag-entity.object";
 import { Website } from "../../../models/website.object";
 import * as _ from "lodash";
-import { ScoreDistributionDialogComponent } from "../../..//dialogs/score-distribution-dialog/score-distribution-dialog.component";
-import { ErrorDistributionDialogComponent } from "../../..//dialogs/error-distribution-dialog/error-distribution-dialog.component";
-import { CorrectionDistributionDialogComponent } from "../../..//dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
+import { ScoreDistributionDialogComponent } from "../../../dialogs/score-distribution-dialog/score-distribution-dialog.component";
+import { ErrorDistributionDialogComponent } from "../../../dialogs/error-distribution-dialog/error-distribution-dialog.component";
+import { CorrectionDistributionDialogComponent } from "../../../dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { A } from "@angular/cdk/keycodes";
 
 @Component({
-  selector: "app-entity-statistics",
-  templateUrl: "./entity-statistics.component.html",
-  styleUrls: ["./entity-statistics.component.css"],
+  selector: "app-directory-statistics",
+  templateUrl: "./directory-statistics.component.html",
+  styleUrls: ["./directory-statistics.component.css"],
 })
-export class EntityStatisticsComponent implements OnInit {
-  @Input("entity") entity: string;
+export class DirectoryStatisticsComponent implements OnInit {
+  @Input("directory") directory: string;
 
   loading: boolean;
   error: boolean;
@@ -68,7 +69,7 @@ export class EntityStatisticsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get.listOfEntityWebsitePages(this.entity).subscribe((pages) => {
+    this.get.listOfDirectoryWebsitesPages(this.directory).subscribe((pages) => {
       if (pages.length > 0) {
         this.pages = pages;
 

@@ -142,6 +142,32 @@ export class EvaluationService {
       );
   }
 
+  reEvaluateDirectoryWebsitePages(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/directory/reEvaluate"), data, {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
   getEvaluation(url: string, evaluation_id: number): Observable<Evaluation> {
     if (
       this.url &&
@@ -250,6 +276,46 @@ export class EvaluationService {
       );
   }
 
+  async downloadDirectoryCSV(
+    domains: string[],
+    allPages: boolean,
+    directory: string
+  ): Promise<void> {
+    let data = "";
+    let i = 0;
+
+    for (const domain of domains) {
+      const response = await this.http
+        .get<any>(
+          this.config.getServer(
+            `/evaluation/domain/${encodeURIComponent(
+              domain
+            )}/evaluations/${allPages}`
+          ),
+          { observe: "response" }
+        )
+        .toPromise();
+
+      const result = response.body.result;
+
+      for (const page of result || []) {
+        this.evaluation = page;
+        this.evaluation.processed = this.processData();
+        data += this.generateCSV(
+          this.evaluation,
+          i !== 0,
+          domain,
+          undefined,
+          directory
+        );
+        i++;
+      }
+    }
+
+    const blob = new Blob([data], { type: "text/json" });
+    saveAs(blob, "eval.csv");
+  }
+
   async downloadTagCSV(
     domains: string[],
     allPages: boolean,
@@ -257,6 +323,7 @@ export class EvaluationService {
   ): Promise<void> {
     let data = "";
     let i = 0;
+
     for (const domain of domains) {
       const response = await this.http
         .get<any>(

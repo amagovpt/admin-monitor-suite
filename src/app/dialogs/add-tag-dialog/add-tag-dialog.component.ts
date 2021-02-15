@@ -9,12 +9,11 @@ import {
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
 
@@ -46,6 +45,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class AddTagDialogComponent implements OnInit {
   matcher: ErrorStateMatcher;
 
+  loadingDirectories: boolean;
   loadingWebsites: boolean;
   loadingCreate: boolean;
 
@@ -56,11 +56,15 @@ export class AddTagDialogComponent implements OnInit {
 
   separatorKeysCodes = [ENTER, COMMA];
 
+  filteredDirectories: Observable<any[]>;
   filteredWebsites: Observable<any[]>;
 
+  @ViewChild("directoryInput") directoryInput: ElementRef;
   @ViewChild("websiteInput") websiteInput: ElementRef;
 
   tagForm: FormGroup;
+  directories: any;
+  selectedDirectories: any;
   websites: any;
   selectedWebsites: any;
 
@@ -81,12 +85,14 @@ export class AddTagDialogComponent implements OnInit {
         [Validators.required],
         this.nameValidator.bind(this)
       ),
-      observatory: new FormControl(),
+      directories: new FormControl(),
       websites: new FormControl(),
     });
 
+    this.selectedDirectories = [];
     this.selectedWebsites = [];
 
+    this.loadingDirectories = true;
     this.loadingWebsites = true;
     this.loadingCreate = false;
   }
@@ -96,7 +102,6 @@ export class AddTagDialogComponent implements OnInit {
       if (websites !== null) {
         this.websites = websites;
         this.filteredWebsites = this.tagForm.controls.websites.valueChanges.pipe(
-          startWith(null),
           map((website: any | null) =>
             website ? this.filterWebsite(website) : this.websites.slice()
           )
@@ -104,10 +109,25 @@ export class AddTagDialogComponent implements OnInit {
       }
       this.loadingWebsites = false;
     });
+
+    this.get.listOfDirectories().subscribe((directories) => {
+      if (directories !== null) {
+        this.directories = directories;
+        this.filteredDirectories = this.tagForm.controls.directories.valueChanges.pipe(
+          map((directory: any | null) =>
+            directory
+              ? this.filterDirectory(directory)
+              : this.directories.slice()
+          )
+        );
+      }
+      this.loadingDirectories = false;
+    });
   }
 
   resetForm(): void {
     this.tagForm.reset();
+    this.selectedDirectories = [];
     this.selectedWebsites = [];
   }
 
@@ -115,12 +135,14 @@ export class AddTagDialogComponent implements OnInit {
     e.preventDefault();
 
     const name = this.tagForm.value.name;
-    const observatory = this.tagForm.value.observatory ? 1 : 0;
+    const directories = JSON.stringify(
+      _.map(this.selectedDirectories, "DirectoryId")
+    );
     const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
 
     const formData = {
       name,
-      observatory,
+      directories,
       websites,
     };
 
@@ -142,6 +164,32 @@ export class AddTagDialogComponent implements OnInit {
       }
       this.loadingCreate = false;
     });
+  }
+
+  removeDirectory(directory: any): void {
+    const index = _.findIndex(this.selectedDirectories, directory);
+
+    if (index >= 0) {
+      this.selectedDirectories.splice(index, 1);
+    }
+  }
+
+  filterDirectory(name: string) {
+    return this.directories.filter((directory) =>
+      _.includes(directory.Name.toLowerCase(), name.toLowerCase())
+    );
+  }
+
+  selectedDirectory(event: MatAutocompleteSelectedEvent): void {
+    const index = _.findIndex(
+      this.directories,
+      (d) => d["Name"] === event.option.viewValue
+    );
+    if (!_.includes(this.selectedDirectories, this.directories[index])) {
+      this.selectedDirectories.push(this.directories[index]);
+      this.directoryInput.nativeElement.value = "";
+      this.tagForm.controls.directories.setValue(null);
+    }
   }
 
   removeWebsite(website: any): void {

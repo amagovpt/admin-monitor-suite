@@ -54,6 +54,7 @@
   "MENU": {
     "home": "Home",
     "users": "Users",
+    "directories": "Directories",
     "tags": "Tags",
     "entities": "Entities",
     "websites": "Websites",
@@ -66,6 +67,7 @@
     "title": "Welcome",
     "subtitle": "Applications summary",
     "users_label": "Users",
+    "directories_label": "Directories",
     "tags_label": "Tags",
     "websites_label": "Websites",
     "sentence": "Total of {{value}}",
@@ -302,20 +304,64 @@
     }
   },
   "DIRECTORIES_PAGE": {
+    "title": "Directory:",
+    "LIST": {
+      "title": "Directories",
+      "subtitle": "List of all directories",
+      "table": {
+        "id_label": "ID",
+        "name_label": "Name",
+        "observatory_label": "Observatory",
+        "creation_label": "Creation date",
+        "tags_label": "Nº Tags",
+        "re_evaluate_label": "Re-evaluate",
+        "re_evaluate_tooltip": "Re-evaluate directory websites",
+        "edit_label": "Edit",
+        "edit_tooltip": "Edit this directory",
+        "see_tooltip": "See directory"
+      }
+    },
     "ADD": {
       "title": "Create a new directory",
       "name_label": "Name",
       "name_exists": "The inserted name already exists",
-      "observatorio_label": "Show this directory in the Observatory",
+      "observatory_label": "Show this directory in the Observatory",
       "tags_label": "Choose the tags to form the new directory",
       "method_label": "Choose how to form the directory",
-      "cross_tags_label": "Cross tags",
-      "join_tags_label": "Join tags",
       "reset": "Reset",
       "submit": "Create",
       "messages": {
         "success": "Directory successfully created",
         "error": "Error creating directory"
+      }
+    },
+    "UPDATE": {
+      "title": "Directory",
+      "subtitle": "Edit",
+      "description": "Edit this directory",
+      "tags_label": "Associate Tags",
+      "default": "Undo changes",
+      "submit": "Update",
+      "delete": {
+        "title": "Delete",
+        "description": "Delete this directory",
+        "list": {
+          "title": "Important:",
+          "item1": "Only this directory will be deleted",
+          "item2": "Tags that belong to this directory will be without a directory",
+          "item3": "This action can't be undone"
+        },
+        "submit": "Delete directory"
+      },
+      "messages": {
+        "success": "DIrectory updated successfully",
+        "error": "Error updating directory"
+      }
+    },
+    "DELETE": {
+      "messages": {
+        "success": "Directory deleted successfully",
+        "error": "Error deleting directory"
       }
     }
   },
@@ -325,6 +371,7 @@
     "LIST": {
       "title": "Tags",
       "subtitle": "List of all tags",
+      "subtitle2": "List of tags from ",
       "table": {
         "id_label": "ID",
         "name_label": "Name",
@@ -343,8 +390,8 @@
       "title": "Create a new Tag",
       "name_label": "Name",
       "name_exists": "The inserted name already exists",
-      "observatorio_label": "Show this Tag in the Observatory",
-      "websites_label": "Associate Websites (optional)",
+      "directories_label": "Associate directories (optional)",
+      "websites_label": "Associate websites (optional)",
       "reset": "Reset",
       "submit": "Create",
       "messages": {
@@ -380,6 +427,7 @@
       "title": "Tag",
       "subtitle": "Edit",
       "description": "Edit this tag",
+      "directories_label": "Associate directories",
       "websites_label": "Associate Websites",
       "default": "Undo changes",
       "submit": "Update",
@@ -507,6 +555,7 @@
     "LIST": {
       "title": "Websites",
       "subtitle": "List of all websites",
+      "subtitle2": "List of websites from ",
       "generate_stamps": "Create/update digital stamps",
       "table": {
         "id_label": "ID",
@@ -1272,7 +1321,7 @@
     "win_01": "Pop-up windows"
   },
   "CSV": {
-    "tag": "Category",
+    "tag": "Directory",
     "entity": "Entity",
     "website": "Website",
     "scorerror": "Error",

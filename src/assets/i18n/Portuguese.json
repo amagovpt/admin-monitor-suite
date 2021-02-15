@@ -54,6 +54,7 @@
   "MENU": {
     "home": "Início",
     "users": "Utilizadores",
+    "directories": "Diretórios",
     "tags": "Categorias",
     "entities": "Entidades",
     "websites": "Sítios web",
@@ -66,6 +67,7 @@
     "title": "Bem vindo",
     "subtitle": "Sumário das aplicações",
     "users_label": "Utilizadores",
+    "directories_label": "Diretórios",
     "tags_label": "Categorias",
     "websites_label": "Sítios web",
     "sentence": "Total de {{value}}",
@@ -302,6 +304,23 @@
     }
   },
   "DIRECTORIES_PAGE": {
+    "title": "Diretório:",
+    "LIST": {
+      "title": "Diretórios",
+      "subtitle": "Lista de todas os diretórios",
+      "table": {
+        "id_label": "ID",
+        "name_label": "Nome",
+        "observatory_label": "Observatório",
+        "creation_label": "Data de criação",
+        "tags_label": "Nº de categorias",
+        "re_evaluate_label": "Reavaliar",
+        "re_evaluate_tooltip": "Reavaliar os sítios web do diretório",
+        "edit_label": "Editar",
+        "edit_tooltip": "Editar este diretório",
+        "see_tooltip": "Ver diretório"
+      }
+    },
     "ADD": {
       "title": "Criar um novo diretório",
       "name_label": "Nome",
@@ -317,6 +336,35 @@
         "success": "Diretório criada com sucesso",
         "error": "Erro ao criar a diretório"
       }
+    },
+    "UPDATE": {
+      "title": "Diretório",
+      "subtitle": "Editar",
+      "description": "Editar este diretório",
+      "tags_label": "Associar categorias",
+      "default": "Reverter alterações",
+      "submit": "Atualizar",
+      "delete": {
+        "title": "Apagar",
+        "description": "Apagar este diretório",
+        "list": {
+          "title": "Importante:",
+          "item1": "Apenas este diretório será apagado",
+          "item2": "As categorias que pertencem a este diretório ficarão sem diretório",
+          "item3": "Esta acção não pode ser revertida"
+        },
+        "submit": "Apagar diretório"
+      },
+      "messages": {
+        "success": "Diretório atualizado com sucesso",
+        "error": "Erro ao atualizar o diretório"
+      }
+    },
+    "DELETE": {
+      "messages": {
+        "success": "Diretório apagado com sucesso",
+        "error": "Erro ao apagar o diretório"
+      }
     }
   },
   "TAGS_PAGE": {
@@ -325,6 +373,7 @@
     "LIST": {
       "title": "Categorias",
       "subtitle": "Lista de todas as categorias",
+      "subtitle2": "Lista das categorias de ",
       "table": {
         "id_label": "ID",
         "name_label": "Nome",
@@ -343,7 +392,7 @@
       "title": "Criar uma nova categoria",
       "name_label": "Nome",
       "name_exists": "O nome inserido já existe",
-      "observatorio_label": "Mostrar esta categoria no Observatório",
+      "directories_label": "Associar diretórios (opcional)",
       "websites_label": "Associar sítios web (opcional)",
       "reset": "Limpar",
       "submit": "Criar",
@@ -380,6 +429,7 @@
       "title": "Categoria",
       "subtitle": "Editar",
       "description": "Editar esta categoria",
+      "directories_label": "Associar diretórios",
       "websites_label": "Associar sítios web",
       "default": "Reverter alterações",
       "submit": "Atualizar",
@@ -507,6 +557,7 @@
     "LIST": {
       "title": "Sítios web",
       "subtitle": "Lista de todos os sítios web",
+      "subtitle2": "Lista dos sítios web de",
       "generate_stamps": "Criar/atualizar selos digitais",
       "table": {
         "id_label": "ID",
@@ -1270,7 +1321,7 @@
     "win_01": "Pop-up windows"
   },
   "CSV": {
-    "tag": "Categoria",
+    "tag": "Diretório",
     "entity": "Entidade",
     "website": "Sitio web",
     "scorerror": "Erro",

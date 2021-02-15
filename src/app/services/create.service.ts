@@ -55,7 +55,7 @@ export class CreateService {
 
   newDirectory(data: any): Observable<boolean> {
     return this.http
-      .post<any>(this.config.getServer("/tag/directory/create"), data, {
+      .post<any>(this.config.getServer("/directory/create"), data, {
         observe: "response",
       })
       .pipe(

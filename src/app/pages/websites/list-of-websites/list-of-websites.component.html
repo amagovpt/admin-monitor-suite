@@ -4,7 +4,8 @@
       <h1>{{ "WEBSITES_PAGE.LIST.title" | translate }}</h1>
     </mat-card-title>
     <mat-card-subtitle>
-      <h2>{{ "WEBSITES_PAGE.LIST.subtitle" | translate }}</h2>
+      <h2 *ngIf="!directory">{{ "WEBSITES_PAGE.LIST.subtitle" | translate }}</h2>
+      <h2 *ngIf="directory">{{ "WEBSITES_PAGE.LIST.subtitle2" | translate }} {{ directory }}</h2>
     </mat-card-subtitle>
   </mat-card-header>
 

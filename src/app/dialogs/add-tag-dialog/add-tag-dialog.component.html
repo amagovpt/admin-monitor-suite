@@ -24,10 +24,29 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="add-observatorio-block">
-      <mat-checkbox color="primary" formControlName="observatory">
-        {{ "TAGS_PAGE.ADD.observatorio_label" | translate }}
-      </mat-checkbox>
+    <div class="add-directories-block" *ngIf="!loadingDirectories" fxLayout="column" fxLayoutAlign="start stretch">
+      <mat-form-field>
+        <label for="tag_directories_input">{{ "TAGS_PAGE.ADD.directories_label" | translate }}</label>
+        <mat-chip-list #directoriesChipList>
+          <mat-chip *ngFor="let directory of selectedDirectories" [selectable]="selectable" [removable]="removable"
+            (removed)="removeDirectory(directory)">
+            {{directory.Name}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input id="tag_directories_input" #directoryInput formControlName="directories" [matAutocomplete]="auto2"
+            [matChipInputFor]="directoriesChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur" />
+          <button type="button" *ngIf="selectedDirectories.length > 0" matSuffix mat-icon-button aria-label="Clear"
+            (click)="selectedDirectories = []">
+            <mat-icon aria-hidden="false">close</mat-icon>
+          </button>
+        </mat-chip-list>
+        <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectedDirectory($event)">
+          <mat-option *ngFor="let directory of filteredDirectories | async" [value]="directory.Name">
+            {{ directory.Name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
     <div class="add-websites-block" *ngIf="!loadingWebsites" fxLayout="column" fxLayoutAlign="start stretch">
       <mat-form-field>

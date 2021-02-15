@@ -3,7 +3,6 @@ import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { GetService } from "../../services/get.service";
-import { MessageService } from "../../services/message.service";
 import { EvaluationService } from "../../services/evaluation.service";
 
 @Component({
@@ -62,9 +61,7 @@ export class EntityComponent implements OnInit, OnDestroy {
 
   downloadAllPagesCSV(): void {
     this.evaluation.downloadEntityCSV(
-      this.websites
-        .filter((w) => w.Show_in_Observatorio === 1)
-        .map((w) => w.Url),
+      this.websites.map((w) => w.Url),
       true,
       this.entity
     );

@@ -1,1 +1,1 @@
-<app-list-of-tags></app-list-of-tags>
+<app-list-of-tags *ngIf="!loading" [tags]="tags" (refreshTags)="refreshTags($event)"></app-list-of-tags>
