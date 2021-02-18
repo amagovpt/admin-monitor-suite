@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
-import { MatPaginatorIntl } from "@angular/material/paginator";
+import { MatDatepickerIntl } from "@angular/material/datepicker";
 import { TranslateService } from "@ngx-translate/core";
 
-@Injectable()
-export class MatPaginatorIntlCustom extends MatPaginatorIntl {
-  itemsPerPageLabel: string;
-  nextPageLabel: string;
-  previousPageLabel: string;
-
+@Injectable({
+  providedIn: "root",
+})
+export class MatDatepickerIntlCustom extends MatDatepickerIntl {
+  calendarBodyLabel: string;
   constructor(private readonly translate: TranslateService) {
     super();
 
@@ -18,26 +17,8 @@ export class MatPaginatorIntlCustom extends MatPaginatorIntl {
     this.getAndInitTranslations();
   }
 
-  public getRangeLabel = (page: number, pageSize: number, length: number) => {
-    if (length === 0 || pageSize === 0) {
-      return this.translate.instant("RANGE_PAGE_LABEL_1", { length });
-    }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
-    const endIndex =
-      startIndex < length
-        ? Math.min(startIndex + pageSize, length)
-        : startIndex + pageSize;
-    return this.translate.instant("RANGE_PAGE_LABEL_2", {
-      startIndex: startIndex + 1,
-      endIndex,
-      length,
-    });
-  };
-
   public getAndInitTranslations(): void {
-    this.translate
+    /*this.translate
       .get([
         "ITEMS_PER_PAGE_LABEL",
         "NEXT_PAGE_LABEL",
@@ -53,6 +34,11 @@ export class MatPaginatorIntlCustom extends MatPaginatorIntl {
         this.lastPageLabel = translation["LAST_PAGE_LABEL"];
 
         this.changes.next();
-      });
+      });*/
+    this.calendarBodyLabel = "Abril";
+    /*this.formatYearRange = (start: string, end: string): string => {
+      return "ola";
+    };*/
+    this.changes.next();
   }
 }

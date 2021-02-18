@@ -106,6 +106,8 @@ export class EditWebsiteDialogComponent implements OnInit {
       domain: new FormControl({ value: "", disabled: true }),
       declaration: new FormControl(),
       stamp: new FormControl(),
+      declarationDate: new FormControl(),
+      stampDate: new FormControl(),
       entity: new FormControl(),
       user: new FormControl(),
       transfer: new FormControl({ value: "", disabled: true }),
@@ -129,6 +131,10 @@ export class EditWebsiteDialogComponent implements OnInit {
         this.websiteForm.controls.domain.setValue(website.Domain);
         this.websiteForm.controls.declaration.setValue(website.Declaration);
         this.websiteForm.controls.stamp.setValue(website.Stamp);
+        this.websiteForm.controls.declarationDate.setValue(
+          website.Declaration_Update_Date
+        );
+        this.websiteForm.controls.stampDate.setValue(website.Stamp_Update_Date);
         this.websiteForm.controls.entity.setValue(website.Entity);
         this.websiteForm.controls.user.setValue(website.User);
         this.selectedTags = website.tags;
@@ -149,7 +155,6 @@ export class EditWebsiteDialogComponent implements OnInit {
       if (users !== null) {
         this.monitorUsers = users;
         this.filteredUsers = this.websiteForm.controls.user.valueChanges.pipe(
-          startWith(null),
           map((val) => this.filterUser(val))
         );
       }
@@ -160,7 +165,6 @@ export class EditWebsiteDialogComponent implements OnInit {
       if (entities !== null) {
         this.entities = entities;
         this.filteredEntities = this.websiteForm.controls.entity.valueChanges.pipe(
-          startWith(null),
           map((val) => this.filterEntity(val))
         );
       }
@@ -172,7 +176,6 @@ export class EditWebsiteDialogComponent implements OnInit {
       if (tags !== null) {
         this.tags = tags;
         this.filteredTags = this.websiteForm.controls.tags.valueChanges.pipe(
-          startWith(null),
           map((tag: any | null) =>
             tag ? this.filterTags(tag) : this.tags.slice()
           )
@@ -190,6 +193,12 @@ export class EditWebsiteDialogComponent implements OnInit {
       this.defaultWebsite.Declaration
     );
     this.websiteForm.controls.stamp.setValue(this.defaultWebsite.Stamp);
+    this.websiteForm.controls.declarationDate.setValue(
+      this.defaultWebsite.Declaration_Update_Date
+    );
+    this.websiteForm.controls.stampDate.setValue(
+      this.defaultWebsite.Stamp_Update_Date
+    );
     this.websiteForm.controls.entity.setValue(this.defaultWebsite.Entity);
     this.websiteForm.controls.user.setValue(this.defaultWebsite.User);
     this.websiteForm.controls.transfer.disable();
@@ -241,10 +250,16 @@ export class EditWebsiteDialogComponent implements OnInit {
       this.websiteForm.value.declaration === ""
         ? null
         : parseInt(this.websiteForm.value.declaration);
+    const declarationDate = this.websiteForm.value.declarationDate
+      ? new Date(this.websiteForm.value.declarationDate)
+      : null;
     const stamp =
       this.websiteForm.value.stamp === ""
         ? null
         : parseInt(this.websiteForm.value.stamp);
+    const stampDate = this.websiteForm.value.stampDate
+      ? new Date(this.websiteForm.value.stampDate)
+      : null;
     const entityId = this.websiteForm.value.entity
       ? _.find(this.entities, ["Long_Name", this.websiteForm.value.entity])
           .EntityId
@@ -269,7 +284,9 @@ export class EditWebsiteDialogComponent implements OnInit {
       name,
       domain,
       declaration,
+      declarationDate,
       stamp,
+      stampDate,
       entityId,
       userId,
       olderUserId,
@@ -313,9 +330,7 @@ export class EditWebsiteDialogComponent implements OnInit {
   }
 
   filterTags(name: string) {
-    return this.tags.filter((tag) =>
-      _.includes(_.toLower(tag.Name), _.toLower(name))
-    );
+    return this.tags.filter((tag) => _.includes(tag.Name, name));
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
@@ -335,21 +350,20 @@ export class EditWebsiteDialogComponent implements OnInit {
   }
 
   filterEntity(val: any): string[] {
-    return this.entities.filter((entity) =>
-      _.includes(_.toLower(entity.Long_Name), _.toLower(val))
-    );
+    return this.entities.filter((entity) => _.includes(entity.Long_Name, val));
   }
 
   filterUser(val: any): string[] {
-    return this.monitorUsers.filter((user) =>
-      _.includes(_.toLower(user.Username), _.toLower(val))
-    );
+    return this.monitorUsers.filter((user) => _.includes(user.Username, val));
   }
 
   nameValidator(control: AbstractControl): Observable<any> {
-    const name = _.trim(control.value);
-
-    if (name !== "" && name !== this.defaultWebsite.Name) {
+    const name = control.value.trim();
+    if (
+      name !== "" &&
+      name !== this.defaultWebsite.Name &&
+      name.toLowerCase() !== this.defaultWebsite.Name.toLowerCase()
+    ) {
       return this.verify.websiteNameExists(name);
     } else {
       return of(null);

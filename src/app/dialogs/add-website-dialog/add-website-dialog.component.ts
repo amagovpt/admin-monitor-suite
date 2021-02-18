@@ -15,7 +15,7 @@ import { Observable } from "rxjs";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
-import { map, startWith } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
 
@@ -96,6 +96,8 @@ export class AddWebsiteDialogComponent implements OnInit {
       ),
       declaration: new FormControl(),
       stamp: new FormControl(),
+      declarationDate: new FormControl(),
+      stampDate: new FormControl(),
       entity: new FormControl("", [this.entityValidator.bind(this)]),
       user: new FormControl("", [this.userValidator.bind(this)]),
       tags: new FormControl(),
@@ -114,7 +116,6 @@ export class AddWebsiteDialogComponent implements OnInit {
       if (users !== null) {
         this.monitorUsers = users;
         this.filteredUsers = this.websiteForm.controls.user.valueChanges.pipe(
-          startWith(null),
           map((val) => this.filterUser(val))
         );
       }
@@ -125,7 +126,6 @@ export class AddWebsiteDialogComponent implements OnInit {
       if (entities !== null) {
         this.entities = entities;
         this.filteredEntities = this.websiteForm.controls.entity.valueChanges.pipe(
-          startWith(null),
           map((val) => this.filterEntity(val))
         );
       }
@@ -137,7 +137,6 @@ export class AddWebsiteDialogComponent implements OnInit {
       if (tags !== null) {
         this.tags = tags;
         this.filteredTags = this.websiteForm.controls.tags.valueChanges.pipe(
-          startWith(null),
           map((tag: any | null) =>
             tag ? this.filterTags(tag) : this.tags.slice()
           )
@@ -162,10 +161,16 @@ export class AddWebsiteDialogComponent implements OnInit {
       this.websiteForm.value.declaration === ""
         ? null
         : parseInt(this.websiteForm.value.declaration);
+    const declarationDate = this.websiteForm.value.declarationDate
+      ? new Date(this.websiteForm.value.declarationDate)
+      : null;
     const stamp =
       this.websiteForm.value.stamp === ""
         ? null
         : parseInt(this.websiteForm.value.stamp);
+    const stampDate = this.websiteForm.value.stampDate
+      ? new Date(this.websiteForm.value.stampDate)
+      : null;
     const entityId = this.websiteForm.value.entity
       ? _.find(this.entities, ["Long_Name", this.websiteForm.value.entity])
           .EntityId
@@ -180,7 +185,9 @@ export class AddWebsiteDialogComponent implements OnInit {
       name,
       domain,
       declaration,
+      declarationDate,
       stamp,
+      stampDate,
       entityId,
       userId,
       tags,

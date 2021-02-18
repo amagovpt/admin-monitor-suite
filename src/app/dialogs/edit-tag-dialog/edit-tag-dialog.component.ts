@@ -270,9 +270,13 @@ export class EditTagDialogComponent implements OnInit {
   }
 
   nameValidator(control: AbstractControl): Observable<any> {
-    const name = _.trim(control.value);
+    const name = control.value.trim();
 
-    if (name !== "" && name !== this.defaultTag.Name) {
+    if (
+      name !== "" &&
+      name !== this.defaultTag.Name &&
+      name.toLowerCase() !== this.defaultTag.Name.toLowerCase()
+    ) {
       return this.verify.tagNameExists(name);
     } else {
       return of(null);

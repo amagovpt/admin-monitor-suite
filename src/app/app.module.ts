@@ -12,6 +12,10 @@ import { ObserversModule } from "@angular/cdk/observers";
 import { NgxGaugeModule } from "ngx-gauge";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./services/auth.interceptor";
+import { registerLocaleData } from "@angular/common";
+import localeEn from "@angular/common/locales/en";
+import localePt from "@angular/common/locales/pt";
+import localePtExtra from "@angular/common/locales/extra/pt";
 
 import { MaterialModule } from "./material/material.module";
 
@@ -110,7 +114,12 @@ import { DirectoryComponent } from "./pages/directory/directory.component";
 
 import { MatPaginatorIntl } from "@angular/material/paginator";
 import { MatPaginatorIntlCustom } from "./paginator-intl.service";
-import { DirectoryStatisticsComponent } from './pages/directory/directory-statistics/directory-statistics.component';
+import { DirectoryStatisticsComponent } from "./pages/directory/directory-statistics/directory-statistics.component";
+import { CUSTOM_DATE_FORMATS, CustomDatePickerAdapter } from "./date-adapter";
+import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
+
+registerLocaleData(localeEn, "en");
+registerLocaleData(localePt, "pt", localePtExtra);
 
 const appRoutes: Routes = [
   { path: "", component: LoginComponent, canActivate: [NoAuthGuard] },
@@ -423,6 +432,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       provide: MatPaginatorIntl,
       useClass: MatPaginatorIntlCustom,
     },
+    { provide: DateAdapter, useClass: CustomDatePickerAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
   bootstrap: [AppComponent],
 })

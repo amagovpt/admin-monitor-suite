@@ -222,10 +222,14 @@ export class EditDirectoryDialogComponent implements OnInit {
   }
 
   nameValidator(control: AbstractControl): Observable<any> {
-    const name = _.trim(control.value);
+    const name = control.value.trim();
 
-    if (name !== "" && name !== this.defaultDirectory.Name) {
-      return this.verify.tagNameExists(name);
+    if (
+      name !== "" &&
+      name !== this.defaultDirectory.Name &&
+      name.toLowerCase() !== this.defaultDirectory.Name.toLowerCase()
+    ) {
+      return this.verify.directoryNameExists(name);
     } else {
       return of(null);
     }

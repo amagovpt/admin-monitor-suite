@@ -1,16 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { DateAdapter } from "@angular/material/core";
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  selector: "app-footer",
+  templateUrl: "./footer.component.html",
+  styleUrls: ["./footer.component.css"],
 })
 export class FooterComponent implements OnInit {
-
   selectedLang: string;
 
-  constructor(public translate: TranslateService) { }
+  langCodes: any = {
+    English: "en",
+    Portuguese: "pt",
+  };
+
+  constructor(
+    public translate: TranslateService,
+    private dateAdapter: DateAdapter<Date>
+  ) {}
 
   ngOnInit(): void {
     this.selectedLang = this.translate.currentLang;
@@ -18,7 +26,7 @@ export class FooterComponent implements OnInit {
 
   changeLanguage(): void {
     this.translate.use(this.selectedLang);
-    localStorage.setItem('language', this.selectedLang);
+    this.dateAdapter.setLocale(this.langCodes[this.selectedLang]);
+    localStorage.setItem("language", this.selectedLang);
   }
-
 }

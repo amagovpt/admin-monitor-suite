@@ -173,7 +173,7 @@ export class AddDirectoryDialogComponent implements OnInit {
     const name = _.trim(control.value);
 
     if (name !== "") {
-      return this.verify.tagNameExists(name);
+      return this.verify.directoryNameExists(name);
     } else {
       return of(null);
     }
