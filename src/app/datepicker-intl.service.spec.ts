@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { DatepickerIntlService } from './datepicker-intl.service';
+import { MatDatepickerIntlCustom } from "./datepicker-intl.service";
 
-describe('DatepickerIntlService', () => {
-  let service: DatepickerIntlService;
+describe("MatDatepickerIntlCustom", () => {
+  let service: MatDatepickerIntlCustom;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DatepickerIntlService);
+    service = TestBed.inject(MatDatepickerIntlCustom);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

@@ -106,26 +106,6 @@
       </div>
     </div>
     <div fxLayout="row">
-      <div class="add-entity-block" *ngIf="!loadingEntities" fxLayout="row" fxFlex>
-        <mat-form-field fxFlex>
-          <label for="website_entity_input">{{ "WEBSITES_PAGE.ADD.entity_label" | translate }}</label>
-          <input id="website_entity_input" type="text" aria-label="Entidade Name" matInput formControlName="entity"
-            [matAutocomplete]="auto" [errorStateMatcher]="matcher">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let ent of filteredEntities | async" [value]="ent.Long_Name">
-              {{ ent.Short_Name }} - {{ ent.Long_Name }}
-            </mat-option>
-          </mat-autocomplete>
-          <button type="button" *ngIf="websiteForm.value.entity" matSuffix mat-icon-button aria-label="Clear"
-            (click)="websiteForm.controls.entity.reset()">
-            <mat-icon aria-hidden="false">close</mat-icon>
-          </button>
-          <mat-error *ngIf="websiteForm.controls.entity.hasError('validEntity')">
-            {{ "WEBSITES_PAGE.ADD.entity_invalid" | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <span fxFlex="5"></span>
       <div class="add-user-block" *ngIf="!loadingUsers" fxLayout="row" fxFlex="45">
         <mat-form-field fxFlex>
           <label for="website_user_input">{{ "WEBSITES_PAGE.ADD.user_label" | translate }}</label>
@@ -145,6 +125,32 @@
           </mat-error>
         </mat-form-field>
       </div>
+    </div>
+    <div class="add-entities-block" *ngIf="!loadingEntities" fxLayout="column" fxLayoutAlign="start stretch">
+      <mat-form-field>
+        <label for="website_entities_input">
+          {{ "WEBSITES_PAGE.ADD.entity_label" | translate }}
+        </label>
+        <mat-chip-list #entitiesChipList>
+          <mat-chip *ngFor="let entity of selectedEntities" [selectable]="selectable" [removable]="removable"
+            (removed)="removeEntity(entity)">
+            {{entity.Long_Name}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input id="website_entities_input" #entityInput formControlName="entities" [matAutocomplete]="auto4"
+            [matChipInputFor]="entitiesChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur" />
+          <button type="button" *ngIf="selectedEntities.length > 0" matSuffix mat-icon-button aria-label="Clear"
+            (click)="selectedEntities = []">
+            <mat-icon aria-hidden="false">close</mat-icon>
+          </button>
+        </mat-chip-list>
+        <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="selectedEntity($event)">
+          <mat-option *ngFor="let entity of filteredEntities | async" [value]="entity.Long_Name">
+            {{ entity.Long_Name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
     <div class="add-tags-block" *ngIf="!loadingTags" fxLayout="column" fxLayoutAlign="start stretch">
       <mat-form-field>
@@ -179,7 +185,7 @@
       {{ "WEBSITES_PAGE.ADD.reset" | translate }}
     </button>
     <button mat-raised-button color="primary" type="submit"
-      [disabled]="websiteForm.controls.name.invalid || websiteForm.controls.domain.invalid || websiteForm.controls.entity.invalid || websiteForm.controls.user.invalid"
+      [disabled]="websiteForm.controls.name.invalid || websiteForm.controls.domain.invalid || websiteForm.controls.user.invalid"
       *ngIf="!loadingCreate">
       {{ 'WEBSITES_PAGE.ADD.submit' | translate }}
     </button>

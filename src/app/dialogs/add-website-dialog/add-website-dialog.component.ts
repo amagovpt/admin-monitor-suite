@@ -64,6 +64,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   filteredTags: Observable<any[]>;
 
   entities: any;
+  selectedEntities: any;
   monitorUsers: any;
   tags: any;
   selectedTags: any;
@@ -71,6 +72,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   websiteForm: FormGroup;
 
   @ViewChild("tagInput") tagInput: ElementRef;
+  @ViewChild("entityInput") entityInput: ElementRef;
 
   constructor(
     private create: CreateService,
@@ -98,8 +100,8 @@ export class AddWebsiteDialogComponent implements OnInit {
       stamp: new FormControl(),
       declarationDate: new FormControl(),
       stampDate: new FormControl(),
-      entity: new FormControl("", [this.entityValidator.bind(this)]),
       user: new FormControl("", [this.userValidator.bind(this)]),
+      entities: new FormControl(),
       tags: new FormControl(),
     });
 
@@ -109,6 +111,7 @@ export class AddWebsiteDialogComponent implements OnInit {
     this.loadingCreate = false;
 
     this.selectedTags = [];
+    this.selectedEntities = [];
   }
 
   ngOnInit(): void {
@@ -125,8 +128,10 @@ export class AddWebsiteDialogComponent implements OnInit {
     this.get.listOfEntities().subscribe((entities) => {
       if (entities !== null) {
         this.entities = entities;
-        this.filteredEntities = this.websiteForm.controls.entity.valueChanges.pipe(
-          map((val) => this.filterEntity(val))
+        this.filteredEntities = this.websiteForm.controls.entities.valueChanges.pipe(
+          map((entity) =>
+            entity ? this.filterEntities(entity) : this.entities.slice()
+          )
         );
       }
 
@@ -150,6 +155,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   resetForm(): void {
     this.websiteForm.reset();
     this.selectedTags = [];
+    this.selectedEntities = [];
   }
 
   createWebsite(e): void {
@@ -171,10 +177,7 @@ export class AddWebsiteDialogComponent implements OnInit {
     const stampDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
-    const entityId = this.websiteForm.value.entity
-      ? _.find(this.entities, ["Long_Name", this.websiteForm.value.entity])
-          .EntityId
-      : null;
+    const entities = JSON.stringify(_.map(this.selectedEntities, "EntityId"));
     const userId = this.websiteForm.value.user
       ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
           .UserId
@@ -188,7 +191,7 @@ export class AddWebsiteDialogComponent implements OnInit {
       declarationDate,
       stamp,
       stampDate,
-      entityId,
+      entities,
       userId,
       tags,
     };
@@ -240,10 +243,30 @@ export class AddWebsiteDialogComponent implements OnInit {
     }
   }
 
-  filterEntity(val: any): string[] {
+  removeEntity(entity: any): void {
+    const index = _.findIndex(this.selectedEntities, entity);
+
+    if (index >= 0) {
+      this.selectedEntities.splice(index, 1);
+    }
+  }
+
+  filterEntities(val: any): string[] {
     return this.entities.filter((entity) =>
       _.includes(_.toLower(entity.Long_Name), _.toLower(val))
     );
+  }
+
+  selectedEntity(event: MatAutocompleteSelectedEvent): void {
+    const index = _.findIndex(
+      this.entities,
+      (e) => e["Long_Name"] === event.option.viewValue
+    );
+    if (!_.includes(this.selectedEntities, this.entities[index])) {
+      this.selectedEntities.push(this.entities[index]);
+      this.entityInput.nativeElement.value = "";
+      this.websiteForm.controls.entities.setValue(null);
+    }
   }
 
   filterUser(val: any): string[] {

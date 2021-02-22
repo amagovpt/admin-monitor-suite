@@ -9,22 +9,15 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
-  FormControlName,
-  FormBuilder,
   Validators,
   FormGroupDirective,
   NgForm,
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
 
@@ -129,11 +122,10 @@ export class EditEntityDialogComponent implements OnInit {
       this.loadingInfo = false;
     });
 
-    this.get.websitesWithoutEntity().subscribe((websites) => {
+    this.get.listOfOfficialWebsites().subscribe((websites) => {
       if (websites !== null) {
         this.websites = this.websites.concat(websites);
         this.filteredWebsites = this.entityForm.controls.websites.valueChanges.pipe(
-          startWith(null),
           map((website: any | null) =>
             website ? this.filterWebsite(website) : this.websites.slice()
           )

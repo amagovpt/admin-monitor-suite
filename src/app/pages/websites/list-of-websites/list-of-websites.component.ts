@@ -31,10 +31,9 @@ export class ListOfWebsitesComponent implements OnInit {
   @Input("websites") websites: any;
 
   displayedColumns = [
-    //'WebsiteId',
     "Name",
-    "Entity",
-    //'User',
+    "User",
+    "Pages",
     "Creation_Date",
     "re-evaluate",
     "edit",

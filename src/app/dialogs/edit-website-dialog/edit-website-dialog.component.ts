@@ -82,12 +82,14 @@ export class EditWebsiteDialogComponent implements OnInit {
   monitorUsers: any;
   tags: any;
   selectedTags: any;
+  selectedEntities: any;
 
   websiteForm: FormGroup;
 
   defaultWebsite: any;
 
   @ViewChild("tagInput") tagInput: ElementRef;
+  @ViewChild("entityInput") entityInput: ElementRef;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -108,9 +110,9 @@ export class EditWebsiteDialogComponent implements OnInit {
       stamp: new FormControl(),
       declarationDate: new FormControl(),
       stampDate: new FormControl(),
-      entity: new FormControl(),
       user: new FormControl(),
       transfer: new FormControl({ value: "", disabled: true }),
+      entities: new FormControl(),
       tags: new FormControl(),
     });
 
@@ -120,6 +122,7 @@ export class EditWebsiteDialogComponent implements OnInit {
     this.loadingUpdate = false;
 
     this.selectedTags = [];
+    this.selectedEntities = [];
   }
 
   ngOnInit(): void {
@@ -135,15 +138,12 @@ export class EditWebsiteDialogComponent implements OnInit {
           website.Declaration_Update_Date
         );
         this.websiteForm.controls.stampDate.setValue(website.Stamp_Update_Date);
-        this.websiteForm.controls.entity.setValue(website.Entity);
         this.websiteForm.controls.user.setValue(website.User);
+        this.selectedEntities = website.entities;
         this.selectedTags = website.tags;
 
         this.websiteForm.controls.name.setAsyncValidators(
           this.nameValidator.bind(this)
-        );
-        this.websiteForm.controls.entity.setValidators(
-          this.entityValidator.bind(this)
         );
         this.websiteForm.controls.user.setValidators(
           this.userValidator.bind(this)
@@ -164,8 +164,10 @@ export class EditWebsiteDialogComponent implements OnInit {
     this.get.listOfEntities().subscribe((entities) => {
       if (entities !== null) {
         this.entities = entities;
-        this.filteredEntities = this.websiteForm.controls.entity.valueChanges.pipe(
-          map((val) => this.filterEntity(val))
+        this.filteredEntities = this.websiteForm.controls.entities.valueChanges.pipe(
+          map((entity) =>
+            entity ? this.filterEntities(entity) : this.entities.slice()
+          )
         );
       }
 
@@ -199,11 +201,11 @@ export class EditWebsiteDialogComponent implements OnInit {
     this.websiteForm.controls.stampDate.setValue(
       this.defaultWebsite.Stamp_Update_Date
     );
-    this.websiteForm.controls.entity.setValue(this.defaultWebsite.Entity);
     this.websiteForm.controls.user.setValue(this.defaultWebsite.User);
     this.websiteForm.controls.transfer.disable();
     this.websiteForm.controls.transfer.setValue(false);
     this.selectedTags = _.clone(this.defaultWebsite.tags);
+    this.selectedEntities = _.clone(this.defaultWebsite.entities);
   }
 
   transferPagesValidator(): void {
@@ -260,10 +262,6 @@ export class EditWebsiteDialogComponent implements OnInit {
     const stampDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
-    const entityId = this.websiteForm.value.entity
-      ? _.find(this.entities, ["Long_Name", this.websiteForm.value.entity])
-          .EntityId
-      : null;
     const userId = this.websiteForm.value.user
       ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
           .UserId
@@ -273,6 +271,11 @@ export class EditWebsiteDialogComponent implements OnInit {
       ? _.find(this.monitorUsers, ["Username", this.defaultWebsite.User]).UserId
       : null;
     const transfer = this.websiteForm.value.transfer;
+
+    const defaultEntities = JSON.stringify(
+      _.map(this.defaultWebsite.entities, "EntityId")
+    );
+    const entities = JSON.stringify(_.map(this.selectedEntities, "EntityId"));
 
     const defaultTags = JSON.stringify(
       _.map(this.defaultWebsite.tags, "TagId")
@@ -287,10 +290,11 @@ export class EditWebsiteDialogComponent implements OnInit {
       declarationDate,
       stamp,
       stampDate,
-      entityId,
       userId,
       olderUserId,
       transfer,
+      defaultEntities,
+      entities,
       defaultTags,
       tags,
     };
@@ -349,8 +353,32 @@ export class EditWebsiteDialogComponent implements OnInit {
     }
   }
 
-  filterEntity(val: any): string[] {
+  removeEntity(entity: any): void {
+    const index = _.findIndex(this.selectedEntities, entity);
+
+    if (index >= 0) {
+      this.selectedEntities.splice(index, 1);
+    }
+  }
+
+  filterEntities(val: any): string[] {
     return this.entities.filter((entity) => _.includes(entity.Long_Name, val));
+  }
+
+  selectedEntity(event: MatAutocompleteSelectedEvent): void {
+    const index = _.findIndex(
+      this.entities,
+      (e) => e["Long_Name"] === event.option.viewValue
+    );
+    const index2 = _.findIndex(
+      this.selectedEntities,
+      (e) => e["Long_Name"] === event.option.viewValue
+    );
+    if (index2 === -1) {
+      this.selectedEntities.push(this.entities[index]);
+      this.entityInput.nativeElement.value = "";
+      this.websiteForm.controls.entities.setValue(null);
+    }
   }
 
   filterUser(val: any): string[] {

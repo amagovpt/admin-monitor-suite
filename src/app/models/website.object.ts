@@ -109,7 +109,7 @@ export class Website {
 
       if (tests[key]["result"] === "failed") {
         if (k === "a" || k === "hx") {
-          return;
+          continue;
         }
 
         if (perrors[k]) {
@@ -137,7 +137,7 @@ export class Website {
         }
       } else if (tests[key]["result"] === "passed") {
         if (k === "a" || k === "hx") {
-          return;
+          continue;
         }
         if (Object.keys(this.success).includes(key)) {
           this.success[key]["n_pages"]++;

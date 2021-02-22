@@ -1,36 +1,48 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormControlName, FormBuilder, Validators, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { Observable } from 'rxjs';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { map, startWith } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import * as _ from 'lodash';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormGroupDirective,
+  NgForm,
+} from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { Observable } from "rxjs";
+import { MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { Location } from "@angular/common";
+import { map } from "rxjs/operators";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import * as _ from "lodash";
 
-import { CreateService } from '../../services/create.service';
-import { GetService } from '../../services/get.service';
-import { VerifyService } from '../../services/verify.service';
-import { MessageService } from '../../services/message.service';
+import { CreateService } from "../../services/create.service";
+import { GetService } from "../../services/get.service";
+import { VerifyService } from "../../services/verify.service";
+import { MessageService } from "../../services/message.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
   }
 }
 
 @Component({
-  selector: 'app-add-entity-dialog',
-  templateUrl: './add-entity-dialog.component.html',
-  styleUrls: ['./add-entity-dialog.component.css']
+  selector: "app-add-entity-dialog",
+  templateUrl: "./add-entity-dialog.component.html",
+  styleUrls: ["./add-entity-dialog.component.css"],
 })
 export class AddEntityDialogComponent implements OnInit {
-
   matcher: ErrorStateMatcher;
 
   loadingWebsites: boolean;
@@ -50,7 +62,7 @@ export class AddEntityDialogComponent implements OnInit {
 
   entityForm: FormGroup;
 
-  @ViewChild('websiteInput') websiteInput: ElementRef;
+  @ViewChild("websiteInput") websiteInput: ElementRef;
 
   constructor(
     private create: CreateService,
@@ -64,13 +76,17 @@ export class AddEntityDialogComponent implements OnInit {
     this.matcher = new MyErrorStateMatcher();
 
     this.entityForm = new FormGroup({
-      shortName: new FormControl('', [
-        Validators.required
-      ], this.shortNameValidator.bind(this)),
-      longName: new FormControl('', [
-        Validators.required
-      ], this.longNameValidator.bind(this)),
-      websites: new FormControl()
+      shortName: new FormControl(
+        "",
+        [Validators.required],
+        this.shortNameValidator.bind(this)
+      ),
+      longName: new FormControl(
+        "",
+        [Validators.required],
+        this.longNameValidator.bind(this)
+      ),
+      websites: new FormControl(),
     });
 
     this.loadingWebsites = true;
@@ -80,17 +96,18 @@ export class AddEntityDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get.websitesWithoutEntity()
-      .subscribe(websites => {
-        if (websites !== null) {
-          this.websites = websites;
-          this.filteredWebsites = this.entityForm.controls.websites.valueChanges.pipe(
-            startWith(null),
-            map((website: any | null) => website ? this.filterWebsite(website) : this.websites.slice()));
-        }
+    this.get.listOfOfficialWebsites().subscribe((websites) => {
+      if (websites !== null) {
+        this.websites = websites;
+        this.filteredWebsites = this.entityForm.controls.websites.valueChanges.pipe(
+          map((website: any | null) =>
+            website ? this.filterWebsite(website) : this.websites.slice()
+          )
+        );
+      }
 
-        this.loadingWebsites = false;
-      });
+      this.loadingWebsites = false;
+    });
   }
 
   resetForm(): void {
@@ -103,34 +120,33 @@ export class AddEntityDialogComponent implements OnInit {
 
     const shortName = this.entityForm.value.shortName;
     const longName = this.entityForm.value.longName;
-    const websites = JSON.stringify(_.map(this.selectedWebsites, 'WebsiteId'));
+    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
 
     const formData = {
       shortName,
       longName,
-      websites
+      websites,
     };
 
     this.loadingCreate = true;
 
-    this.create.newEntity(formData)
-      .subscribe(success => {
-        if (success !== null) {
-          if (success) {
-            this.message.show('ENTITIES_PAGE.ADD.messages.success');
+    this.create.newEntity(formData).subscribe((success) => {
+      if (success !== null) {
+        if (success) {
+          this.message.show("ENTITIES_PAGE.ADD.messages.success");
 
-            if (this.location.path() !== '/console/entities') {
-              this.router.navigateByUrl('/console/entities');
-            } else {
-              window.location.reload();
-            }
-
-            this.dialogRef.close();
+          if (this.location.path() !== "/console/entities") {
+            this.router.navigateByUrl("/console/entities");
+          } else {
+            window.location.reload();
           }
-        }
 
-        this.loadingCreate = false;
-      });
+          this.dialogRef.close();
+        }
+      }
+
+      this.loadingCreate = false;
+    });
   }
 
   removeWebsite(website: any): void {
@@ -142,15 +158,19 @@ export class AddEntityDialogComponent implements OnInit {
   }
 
   filterWebsite(name: string) {
-    return this.websites.filter(website =>
-      _.includes(website.Name.toLowerCase(), name.toLowerCase()));
+    return this.websites.filter((website) =>
+      _.includes(website.Name.toLowerCase(), name.toLowerCase())
+    );
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
-    const index = _.findIndex(this.websites, w => w['Name'] === event.option.viewValue);
+    const index = _.findIndex(
+      this.websites,
+      (w) => w["Name"] === event.option.viewValue
+    );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
-      this.websiteInput.nativeElement.value = '';
+      this.websiteInput.nativeElement.value = "";
       this.entityForm.controls.websites.setValue(null);
     }
   }
@@ -158,7 +178,7 @@ export class AddEntityDialogComponent implements OnInit {
   shortNameValidator(control: AbstractControl): Observable<any> {
     const name = _.trim(control.value);
 
-    if (name !== '') {
+    if (name !== "") {
       return this.verify.entityShortNameExists(name);
     } else {
       return null;
@@ -168,7 +188,7 @@ export class AddEntityDialogComponent implements OnInit {
   longNameValidator(control: AbstractControl): Observable<any> {
     const name = _.trim(control.value);
 
-    if (name !== '') {
+    if (name !== "") {
       return this.verify.entityLongNameExists(name);
     } else {
       return null;

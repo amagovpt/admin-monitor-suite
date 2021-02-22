@@ -1,5 +1,6 @@
 import { NativeDateAdapter } from "@angular/material/core";
 import { DatePipe } from "@angular/common";
+import { Injectable } from "@angular/core";
 
 export interface DateDisplay {
   year: string;
@@ -19,7 +20,9 @@ export const CUSTOM_DATE_FORMATS = {
     monthYearA11yLabel: { year: "numeric", month: "long" },
   },
 };
-
+@Injectable({
+  providedIn: "root",
+})
 export class CustomDatePickerAdapter extends NativeDateAdapter {
   parse(value: string | number): Date | null {
     if (typeof value === "string" && value.indexOf(".") > -1) {

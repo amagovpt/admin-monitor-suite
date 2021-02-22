@@ -30,13 +30,6 @@
 
     <mat-table #table [dataSource]="dataSource" matSort>
 
-      <!--<ng-container matColumnDef="WebsiteId">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "WEBSITES_PAGE.LIST.table.id_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.WebsiteId}} </mat-cell>
-      </ng-container>-->
-
       <ng-container matColumnDef="Name">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
           {{ "WEBSITES_PAGE.LIST.table.name_label" | translate }}
@@ -48,18 +41,7 @@
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Entity">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="30">
-          {{ "WEBSITES_PAGE.LIST.table.entity_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element" fxFlex="30">
-          <a *ngIf="element.Entity2" [routerLink]="['/console', 'entity', element.Entity2]">
-            <strong>{{element.Entity}}</strong>
-          </a>
-        </mat-cell>
-      </ng-container>
-
-      <!--<ng-container matColumnDef="User">
+      <ng-container matColumnDef="User">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
           {{ "WEBSITES_PAGE.LIST.table.user_label" | translate }}
         </mat-header-cell>
@@ -71,7 +53,14 @@
             Admin
           </span>
         </mat-cell>
-      </ng-container>-->
+      </ng-container>
+
+      <ng-container matColumnDef="Pages">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
+          {{ "WEBSITES_PAGE.LIST.table.pages_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="10"> {{element.Pages}} </mat-cell>
+      </ng-container>
 
       <ng-container matColumnDef="Creation_Date">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
@@ -107,7 +96,7 @@
           {{ "WEBSITES_PAGE.LIST.table.stamp_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          <button *ngIf="element.Observatory > 0" mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.stamp_tooltip' | translate }}" (click)="generateWebsiteDigitalStamp(element.WebsiteId, element.Name)">
+          <button mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.stamp_tooltip' | translate }}" (click)="generateWebsiteDigitalStamp(element.WebsiteId, element.Name)">
             <mat-icon class="md-24" aria-label="">verified_user</mat-icon>
           </button>
         </mat-cell>
@@ -116,7 +105,7 @@
       <ng-container matColumnDef="see">
         <mat-header-cell *matHeaderCellDef fxFlex="10"></mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          <a target="_blank" href="{{getDigitalStampUrl(element.WebsiteId)}}" *ngIf="element.Observatory > 0" mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.see_tooltip' | translate }}">
+          <a target="_blank" href="{{getDigitalStampUrl(element.WebsiteId)}}" mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.see_tooltip' | translate }}">
             <mat-icon class="md-24" aria-label="">visibility</mat-icon>
           </a>
         </mat-cell>
