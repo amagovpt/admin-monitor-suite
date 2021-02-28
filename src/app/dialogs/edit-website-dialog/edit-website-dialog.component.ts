@@ -21,11 +21,10 @@ import {
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
 import { Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
 
-import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
 import { VerifyService } from "../../services/verify.service";
 import { UpdateService } from "../../services/update.service";
@@ -133,8 +132,12 @@ export class EditWebsiteDialogComponent implements OnInit {
         this.websiteForm.controls.stamp.setValue(website.Stamp);
         this.websiteForm.controls.declarationDate.setValue(
           website.Declaration_Update_Date
+            ? new Date(website.Declaration_Update_Date)
+            : null
         );
-        this.websiteForm.controls.stampDate.setValue(website.Stamp_Update_Date);
+        this.websiteForm.controls.stampDate.setValue(
+          website.Stamp_Update_Date ? new Date(website.Stamp_Update_Date) : null
+        );
         this.websiteForm.controls.entity.setValue(website.Entity);
         this.websiteForm.controls.user.setValue(website.User);
         this.selectedTags = website.tags;
@@ -294,7 +297,8 @@ export class EditWebsiteDialogComponent implements OnInit {
       defaultTags,
       tags,
     };
-
+    console.log(this.websiteForm.value.declarationDate);
+    return;
     this.loadingUpdate = true;
 
     this.update.website(formData).subscribe((success) => {

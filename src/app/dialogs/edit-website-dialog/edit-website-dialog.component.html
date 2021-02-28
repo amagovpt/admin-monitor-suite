@@ -86,8 +86,7 @@
           <label for="declaration_date">{{ "WEBSITES_PAGE.UPDATE.declaration_date_label" | translate }}</label>
           <input id="declaration_date" matInput formControlName="declarationDate" [matDatepicker]="picker">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker disabled="false">
-          </mat-datepicker>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
       <span fxFlex="5"></span>
@@ -96,8 +95,7 @@
           <label for="stamp_date">{{ "WEBSITES_PAGE.UPDATE.stamp_date_label" | translate }}</label>
           <input id="stamp_date" matInput formControlName="stampDate" [matDatepicker]="picker2">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2 disabled="false">
-          </mat-datepicker>
+          <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
       </div>
     </div>
