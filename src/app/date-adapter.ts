@@ -24,8 +24,8 @@ export const CUSTOM_DATE_FORMATS = {
   providedIn: "root",
 })
 export class CustomDatePickerAdapter extends NativeDateAdapter {
-  parse(value: string | number): Date | null {
-    if (typeof value === "string" && value.indexOf(".") > -1) {
+  parse(value: string): Date | null {
+    /*if (typeof value === "string" && value.indexOf(".") > -1) {
       const str: string[] = value.split(".");
       if (
         str.length < 2 ||
@@ -39,7 +39,20 @@ export class CustomDatePickerAdapter extends NativeDateAdapter {
     }
     const timestamp: number =
       typeof value === "number" ? value : Date.parse(value);
-    return isNaN(timestamp) ? null : new Date(timestamp);
+    return isNaN(timestamp) ? new Date(value) : new Date(timestamp);*/
+    try {
+      let split: Array<string>;
+      if (value.includes("-")) {
+        split = value.split("-");
+      } else if (value.includes("/")) {
+        split = value.split("/");
+      }
+
+      return new Date([split[1], split[0], split[2]].join("/"));
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   format(date: Date, display: string | DateDisplay): string {
