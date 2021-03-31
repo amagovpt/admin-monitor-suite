@@ -8,8 +8,8 @@ export class ConfigService {
 
   constructor() {
     const host = location.hostname;
-
-    if (host === "localhost") {
+    const endpoint = localStorage.getItem("server");
+    if (host === "localhost" && !endpoint) {
       this.server = "http://localhost:3000";
     } else {
       this.server = localStorage.getItem("server") + "/api";
@@ -17,10 +17,10 @@ export class ConfigService {
   }
 
   setEndpoint(endpoint: string): void {
-    localStorage.setItem('server', endpoint);
     if (endpoint === "localhost") {
       this.server = "http://localhost:3000";
     } else {
+      localStorage.setItem('server', endpoint);
       this.server = endpoint + "/api";
     }
   }
