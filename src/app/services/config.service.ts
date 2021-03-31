@@ -17,6 +17,7 @@ export class ConfigService {
   }
 
   setEndpoint(endpoint: string): void {
+    localStorage.setItem('server', endpoint);
     if (endpoint === "localhost") {
       this.server = "http://localhost:3000";
     } else {
@@ -25,6 +26,9 @@ export class ConfigService {
   }
 
   getServer(service: string): string {
+    if (!this.server) {
+      this.server = localStorage.getItem("server");
+    }
     return this.server + service;
   }
 }
