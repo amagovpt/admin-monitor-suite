@@ -7,12 +7,11 @@ export class ConfigService {
   private server: string;
 
   constructor() {
-    const host = location.hostname;
     const endpoint = localStorage.getItem("server");
-    if (host === "localhost" && !endpoint) {
-      this.server = "http://localhost:3000";
+    if (endpoint) {
+      this.server = endpoint + "/api";
     } else {
-      this.server = localStorage.getItem("server") + "/api";
+      this.server = "http://localhost:3000";
     }
   }
 
@@ -27,7 +26,12 @@ export class ConfigService {
 
   getServer(service: string): string {
     if (!this.server) {
-      this.server = localStorage.getItem("server") + '/api';
+      const endpoint = localStorage.getItem("server");
+      if (endpoint) {
+        this.server = endpoint + '/api';
+      } else {
+        this.server = "http://localhost:3000";
+      }
     }
     return this.server + service;
   }
