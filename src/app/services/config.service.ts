@@ -12,7 +12,7 @@ export class ConfigService {
     if (host === "localhost") {
       this.server = "http://localhost:3000";
     } else {
-      this.server = "/api";
+      this.server = localStorage.getItem("server") + "/api";
     }
   }
 
@@ -27,7 +27,7 @@ export class ConfigService {
 
   getServer(service: string): string {
     if (!this.server) {
-      this.server = localStorage.getItem("server");
+      this.server = localStorage.getItem("server") + '/api';
     }
     return this.server + service;
   }
