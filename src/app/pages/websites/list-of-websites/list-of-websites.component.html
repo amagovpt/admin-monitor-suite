@@ -27,6 +27,12 @@
         {{ "WEBSITES_PAGE.LIST.generate_stamps" | translate }}
       </button>
     </div>
+    <div>
+      <span fxFlex></span>
+      <button mat-raised-button type="button" color="warn" (click)="openDeleteWebsitesDialog()" [disabled]="selection.selected.length === 0">
+        {{ "WEBSITES_PAGE.LIST.delete_websites" | translate }}
+      </button>
+    </div>
 
     <mat-table #table [dataSource]="dataSource" matSort>
 
@@ -41,7 +47,7 @@
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="User">
+      <!--<ng-container matColumnDef="User">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
           {{ "WEBSITES_PAGE.LIST.table.user_label" | translate }}
         </mat-header-cell>
@@ -53,7 +59,7 @@
             Admin
           </span>
         </mat-cell>
-      </ng-container>
+      </ng-container>-->
 
       <ng-container matColumnDef="Pages">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
@@ -91,6 +97,15 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="crawler">
+        <mat-header-cell *matHeaderCellDef fxFlex="8">{{'WEBSITES_PAGE.LIST.table.crawler_label' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="8">
+          <button mat-icon-button matTooltip="{{'WEBSITES_PAGE.LIST.table.crawler_tooltip' | translate}}" (click)="openCrawlerDialog($event, element.Domain, element.DomainId)">
+            <mat-icon class="md-24" aria-label="">pageview</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="stamp">
         <mat-header-cell *matHeaderCellDef fxFlex="10">
           {{ "WEBSITES_PAGE.LIST.table.stamp_label" | translate }}
@@ -108,6 +123,21 @@
           <a target="_blank" href="{{getDigitalStampUrl(element.WebsiteId)}}" mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.see_tooltip' | translate }}">
             <mat-icon class="md-24" aria-label="">visibility</mat-icon>
           </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef fxFlex="5">
+          <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="5">
+          <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)"
+            [aria-label]="checkboxLabel(element)">
+          </mat-checkbox>
         </mat-cell>
       </ng-container>
 

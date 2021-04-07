@@ -40,4 +40,26 @@ export class CrawlerService {
       })
     );
   }
+
+  crawlTag(tagId: number): Observable<any> {
+    return this.http.post<any>(this.config.getServer('/crawler/tag'), {tagId}, {observe: 'response'}).pipe(
+      map(res => {
+        if (!res.body || res.status === 404) {
+          throw new AdminError(404, 'Service not found', 'SERIOUS');
+        }
+
+        const response = <Response> res.body;
+
+        if (response.success !== 1) {
+          throw new AdminError(response.success, response.message);
+        }
+
+        return <boolean> response.result;
+      }),
+      catchError(err => {
+        console.log(err);
+        return of(null);
+      })
+    );
+  }
 }

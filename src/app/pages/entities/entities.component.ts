@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { GetService } from '../../services/get.service';
 
 @Component({
   selector: 'app-entities',
@@ -9,9 +10,34 @@ export class EntitiesComponent implements OnInit {
 
   entities: Array<any>;
 
-  constructor() { }
+  loading: boolean;
+  error: boolean;
+
+  constructor(private readonly get: GetService,private cd: ChangeDetectorRef) {
+    this.loading = true;
+    this.error = false;
+  }
 
   ngOnInit() {
+    this.getListOfEntities();
+  }
 
+  refreshEntities(): void {
+    this.loading = true;
+    this.getListOfEntities();
+  }
+
+  private getListOfEntities(): void {
+    this.get.listOfEntities()
+      .subscribe(entities => {
+        if (entities !== null) {
+          this.entities = entities;
+        } else {
+          this.error = true;
+        }
+        
+        this.loading = false;
+        this.cd.detectChanges();
+      });
   }
 }

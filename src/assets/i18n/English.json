@@ -219,6 +219,10 @@
       "observatory": "Only observatory pages",
       "submit": "Re-evaluate"
     },
+    "crawler": {
+      "title": "Tag crawling",
+      "information": "All websites from this tag will be crawled and all pages will be added automatically for evaluation."
+    },
     "close": "Close"
   },
   "ITEMS_PER_PAGE_LABEL": "Items per page",
@@ -319,7 +323,8 @@
         "edit_label": "Edit",
         "edit_tooltip": "Edit this directory",
         "see_tooltip": "See directory"
-      }
+      },
+      "delete_directories": "Delete directories"
     },
     "ADD": {
       "title": "Create a new directory",
@@ -328,6 +333,8 @@
       "observatory_label": "Show this directory in the Observatory",
       "tags_label": "Choose the tags to form the new directory",
       "method_label": "Choose how to form the directory",
+      "method_intersection_label": "Intersection",
+      "method_reunion_label": "Reunion",
       "reset": "Reset",
       "submit": "Create",
       "messages": {
@@ -383,8 +390,11 @@
         "re_evaluate_tooltip": "Re-evaluate tag websites",
         "edit_label": "Edit",
         "edit_tooltip": "Edit this tag",
+        "crawler": "Crawler",
+        "crawler_tooltip": "Click here to crawl this tag",
         "see_tooltip": "See tag"
-      }
+      },
+      "delete_tags": "Delete tags"
     },
     "ADD": {
       "title": "Create a new Tag",
@@ -479,7 +489,8 @@
         "edit_label": "Edit",
         "edit_tooltip": "Edit this entity",
         "see_tooltip": "See entity"
-      }
+      },
+      "delete_entities": "Delete entities"
     },
     "ADD": {
       "title": "Create a new Entity",
@@ -568,10 +579,13 @@
         "re_evaluate_tooltip": "Re-evaluate website pages",
         "edit_label": "Edit",
         "edit_tooltip": "Edit this website",
+        "crawler_label": "Crawler",
+        "crawler_tooltip": "Click to crawl this website",
         "see_tooltip": "See digital stamp",
         "stamp_label": "Digital stamps",
         "stamp_tooltip": "Create/update digital stamp"
-      }
+      },
+      "delete_websites": "Delete websites"
     },
     "ADD": {
       "title": "Create a new website",
@@ -1017,7 +1031,8 @@
       "date": "Initial date",
       "status": "Status",
       "delete": "Delete",
-      "result": "Results"
+      "result": "Results",
+      "delete_crawlers": "Delete crawls"
     },
     "TOOLTIP": {
       "show_result": "Show found pages",

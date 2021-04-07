@@ -219,6 +219,10 @@
       "observatory": "Apenas as páginas do observatório",
       "submit": "Reavaliar"
     },
+    "crawler": {
+      "title": "Crawling da categoria",
+      "information": "Irá ser executado o processo de crawling em todos os sítios web desta categoria, e as páginas encontradas serão adicionadas automáticamente para avaliação."
+    },
     "close": "Fechar"
   },
   "ITEMS_PER_PAGE_LABEL": "Itens por página",
@@ -319,7 +323,8 @@
         "edit_label": "Editar",
         "edit_tooltip": "Editar este diretório",
         "see_tooltip": "Ver diretório"
-      }
+      },
+      "delete_directories": "Apagar diretórios"
     },
     "ADD": {
       "title": "Criar um novo diretório",
@@ -327,9 +332,9 @@
       "name_exists": "O nome inserido já existe",
       "observatorio_label": "Mostrar este diretório no Observatório",
       "tags_label": "Selecione as categorias para formar o novo diretório",
-      "method_label": "Escolha como formar a diretório",
-      "cross_tags_label": "Cruzamento de categorias",
-      "join_tags_label": "Junção de categorias",
+      "method_label": "Escolha como formar o diretório",
+      "method_intersection_label": "Intersecção",
+      "method_reunion_label": "Reunião",
       "reset": "Limpar",
       "submit": "Criar",
       "messages": {
@@ -385,8 +390,11 @@
         "re_evaluate_tooltip": "Reavaliar os sítios web da categoria",
         "edit_label": "Editar",
         "edit_tooltip": "Editar esta categoria",
+        "crawler": "Crawler",
+        "crawler_tooltip": "Clicque aqui para correr o crawler nesta categoria",
         "see_tooltip": "Ver categoria"
-      }
+      },
+      "delete_tags": "Apagar categorias"
     },
     "ADD": {
       "title": "Criar uma nova categoria",
@@ -481,7 +489,8 @@
         "edit_label": "Editar",
         "edit_tooltip": "Editar esta entidade",
         "see_tooltip": "Ver entidade"
-      }
+      },
+      "delete_entities": "Apagar entidades"
     },
     "ADD": {
       "title": "Criar uma nova Entidade",
@@ -570,10 +579,13 @@
         "re_evaluate_tooltip": "Reavaliar as páginas do sítio web",
         "edit_label": "Editar",
         "edit_tooltip": "Editar este sítio web",
+        "crawler_label": "Crawler",
+        "crawler_tooltip": "Clique para correr o crawler neste sítio web",
         "see_tooltip": "Ver selo digital",
         "stamp_label": "Selos digitais",
         "stamp_tooltip": "Criar/atualizar selo digital"
-      }
+      },
+      "delete_websites": "Apagar sítios web"
     },
     "ADD": {
       "title": "Criar um novo sítio web",
@@ -1017,7 +1029,8 @@
       "date": "Data de início",
       "status": "Estado",
       "delete": "Apagar",
-      "result": "Resultados"
+      "result": "Resultados",
+      "delete_crawlers": "Apagar crawls"
     },
     "TOOLTIP": {
       "show_result": "Mostrar páginas encontradas",

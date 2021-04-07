@@ -1,4 +1,4 @@
-<mat-card class="mat-typography" *ngIf="!error" [hidden]="loading">
+<mat-card class="mat-typography">
   <mat-card-header>
     <mat-card-title>
       <h1>{{ "DIRECTORIES_PAGE.LIST.title" | translate }}</h1>
@@ -14,6 +14,12 @@
           <input id="tag_table_filter" matInput (keyup)="applyFilter($event.target.value)">
         </label>
       </mat-form-field>
+    </div>
+    <div>
+      <span fxFlex></span>
+      <button mat-raised-button type="button" color="warn" (click)="openDeleteDirectoriesDialog()" [disabled]="selection.selected.length === 0">
+        {{ "DIRECTORIES_PAGE.LIST.delete_directories" | translate }}
+      </button>
     </div>
 
     <mat-table #table [dataSource]="dataSource" matSort>
@@ -79,6 +85,21 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef fxFlex="5">
+          <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="5">
+          <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)"
+            [aria-label]="checkboxLabel(element)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
@@ -86,5 +107,3 @@
     <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>
-<app-loading *ngIf="loading"></app-loading>
-<app-error *ngIf="error"></app-error>

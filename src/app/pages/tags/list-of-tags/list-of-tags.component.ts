@@ -15,6 +15,10 @@ import * as _ from "lodash";
 
 import { EditTagDialogComponent } from "../../../dialogs/edit-tag-dialog/edit-tag-dialog.component";
 import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
+import { SelectionModel } from "@angular/cdk/collections";
+import { DeleteService } from "../../../services/delete.service";
+import { CrawlerService } from "../../../services/crawler.service";
+import { TagCrawlerInformationDialogComponent } from "../../../dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component";
 
 @Component({
   selector: "app-list-of-tags",
@@ -35,18 +39,25 @@ export class ListOfTagsComponent implements OnInit {
     "Websites",
     "re-evaluate",
     "edit",
+    "crawler",
+    "delete"
   ];
 
   dataSource: any;
-  selection: any;
+  selection: SelectionModel<any>;
 
   @ViewChild("input") input: ElementRef;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  constructor(private dialog: MatDialog) {
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly deleteService: DeleteService,
+    private readonly crawler: CrawlerService
+  ) {
     this.loading = false;
     this.error = false;
+    this.selection = new SelectionModel<any>(true, []);
   }
 
   ngOnInit(): void {
@@ -87,5 +98,46 @@ export class ListOfTagsComponent implements OnInit {
         this.refreshTags.next(true);
       }
     });
+  }
+
+  openCrawlerDialog(e, tagId: number): void {
+    e.preventDefault();
+    this.crawler.crawlTag(tagId)
+      .subscribe(result => {
+        this.dialog.open(TagCrawlerInformationDialogComponent);
+      });
+  }
+
+  openDeleteTagsDialog(): void {
+    const tagsId = this.selection.selected.map(t => t.TagId);
+    this.deleteService.tags({
+      tagsId: JSON.stringify(tagsId)
+    }).subscribe(result => {
+      if (result) {
+        this.refreshTags.next(true);
+      }
+    });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -24,8 +24,8 @@ export class ListOfCrawlsComponent implements OnInit {
     'Subdomain',
     'InitialDate',
     'Status',
-    'Delete',
-    'Result'
+    'Result',
+    'Delete'
   ];
 
   user: string;
@@ -40,16 +40,17 @@ export class ListOfCrawlsComponent implements OnInit {
 
   isListEmpty: boolean;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(private dialog: MatDialog,
               private translate: TranslateService,
               private deleteService: DeleteService,
               private get: GetService,
+              private cd: ChangeDetectorRef,
               private router: Router) {
     this.selection = new SelectionModel<any>(true, []);
-
+    this.dataSource = new MatTableDataSource([]);
   }
 
   ngOnInit(): void {
@@ -65,32 +66,15 @@ export class ListOfCrawlsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(crawls);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
-
-          const paginatorIntl = new MatPaginatorIntl();
-          paginatorIntl.itemsPerPageLabel = this.translate.instant('ITEMS_PER_PAGE_LABEL');
-          paginatorIntl.nextPageLabel = this.translate.instant('NEXT_PAGE_LABEL');
-          paginatorIntl.previousPageLabel = this.translate.instant('PREVIOUS_PAGE_LABEL');
-          paginatorIntl.firstPageLabel = this.translate.instant('FIRST_PAGE_LABEL');
-          paginatorIntl.lastPageLabel = this.translate.instant('LAST_PAGE_LABEL');
-          paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
-
-          this.dataSource.paginator._intl = paginatorIntl;
+          
         } else {
           this.error = true;
         }
+
+        this.cd.detectChanges();
       });
   }
 
-  private getRangeLabel(page: number, pageSize: number, length: number): string {
-    if (length === 0 || pageSize === 0) {
-        return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
-    }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
-    const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
-    return this.translate.instant('RANGE_PAGE_LABEL_2', { startIndex: startIndex + 1, endIndex, length });
-  }
 
   applyFilter(filterValue: string): void {
     filterValue = _.trim(filterValue);
@@ -141,4 +125,37 @@ export class ListOfCrawlsComponent implements OnInit {
     this.router.navigateByUrl('/console/domains');
   }
 
+  openDeleteCrawlerDialog(): void {
+    const crawlersId = this.selection.selected.map(c => c.CrawlDomainId);
+    this.deleteService.crawlers({
+      crawlDomainIds: JSON.stringify(crawlersId)
+    }).subscribe(result => {
+      if (result) {
+        this.getListOfCrawls();
+        this.selection = new SelectionModel<any>(true, []);
+      }
+    });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
 }

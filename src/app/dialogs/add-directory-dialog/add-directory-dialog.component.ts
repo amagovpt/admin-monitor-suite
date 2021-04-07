@@ -82,6 +82,7 @@ export class AddDirectoryDialogComponent implements OnInit {
         this.nameValidator.bind(this)
       ),
       observatory: new FormControl(),
+      method: new FormControl('0', [Validators.required]),
       tags: new FormControl(),
     });
 
@@ -115,11 +116,13 @@ export class AddDirectoryDialogComponent implements OnInit {
 
     const name = this.directoryForm.value.name;
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
+    const method = this.directoryForm.value.method;
     const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
 
     const formData = {
       name,
       observatory,
+      method,
       tags,
     };
 

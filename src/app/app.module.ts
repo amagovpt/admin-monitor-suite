@@ -117,6 +117,7 @@ import { MatPaginatorIntlCustom } from "./paginator-intl.service";
 import { DirectoryStatisticsComponent } from "./pages/directory/directory-statistics/directory-statistics.component";
 import { CUSTOM_DATE_FORMATS, CustomDatePickerAdapter } from "./date-adapter";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
+import { TagCrawlerInformationDialogComponent } from './dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -362,6 +363,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditDirectoryDialogComponent,
     DirectoryComponent,
     DirectoryStatisticsComponent,
+    TagCrawlerInformationDialogComponent,
   ],
   imports: [
     BrowserModule,

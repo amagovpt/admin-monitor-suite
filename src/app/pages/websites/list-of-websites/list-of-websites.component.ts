@@ -19,6 +19,9 @@ import { DigitalStampService } from "./../../../services/digital-stamp.service";
 
 import { EditWebsiteDialogComponent } from "../../../dialogs/edit-website-dialog/edit-website-dialog.component";
 import { ChoosePagesToReEvaluateDialogComponent } from "../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
+import { SelectionModel } from "@angular/cdk/collections";
+import { DeleteService } from "../../../services/delete.service";
+import { CrawlerDialogComponent } from "../../../dialogs/crawler-dialog/crawler-dialog.component";
 
 @Component({
   selector: "app-list-of-websites",
@@ -32,18 +35,20 @@ export class ListOfWebsitesComponent implements OnInit {
 
   displayedColumns = [
     "Name",
-    "User",
+    //"User",
     "Pages",
     "Creation_Date",
     "re-evaluate",
     "edit",
+    "crawler",
     "stamp",
     "see",
+    "delete"
   ];
 
   // data source of domains
   dataSource: any;
-  selection: any;
+  selection: SelectionModel<any>;
 
   @ViewChild("input") input: ElementRef;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -53,8 +58,11 @@ export class ListOfWebsitesComponent implements OnInit {
     private dialog: MatDialog,
     private overlay: Overlay,
     private message: MessageService,
-    private digitalStamp: DigitalStampService
-  ) {}
+    private digitalStamp: DigitalStampService,
+    private readonly deleteService: DeleteService,
+  ) {
+    this.selection = new SelectionModel<any>(true, []);
+  }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.websites);
@@ -94,6 +102,17 @@ export class ListOfWebsitesComponent implements OnInit {
     });
   }
 
+  openCrawlerDialog(e: Event, url: string, domainId: number): void {
+    e.preventDefault();
+
+    this.dialog.open(CrawlerDialogComponent, {
+      width: '60vw',
+      disableClose: false,
+      hasBackdrop: true,
+      data: {url, domainId}
+    });
+  }
+
   generateDigitalStamps(): void {
     this.digitalStamp.generateForAll().subscribe((errors) => {
       if (_.size(errors) === 0) {
@@ -114,5 +133,38 @@ export class ListOfWebsitesComponent implements OnInit {
 
   getDigitalStampUrl(websiteId: number): string {
     return this.digitalStamp.getDigitalStampUrl(websiteId);
+  }
+
+  openDeleteWebsitesDialog(): void {
+    const websitesId = this.selection.selected.map(w => w.WebsiteId);
+    this.deleteService.websites({
+      websitesId: JSON.stringify(websitesId)
+    }).subscribe(result => {
+      if (result) {
+        this.refreshWebsites.next(true);
+      }
+    });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }

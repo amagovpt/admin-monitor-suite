@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,6 +10,8 @@ import { GetService } from '../../../services/get.service';
 import { EditEntityDialogComponent } from '../../../dialogs/edit-entity-dialog/edit-entity-dialog.component';
 import { ChoosePagesToReEvaluateDialogComponent } from './../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DeleteService } from '../../../services/delete.service';
 
 @Component({
   selector: 'app-list-of-entities',
@@ -18,8 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ListOfEntitiesComponent implements OnInit {
 
-  loading: boolean;
-  error: boolean;
+  @Input() entities: any;
+  @Output("refreshEntities") refreshEntities = new EventEmitter<boolean>();
 
   displayedColumns = [
     //'EntityId',
@@ -29,54 +31,30 @@ export class ListOfEntitiesComponent implements OnInit {
     'Websites',
     're-evaluate',
     'edit',
+    'delete'
     //'see'
   ];
 
   dataSource: any;
-  selection: any;
+  selection: SelectionModel<any>;
 
   @ViewChild('input') input: ElementRef;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private dialog: MatDialog,
-    private get: GetService,
+    private dialog: MatDialog,  
     private translate: TranslateService,
+    private readonly deleteService: DeleteService,
     private cd: ChangeDetectorRef
   ) {
-    this.loading = true;
-    this.error = false;
+    this.selection = new SelectionModel<any>(true, []);
   }
 
   ngOnInit(): void {
-    this.getListOfEntities();
-  }
-
-  private getListOfEntities(): void {
-    this.get.listOfEntities()
-      .subscribe(entities => {
-        if (entities !== null) {
-          this.dataSource = new MatTableDataSource(entities);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-
-          const paginatorIntl = new MatPaginatorIntl();
-          paginatorIntl.itemsPerPageLabel = this.translate.instant('ITEMS_PER_PAGE_LABEL');
-          paginatorIntl.nextPageLabel = this.translate.instant('NEXT_PAGE_LABEL');
-          paginatorIntl.previousPageLabel = this.translate.instant('PREVIOUS_PAGE_LABEL');
-          paginatorIntl.firstPageLabel = this.translate.instant('FIRST_PAGE_LABEL');
-          paginatorIntl.lastPageLabel = this.translate.instant('LAST_PAGE_LABEL');
-          paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
-
-          this.dataSource.paginator._intl = paginatorIntl;
-        } else {
-          this.error = true;
-        }
-
-        this.loading = false;
-        this.cd.detectChanges();
-      });
+    this.dataSource = new MatTableDataSource(this.entities);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   private getRangeLabel(page: number, pageSize: number, length: number): string {
@@ -117,9 +95,41 @@ export class ListOfEntitiesComponent implements OnInit {
     editDialog.afterClosed()
       .subscribe(result => {
         if (result) {
-          this.loading = true;
-          this.getListOfEntities();
+          this.refreshEntities.next(true);
         }
       });
+  }
+
+  openDeleteEntitiesDialog(): void {
+    const entitiesId = this.selection.selected.map(e => e.EntityId);
+    this.deleteService.entities({
+      entitiesId: JSON.stringify(entitiesId)
+    }).subscribe(result => {
+      if (result) {
+        this.refreshEntities.next(true);
+      }
+    });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }

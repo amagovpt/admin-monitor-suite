@@ -4,6 +4,9 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
+  Output,
+  Input,
+  EventEmitter,
 } from "@angular/core";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -16,6 +19,8 @@ import { GetService } from "../../../services/get.service";
 import { EditDirectoryDialogComponent } from "../../../dialogs/edit-directory-dialog/edit-directory-dialog.component";
 import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
 import { TranslateService } from "@ngx-translate/core";
+import { SelectionModel } from "@angular/cdk/collections";
+import { DeleteService } from "../../../services/delete.service";
 
 @Component({
   selector: "app-list-of-directories",
@@ -23,8 +28,8 @@ import { TranslateService } from "@ngx-translate/core";
   styleUrls: ["./list-of-directories.component.css"],
 })
 export class ListOfDirectoriesComponent implements OnInit {
-  loading: boolean;
-  error: boolean;
+  @Output("refreshDirectories") refreshDirectories = new EventEmitter<boolean>();
+  @Input() directories: any;
 
   displayedColumns = [
     "Name",
@@ -33,27 +38,30 @@ export class ListOfDirectoriesComponent implements OnInit {
     "Tags",
     "re-evaluate",
     "edit",
+    "delete"
   ];
 
   dataSource: any;
-  selection: any;
+  selection: SelectionModel<any>;
 
   @ViewChild("input") input: ElementRef;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator,  { static: true }) paginator: MatPaginator;
 
   constructor(
     private dialog: MatDialog,
     private get: GetService,
     private translate: TranslateService,
+    private readonly deleteService: DeleteService,
     private cd: ChangeDetectorRef
   ) {
-    this.loading = true;
-    this.error = false;
+    this.selection = new SelectionModel<any>(true, []);
   }
 
   ngOnInit(): void {
-    this.getListOfDirectories();
+    this.dataSource = new MatTableDataSource(this.directories);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   reEvaluateDirectoryWebsites(directoryId: number): void {
@@ -63,59 +71,6 @@ export class ListOfDirectoriesComponent implements OnInit {
         info: directoryId,
         dialog: "directory",
       },
-    });
-  }
-
-  private getListOfDirectories(): void {
-    this.get.listOfDirectories().subscribe((directories) => {
-      if (directories !== null) {
-        this.dataSource = new MatTableDataSource(directories);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-
-        const paginatorIntl = new MatPaginatorIntl();
-        paginatorIntl.itemsPerPageLabel = this.translate.instant(
-          "ITEMS_PER_PAGE_LABEL"
-        );
-        paginatorIntl.nextPageLabel = this.translate.instant("NEXT_PAGE_LABEL");
-        paginatorIntl.previousPageLabel = this.translate.instant(
-          "PREVIOUS_PAGE_LABEL"
-        );
-        paginatorIntl.firstPageLabel = this.translate.instant(
-          "FIRST_PAGE_LABEL"
-        );
-        paginatorIntl.lastPageLabel = this.translate.instant("LAST_PAGE_LABEL");
-        paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
-
-        this.dataSource.paginator._intl = paginatorIntl;
-      } else {
-        this.error = true;
-      }
-
-      this.loading = false;
-      this.cd.detectChanges();
-    });
-  }
-
-  private getRangeLabel(
-    page: number,
-    pageSize: number,
-    length: number
-  ): string {
-    if (length === 0 || pageSize === 0) {
-      return this.translate.instant("RANGE_PAGE_LABEL_1", { length });
-    }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
-    const endIndex =
-      startIndex < length
-        ? Math.min(startIndex + pageSize, length)
-        : startIndex + pageSize;
-    return this.translate.instant("RANGE_PAGE_LABEL_2", {
-      startIndex: startIndex + 1,
-      endIndex,
-      length,
     });
   }
 
@@ -137,9 +92,41 @@ export class ListOfDirectoriesComponent implements OnInit {
 
     editDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.loading = true;
-        this.getListOfDirectories();
+        this.refreshDirectories.next(true);
       }
     });
+  }
+
+  openDeleteDirectoriesDialog(): void {
+    const directoriesId = this.selection.selected.map(d => d.DirectoryId);
+    this.deleteService.directories({
+      directoriesId: JSON.stringify(directoriesId)
+    }).subscribe(result => {
+      if (result) {
+        this.refreshDirectories.next(true);
+      }
+    });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }

@@ -78,9 +78,65 @@ export class DeleteService {
       );
   }
 
+  directories(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/directory/deleteBulk"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("DIRECTORIES_PAGE.DELETE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   tag(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/tag/delete"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("TAGS_PAGE.DELETE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  tags(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/tag/deleteBulk"), data, {
         observe: "response",
       })
       .pipe(
@@ -134,9 +190,65 @@ export class DeleteService {
       );
   }
 
+  entities(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/entity/deleteBulk"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("ENTITIES_PAGE.DELETE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   website(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/website/delete"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("WEBSITES_PAGE.DELETE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  websites(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/website/deleteBulk"), data, {
         observe: "response",
       })
       .pipe(
@@ -247,6 +359,36 @@ export class DeleteService {
       .post<any>(
         this.config.getServer("/crawler/delete"),
         { crawlDomainId },
+        { observe: "response" }
+      )
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("CRAWLER_PAGE.DELETE.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  crawlers(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(
+        this.config.getServer("/crawler/deleteBulk"),
+        data,
         { observe: "response" }
       )
       .pipe(
