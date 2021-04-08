@@ -29,6 +29,20 @@
         {{ "DIRECTORIES_PAGE.ADD.observatorio_label" | translate }}
       </mat-checkbox>
     </div>
+    <div class="add-method-block">
+      <label for="add-method">{{ "DIRECTORIES_PAGE.ADD.method_label" | translate }}</label>
+      <br>
+      <br>
+      <mat-radio-group id="add-method" formControlName="method" aria-label="Select an option">
+        <mat-radio-button value="0">
+          {{ "DIRECTORIES_PAGE.ADD.method_intersection_label" | translate }}
+        </mat-radio-button>
+        <span fxFlex="1"></span>
+        <mat-radio-button value="1">
+          {{ "DIRECTORIES_PAGE.ADD.method_reunion_label" | translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
     <div class="edit-tags-block" *ngIf="!loadingTags" fxLayout="column" fxLayoutAlign="start stretch">
       <mat-form-field>
         <label for="directory_tags_input">{{ "DIRECTORIES_PAGE.UPDATE.tags_label" | translate }}</label>

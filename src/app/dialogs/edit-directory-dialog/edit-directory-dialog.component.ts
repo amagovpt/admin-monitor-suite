@@ -91,6 +91,7 @@ export class EditDirectoryDialogComponent implements OnInit {
     this.directoryForm = new FormGroup({
       name: new FormControl("", Validators.required),
       observatory: new FormControl(),
+      method: new FormControl(),
       tags: new FormControl(),
     });
 
@@ -114,6 +115,7 @@ export class EditDirectoryDialogComponent implements OnInit {
         this.directoryForm.controls.observatory.setValue(
           directory.Show_in_Observatory
         );
+        this.directoryForm.controls.method.setValue(directory.Method.toString());
         this.selectedTags = directory.tags;
 
         this.copyDirectoryForm.controls.name.setValue(directory.Name);
@@ -158,7 +160,7 @@ export class EditDirectoryDialogComponent implements OnInit {
 
     const name = this.directoryForm.value.name;
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
-
+    const method = parseInt(this.directoryForm.value.method);
     const defaultTags = JSON.stringify(
       _.map(this.defaultDirectory.tags, "TagId")
     );
@@ -168,6 +170,7 @@ export class EditDirectoryDialogComponent implements OnInit {
       directoryId: this.data.id,
       name,
       observatory,
+      method,
       defaultTags,
       tags,
     };
@@ -188,6 +191,7 @@ export class EditDirectoryDialogComponent implements OnInit {
     this.directoryForm.controls.observatory.setValue(
       this.defaultDirectory.Show_in_Observatory
     );
+    this.directoryForm.controls.method.setValue(this.defaultDirectory.Method.toString());
     this.selectedTags = _.clone(this.defaultDirectory.tags);
   }
 
