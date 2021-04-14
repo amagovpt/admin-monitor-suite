@@ -127,7 +127,7 @@ Resources:
                 Owner: !Ref GithubUsername
                 Repo: admin-monitor-suite
                 PollForSourceChanges: 'false'
-                Branch: develop-aws
+                Branch: AmsMaster
                 OAuthToken: !Ref GithubOAuthToken
               InputArtifacts: [ ]
               OutputArtifacts:
