@@ -120,7 +120,7 @@ export class AddPageDialogComponent implements OnInit {
         observatorio: new FormControl()
       },
       {
-        validator: Validators.compose([UriValidation.validUris, atLeastOne(Validators.required, ['uris', 'files'])])
+        validators: Validators.compose([UriValidation.validUris, atLeastOne(Validators.required, ['uris', 'files'])])
       });
     this.loadingDomains = true;
     this.loadingCreate = false;
@@ -133,9 +133,9 @@ export class AddPageDialogComponent implements OnInit {
       .subscribe(domains => {
         if (domains !== null) {
           this.domains = domains;
+          console.log(this.domains)
           this.filteredDomains = this.pageForm.controls.domain.valueChanges
             .pipe(
-              startWith(null),
               map(val => this.filterDomain(val))
             );
         }

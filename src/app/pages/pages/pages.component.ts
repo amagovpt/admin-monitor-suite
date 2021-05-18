@@ -23,12 +23,12 @@ export class PagesComponent implements OnInit {
     private message: MessageService,
     private cd: ChangeDetectorRef
   ) {
-    this.loading = true;
+    this.loading = false;
     this.error = false;
   }
 
   ngOnInit(): void {
-    this.getListOfPages();
+    //this.getListOfPages();
   }
 
   deletePages(pages): void {
@@ -45,7 +45,7 @@ export class PagesComponent implements OnInit {
   }
 
   private getListOfPages(): void {
-    this.get.listOfPages()
+    this.get.listOfPages(50, 1, '', '', '')
       .subscribe(pages => {
         if (pages !== null) {
           this.pages = pages;

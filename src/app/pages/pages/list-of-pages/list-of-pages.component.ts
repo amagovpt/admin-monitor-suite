@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, ViewChild, ElementRef, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,13 +6,17 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as _ from 'lodash';
+import { merge, of } from 'rxjs';
 
 import { DeletePageDialogComponent } from '../../../dialogs/delete-page-dialog/delete-page-dialog.component';
 import { EvaluationErrorDialogComponent } from '../../../dialogs/evaluation-error-dialog/evaluation-error-dialog.component';
 
 import { UpdateService } from '../../../services/update.service';
 import { OpenDataService } from '../../../services/open-data.service';
-import { TranslateService } from '@ngx-translate/core';
+import { GetService } from '../../../services/get.service';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { DeleteService } from '../../../services/delete.service';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   selector: 'app-list-of-pages',
@@ -21,8 +25,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
-  @Output('deletePages') deletePages = new EventEmitter<Array<number>>();
-  @Input('pages') pages: Array<any>;
+  //@Output('deletePages') deletePages = new EventEmitter<Array<number>>();
+  //@Input('pages') pages: Array<any>;
 
   displayedColumns = [
     // 'PageId',
@@ -45,58 +49,106 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   jsonFromFile: string;
 
   @ViewChild('input') input: ElementRef;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  pages: Array<any>;
+  loading: boolean;
+  length: number;
+  isLoadingResults: boolean;
+  filter: FormControl;
 
   constructor(
+    private get: GetService,
     private dialog: MatDialog,
     private update: UpdateService,
     private odf: OpenDataService,
     private formBuilder: FormBuilder,
-    private translate: TranslateService
+    private deleteService: DeleteService,
+    private message: MessageService,
+    private cd: ChangeDetectorRef
   ) {
     this.pagesForm = this.formBuilder.group({
         file: new FormControl()});
     this.selection = new SelectionModel<any>(true, []);
+    this.loading = false;
+    this.length = 0;
+    this.isLoadingResults = false;
+    this.dataSource = new MatTableDataSource([]);
+    this.filter = new FormControl();
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.pages);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.get.listOfPageCount('')
+      .subscribe(count => {
+        this.length = count;
+      });
+    
+    /*this.get.listOfPages(50, 1, '')
+      .subscribe(pages => {
+        if (pages !== null) {
+          this.pages = pages;
+          this.dataSource = new MatTableDataSource(this.pages);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
 
-    const paginatorIntl = new MatPaginatorIntl();
-    paginatorIntl.itemsPerPageLabel = this.translate.instant('ITEMS_PER_PAGE_LABEL');
-    paginatorIntl.nextPageLabel = this.translate.instant('NEXT_PAGE_LABEL');
-    paginatorIntl.previousPageLabel = this.translate.instant('PREVIOUS_PAGE_LABEL');
-    paginatorIntl.firstPageLabel = this.translate.instant('FIRST_PAGE_LABEL');
-    paginatorIntl.lastPageLabel = this.translate.instant('LAST_PAGE_LABEL');
-    paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
+          this.dataSource.sortingDataAccessor = (item, property) => {
+            switch (property) {
+              case 'Show_In':
+                return _.includes(['observatorio', 'both'], item['Show_In']);
 
-    this.dataSource.paginator._intl = paginatorIntl;
+              default:
+                return item[property];
+            }
+          };
+
+          
+        } else {
+          this.error = true;
+        }
+
+        this.loading = false;
+        this.cd.detectChanges();
+      });*/
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      switch (property) {
-        case 'Show_In':
-          return _.includes(['observatorio', 'both'], item['Show_In']);
-
-        default:
-          return item[property];
-      }
-    };
-  }
-
-  private getRangeLabel(page: number, pageSize: number, length: number): string {
-    if (length === 0 || pageSize === 0) {
-        return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
-    }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
-    const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
-    return this.translate.instant('RANGE_PAGE_LABEL_2', { startIndex: startIndex + 1, endIndex, length });
+    this.filter.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(150)
+      )
+      .subscribe(value => {
+        this.get.listOfPageCount(value)
+          .subscribe(count => {
+            this.length = count;
+            this.paginator.firstPage();
+          });
+      });
+    merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(150),
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.get.listOfPages(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          return data;
+        }),
+        catchError(() => {
+          this.isLoadingResults = false;
+          return of([]);
+        })
+      ).subscribe(pages => {
+        this.dataSource = new MatTableDataSource(pages);
+        this.pages = pages;
+        this.selection = new SelectionModel<any>(true, []);
+        this.cd.detectChanges();
+      });
   }
 
   applyFilter(filterValue: string): void {
@@ -124,7 +176,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     deleteDialog.afterClosed()
       .subscribe(result => {
         if (result) {
-          this.deletePages.next(_.map(this.selection.selected, 'PageId'));
+          this.deletePages(_.map(this.selection.selected, 'PageId'));
         }
       });
   }
@@ -178,9 +230,11 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+    if (this.pages?.length > 0) {
+      const numSelected = this.selection.selected.length;
+      const numRows = this.dataSource.data.length;
+      return numSelected === numRows;
+    }
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -196,5 +250,23 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  deletePages(pages: any): void {
+    this.deleteService.pages({pages})
+      .subscribe(success => {
+        if (success !== null) {
+          this.get.listOfPages(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+            .subscribe(data => {
+              this.dataSource = new MatTableDataSource(data);
+              this.pages = data;
+              this.selection = new SelectionModel<any>(true, []);
+              this.length = this.length - pages.length;
+              this.cd.detectChanges();
+            });
+          
+          this.message.show('PAGES_PAGE.DELETE.messages.success');
+        }
+      });
   }
 }

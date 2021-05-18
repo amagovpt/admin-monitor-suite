@@ -88,7 +88,7 @@ export class ErrorDistributionDialogComponent implements OnInit {
     private translate: TranslateService
   ) {
     this.testsFile = tests;
-    this.errors = this.data.errors;
+    //this.errors = this.data.errors;
     this.nPages = this.data?.pagesLength || this.data?.website?.pages?.length;
     this.nWebsites = this.data?.tagEntity?.websites?.length || 0;
     

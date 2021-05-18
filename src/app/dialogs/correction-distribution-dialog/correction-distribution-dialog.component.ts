@@ -96,7 +96,7 @@ export class CorrectionDistributionDialogComponent implements OnInit {
 
     const tableData: CorrectionData[] = [];
     _.forEach(this.data?.website?.tot || this.data?.tagEntity?.tot, (v, key) => {
-      if (v['result'] === 'passed' || v['result'] === 'warning') {
+      if (v['result'] === 'passed') {
         let elem = v['elem'];
         let n_pages = v['n_pages'];
         let n_websites = v['n_websites'];
