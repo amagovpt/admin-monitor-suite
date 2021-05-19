@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Component, OnInit, AfterViewInit, ElementRef, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { MatPaginator, } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,16 +12,21 @@ import { ChoosePagesToReEvaluateDialogComponent } from './../../../dialogs/choos
 import { TranslateService } from '@ngx-translate/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DeleteService } from '../../../services/delete.service';
+import { FormControl } from '@angular/forms';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { of } from 'rxjs';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   selector: 'app-list-of-entities',
   templateUrl: './list-of-entities.component.html',
   styleUrls: ['./list-of-entities.component.css']
 })
-export class ListOfEntitiesComponent implements OnInit {
+export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
 
-  @Input() entities: any;
-  @Output("refreshEntities") refreshEntities = new EventEmitter<boolean>();
+  //@Input() entities: any;
+  //@Output("refreshEntities") refreshEntities = new EventEmitter<boolean>();
 
   displayedColumns = [
     //'EntityId',
@@ -39,33 +44,78 @@ export class ListOfEntitiesComponent implements OnInit {
   selection: SelectionModel<any>;
 
   @ViewChild('input') input: ElementRef;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  entities: Array<any>;
+  loading: boolean;
+  length: number;
+  isLoadingResults: boolean;
+  filter: FormControl;
 
   constructor(
     private dialog: MatDialog,  
-    private translate: TranslateService,
     private readonly deleteService: DeleteService,
+    private message: MessageService,
+    private get: GetService,
     private cd: ChangeDetectorRef
   ) {
     this.selection = new SelectionModel<any>(true, []);
+    this.loading = false;
+    this.length = 0;
+    this.isLoadingResults = false;
+    this.dataSource = new MatTableDataSource([]);
+    this.filter = new FormControl();
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.entities);
+    /*this.dataSource = new MatTableDataSource(this.entities);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator;*/
+    this.get.listOfEntityCount('')
+      .subscribe(count => {
+        this.length = count;
+      });
   }
 
-  private getRangeLabel(page: number, pageSize: number, length: number): string {
-    if (length === 0 || pageSize === 0) {
-        return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
-    }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
-    const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
-    return this.translate.instant('RANGE_PAGE_LABEL_2', { startIndex: startIndex + 1, endIndex, length });
+  ngAfterViewInit(): void {
+    this.filter.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(150)
+      )
+      .subscribe(value => {
+        this.get.listOfEntityCount(value)
+          .subscribe(count => {
+            this.length = count;
+            this.paginator.firstPage();
+          });
+      });
+    merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(150),
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          this.cd.detectChanges();
+          return this.get.listOfEntities(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          return data;
+        }),
+        catchError(() => {
+          this.isLoadingResults = false;
+          return of([]);
+        })
+      ).subscribe(entities => {
+        this.dataSource = new MatTableDataSource(entities);
+        this.entities = entities;
+        this.selection = new SelectionModel<any>(true, []);
+        this.cd.detectChanges();
+      });
   }
 
   applyFilter(filterValue: string): void {
@@ -95,7 +145,14 @@ export class ListOfEntitiesComponent implements OnInit {
     editDialog.afterClosed()
       .subscribe(result => {
         if (result) {
-          this.refreshEntities.next(true);
+          //this.refreshEntities.next(true);
+          this.get.listOfEntities(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+            .subscribe(entities => {
+              this.dataSource = new MatTableDataSource(entities);
+              this.entities = entities;
+              this.selection = new SelectionModel<any>(true, []);
+              this.cd.detectChanges();
+            });
         }
       });
   }
@@ -106,7 +163,17 @@ export class ListOfEntitiesComponent implements OnInit {
       entitiesId: JSON.stringify(entitiesId)
     }).subscribe(result => {
       if (result) {
-        this.refreshEntities.next(true);
+        //this.refreshEntities.next(true);
+        this.get.listOfEntities(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+            .subscribe(entities => {
+              this.dataSource = new MatTableDataSource(entities);
+              this.entities = entities;
+              this.selection = new SelectionModel<any>(true, []);
+              this.length = this.length - entities.length;
+              this.cd.detectChanges();
+            });
+          
+        this.message.show('ENTITIES_PAGE.DELETE.messages.success');
       }
     });
   }

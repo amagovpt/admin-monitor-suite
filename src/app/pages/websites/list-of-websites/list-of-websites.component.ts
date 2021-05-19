@@ -1,11 +1,13 @@
 import {
   Component,
   OnInit,
+  AfterViewInit,
   Input,
   Output,
   ViewChild,
   ElementRef,
   EventEmitter,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -22,16 +24,20 @@ import { ChoosePagesToReEvaluateDialogComponent } from "../../../dialogs/choose-
 import { SelectionModel } from "@angular/cdk/collections";
 import { DeleteService } from "../../../services/delete.service";
 import { CrawlerDialogComponent } from "../../../dialogs/crawler-dialog/crawler-dialog.component";
+import { FormControl } from "@angular/forms";
+import { GetService } from "../../../services/get.service";
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from "rxjs/operators";
+import { merge, of } from 'rxjs';
 
 @Component({
   selector: "app-list-of-websites",
   templateUrl: "./list-of-websites.component.html",
   styleUrls: ["./list-of-websites.component.css"],
 })
-export class ListOfWebsitesComponent implements OnInit {
-  @Output("refreshWebsites") refreshWebsites = new EventEmitter<boolean>();
+export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
+  //@Output("refreshWebsites") refreshWebsites = new EventEmitter<boolean>();
   @Input("directory") directory: string;
-  @Input("websites") websites: any;
+  //@Input("websites") websites: any;
 
   displayedColumns = [
     "Name",
@@ -50,24 +56,81 @@ export class ListOfWebsitesComponent implements OnInit {
   dataSource: any;
   selection: SelectionModel<any>;
 
-  @ViewChild("input") input: ElementRef;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild('input') input: ElementRef;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  websites: Array<any>;
+  loading: boolean;
+  length: number;
+  isLoadingResults: boolean;
+  filter: FormControl;
 
   constructor(
     private dialog: MatDialog,
     private overlay: Overlay,
     private message: MessageService,
     private digitalStamp: DigitalStampService,
+    private get: GetService,
     private readonly deleteService: DeleteService,
+    private readonly cd : ChangeDetectorRef
   ) {
     this.selection = new SelectionModel<any>(true, []);
+    this.loading = false;
+    this.length = 0;
+    this.isLoadingResults = false;
+    this.dataSource = new MatTableDataSource([]);
+    this.filter = new FormControl();
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.websites);
+    /*this.dataSource = new MatTableDataSource(this.websites);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator;*/
+    this.get.listOfWebsiteCount('')
+      .subscribe(count => {
+        this.length = count;
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.filter.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(150)
+      )
+      .subscribe(value => {
+        this.get.listOfWebsiteCount(value)
+          .subscribe(count => {
+            this.length = count;
+            this.paginator.firstPage();
+          });
+      });
+    merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(150),
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          this.cd.detectChanges();
+          return this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          return data;
+        }),
+        catchError(() => {
+          this.isLoadingResults = false;
+          return of([]);
+        })
+      ).subscribe(websites => {
+        this.dataSource = new MatTableDataSource(websites);
+        this.websites = websites;
+        this.selection = new SelectionModel<any>(true, []);
+        this.cd.detectChanges();
+      });
   }
 
   applyFilter(filterValue: string): void {
@@ -97,7 +160,14 @@ export class ListOfWebsitesComponent implements OnInit {
 
     editDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.refreshWebsites.next(true);
+        //this.refreshWebsites.next(true);
+        this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+            .subscribe(websites => {
+              this.dataSource = new MatTableDataSource(websites);
+              this.websites = websites;
+              this.selection = new SelectionModel<any>(true, []);
+              this.cd.detectChanges();
+            });
       }
     });
   }
@@ -141,7 +211,16 @@ export class ListOfWebsitesComponent implements OnInit {
       websitesId: JSON.stringify(websitesId)
     }).subscribe(result => {
       if (result) {
-        this.refreshWebsites.next(true);
+        this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+            .subscribe(websites => {
+              this.dataSource = new MatTableDataSource(websites);
+              this.websites = websites;
+              this.selection = new SelectionModel<any>(true, []);
+              this.length = this.length - websites.length;
+              this.cd.detectChanges();
+            });
+          
+        this.message.show('WEBSITES_PAGE.DELETE.messages.success');
       }
     });
   }

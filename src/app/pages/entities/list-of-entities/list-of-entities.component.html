@@ -8,6 +8,9 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+      <app-loading></app-loading>
+    </div>
     <div class="table-filter">
       <!--<mat-form-field appearance="outline">
         <label for="entity_table_filter">
@@ -17,7 +20,7 @@
       </mat-form-field>-->
       <mat-form-field appearance="outline">
         <label>{{ "MISC.filter" | translate }}
-          <input id="entity_table_filter" matInput (keyup)="applyFilter($event.target.value)">
+          <input id="entity_table_filter" matInput [formControl]="filter">
         </label>
       </mat-form-field>
     </div>
@@ -112,6 +115,6 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [length]="length" [pageSize]="50" [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>

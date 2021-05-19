@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { GetService } from '../../services/get.service';
-import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-websites',
@@ -19,20 +18,20 @@ export class WebsitesComponent implements OnInit {
     private get: GetService,
     private cd: ChangeDetectorRef
   ) {
-    this.loading = true;
+    this.loading = false;
     this.error = false;
   }
 
   ngOnInit(): void {
-    this.getListOfWebsites();
+    //this.getListOfWebsites();
   }
 
   refreshWebsites(): void {
-    this.loading = true;
-    this.getListOfWebsites();
+    //this.loading = true;
+    //this.getListOfWebsites();
   }
 
-  private getListOfWebsites(): void {
+  /*private getListOfWebsites(): void {
     this.get.listOfWebsites()
       .subscribe(websites => {
         if (websites !== null) {
@@ -44,5 +43,5 @@ export class WebsitesComponent implements OnInit {
         this.loading = false;
         this.cd.detectChanges();
       });
-  }
+  }*/
 }

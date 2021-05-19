@@ -125,7 +125,7 @@ export class AddWebsiteDialogComponent implements OnInit {
       this.loadingUsers = false;
     });
 
-    this.get.listOfEntities().subscribe((entities) => {
+    this.get.listOfEntities(-1, 0, '', '', '').subscribe((entities) => {
       if (entities !== null) {
         this.entities = entities;
         this.filteredEntities = this.websiteForm.controls.entities.valueChanges.pipe(

@@ -9,6 +9,9 @@
   </mat-card-header>
 
   <mat-card-content>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+      <app-loading></app-loading>
+    </div>
     <div class="table-filter">
       <!--<mat-form-field appearance="outline">
         <label for="pages_table_filter">

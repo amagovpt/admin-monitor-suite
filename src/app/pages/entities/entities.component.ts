@@ -14,20 +14,20 @@ export class EntitiesComponent implements OnInit {
   error: boolean;
 
   constructor(private readonly get: GetService,private cd: ChangeDetectorRef) {
-    this.loading = true;
+    this.loading = false;
     this.error = false;
   }
 
   ngOnInit() {
-    this.getListOfEntities();
+    //this.getListOfEntities();
   }
 
   refreshEntities(): void {
-    this.loading = true;
-    this.getListOfEntities();
+    //this.loading = true;
+    //this.getListOfEntities();
   }
 
-  private getListOfEntities(): void {
+  /*private getListOfEntities(): void {
     this.get.listOfEntities()
       .subscribe(entities => {
         if (entities !== null) {
@@ -39,5 +39,5 @@ export class EntitiesComponent implements OnInit {
         this.loading = false;
         this.cd.detectChanges();
       });
-  }
+  }*/
 }
