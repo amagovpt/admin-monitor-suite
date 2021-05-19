@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-error-distribution-dialog',
   templateUrl: './error-distribution-dialog.component.html',
-  styleUrls: ['./error-distribution-dialog.component.scss']
+  styleUrls: ['./error-distribution-dialog.component.css']
 })
 export class ErrorDistributionDialogComponent implements OnInit {
 

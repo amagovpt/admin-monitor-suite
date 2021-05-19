@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-correction-distribution-dialog',
   templateUrl: './correction-distribution-dialog.component.html',
-  styleUrls: ['./correction-distribution-dialog.component.scss']
+  styleUrls: ['./correction-distribution-dialog.component.css']
 })
 export class CorrectionDistributionDialogComponent implements OnInit {
 

@@ -9,7 +9,7 @@ import * as _ from "lodash";
 import { Parser } from "htmlparser2";
 import DomHandler from "domhandler";
 import * as DomUtils from "domutils";
-import * as CSSSelect from "css-select";
+import CSSSelect from "css-select";
 
 import { Response } from "../models/response";
 import { Evaluation } from "../models/evaluation";
