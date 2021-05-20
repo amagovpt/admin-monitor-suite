@@ -1,4 +1,4 @@
-<mat-card class="mat-typography" *ngIf="!loading">
+<mat-card class="mat-typography">
   <mat-card-header>
     <mat-card-title>
       <h1>{{ "PAGES_PAGE.LIST.title" | translate }}</h1>
@@ -22,7 +22,8 @@
       </mat-form-field>-->
       <mat-form-field appearance="outline">
         <label>{{ "MISC.filter" | translate }}
-          <input id="pages_table_filter" matInput [formControl]="filter"> <!-- (keyup)="applyFilter($event.target.value)" -->
+          <input *ngIf="!pages" id="pages_table_filter" matInput [formControl]="filter"> <!-- (keyup)="applyFilter($event.target.value)" -->
+          <input *ngIf="pages" id="pages_table_filter" matInput (keyup)="applyFilter($event.target.value)">
         </label>
       </mat-form-field>
 

@@ -58,8 +58,8 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   selection: SelectionModel<any>;
 
   @ViewChild('input') input: ElementRef;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   loading: boolean;
   length: number;

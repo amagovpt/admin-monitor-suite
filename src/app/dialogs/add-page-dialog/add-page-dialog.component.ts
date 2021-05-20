@@ -133,7 +133,6 @@ export class AddPageDialogComponent implements OnInit {
       .subscribe(domains => {
         if (domains !== null) {
           this.domains = domains;
-          console.log(this.domains)
           this.filteredDomains = this.pageForm.controls.domain.valueChanges
             .pipe(
               map(val => this.filterDomain(val))

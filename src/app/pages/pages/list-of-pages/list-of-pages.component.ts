@@ -49,8 +49,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   jsonFromFile: string;
 
   @ViewChild('input') input: ElementRef;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   loading: boolean;
   length: number;
@@ -85,37 +85,10 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
         });
     } else {
       this.dataSource = new MatTableDataSource(this.pages);
+      this.length = this.pages.length;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.length = this.pages.length;
     }
-    
-    /*this.get.listOfPages(50, 1, '')
-      .subscribe(pages => {
-        if (pages !== null) {
-          this.pages = pages;
-          this.dataSource = new MatTableDataSource(this.pages);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-
-          this.dataSource.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'Show_In':
-                return _.includes(['observatorio', 'both'], item['Show_In']);
-
-              default:
-                return item[property];
-            }
-          };
-
-          
-        } else {
-          this.error = true;
-        }
-
-        this.loading = false;
-        this.cd.detectChanges();
-      });*/
   }
 
   ngAfterViewInit(): void {
@@ -242,11 +215,9 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    if (this.pages?.length > 0) {
-      const numSelected = this.selection.selected.length;
-      const numRows = this.dataSource.data.length;
-      return numSelected === numRows;
-    }
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
