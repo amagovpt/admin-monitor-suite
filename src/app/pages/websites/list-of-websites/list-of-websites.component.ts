@@ -35,9 +35,10 @@ import { merge, of } from 'rxjs';
   styleUrls: ["./list-of-websites.component.css"],
 })
 export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
-  //@Output("refreshWebsites") refreshWebsites = new EventEmitter<boolean>();
+
+  @Output("refreshWebsites") refreshWebsites = new EventEmitter<boolean>();
   @Input("directory") directory: string;
-  //@Input("websites") websites: any;
+  @Input("websites") websites: any;
 
   displayedColumns = [
     "Name",
@@ -60,7 +61,6 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  websites: Array<any>;
   loading: boolean;
   length: number;
   isLoadingResults: boolean;
@@ -84,53 +84,58 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    /*this.dataSource = new MatTableDataSource(this.websites);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;*/
-    this.get.listOfWebsiteCount('')
-      .subscribe(count => {
-        this.length = count;
-      });
+    if (this.websites) {
+      this.dataSource = new MatTableDataSource(this.websites);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.length = this.websites.length;
+    } else {
+      this.get.listOfWebsiteCount('')
+        .subscribe(count => {
+          this.length = count;
+        });
+    }
   }
 
   ngAfterViewInit(): void {
-    this.filter.valueChanges
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(150)
-      )
-      .subscribe(value => {
-        this.get.listOfWebsiteCount(value)
-          .subscribe(count => {
-            this.length = count;
-            this.paginator.firstPage();
-          });
-      });
-    merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(150),
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
+    if (!this.websites) {
+      this.filter.valueChanges
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(150)
+        )
+        .subscribe(value => {
+          this.get.listOfWebsiteCount(value)
+            .subscribe(count => {
+              this.length = count;
+              this.paginator.firstPage();
+            });
+        });
+      merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(150),
+          startWith({}),
+          switchMap(() => {
+            this.isLoadingResults = true;
+            this.cd.detectChanges();
+            return this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
+          }),
+          map(data => {
+            // Flip flag to show that loading has finished.
+            this.isLoadingResults = false;
+            return data;
+          }),
+          catchError(() => {
+            this.isLoadingResults = false;
+            return of([]);
+          })
+        ).subscribe(websites => {
+          this.dataSource = new MatTableDataSource(websites);
+          this.selection = new SelectionModel<any>(true, []);
           this.cd.detectChanges();
-          return this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          return data;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
-          return of([]);
-        })
-      ).subscribe(websites => {
-        this.dataSource = new MatTableDataSource(websites);
-        this.websites = websites;
-        this.selection = new SelectionModel<any>(true, []);
-        this.cd.detectChanges();
-      });
+        });
+    }
   }
 
   applyFilter(filterValue: string): void {
@@ -160,14 +165,16 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
 
     editDialog.afterClosed().subscribe((result) => {
       if (result) {
-        //this.refreshWebsites.next(true);
-        this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+        if (this.websites) {
+          this.refreshWebsites.next(true);
+        } else {
+          this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
             .subscribe(websites => {
               this.dataSource = new MatTableDataSource(websites);
-              this.websites = websites;
               this.selection = new SelectionModel<any>(true, []);
               this.cd.detectChanges();
             });
+        }
       }
     });
   }
@@ -211,16 +218,19 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
       websitesId: JSON.stringify(websitesId)
     }).subscribe(result => {
       if (result) {
-        this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
-            .subscribe(websites => {
-              this.dataSource = new MatTableDataSource(websites);
-              this.websites = websites;
-              this.selection = new SelectionModel<any>(true, []);
-              this.length = this.length - websites.length;
-              this.cd.detectChanges();
-            });
-          
-        this.message.show('WEBSITES_PAGE.DELETE.messages.success');
+        if (this.websites) {
+          this.refreshWebsites.next(true);
+        } else {
+          this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
+              .subscribe(websites => {
+                this.dataSource = new MatTableDataSource(websites);
+                this.selection = new SelectionModel<any>(true, []);
+                this.length = this.length - websites.length;
+                this.cd.detectChanges();
+              });
+            
+          this.message.show('WEBSITES_PAGE.DELETE.messages.success');
+        }
       }
     });
   }

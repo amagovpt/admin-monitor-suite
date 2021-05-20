@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,8 +25,8 @@ import { MessageService } from '../../../services/message.service';
 })
 export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
-  //@Output('deletePages') deletePages = new EventEmitter<Array<number>>();
-  //@Input('pages') pages: Array<any>;
+  @Output('deletePages') deletePagesEmitter = new EventEmitter<Array<number>>();
+  @Input('pages') pages: Array<any>;
 
   displayedColumns = [
     // 'PageId',
@@ -52,7 +52,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  pages: Array<any>;
   loading: boolean;
   length: number;
   isLoadingResults: boolean;
@@ -79,10 +78,17 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.get.listOfPageCount('')
-      .subscribe(count => {
-        this.length = count;
-      });
+    if (!this.pages) {
+      this.get.listOfPageCount('')
+        .subscribe(count => {
+          this.length = count;
+        });
+    } else {
+      this.dataSource = new MatTableDataSource(this.pages);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.length = this.pages.length;
+    }
     
     /*this.get.listOfPages(50, 1, '')
       .subscribe(pages => {
@@ -113,43 +119,44 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.filter.valueChanges
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(150)
-      )
-      .subscribe(value => {
-        this.get.listOfPageCount(value)
-          .subscribe(count => {
-            this.length = count;
-            this.paginator.firstPage();
-          });
-      });
-    merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(150),
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
+    if (!this.pages) {
+      this.filter.valueChanges
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(150)
+        )
+        .subscribe(value => {
+          this.get.listOfPageCount(value)
+            .subscribe(count => {
+              this.length = count;
+              this.paginator.firstPage();
+            });
+        });
+      merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
+        .pipe(
+          distinctUntilChanged(),
+          debounceTime(150),
+          startWith({}),
+          switchMap(() => {
+            this.isLoadingResults = true;
+            this.cd.detectChanges();
+            return this.get.listOfPages(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
+          }),
+          map(data => {
+            // Flip flag to show that loading has finished.
+            this.isLoadingResults = false;
+            return data;
+          }),
+          catchError(() => {
+            this.isLoadingResults = false;
+            return of([]);
+          })
+        ).subscribe(pages => {
+          this.dataSource = new MatTableDataSource(pages);
+          this.selection = new SelectionModel<any>(true, []);
           this.cd.detectChanges();
-          return this.get.listOfPages(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
-        }),
-        map(data => {
-          // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
-          return data;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
-          return of([]);
-        })
-      ).subscribe(pages => {
-        this.dataSource = new MatTableDataSource(pages);
-        this.pages = pages;
-        this.selection = new SelectionModel<any>(true, []);
-        this.cd.detectChanges();
-      });
+        });
+    }
   }
 
   applyFilter(filterValue: string): void {
@@ -177,7 +184,11 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     deleteDialog.afterClosed()
       .subscribe(result => {
         if (result) {
-          this.deletePages(_.map(this.selection.selected, 'PageId'));
+          if (this.pages) {
+            this.deletePagesEmitter.next(_.map(this.selection.selected, 'PageId'));
+          } else {
+            this.deletePages(_.map(this.selection.selected, 'PageId'));
+          }
         }
       });
   }
@@ -260,7 +271,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
           this.get.listOfPages(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
             .subscribe(data => {
               this.dataSource = new MatTableDataSource(data);
-              this.pages = data;
               this.selection = new SelectionModel<any>(true, []);
               this.length = this.length - pages.length;
               this.cd.detectChanges();
