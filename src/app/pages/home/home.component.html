@@ -34,7 +34,9 @@
     </div>
     <br>
   </mat-card-content>
-  <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+  <mat-card-actions fxLayout="column" fxLayoutAlign="center center">
+    <button mat-flat-button color="primary" (click)="generateObservatoryData()">{{ "HOME_PAGE.generate_observatory_data" | translate }}</button>
+    <br>
     <span>{{ "HOME_PAGE.evaluations" | translate }}: {{ evaluations }}</span>
   </mat-card-actions>
 </mat-card>

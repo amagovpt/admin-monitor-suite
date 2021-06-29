@@ -226,4 +226,40 @@ export class CreateService {
         })
       );
   }
+
+  observatoryData(): Observable<boolean> {
+    return this.http
+      .post<any>(
+        this.config.getServer("/observatory/generate"),
+        {},
+        {
+          observe: "response",
+        }
+      )
+      .pipe(
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(
+              response.success,
+              response.message,
+              "NORMAL",
+              response.errors,
+              response.result
+            );
+          }
+
+          return true;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
 }

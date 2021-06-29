@@ -74,7 +74,9 @@
     "observatory": "Observatory",
     "monitor": "My Monitor",
     "studies": "Study Monitor",
-    "evaluations": "Nº of pages waiting for evaluation"
+    "evaluations": "Nº of pages waiting for evaluation",
+    "generate_observatory_data": "Generate Observatory data",
+    "generate_observatory_data_message": "Observatory data is being generated"
   },
   "STATISTICS": {
     "title": "Statistics",

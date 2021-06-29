@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
+import { MessageService } from "../../services/message.service";
 
 @Component({
   selector: "app-home",
@@ -20,7 +22,12 @@ export class HomeComponent implements OnInit {
 
   evaluations: number;
 
-  constructor(private get: GetService, private cd: ChangeDetectorRef) {
+  constructor(
+    private readonly create: CreateService,
+    private readonly get: GetService,
+    private readonly message: MessageService,
+    private readonly cd: ChangeDetectorRef
+  ) {
     this.access_studies_users = 0;
     this.my_monitor_users = 0;
     this.access_studies_tags = 0;
@@ -77,6 +84,14 @@ export class HomeComponent implements OnInit {
     this.get.numberOfPagesWaitingForEvaluation().subscribe((total) => {
       this.evaluations = total;
       this.cd.detectChanges();
+    });
+  }
+
+  generateObservatoryData(): void {
+    this.create.observatoryData().subscribe((success) => {
+      if (success) {
+        this.message.show("HOME_PAGE.generate_observatory_data_message");
+      }
     });
   }
 }
