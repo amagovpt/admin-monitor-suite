@@ -1,52 +1,77 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormControlName, FormBuilder, ValidationErrors, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable, of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipList } from '@angular/material/chips';
-import * as _ from 'lodash';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormControlName,
+  FormBuilder,
+  ValidationErrors,
+  FormGroupDirective,
+  NgForm,
+} from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatChipInputEvent } from "@angular/material/chips";
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from "@angular/material/dialog";
+import { Observable, of } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { MatChipList } from "@angular/material/chips";
+import * as _ from "lodash";
 
-import { CreateService } from '../../services/create.service';
-import { GetService } from '../../services/get.service';
-import { VerifyService } from '../../services/verify.service';
-import { UpdateService } from '../../services/update.service';
-import { DeleteService } from '../../services/delete.service';
-import { MessageService } from '../../services/message.service';
+import { CreateService } from "../../services/create.service";
+import { GetService } from "../../services/get.service";
+import { VerifyService } from "../../services/verify.service";
+import { UpdateService } from "../../services/update.service";
+import { DeleteService } from "../../services/delete.service";
+import { MessageService } from "../../services/message.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
   }
 }
 
 export class PasswordValidation {
-
   static MatchPassword(AC: AbstractControl) {
-    const password = AC.get('password').value;
-    const confirmPassword = AC.get('confirmPassword').value;
+    const password = AC.get("password").value;
+    const confirmPassword = AC.get("confirmPassword").value;
 
-    if (!_.isEqual(password, confirmPassword)) {
-      AC.get('confirmPassword').setErrors({ MatchPassword: true });
+    if (password && confirmPassword && !_.isEqual(password, confirmPassword)) {
+      AC.get("confirmPassword").setErrors({ MatchPassword: true });
     } else {
-      return null;
+      AC.get("confirmPassword").setErrors(null);
     }
+    return null;
   }
 }
 
 @Component({
-  selector: 'app-edit-user-dialog',
-  templateUrl: './edit-user-dialog.component.html',
-  styleUrls: ['./edit-user-dialog.component.css']
+  selector: "app-edit-user-dialog",
+  templateUrl: "./edit-user-dialog.component.html",
+  styleUrls: ["./edit-user-dialog.component.css"],
 })
 export class EditUserDialogComponent implements OnInit {
-
-  @ViewChild('emailsChipList', { static: true }) emailsChipList: MatChipList;
+  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipList;
 
   matcher: ErrorStateMatcher;
 
@@ -75,7 +100,7 @@ export class EditUserDialogComponent implements OnInit {
 
   defaultUser: any;
 
-  @ViewChild('websiteInput') websiteInput: ElementRef;
+  @ViewChild("websiteInput") websiteInput: ElementRef;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -94,19 +119,32 @@ export class EditUserDialogComponent implements OnInit {
 
     this.matcher = new MyErrorStateMatcher();
 
-    this.userForm = this.formBuilder.group({
-      username: new FormControl({value: '', disabled: true}),
-      password: new FormControl('', [passwordValidator]),
+    this.userForm = new FormGroup({
+      username: new FormControl({ value: "", disabled: true }),
+      password: new FormControl("", [passwordValidator]),
       confirmPassword: new FormControl(),
       names: new FormControl(),
       emails: new FormControl(),
-      app: new FormControl({value: '', disabled: true}),
+      app: new FormControl({ value: "", disabled: true }),
       websites: new FormControl(),
-      transfer: new FormControl({value: '', disabled: true})
-    },
-    {
-      validator: PasswordValidation.MatchPassword
+      transfer: new FormControl({ value: "", disabled: true }),
     });
+
+    /*this.formBuilder.group(
+      {
+        username: new FormControl({ value: "", disabled: true }),
+        password: new FormControl("", [passwordValidator]),
+        confirmPassword: new FormControl(),
+        names: new FormControl(),
+        emails: new FormControl(),
+        app: new FormControl({ value: "", disabled: true }),
+        websites: new FormControl(),
+        transfer: new FormControl({ value: "", disabled: true }),
+      },
+      {}
+    );*/
+
+    this.userForm.setValidators(PasswordValidation.MatchPassword);
 
     this.loadingInfo = true;
     this.loadingWebsites = true;
@@ -118,57 +156,66 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get.userInfo(this.data.id)
-      .subscribe(user => {
-        if (user !== null) {
-          this.defaultUser = _.cloneDeep(user);
-          this.userForm.controls.username.setValue(user.Username);
-          this.names = _.without(_.split(user.Names, ';'), '');
-          this.emails = _.without(_.split(user.Emails, ';'), '');
+    this.get.userInfo(this.data.id).subscribe((user) => {
+      if (user !== null) {
+        this.defaultUser = _.cloneDeep(user);
+        this.userForm.controls.username.setValue(user.Username);
+        this.names = _.without(_.split(user.Names, ";"), "");
+        this.emails = _.without(_.split(user.Emails, ";"), "");
 
-          if (user.Type === 'monitor') {
-            this.userForm.controls.app.setValue('My Monitor');
-            this.selectedWebsites = user.websites;
-            this.websites = this.websites.concat(user.websites);
+        if (user.Type === "monitor") {
+          this.userForm.controls.app.setValue("My Monitor");
+          this.selectedWebsites = user.websites;
+          this.websites = this.websites.concat(user.websites);
 
-            this.get.websitesWithoutUser()
-              .subscribe(websites => {
-                if (websites !== null) {
-                  this.websites = this.websites.concat(websites);
-                  this.filteredWebsites = this.userForm.controls.websites.valueChanges.pipe(
-                    startWith(null),
-                    map((website: any | null) => website ? this.filterWebsite(website) : this.websites.slice()));
-                }
+          this.get.websitesWithoutUser().subscribe((websites) => {
+            if (websites !== null) {
+              this.websites = this.websites.concat(websites);
+              this.filteredWebsites =
+                this.userForm.controls.websites.valueChanges.pipe(
+                  startWith(null),
+                  map((website: any | null) =>
+                    website
+                      ? this.filterWebsite(website)
+                      : this.websites.slice()
+                  )
+                );
+            }
 
-                this.loadingWebsites = false;
-              });
-          } else {
-            this.userForm.controls.app.setValue('Study Monitor');
-          }
+            this.loadingWebsites = false;
+          });
+        } else {
+          this.userForm.controls.app.setValue("Study Monitor");
         }
+      }
 
-        this.loadingInfo = false;
-      });
+      this.loadingInfo = false;
+    });
 
-    this.userForm.get('emails').statusChanges.subscribe(status =>
-     this.emailsChipList.errorState = status === 'INVALID' ? true : false);
+    this.userForm
+      .get("emails")
+      .statusChanges.subscribe(
+        (status) =>
+          (this.emailsChipList.errorState = status === "INVALID" ? true : false)
+      );
   }
 
   setDefault(): void {
     this.userForm.controls.password.reset();
     this.userForm.controls.confirmPassword.reset();
-    this.names = _.without(_.split(this.defaultUser.Names, ';'), '');
-    this.emails = _.without(_.split(this.defaultUser.Emails, ';'), '');
+    this.names = _.without(_.split(this.defaultUser.Names, ";"), "");
+    this.emails = _.without(_.split(this.defaultUser.Emails, ";"), "");
     this.selectedWebsites = _.clone(this.defaultUser.websites);
     this.userForm.controls.transfer.disable();
     this.userForm.controls.transfer.setValue(false);
   }
 
   deleteUser(): void {
-    this.deleteService.user({userId: this.data.id, app: this.defaultUser.Type})
-      .subscribe(success => {
+    this.deleteService
+      .user({ userId: this.data.id, app: this.defaultUser.Type })
+      .subscribe((success) => {
         if (success !== null) {
-          this.message.show('USERS_PAGE.DELETE.messages.success');
+          this.message.show("USERS_PAGE.DELETE.messages.success");
           this.dialogRef.close(true);
         }
       });
@@ -177,14 +224,16 @@ export class EditUserDialogComponent implements OnInit {
   updateUser(e): void {
     e.preventDefault();
 
-    const password = this.userForm.value.password;
-    const confirmPassword = this.userForm.value.confirmPassword;
+    const password = this.userForm.value.password || undefined;
+    const confirmPassword = this.userForm.value.confirmPassword || undefined;
 
-    const names = _.join(this.names, ';');
-    const emails = _.join(this.emails, ';');
+    const names = _.join(this.names, ";");
+    const emails = _.join(this.emails, ";");
 
-    const defaultWebsites = JSON.stringify(_.map(this.defaultUser.websites, 'WebsiteId'));
-    const websites = JSON.stringify(_.map(this.selectedWebsites, 'WebsiteId'));
+    const defaultWebsites = JSON.stringify(
+      _.map(this.defaultUser.websites, "WebsiteId")
+    );
+    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
     const transfer = this.userForm.value.transfer;
 
     const formData = {
@@ -196,32 +245,31 @@ export class EditUserDialogComponent implements OnInit {
       app: this.defaultUser.Type,
       defaultWebsites,
       websites,
-      transfer
+      transfer,
     };
 
-    this.update.user(formData)
-      .subscribe(success => {
-        if (success !== null) {
-          this.userForm.controls.password.reset();
-          this.userForm.controls.confirmPassword.reset();
-          this.message.show('USERS_PAGE.UPDATE.messages.success');
-          this.dialogRef.close(true);
-        }
+    this.update.user(formData).subscribe((success) => {
+      if (success !== null) {
+        this.userForm.controls.password.reset();
+        this.userForm.controls.confirmPassword.reset();
+        this.message.show("USERS_PAGE.UPDATE.messages.success");
+        this.dialogRef.close(true);
+      }
 
-        this.loadingUpdate = false;
-      });
+      this.loadingUpdate = false;
+    });
   }
 
   addName(event: MatChipInputEvent): void {
-    const input = event.input;
+    const input = event.chipInput.inputElement;
     const value = event.value;
 
-    if ((value || '').trim()) {
+    if ((value || "").trim()) {
       this.names.push(_.trim(value));
     }
 
     if (input) {
-      input.value = '';
+      input.value = "";
     }
   }
 
@@ -234,19 +282,19 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   addEmail(event: MatChipInputEvent): void {
-    const input = event.input;
+    const input = event.chipInput.inputElement;
     const value = event.value;
 
-    if ((value || '').trim()) {
+    if ((value || "").trim()) {
       if (!this.isEmailInvalid(value)) {
         this.emails.push(_.trim(value));
 
         if (input) {
-          input.value = '';
+          input.value = "";
         }
         this.userForm.controls.emails.setErrors(null);
       } else {
-        this.userForm.controls.emails.setErrors({'emailError': value});
+        this.userForm.controls.emails.setErrors({ emailError: value });
       }
     }
   }
@@ -269,7 +317,10 @@ export class EditUserDialogComponent implements OnInit {
       this.userForm.controls.transfer.disable();
       this.userForm.controls.transfer.setValue(false);
     } else {
-      const differ = _.difference(_.map(this.selectedWebsites, 'Name'), _.map(this.defaultUser.websites, 'Name'));
+      const differ = _.difference(
+        _.map(this.selectedWebsites, "Name"),
+        _.map(this.defaultUser.websites, "Name")
+      );
       if (_.size(differ) === 0) {
         this.userForm.controls.transfer.disable();
         this.userForm.controls.transfer.setValue(false);
@@ -284,19 +335,26 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   filterWebsite(name: string) {
-    return this.websites.filter(website =>
-        _.includes(website.Name.toLowerCase(), name.toLowerCase()));
+    return this.websites.filter((website) =>
+      _.includes(website.Name.toLowerCase(), name.toLowerCase())
+    );
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
-    const index = _.findIndex(this.websites, w => w['Name'] === event.option.viewValue);
+    const index = _.findIndex(
+      this.websites,
+      (w) => w["Name"] === event.option.viewValue
+    );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
-      this.websiteInput.nativeElement.value = '';
+      this.websiteInput.nativeElement.value = "";
       this.userForm.controls.websites.setValue(null);
     }
     if (this.selectedWebsites.length > 0) {
-      const differ = _.difference(_.map(this.selectedWebsites, 'Name'), _.map(this.defaultUser.websites, 'Name'));
+      const differ = _.difference(
+        _.map(this.selectedWebsites, "Name"),
+        _.map(this.defaultUser.websites, "Name")
+      );
       if (_.size(differ) > 0) {
         this.userForm.controls.transfer.enable();
       }
@@ -306,14 +364,14 @@ export class EditUserDialogComponent implements OnInit {
   isEmailInvalid(email: string): boolean {
     let error = false;
 
-    if (email !== '') {
-      if (_.includes(email, '@')) {
-        let split = _.split(email, '@');
-        if (split[0] !== '' && split[1] !== '' && _.size(split) === 2) {
-          if (_.includes(split[1], '.')) {
-            split = _.split(split[1], '.');
+    if (email !== "") {
+      if (_.includes(email, "@")) {
+        let split = _.split(email, "@");
+        if (split[0] !== "" && split[1] !== "" && _.size(split) === 2) {
+          if (_.includes(split[1], ".")) {
+            split = _.split(split[1], ".");
 
-            if (split[0] === '' || split[1] === '' || _.size(split) !== 2) {
+            if (split[0] === "" || split[1] === "" || _.size(split) !== 2) {
               error = true;
             }
           } else {
@@ -335,45 +393,45 @@ function passwordValidator(control: FormControl): ValidationErrors | null {
   try {
     const password = control.value;
 
-    if (password.length > 0) {
+    if (password && password.length > 0) {
       const errors = {};
       const isShort = password.length < 8;
 
       if (isShort) {
-        errors['isShort'] = true;
+        errors["isShort"] = true;
       }
 
       const hasUpperCase = password.toLowerCase() !== password;
 
       if (!hasUpperCase) {
-        errors['doesNotHaveUpperCase'] = true;
+        errors["doesNotHaveUpperCase"] = true;
       }
 
       const hasLowerCase = password.toUpperCase() !== password;
 
       if (!hasLowerCase) {
-        errors['doesNotHaveLowerCase'] = true;
+        errors["doesNotHaveLowerCase"] = true;
       }
 
       const specialFormat = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
       const hasSpecial = specialFormat.test(password);
 
       if (!hasSpecial) {
-        errors['doesNotHaveSpecial'] = true;
+        errors["doesNotHaveSpecial"] = true;
       }
 
       const numberFormat = /\d/g;
       const hasNumber = numberFormat.test(password);
 
       if (!hasNumber) {
-        errors['doesNotHaveNumber'] = true;
+        errors["doesNotHaveNumber"] = true;
       }
 
       if (Object.keys(errors).length > 0) {
         return errors;
       }
     }
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 
