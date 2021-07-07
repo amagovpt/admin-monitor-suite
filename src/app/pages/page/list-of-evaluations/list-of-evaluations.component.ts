@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { DeleteEvaluationDialogComponent } from '../../../dialogs/delete-evaluation-dialog/delete-evaluation-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 
+
 @Component({
   selector: 'app-list-of-evaluations',
   templateUrl: './list-of-evaluations.component.html',
@@ -28,20 +29,52 @@ export class ListOfEvaluationsComponent implements OnInit {
     //'delete',
     'see'
   ];
-
+  element:any;
+  elements: string[];
+  tags: string[];
   dataSource: any;
   selection: any;
-
+  
   @ViewChild('input') input: ElementRef;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
+  
+  
   constructor(private dialog: MatDialog, private translate: TranslateService) { }
 
+ 
+  
+  
+
   ngOnInit(): void {
+   //init related to element part of evaluations
+   this.element = {
+      elements: {},
+      tags: {},
+      ctags:"",
+      croles: "",
+    }; 
+    
+
+
     this.dataSource = new MatTableDataSource(this.evaluations);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+
+    //init related to element part of evaluations
+    this.element.elements = this.evaluations[0].Element_Count.slice(1,-1);
+    this.element.croles = this.evaluations[0].Element_Count;
+    this.element.tags = this.evaluations[0].Tag_Count.slice(1,-1);
+    this.element.ctags = this.evaluations[0].Tag_Count;
+    this.element.elements = this.element.elements.replace(/"/g, ' ')
+    this.element.tags = this.element.tags.replace(/":/g,'>: ')
+    this.element.tags = this.element.tags.replace(/"/g, '<')
+    this.element.elements = this.element.elements.split(",");
+    this.element.tags = this.element.tags.split(",");
+ 
+    
+  
+    
 
     const paginatorIntl = new MatPaginatorIntl();
     paginatorIntl.itemsPerPageLabel = this.translate.instant('ITEMS_PER_PAGE_LABEL');
@@ -52,7 +85,8 @@ export class ListOfEvaluationsComponent implements OnInit {
     paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
 
     this.dataSource.paginator._intl = paginatorIntl;
-  }
+
+  } 
 
   private getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0 || pageSize === 0) {
@@ -85,4 +119,246 @@ export class ListOfEvaluationsComponent implements OnInit {
         }
       });
   }
+  sortedAlphabeticlyAsc(){
+     
+    let sortArray: string[] ;
+    let aux: string;
+    let aux2: string;
+    aux = this.element.ctags.slice(1,-1);
+    aux = aux.replace(/":/g,'>:');
+    aux = aux.replace(/"/g,'<');
+    sortArray= aux.split(",");
+   
+
+
+    sortArray.sort(function (a,b){
+      if (a > b){
+      return 1;
+
+      }
+      if(a < b){
+        return -1;
+
+      }
+      if (a === b){
+        return 0;
+      
+      }
+    
+  })   
+
+ 
+
+        this.element.tags = sortArray ; 
+
+  }
+  sortedAlphabeticlyAsc2(){
+     
+    let sortArray: string[] ;
+    let aux: string;
+    let aux2: string;
+    aux = this.element.croles.slice(1,-1);
+    aux = aux.replace(/"/g, ' ');
+    sortArray= aux.split(",");
+   
+
+
+    sortArray.sort(function (a,b){
+      if (a > b){
+      return 1;
+
+      }
+      if(a < b){
+        return -1;
+
+      }
+      if (a === b){
+        return 0;
+      
+      }
+    
+  })   
+        this.element.elements = sortArray ; 
+  }
+  sortedbyNumberAsc(){
+     
+    let sortArray: string[] ;
+    let aux: string;
+    aux = this.element.ctags.slice(1,-1);
+    aux = aux.replace(/":/g,'>: ');
+    aux = aux.replace(/"/g,'<');
+    sortArray= aux.split(",");
+  
+      sortArray.sort(function (a,b){ 
+        if(parseInt(a.substring(a.indexOf(':')).slice(1)) <= parseInt(b.substring(b.indexOf(":")).slice(1))){
+        
+            return -1;
+          }
+          if(parseInt(a.substring(a.indexOf(':')).slice(1)) === parseInt(b.substring(b.indexOf(":")).slice(1))){
+            return 0;
+          }
+          if (parseInt(a.substring(a.indexOf(':')).slice(1)) >= parseInt(b.substring(b.indexOf(":")).slice(1))){
+            
+            return 1;
+          }
+
+      })
+  
+
+
+    this.element.tags = sortArray; 
+
+    }
+    
+
+
+ 
+
+        
+  
+  sortedbyNumberAsc2(){
+    
+    let sortArray: string[] ;
+    let aux: string;
+    aux = this.element.croles.slice(1,-1);
+    aux = aux.replace(/"/g,' ');
+    sortArray= aux.split(",");
+  
+      sortArray.sort(function (a,b){ 
+        if(parseInt(a.substring(a.indexOf(':')).slice(1)) <= parseInt(b.substring(b.indexOf(":")).slice(1))){
+        
+            return -1;
+          }
+          if(parseInt(a.substring(a.indexOf(':')).slice(1)) === parseInt(b.substring(b.indexOf(":")).slice(1))){
+            return 0;
+          }
+          if (parseInt(a.substring(a.indexOf(':')).slice(1)) >= parseInt(b.substring(b.indexOf(":")).slice(1))){
+            
+            return 1;
+          }
+
+      })
+  
+
+
+    this.element.elements = sortArray; 
+  }
+  sortedAlphabeticlyDsc(){
+     
+    let sortArray: string[] ;
+    let aux: string;
+    let aux2: string;
+    aux = this.element.ctags.slice(1,-1);
+    aux = aux.replace(/":/g,'>: ');
+    aux = aux.replace(/"/g,'<');
+    sortArray= aux.split(",");
+   
+
+
+    sortArray.sort(function (a,b){
+      if (a > b){
+      return -1;
+
+      }
+      if(a < b){
+        return 1;
+
+      }
+      if (a === b){
+        return 0;
+      
+      }
+    
+  })   
+
+ 
+
+        this.element.tags = sortArray ; 
+
+  }
+  sortedAlphabeticlyDsc2(){
+      
+    let sortArray: string[] ;
+    let aux: string;
+    let aux2: string;
+    aux = this.element.croles.slice(1,-1);
+    aux = aux.replace(/"/g, ' ');
+    sortArray= aux.split(",");
+   
+
+
+    sortArray.sort(function (a,b){
+      if (a > b){
+      return -1;
+
+      }
+      if(a < b){
+        return 1;
+
+      }
+      if (a === b){
+        return 0;
+      
+      }
+    
+  })   
+
+        this.element.elements = sortArray ; 
+  }
+  sortedbyNumberDsc(){
+      
+    let sortArray: string[] ;
+    let aux: string;
+    aux = this.element.ctags.slice(1,-1);
+    aux = aux.replace(/":/g,'>: ');
+    aux = aux.replace(/"/g,'<');
+    sortArray= aux.split(",");
+  
+      sortArray.sort(function (a,b){ 
+        if(parseInt(a.substring(a.indexOf(':')).slice(1)) <= parseInt(b.substring(b.indexOf(":")).slice(1))){
+        
+            return 1;
+          }
+          if(parseInt(a.substring(a.indexOf(':')).slice(1)) === parseInt(b.substring(b.indexOf(":")).slice(1))){
+            return 0;
+          }
+          if (parseInt(a.substring(a.indexOf(':')).slice(1)) >= parseInt(b.substring(b.indexOf(":")).slice(1))){
+            
+            return -1;
+          }
+
+      })
+  
+
+
+    this.element.tags = sortArray; 
+  }
+  sortedbyNumberDsc2(){
+    
+    let sortArray: string[] ;
+    let aux: string;
+    aux = this.element.croles.slice(1,-1);
+    aux = aux.replace(/"/g,' ');
+    sortArray= aux.split(",");
+  
+      sortArray.sort(function (a,b){ 
+        if(parseInt(a.substring(a.indexOf(':')).slice(1)) <= parseInt(b.substring(b.indexOf(":")).slice(1))){
+        
+            return 1;
+          }
+          if(parseInt(a.substring(a.indexOf(':')).slice(1)) === parseInt(b.substring(b.indexOf(":")).slice(1))){
+            return 0;
+          }
+          if (parseInt(a.substring(a.indexOf(':')).slice(1)) >= parseInt(b.substring(b.indexOf(":")).slice(1))){
+            
+            return -1;
+          }
+
+      })
+  
+
+
+    this.element.elements = sortArray; 
+  }
+  
 }

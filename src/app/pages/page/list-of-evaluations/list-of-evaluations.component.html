@@ -1,3 +1,39 @@
+
+<!-- New Elements Card --> 
+
+<mat-card class="mat-typography">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ "EVALUATIONS_PAGE.NEWERCARD.title" | translate }}</h1>
+      <h2>{{ "EVALUATIONS_PAGE.NEWERCARD.entitle" | translate }}{{" "}}{{ element.ctags | sumelements}}</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-around start">
+      <div>
+        <h2>{{ element.ctags | countypes}}{{" "}}{{ "EVALUATIONS_PAGE.NEWERCARD.etitle" | translate }}{{"   "}}{{"  "}}<button class ="e-cardbuttonSAA" (click)="sortedAlphabeticlyAsc()" aria-label="ordenar alfabeticamente por order crescente"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M19.707 14.707A1 1 0 0 0 19 13h-7v2h4.586l-4.293 4.293A1 1 0 0 0 13 21h7v-2h-4.586l4.293-4.293zM7 3.99H5v12H2l4 4l4-4H7zM17 3h-2c-.417 0-.79.259-.937.649l-2.75 7.333h2.137L14.193 9h3.613l.743 1.981h2.137l-2.75-7.333A1 1 0 0 0 17 3zm-2.057 4l.75-2h.613l.75 2h-2.113z" fill="#626262"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button>{{"  "}}<button class ="e-cardbuttonSAD" (click)="sortedAlphabeticlyDsc()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M19.707 14.707A1 1 0 0 0 19 13h-7v2h4.586l-4.293 4.293A1 1 0 0 0 13 21h7v-2h-4.586l4.293-4.293zM6 3.99l-4 4h3v12h2v-12h3zM17 3h-2c-.417 0-.79.259-.937.649l-2.75 7.333h2.137L14.193 9h3.613l.743 1.981h2.137l-2.75-7.333A1 1 0 0 0 17 3zm-2.057 4l.75-2h.613l.75 2h-2.113z" fill="#626262"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button>{{"  "}}<button class ="e-cardbuttonSNA" (click)="sortedbyNumberAsc()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path d="M12 20V4" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 11l7-7l7 7" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button>{{"  "}}<button class ="e-cardbuttonSND" (click)="sortedbyNumberDsc()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path d="M12 20V4" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13l7 7l7-7" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button></h2>
+        
+        <mat-list>
+          <mat-list-item *ngFor="let e of element.tags; let i = index;" mat-sort-item> 
+            <span class="bold">{{ e }}</span>
+         </mat-list-item>
+        </mat-list>
+      </div>
+   <div>
+        <h2>{{ element.croles | countypes}}{{" "}}{{ "EVALUATIONS_PAGE.NEWERCARD.rtitle" | translate }}{{"   "}}{{"  "}}<button class ="e-cardbuttonSAA" (click)="sortedAlphabeticlyAsc2()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M19.707 14.707A1 1 0 0 0 19 13h-7v2h4.586l-4.293 4.293A1 1 0 0 0 13 21h7v-2h-4.586l4.293-4.293zM7 3.99H5v12H2l4 4l4-4H7zM17 3h-2c-.417 0-.79.259-.937.649l-2.75 7.333h2.137L14.193 9h3.613l.743 1.981h2.137l-2.75-7.333A1 1 0 0 0 17 3zm-2.057 4l.75-2h.613l.75 2h-2.113z" fill="#626262"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button>{{"  "}}<button class ="e-cardbuttonSAD" (click)="sortedAlphabeticlyDsc2()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M19.707 14.707A1 1 0 0 0 19 13h-7v2h4.586l-4.293 4.293A1 1 0 0 0 13 21h7v-2h-4.586l4.293-4.293zM6 3.99l-4 4h3v12h2v-12h3zM17 3h-2c-.417 0-.79.259-.937.649l-2.75 7.333h2.137L14.193 9h3.613l.743 1.981h2.137l-2.75-7.333A1 1 0 0 0 17 3zm-2.057 4l.75-2h.613l.75 2h-2.113z" fill="#626262"/><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button>{{"  "}}<button class ="e-cardbuttonSNA" (click)="sortedbyNumberAsc2()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path d="M12 20V4" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 11l7-7l7 7" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button>{{"  "}}<button class ="e-cardbuttonSND" (click)="sortedbyNumberDsc2()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none"><path d="M12 20V4" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 13l7 7l7-7" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><rect x="0" y="0" width="24" height="24" fill="rgba(0, 0, 0, 0)" /></svg></button></h2>
+        <mat-list> 
+         <mat-list-item *ngFor="let e of element.elements;let i = index" >
+            <span class="bold">{{ element.elements[e]}}{{e}}</span>
+          </mat-list-item>  
+        </mat-list> 
+      </div> 
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<br>
+
 <mat-card class="mat-typography">
   <mat-card-header>
     <mat-card-title>

@@ -772,6 +772,8 @@
         "uri_label": "Uri",
         "score_label": "Pontuação",
         "last_updated_label": "Última avaliação",
+        "elements_label": "Número Elementos",
+        "type_elements_label": "Número Tipos Elem",
         "state": "Estado",
         "state_evaluating": "A página está a ser avaliada",
         "state_waiting": "A página está à espera de ser avaliada",
@@ -851,6 +853,12 @@
     }
   },
   "EVALUATIONS_PAGE": {
+    "NEWERCARD":{
+      "title":"Elementos e Roles",
+      "entitle": "Número de Elementos",
+      "etitle": "Tipos de Tags Presentes",
+      "rtitle": "Roles Presentes"
+    },
     "LIST": {
       "title": "Avaliações",
       "subtitle": "Lista de todas as avaliações da página",

@@ -73,7 +73,7 @@
       </ng-container>
 
       <ng-container matColumnDef="Score">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10.5">
           {{ "PAGES_PAGE.LIST.table.score_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
@@ -82,13 +82,32 @@
       </ng-container>
 
       <ng-container matColumnDef="Evaluation_Date">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="9.5">
           {{ "PAGES_PAGE.LIST.table.last_updated_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
           {{element.Evaluation_Date | date}}
         </mat-cell>
       </ng-container>
+
+      <ng-container matColumnDef="Elements">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
+          {{ "PAGES_PAGE.LIST.table.elements_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="10">
+          {{element.Tag_Count | sumelements}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Types_of_Elements">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
+          {{ "PAGES_PAGE.LIST.table.type_elements_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="10">
+          {{element.Tag_Count | countypes}}
+        </mat-cell>
+      </ng-container>
+
 
       <ng-container matColumnDef="State">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="5">
@@ -106,7 +125,7 @@
       </ng-container>
 
       <ng-container matColumnDef="Show_In">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="7">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="9.5">
           {{ "PAGES_PAGE.LIST.table.observatory_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="7">

@@ -774,6 +774,8 @@
         "uri_label": "Uri",
         "score_label": "Score",
         "last_updated_label": "Last evaluation",
+        "elements_label": "Number Elements",
+        "type_elements_label": "Number Types Elem",
         "state": "Status",
         "state_evaluating": "The page is being evaluated",
         "state_waiting": "The page waiting to be evaluated",
@@ -853,6 +855,12 @@
     }
   },
   "EVALUATIONS_PAGE": {
+    "NEWERCARD":{
+      "title":"Elements and Roles",
+      "entitle":"Number of elements", 
+      "etitle": "Types of Tags Present ",
+      "rtitle": "Roles Present "
+    },
     "LIST": {
       "title": "Evaluations",
       "subtitle": "List of all page evaluations",
@@ -1118,7 +1126,7 @@
     "message_close": "Close",
     "success": "Success",
     "unexpected_error": "An unexpected error has occurred. Please try again later.",
-    "error_contact": "If te problem persists, please contact us...",
+    "error_contact": "If the problem persists, please contact us...",
     "go_to_top": "Go to top",
     "_404": {
       "title": "Error 404",

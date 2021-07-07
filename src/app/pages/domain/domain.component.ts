@@ -61,7 +61,8 @@ export class DomainComponent implements OnInit, OnDestroy {
 
           this.websiteObject = new Website();
           for (const page of pages) {
-            this.websiteObject.addPage(page.Score, page.Errors, page.Tot, page.A, page.AA, page.AAA, page.Evaluation_Date);
+            console.log(page);
+            this.websiteObject.addPage(page.Score, page.Errors, page.Tot, page.A, page.AA, page.AAA, page.Evaluation_Date, page.Element_Count, page.Tag_Count);
           }
         } else {
           this.error = true;

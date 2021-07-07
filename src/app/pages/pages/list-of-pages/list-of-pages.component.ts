@@ -33,6 +33,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     'Uri',
     'Score',
     'Evaluation_Date',
+    'Elements',
+    'Types_of_Elements',
     'State',
     'Show_In',
     'delete',

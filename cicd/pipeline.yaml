@@ -1,0 +1,212 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Pipeline Template for admin-monitor-suite
+Parameters:
+  GithubUsername:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Github username value
+    Default: /config/github/username
+  GithubOAuthToken:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Github oauth token value
+    Default: /config/github/oauth
+Mappings:
+  Config:
+    Service:
+      Name: admin-monitor-suite
+Resources:
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ codebuild.amazonaws.com ]
+            Action: [ sts:AssumeRole ]
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess #TODO: Reduce permissions
+      Policies:
+        - PolicyName: CodeBuildAcess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Resource: "*"
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+        - PolicyName: UploadWebAppContent
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Resource:
+                  - !Sub
+                    - arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${ServiceName}/*
+                    - ServiceName: !FindInMap [ Config, Service, Name ]
+                  - !Sub
+                    - arn:aws:s3:::${ServiceName}-contentbucket-*
+                    - ServiceName: !FindInMap [ Config, Service, Name ]
+                  - !Sub
+                    - arn:aws:s3:::${ServiceName}-contentbucket-*/*
+                    - ServiceName: !FindInMap [ Config, Service, Name ]
+                Action:
+                  - couldFormation:DescribeStackResource
+                  - s3:ListBucket
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !FindInMap [ Config, Service, Name ]
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+        #Cache:
+        #  Type: S3
+      # FIXME - bucketname
+      #  Location:
+      #    - !Sub
+      #      - ${BucketName}/cache/${RepositoryName}
+      #      - BucketName: !ImportValue bitbucket-integration-s3-bucket
+      #        RepositoryName: !FindInMap [ Config, Service, Name ]
+      Artifacts:
+        Type: CODEPIPELINE
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: cicd/buildspec.yaml
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: 'aws/codebuild/standard:3.0'
+  AdminMonitorCodePipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ codepipeline.amazonaws.com ]
+            Action: [ sts:AssumeRole ]
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess #TODO: Reduce permissions
+  CodePipelineSourceWebhook:
+    Type: AWS::CodePipeline::Webhook
+    Properties:
+      Name: CodePipelineWebhook
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: !Ref GithubOAuthToken
+      Filters:
+        - JsonPath: "$.ref"
+          MatchEquals: refs/heads/{Branch}
+      TargetPipeline: !Ref CodePipeline
+      TargetAction: SourceAction
+      TargetPipelineVersion: !GetAtt CodePipeline.Version
+      RegisterWithThirdParty: true
+  CodePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: !FindInMap [ Config, Service, Name ]
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactsBucket
+      RoleArn: !GetAtt AdminMonitorCodePipelineRole.Arn
+      Stages:
+        - Name: SourceRepository
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: '1'
+                Provider: GitHub
+              Configuration:
+                Owner: !Ref GithubUsername
+                Repo: admin-monitor-suite
+                PollForSourceChanges: 'false'
+                Branch: AmsMaster
+                OAuthToken: !Ref GithubOAuthToken
+              InputArtifacts: [ ]
+              OutputArtifacts:
+                - Name: SourceArtifact
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: ExecuteBuild
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref CodeBuildProject
+              InputArtifacts:
+                - Name: SourceArtifact
+              OutputArtifacts:
+                - Name: AngularBuild
+              RunOrder: 1
+        - Name: Deploy
+          Actions:
+            - Name: DeployS3
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: 1
+              InputArtifacts:
+                - Name: AngularBuild
+              # FIXME - config
+              Configuration:
+                BucketName: !Ref WebAppBucket
+                Extract: true
+              RunOrder: 1
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+    DeletionPolicy: Retain
+  ArtifactsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: ArtifactsBucketPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref ArtifactsBucket
+                - /*
+      Bucket: !Ref ArtifactsBucket
+  WebAppBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+    DeletionPolicy: Retain
+  WebAppBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: WebAppBucketPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref WebAppBucket
+                - /*
+      Bucket: !Ref WebAppBucket

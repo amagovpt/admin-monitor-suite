@@ -118,6 +118,9 @@ import { DirectoryStatisticsComponent } from "./pages/directory/directory-statis
 import { CUSTOM_DATE_FORMATS, CustomDatePickerAdapter } from "./date-adapter";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
 import { TagCrawlerInformationDialogComponent } from './dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component';
+import { SumElementsPipe } from "./pipes/sumelements.pipe";
+import { CountTypesPipe } from "./pipes/countypes.pipes";
+
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -364,6 +367,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     DirectoryComponent,
     DirectoryStatisticsComponent,
     TagCrawlerInformationDialogComponent,
+    SumElementsPipe,
+    CountTypesPipe,
+
   ],
   imports: [
     BrowserModule,
