@@ -576,7 +576,7 @@ export class EvaluationService {
       ],
     };
 
-    let results = {};
+    /*let results = {};
     if (
       ele !== "fontAbsVal" &&
       ele !== "justifiedCss" &&
@@ -592,11 +592,178 @@ export class EvaluationService {
         ele,
         ele !== "titleOk" &&
           ele !==
-            "lang" /*testSee['div'].includes(ele) || testSee['span'].includes(ele)*/
+            "lang" /*testSee['div'].includes(ele) || testSee['span'].includes(ele)
       );
     }
 
-    return results;
+    return results;*/
+
+    return this.getElements2(allNodes, ele);
+  }
+
+  private getElements2(allNodes: Array<string>, ele: string): any {
+    if (ele === "form") {
+      ele = "formSubmitNo";
+    }
+
+    const elements = this.getElementsList2(allNodes[ele]);
+
+    let result = "G";
+    const results = this.evaluation.processed.results.map((r) => r.msg);
+    for (const test in tests || {}) {
+      const _test = tests[test];
+      if (_test.test === ele && results.includes(test)) {
+        result = tests_colors[test];
+        break;
+      }
+    }
+
+    return {
+      type: "html",
+      result,
+      elements,
+      size: elements.length,
+      finalUrl: _.clone(this.evaluation.processed.metadata.url),
+    };
+  }
+
+  private getElementsList2(nodes: any): Array<any> {
+    const elements = new Array();
+
+    for (const node of nodes || []) {
+      if (node.elements) {
+        for (const element of node.elements || []) {
+          const ele = this.getTagName(element);
+          elements.push({
+            ele,
+            code:
+              ele === "style"
+                ? element.attributes
+                : this.fixCode(element.htmlCode),
+            showCode:
+              ele === "style" ? undefined : this.fixCode(element.htmlCode),
+            pointer: element.pointer,
+          });
+        }
+      } else {
+        const ele = this.getTagName(node);
+        elements.push({
+          ele,
+          code: ele === "style" ? node.attributes : this.fixCode(node.htmlCode),
+          showCode: ele === "style" ? undefined : this.fixCode(node.htmlCode),
+          pointer: node.pointer,
+        });
+      }
+    }
+
+    return elements;
+  }
+
+  private getTagName(element: any): string {
+    let name = element.htmlCode.slice(1);
+
+    let k = 0;
+    for (let i = 0; i < name.length; i++, k++) {
+      if (name[i] === " " || name[i] === ">") {
+        break;
+      }
+    }
+
+    name = name.substring(0, k);
+
+    return name;
+  }
+
+  private fixCode(code: string): string {
+    code = code.replace(/_cssrules="true"/g, "");
+    code = code.replace(/_documentselector="undefined"/g, "");
+
+    let index = code.indexOf('_selector="');
+    while (index !== -1) {
+      let foundEnd = false;
+      let foundStart = false;
+      let k = index;
+      while (!foundEnd) {
+        k++;
+        if (code[k] === '"') {
+          if (!foundStart) {
+            foundStart = true;
+          } else {
+            foundEnd = true;
+          }
+        }
+      }
+
+      code = code.replace(code.substring(index, k), "");
+      index = code.indexOf('_selector="');
+    }
+
+    return this.fixeSrcAttribute(code);
+  }
+
+  private fixeSrcAttribute(code: string): string {
+    if (code.startsWith("<img")) {
+      const protocol = this.evaluation.processed.metadata.url.startsWith(
+        "https://"
+      )
+        ? "https://"
+        : "http://";
+      const www = this.evaluation.processed.metadata.url.includes("www.")
+        ? "www."
+        : "";
+
+      let fixSrcUrl = _.clone(
+        this.evaluation.processed.metadata.url
+          .replace("http://", "")
+          .replace("https://", "")
+          .replace("www.", "")
+          .split("/")[0]
+      );
+      if (fixSrcUrl[fixSrcUrl.length - 1] === "/") {
+        fixSrcUrl = fixSrcUrl.substring(0, fixSrcUrl.length - 2);
+      }
+
+      let srcAttribute = "";
+      const index = code.indexOf('src="');
+      if (index !== -1) {
+        let foundEnd = false;
+        let foundStart = false;
+        let k = index;
+        let startIndex = -1;
+        while (!foundEnd) {
+          k++;
+          if (code[k] === '"') {
+            if (!foundStart) {
+              foundStart = true;
+              startIndex = k;
+            } else {
+              foundEnd = true;
+            }
+          }
+        }
+        srcAttribute = code.substring(startIndex + 1, k);
+
+        if (
+          srcAttribute &&
+          !srcAttribute.startsWith("http") &&
+          !srcAttribute.startsWith("https")
+        ) {
+          if (srcAttribute.startsWith("/")) {
+            srcAttribute = `"${protocol}${www}${fixSrcUrl}${srcAttribute}`;
+          } else {
+            srcAttribute = `"${protocol}${www}${fixSrcUrl}/${srcAttribute}`;
+          }
+
+          code = this.splice(code, startIndex, 0, srcAttribute);
+        }
+      }
+    }
+
+    return code;
+  }
+
+  private splice(code: string, idx: number, rem: number, str: string): string {
+    return code.slice(0, idx) + str + code.slice(idx + Math.abs(rem));
   }
 
   private getCSSList(ele: string, cssResults: any): any {
