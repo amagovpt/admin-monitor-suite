@@ -1,23 +1,23 @@
-import {Pipe, PipeTransform} from '@angular/core'
+import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({name: 'countypes'})
+@Pipe({ name: "countypes" })
 export class CountTypesPipe implements PipeTransform {
   transform(value: string): number {
-        let countTypes:number = 0;
-        let auxstring: string = "";
-        let split1: string[] = [];;
-        let numberarray: number[] = []; 
-    
-        auxstring = value.slice(1,-1)
-        
-        split1 = auxstring.split(",");
-    
-       
-        
-        countTypes = split1.length;
-    
+    if (value) {
+      let countTypes: number = 0;
+      let auxstring: string = "";
+      let split1: string[] = [];
+      let numberarray: number[] = [];
 
+      auxstring = value.slice(1, -1);
 
-    return countTypes;
+      split1 = auxstring.split(",");
+
+      countTypes = split1.length;
+
+      return countTypes;
+    }
+
+    return -1;
   }
 }
