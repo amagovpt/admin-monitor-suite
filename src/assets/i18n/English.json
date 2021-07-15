@@ -855,9 +855,9 @@
     }
   },
   "EVALUATIONS_PAGE": {
-    "NEWERCARD":{
-      "title":"Elements and Roles",
-      "entitle":"Number of elements", 
+    "NEWERCARD": {
+      "title": "Elements and Roles",
+      "entitle": "Number of elements",
       "etitle": "Types of Tags Present ",
       "rtitle": "Roles Present "
     },
@@ -1184,8 +1184,10 @@
     "frameset": "Document <code>frameset</code>",
     "h1": "Page Header (<code>h1</code>)",
     "hx": "Headers (<code>h1</code> - <code>h6</code>)",
+    "hxHasAName": "Headings have accesible name",
     "hxNo": "Headers (<code>h1</code> ~ <code>h6</code>) without descriptive content",
     "hxSkip": "Headers with incorrect hierarchical-level jumpers",
+    "hxWithoutAName": "Headings without accessible name",
     "id": "Elements with the attribute <code>id</code>",
     "idRep": "Attributes <code>id</code> with duplicate values",
     "iframe": "Elements <code>iframe</code>",
@@ -1503,6 +1505,14 @@
     "frame_02": {
       "s": "I observed that the webpage is based on a frame structure but it uses an <mark>incorrect <acronym title=\"Document Type Declaration\"> DTD </ acronym> declaration</mark>.",
       "p": "I observed that the webpage is based on a frame structure but is uses an <mark>incorrect <acronym title=\"Document Type Declaration\"> DTD </ acronym> declaration</mark>."
+    },
+    "heading_01": {
+      "s": "I observed that <mark>all</mark> the headings in this page have an accessible name.",
+      "p": "I observed that <mark>all</mark> the headings in this page have an accessible name."
+    },
+    "heading_02": {
+      "s": "I have identified <mark>{{value}}</mark> heading without an accessible name.",
+      "p": "I have identified <mark>{{value}}</mark> headings without an accessible name."
     },
     "hx_01a": {
       "s": "I noticed that this page <mark>has no</mark> headers.",

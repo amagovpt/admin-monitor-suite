@@ -95,6 +95,8 @@ const tests_colors = {
   w3c_validator_01a: "G",
   w3c_validator_01b: "R",
   win_01: "Y",
+  heading_01: "G",
+  heading_02: "R",
 };
 
 export default tests_colors;

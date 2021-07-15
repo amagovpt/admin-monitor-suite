@@ -853,8 +853,8 @@
     }
   },
   "EVALUATIONS_PAGE": {
-    "NEWERCARD":{
-      "title":"Elementos e Roles",
+    "NEWERCARD": {
+      "title": "Elementos e Roles",
       "entitle": "Número de Elementos",
       "etitle": "Tipos de Tags Presentes",
       "rtitle": "Roles Presentes"
@@ -1182,8 +1182,10 @@
     "frameset": "Documento <code>frameset</code>",
     "h1": "Cabeçalho principal da página (<code>h1</code>)",
     "hx": "Cabeçalhos (<code>h1</code> - <code>h6</code>)",
+    "hxHasAName": "Cabeçalhos com nome acessível",
     "hxNo": "Cabeçalhos (<code>h1</code> ~ <code>h6</code>) sem conteúdo descritivo",
     "hxSkip": "Cabeçalhos com salto(s) de nivel hierárquico incorrectos",
+    "hxWithoutAName": "Cabeçalhos sem nome acessível",
     "id": "Elementos com atributo <code>id</code>",
     "idRep": "Atributos <code>id</code> com valores duplicados",
     "iframe": "Elementos <code>iframe</code>",
@@ -1501,6 +1503,14 @@
     "frame_02": {
       "s": "Constatei que a página está assente numa estrutura de molduras (frames) mas utiliza uma declaração de <acronym title=\"Declaração do Tipo de Documento\">DTD</acronym> <mark>incorreta</mark>.",
       "p": "Constatei que a página está assente numa estrutura de molduras (frames) mas utiliza uma declaração de <acronym title=\"Declaração do Tipo de Documento\">DTD</acronym> <mark>incorreta</mark>."
+    },
+    "heading_01": {
+      "s": "Constatei que todos os cabeçalhos desta página <mark>têm</mark> nome acessível",
+      "p": "Constatei que todos os cabeçalhos desta página <mark>têm</mark> nome acessível"
+    },
+    "heading_02": {
+      "s": "Identifiquei <mark>{{value}}</mark> cabeçalho sem nome acessível.",
+      "p": "Identifiquei <mark>{{value}}</mark> cabeçalhos sem nome acessível."
     },
     "hx_01a": {
       "s": "Constatei que esta página <mark>não tem</mark> cabeçalhos",
