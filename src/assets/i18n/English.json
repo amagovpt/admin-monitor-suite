@@ -1159,7 +1159,7 @@
     "areaAltNo": "Image map areas without <code>alt</code>",
     "blink": "Elements <code>blink</code>",
     "brSec": "Sequence of elements <code>br</code>",
-    "colorContrast": "Color combinations with a contrast ratio less than 3: 1",
+    "colorContrast": "Color combinations with a contrast ratio less than 4.5:1 for regular text or 3:1 for large text",
     "colorFgBgNo": "CSS rules in which the background color and/or letter color are not specified simultaneously",
     "cssBlink": "CSS property <code>text-decoration</code> with value <code>blink</code>",
     "dtd": "DTD - Document Type Definition",
@@ -1271,7 +1271,7 @@
     "blink_02": "<blink> values in CSS cause shinning of content parts",
     "br_01": "Sequences of 3 or more <br> elements",
     "color_01": "CSS rules that do not specify font color or background color",
-    "color_02": "Color combinations which contrast relation is lower than 3 to 1",
+    "color_02": "Color combinations with a contrast ratio less than 4.5:1 for regular text or 3:1 for large text",
     "css_01": "CSS specifies a spacing between lines lower than 1.5",
     "dtd_01": "Document Type Definition (DTD) does not exist",
     "ehandler_01": "Event manipulators that depend on mouse",
@@ -1439,8 +1439,8 @@
       "p": "I identified <mark>{{value}}</mark> CSS rules that do not specify either the font color or the background color."
     },
     "color_02": {
-      "s": "I located <mark>{{value}}</mark> color combination which contrast relation is lower than the minimum contrast ratio allowed by the WCAG, it means 3 to 1.",
-      "p": "I located <mark>{{value}}</mark> color combinations which contrast relation is lower than the minimum contrast ratio allowed by the WCAG, it means 3 to 1."
+      "s": "I located <mark>{{value}}</mark> color combination for which the contrast relation is lower than the minimum contrast ratio allowed by the WCAG, which is 3 to 1 for larger font text and 4.5 to 1 for regular font text.",
+      "p": "I located <mark>{{value}}</mark> color combinations for which the contrast relation is lower than the minimum contrast ratio allowed by the WCAG, which is 3 to 1 for larger font text and 4.5 to 1 for regular font text."
     },
     "css_01": {
       "s": "I identified <mark>{{value}}</mark> case where CSS specifies a spacement between lines less than 1.5.",
