@@ -835,6 +835,33 @@ export class GetService {
       );
   }
 
+  listOfElementsWebsitePages(websiteName: string): Observable<Array<Page>> {
+    return this.http
+      .get<any>(this.config.getServer("/website/pages/elements/" + websiteName), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+          return <Array<Page>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+
   listOfDomains(): Observable<Array<Domain>> {
     return this.http
       .get<any>(this.config.getServer("/domain/all"), { observe: "response" })

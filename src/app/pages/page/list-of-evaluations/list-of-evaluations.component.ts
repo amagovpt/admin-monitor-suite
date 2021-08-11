@@ -73,8 +73,6 @@ export class ListOfEvaluationsComponent implements OnInit {
     this.element.tags = this.element.tags.split(",");
  
     
-  
-    
 
     const paginatorIntl = new MatPaginatorIntl();
     paginatorIntl.itemsPerPageLabel = this.translate.instant('ITEMS_PER_PAGE_LABEL');

@@ -1,0 +1,30 @@
+mat-card-header {
+    text-align: center;
+  }
+  
+  div {
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+  }
+  .e-cardbuttonSAA{
+    border: none;
+    padding: 0;
+    background: none;
+  }
+  .e-cardbuttonSAD{
+    border: none;
+    padding: 0;
+    background: none;
+  }
+  .e-cardbuttonSNA{
+    border: none;
+    padding: 0;
+    background: none;
+  }
+  .e-cardbuttonSND{
+    border: none;
+    padding: 0;
+    background: none;
+  }

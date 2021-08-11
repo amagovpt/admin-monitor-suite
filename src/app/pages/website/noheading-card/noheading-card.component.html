@@ -1,0 +1,55 @@
+<!--Card paginas que nao tem headings-->
+<mat-card class="mat-typography">
+  <mat-card-title>
+    <h1>{{ "WEBSITES_PAGE.CARDS.Header_Title_2" | translate }} </h1>
+  </mat-card-title>
+  <table mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="Uri">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header=  "uri">{{"WEBSITES_PAGE.CARDS.Table.Uri"| translate}} </th>
+    <td mat-cell *matCellDef="let element"><a [routerLink]="['/console', 'page', element.uri]"><strong> {{element.uri}}</strong></a> </td>
+  </ng-container>
+
+  <!-- Heading Column -->
+  <ng-container matColumnDef="h1">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "h1"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_1"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.h1}} </td>
+  </ng-container>
+  
+  <!-- Heading Column -->
+  <ng-container matColumnDef="h2">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "h2"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_2"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.h2}} </td>
+  </ng-container>
+
+  <!-- Heading Column -->
+  <ng-container matColumnDef="h3">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "h3"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_3"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.h3}} </td>
+  </ng-container>
+
+  <!-- Heading Column -->
+  <ng-container matColumnDef="h4">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "h4"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_4"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.h4}} </td>
+  </ng-container>
+
+  <!-- Heading Column -->
+  <ng-container matColumnDef="h5">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "h5"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_5"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.h5}} </td>
+  </ng-container>
+
+  <!-- Heading Column -->
+  <ng-container matColumnDef="h6">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "h6"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_6"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.h6}} </td>
+  </ng-container>
+
+
+
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+</mat-card>

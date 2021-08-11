@@ -8,7 +8,7 @@
     "endpoint_label": "Machine IP to connect",
     "username_label": "Username",
     "password_label": "Password",
-    "email_error": "The e-mail is not valid. <strong>E.g. name@service.com</strong>",
+    "email_error": "The e-mail is not valid. <strong>E.g. name@service.with</strong>",
     "show_password": "Click here to show the password text",
     "hide_password": "Click here to hide the password text",
     "submit": "Login",
@@ -588,6 +588,65 @@
         "stamp_tooltip": "Create/update digital stamp"
       },
       "delete_websites": "Delete websites"
+    },
+    "CARDS":{
+      "Sample_Title":"Sample Choice ",
+      "Elements_Title":"Elements to choose",
+      "Roles_Title":"Roles to Choose",
+      "Choice_Button":"Set Choice",
+      "Table_Title":"Pages with Tag <table>",
+      "Form_Title":"Pages with Tag <form>",
+      "Image_Title":"Pages with Images",
+      "iFrame_Title":"Pages with Tag <iFrame>",
+      "Header_Title":"Pages with Headings",
+      "Header_Title_2":"Pages without Headings",
+      "LandMark_Title":"Pages with LandMarks",
+      "LandMark_Title_2":"Pages without LandMarks",
+      "LandMark_Title_3":"Pages with more than one unique LandMark",
+      "Button_Title":"Pages with Tag <button>",
+      "Presentation_Title":"Pages with Presentations",
+      "CheckBox_Title":"Pages with Checkboxes",
+      "Table":{
+        "Uri":"Uri",
+        "Table":{
+          "Title":"Tables"
+        }, 
+        "Form":{
+          "Title":"Forms"
+        },
+        "Image":{
+          "Title":"Images",
+          "Title2":"SVGS"
+        }, 
+        "iFrame":{
+          "Title":"iFrames"
+        },
+        "Headings":{
+          "Title_1":"H1",
+          "Title_2":"H2",
+          "Title_3":"H3",
+          "Title_4":"H4",
+          "Title_5":"H5",
+          "Title_6":"H6"
+        },
+        "LandMarks":{
+          "Title_h":"Headers",
+          "Title_a":"Asides",
+          "Title_f":"Footers",
+          "Title_m":"Mains",
+          "Title_n":"Navs",
+          "Title_s": "Section"
+        },
+        "Button":{
+          "Title":"Buttons"
+        },
+        "Presentation":{
+          "Title":"Presentations"
+        },
+        "CheckBox":{
+          "Title":"CheckBoxes"
+        }
+      }
     },
     "ADD": {
       "title": "Create a new website",

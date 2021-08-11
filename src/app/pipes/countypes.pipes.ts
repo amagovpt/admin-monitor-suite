@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 @Pipe({ name: "countypes" })
 export class CountTypesPipe implements PipeTransform {
   transform(value: string): number {
-    if (value) {
+    if(value){
       let countTypes: number = 0;
       let auxstring: string = "";
       let split1: string[] = [];
@@ -16,8 +16,8 @@ export class CountTypesPipe implements PipeTransform {
       countTypes = split1.length;
 
       return countTypes;
-    }
-
-    return -1;
+    
   }
+  return -1;
+}
 }

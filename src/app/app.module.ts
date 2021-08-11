@@ -51,6 +51,9 @@ import { AddPageDialogComponent } from "./dialogs/add-page-dialog/add-page-dialo
 import { EditEntityDialogComponent } from "./dialogs/edit-entity-dialog/edit-entity-dialog.component";
 import { LoadingComponent } from "./global/loading/loading.component";
 import { ErrorComponent } from "./global/error/error.component";
+import{SampleChoiceComponent} from "./pages/website/sample-choice/sample-choice.component";
+import{TableCardComponent} from "./pages/website/table-card/table-card.component";
+import { FormCardComponent } from "./pages/website/form-card/form-card.component";
 
 import { AdminAuthGuard } from "./guards/admin-auth.guard";
 import { NoAuthGuard } from "./guards/no-auth.guard";
@@ -120,6 +123,16 @@ import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
 import { TagCrawlerInformationDialogComponent } from './dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component';
 import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipes";
+import { ImageCardComponent } from "./pages/website/image-card/image-card.component";
+import { IFrameCardComponent } from "./pages/website/iFrame-card/iFrame-card.component";
+import { HeadingCardComponent } from "./pages/website/heading-card/heading-card.component";
+import { NoHeadingComponent } from "./pages/website/noheading-card/noheading-card.component";
+import { LandMarkCardComponent } from "./pages/website/landmark-card/landmark-card.component";
+import { NoLandMarkCardComponent} from "./pages/website/nolandmark-card/nolandmark-card.component";
+import { UniqueLandMarkCardComponent } from "./pages/website/uniquelandmark-card/uniquelandmark-card.component";
+import { ButtonCardComponent } from "./pages/website/button-card/button-card.component";
+import { PresentationCardComponent } from "./pages/website/presentation-card/presentation-card.component";
+import { CheckBoxCardComponent } from "./pages/website/checkbox-card/checkbox-card.component";
 
 
 registerLocaleData(localeEn, "en");
@@ -367,6 +380,19 @@ export function HttpLoaderFactory(http: HttpClient) {
     DirectoryComponent,
     DirectoryStatisticsComponent,
     TagCrawlerInformationDialogComponent,
+    SampleChoiceComponent,
+    TableCardComponent,
+    ImageCardComponent,
+    IFrameCardComponent,
+    HeadingCardComponent,
+    FormCardComponent,
+    NoHeadingComponent,
+    LandMarkCardComponent,
+    NoLandMarkCardComponent,
+    UniqueLandMarkCardComponent,
+    ButtonCardComponent,
+    PresentationCardComponent,
+    CheckBoxCardComponent,
     SumElementsPipe,
     CountTypesPipe,
 

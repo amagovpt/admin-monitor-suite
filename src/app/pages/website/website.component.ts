@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef,ChangeDetectionStrategy, KeyValueDiffers, KeyValueDiffer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
@@ -7,19 +7,27 @@ import { GetService } from '../../services/get.service';
 import { EvaluationService } from '../../services/evaluation.service';
 
 import { Website } from '../../models/website.object';
+import { MatTableDataSource } from '@angular/material/table';
+import {pageType} from '../../pages/website/pageType';
+import { ThrowStmt } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-website',
   templateUrl: './website.component.html',
   styleUrls: ['./website.component.css']
 })
+
 export class WebsiteComponent implements OnInit, OnDestroy {
+  evaluations: Array<any>;
 
   loading: boolean;
   error: boolean;
   errorNoActiveDomains: boolean;
 
   sub: Subscription;
+  sub2: Subscription;
+
 
   tag: string;
   user: string;
@@ -27,27 +35,50 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   domains: Array<any>;
   activeDomain: string;
   pages: Array<any>;
-
   websiteObject: any;
+  page: string;
+
+  elementList:string[];
+  roleList: string[];
+  pageC: any[] = [];
+  auxRole: string[];
+  auxTag: string[];
+  i: number;
+  element:any;
+  elements: string[];
+  done: boolean = false;
+  dataSource: any[];
+
+  tags:string[] = ["Table","Form","iFrame","Heading", "Button", "Presentation","CheckBox"];
+  uri:string[] = [];
+
+  
+
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private get: GetService,
     private evaluation: EvaluationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {
+ 
     this.loading = true;
     this.error = false;
   }
 
+  
   ngOnInit(): void {
+    
     this.sub = this.activatedRoute.params.subscribe(params => {
       this.tag = params.tag || null;
       this.user = params.user || 'admin';
       this.website = params.website;
 
       if (this.user === 'admin') {
-        this.getListOfWebsiteDomains();
+       this.getListOfWebsiteDomains();
+       this.getListOfElementsWebsitePages();
+      
       } else {
         this.get.listOfUserWebsitePages(this.tag, this.user, this.website)
           .subscribe(pages => {
@@ -62,7 +93,7 @@ export class WebsiteComponent implements OnInit, OnDestroy {
           });
       }
     });
-  }
+}
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -95,7 +126,6 @@ export class WebsiteComponent implements OnInit, OnDestroy {
         } else {
           this.error = true;
         }
-
         this.cd.detectChanges();
       });
   }
@@ -103,6 +133,23 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   refreshDomains(): void {
     this.loading = true;
     this.getListOfWebsiteDomains();
+  }
+ 
+
+  private getListOfElementsWebsitePages(): void {
+    this.get.listOfElementsWebsitePages(this.website)
+      .subscribe(evaluations => {
+        if (evaluations !== null) {
+          this.evaluations = evaluations;
+        } else {
+          this.error = true;
+        }
+
+        this.loading = false;
+        this.done = true;
+
+        this.cd.detectChanges();
+      });
   }
 
   downloadAllPagesCSV(): void {

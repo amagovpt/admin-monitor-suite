@@ -1,0 +1,24 @@
+<!--Card Tabelas-->
+<mat-card class="mat-typography">
+  <mat-card-title>
+    <h1>{{ "WEBSITES_PAGE.CARDS.Table_Title" | translate }} </h1>
+  </mat-card-title>
+  <table mat-table [dataSource]="dataSource" matSort>
+  
+    <!-- URI Column -->
+    <ng-container matColumnDef="Uri">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header = "uri">{{"WEBSITES_PAGE.CARDS.Table.Uri"| translate}} </th>
+      <td mat-cell *matCellDef="let element"><a [routerLink]="['/console', 'page', element.uri]"><strong> {{element.uri}}</strong></a> </td>
+    </ng-container>
+  
+    <!-- Table Column -->
+    <ng-container matColumnDef="Table">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header= "table"> {{"WEBSITES_PAGE.CARDS.Table.Table.Title"| translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{element.table}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]" showFirstLastButtons></mat-paginator>
+  

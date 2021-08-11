@@ -48,6 +48,32 @@
 <app-success-criteria-counter *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject"></app-success-criteria-counter>
 <br>
 <app-list-of-domains *ngIf="!loading && !error && !errorNoActiveDomains && user === 'admin'" [domains]="domains" (refreshDomains)="refreshDomains($event)"></app-list-of-domains>
+<br>
+<app-table-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-table-card>
+<br>
+<app-form-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-form-card>
+<br>
+<app-image-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-image-card>
+<br>
+<app-iFrame-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-iFrame-card>
+<br>
+<app-heading-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-heading-card>
+<br>
+<app-noheading-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-noheading-card>
+<br>
+<app-landmark-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-landmark-card>
+<br>
+<app-nolandmark-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-nolandmark-card>
+<br>
+<app-uniquelandmark-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-uniquelandmark-card>
+<br>
+<app-button-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-button-card>
+<br>
+<app-presentation-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-presentation-card>
+<br>
+<app-checkbox-card *ngIf= "!loading && !error " [dataSourceO] = "evaluations"></app-checkbox-card>
+<br>
+<app-sample-choice *ngIf="!loading && !error" [evaluations]= "evaluations"></app-sample-choice>
 <app-list-of-pages-user *ngIf="!loading && !error && user !== 'admin'" [pages]="pages"></app-list-of-pages-user>
 <app-loading *ngIf="loading"></app-loading>
 

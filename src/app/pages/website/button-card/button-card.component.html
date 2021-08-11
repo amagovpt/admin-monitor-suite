@@ -1,0 +1,22 @@
+<!--Card butoes-->
+
+<mat-card class="mat-typography">
+  <mat-card-title>
+    <h1>{{ "WEBSITES_PAGE.CARDS.Button_Title" | translate }} </h1>
+  </mat-card-title>
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="Uri">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header = "uri">{{"WEBSITES_PAGE.CARDS.Table.Uri"| translate}} </th>
+      <td mat-cell *matCellDef="let element"><a [routerLink]="['/console', 'page', element.uri]"><strong> {{element.uri}}</strong> </a> </td>
+    </ng-container>
+  
+    <!-- Button Column -->
+    <ng-container matColumnDef="Button">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header= "button"> {{"WEBSITES_PAGE.CARDS.Table.Button.Title"| translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{element.button}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</mat-card>
