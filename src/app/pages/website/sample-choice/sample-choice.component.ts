@@ -34,6 +34,8 @@ export class SampleChoiceComponent implements OnInit,AfterViewInit {
   loading: boolean;
   error: boolean;
   sub: Subscription;
+  TagListaux: string[]= [];
+  roleListaux: string[]= [];
   TagList: string[];
   roleList: string[];
   auxtagList: string[];
@@ -41,12 +43,12 @@ export class SampleChoiceComponent implements OnInit,AfterViewInit {
   auxR: string;
   auxT: string;
   auxlist: auxList [] = [];
+  rolenumber: number[] = [];
+  tagnumber: number[] = [];
   j: number = 0;
   k: number = 0;
-  flagr: number = 0;
-  flagt: number = 0;
-//@ViewChild('input') input: ElementRef;
-constructor(private activatedRoute: ActivatedRoute,private get: GetService,private cd: ChangeDetectorRef,){
+
+constructor(private activatedRoute: ActivatedRoute,private get: GetService,private cd: ChangeDetectorRef){
   this.loading = true;
   this.error = false;
 }
@@ -95,52 +97,78 @@ for(let f =0; f<= (this.evaluations.length-1); f++){
 this.j = 0;
 this.k = 0;
 }
-
+//Creating the unique role/tag list
 for(let g = 0; g<= (this.auxlist.length-1); g++){
-  if(this.roleList.length>0){
     for(let a= 0; a<=(this.auxlist[g].roles.length-1); a++){
-    for(let b =0; b<=(this.roleList.length-1); b++){
-    if(this.roleList[b].includes(this.auxlist[g].roles[a])!== true && this.flagr == 0){
-      this.roleList.push(this.auxlist[g].roles[a]);
-      this.flagr =1;
+      this.roleListaux.push(this.auxlist[g].roles[a]);
       console.log("I m here");
     }
-    else{
-      console.log("Nao estou adicionar coisas novas");
-    }
-    }
-  }
-}
-  else if(this.roleList.length<=0){
-      this.roleList = this.auxlist[g].roles;
+  
 
-  }
-
-  if (this.TagList.length>0){
     for(let c=0; c <=(this.auxlist[g].tags.length-1); c++){
-    for(let d =0; d<=this.TagList.length-1; d++){
-      if(this.TagList[d].includes(this.auxlist[g].tags[c])!== true && this.flagt == 0){
-        this.TagList.push(this.auxlist[g].tags[c]);
-        this.flagt = 1;
-        console.log("Estou aqui");
+        this.TagListaux.push(this.auxlist[g].tags[c]);
+      
+}
+
+
+}
+
+ this.TagList =[...new Set(this.TagListaux)];
+ console.log(this.TagList);
+ this.roleList =[...new Set(this.roleListaux)];
+ console.log(this.roleList);
+
+//creating number array for counting of pages with certain role/tag
+for(let b = 0; b<=(this.roleList.length-1); b++){
+  this.rolenumber.push(0);
+}
+for(let d= 0; d<=(this.TagList.length-1); d++){
+  this.tagnumber.push(0);
+}
+//counting pages with role/tag in list
+for(let b = 0; b<=(this.roleList.length-1); b++){
+  for(let g = 0; g<= (this.auxlist.length-1); g++){
+    for(let a= 0; a<=(this.auxlist[g].roles.length-1); a++){
+      if(this.auxlist[g].roles[a].includes(this.roleList[b]) == true){
+        this.rolenumber[b]++;
       }
+    }
   }
+
 }
-}
-  else if(this.TagList.length<=0){
-      this.TagList = this.auxlist[g].tags ;
+for(let d= 0; d<=(this.TagList.length-1); d++){
+  for(let g = 0; g<= (this.auxlist.length-1); g++){
+    for(let a= 0; a<=(this.auxlist[g].tags.length-1); a++){
+      if(this.auxlist[g].tags[a].includes(this.TagList[d]) == true){
+        this.tagnumber[d]++;
+      }
+    }
   }
-this.flagt = 0;
-this.flagr = 0 ;
-}
-for(let f = 0; f<=; f++){
+
 
 }
 
 
+for(let q = 0; q<=(this.roleList.length-1); q++){
+  this.roleList[q] = this.roleList[q].slice(1,-1);
+
+  this.roleList[q] = this.roleList[q] + ": " + this.rolenumber[q].toString();
+
+}
+
+for(let p = 0; p<=(this.TagList.length-1); p++){
+  this.TagList[p] = this.TagList[p].slice(1,-1);
+
+  this.TagList[p] = "<" + this.TagList[p] + ">";
+  this.TagList[p] = this.TagList[p] + ": " + this.tagnumber[p].toString();
+
+}
+
+  console.log(this.roleList);
+  console.log(this.TagList);
 
   this.sortArray1=this.roleList; 
-
+ 
   this.sortArray1.sort(function (a,b){
     if (a > b){
     return 1;
