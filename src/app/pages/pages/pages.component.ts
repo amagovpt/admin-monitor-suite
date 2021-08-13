@@ -29,6 +29,7 @@ export class PagesComponent implements OnInit {
 
   ngOnInit(): void {
     //this.getListOfPages();
+    this.getListOfPages();
   }
 
   deletePages(pages): void {
@@ -38,7 +39,6 @@ export class PagesComponent implements OnInit {
           this.loading = true;
           this.cd.detectChanges();
 
-          this.getListOfPages();
           this.message.show('PAGES_PAGE.DELETE.messages.success');
         }
       });

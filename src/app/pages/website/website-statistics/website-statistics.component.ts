@@ -6,8 +6,9 @@ import { ScoreDistributionDialogComponent } from '../../../dialogs/score-distrib
 import { ErrorDistributionDialogComponent } from '../../../dialogs/error-distribution-dialog/error-distribution-dialog.component';
 
 import { Page } from '../../../models/page';
-import { CorrectionDistributionDialogComponent } from 'app/dialogs/correction-distribution-dialog/correction-distribution-dialog.component';
-import { Website } from 'app/models/website.object';
+import { CorrectionDistributionDialogComponent } from '../../../dialogs/correction-distribution-dialog/correction-distribution-dialog.component';
+import { Website } from '../../../models/website.object';
+
 
 @Component({
   selector: 'app-website-statistics',

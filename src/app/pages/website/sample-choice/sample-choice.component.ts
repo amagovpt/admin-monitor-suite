@@ -101,7 +101,7 @@ this.k = 0;
 for(let g = 0; g<= (this.auxlist.length-1); g++){
     for(let a= 0; a<=(this.auxlist[g].roles.length-1); a++){
       this.roleListaux.push(this.auxlist[g].roles[a]);
-      console.log("I m here");
+
     }
   
 
@@ -114,9 +114,7 @@ for(let g = 0; g<= (this.auxlist.length-1); g++){
 }
 
  this.TagList =[...new Set(this.TagListaux)];
- console.log(this.TagList);
  this.roleList =[...new Set(this.roleListaux)];
- console.log(this.roleList);
 
 //creating number array for counting of pages with certain role/tag
 for(let b = 0; b<=(this.roleList.length-1); b++){
@@ -164,8 +162,7 @@ for(let p = 0; p<=(this.TagList.length-1); p++){
 
 }
 
-  console.log(this.roleList);
-  console.log(this.TagList);
+  
 
   this.sortArray1=this.roleList; 
  

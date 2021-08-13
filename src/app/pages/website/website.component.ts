@@ -76,8 +76,8 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       this.website = params.website;
 
       if (this.user === 'admin') {
+      this.getListOfElementsWebsitePages();
        this.getListOfWebsiteDomains();
-       this.getListOfElementsWebsitePages();
       
       } else {
         this.get.listOfUserWebsitePages(this.tag, this.user, this.website)
