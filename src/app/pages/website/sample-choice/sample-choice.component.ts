@@ -93,7 +93,7 @@ for(let f =0; f<= (this.evaluations.length-1); f++){
       }
     }
 
-;
+
 this.j = 0;
 this.k = 0;
 }

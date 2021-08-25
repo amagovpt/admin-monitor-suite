@@ -11,17 +11,14 @@ export class SumElementsPipe implements PipeTransform {
       let j = 0;
 
       auxstring = value.slice(1, -1);
-
       split1 = auxstring.split(/[:,]/);
-
       for (let i = 0; i <= split1.length; i++) {
-        if (i % 2 !== 0) {
+        if (!isNaN(parseInt(split1[i])) ) {
           number[j] = parseInt(split1[i]);
           j++;
         }
       }
       numelements = number.reduce((a, b) => a + b, 0);
-
       return numelements;
     }
 
