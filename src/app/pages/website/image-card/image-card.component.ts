@@ -93,17 +93,17 @@ interface tablevalue{
       else if((this.obj[g].tags[j]).includes(this.svg) === false && (this.obj[g].tags[j]).includes(this.img) === false && this.flags[g]!==1){
         this.flags[g] = 0;
       }  
-       
   }
-
-
+  if(this.auxdataSource[g].img === 0 && this.auxdataSource[g].svg === 0 ){
+    this.flags[g] = 0;
   }
-(this.flags);
+  }
+  
   for(let h = 0 ; h<= ((this.flags).length-1) ;h++){
       if(this.flags[h]===0){
-       
         this.auxdataSource.splice(h,1);
         this.auxdataSource.splice(h,h);
+        this.auxdataSource.splice(h,h+1);
       }
   }
   this.dataSource = new MatTableDataSource (this.auxdataSource);
