@@ -80,7 +80,25 @@ interface tablevalue{
 
 
   }
-  this.dataSource = new MatTableDataSource (this.auxdataSource);
+  let compareTotal = function (a:tablevalue,b: tablevalue){
+    if (a.checkbox > b.checkbox){
+    return -1;
+
+    }
+    if(a.checkbox < b.checkbox){
+      return 1;
+
+    }
+    if (a.checkbox === b.checkbox){
+      return 0;
+    
+    }
+  
+}   
+    let sortedArray = this.auxdataSource.sort(compareTotal);
+
+
+  this.dataSource = new MatTableDataSource (sortedArray);
   if(this.dataSource !== null && this.dataSource !== undefined){
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

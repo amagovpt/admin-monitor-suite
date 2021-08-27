@@ -593,7 +593,7 @@
       "Sample_Title":"Sample Choice ",
       "Elements_Title":"Elements to choose",
       "Roles_Title":"Roles to Choose",
-      "Choice_Button":"Set Choice",
+      "Choice_Button":"Choose Sample",
       "Table_Title":"Pages with Tag <table>",
       "Form_Title":"Pages with Tag <form>",
       "Image_Title":"Pages with Images",
@@ -604,22 +604,26 @@
       "LandMark_Title_2":"Pages without LandMarks",
       "LandMark_Title_3":"Pages with more than one unique LandMark",
       "Button_Title":"Pages with Tag <button>",
-      "Presentation_Title":"Pages with Presentations",
+      "Presentation_Title":"Pages with Elements with role Presentation",
       "CheckBox_Title":"Pages with Checkboxes",
+      "Label": "How many pages with each of the choosen elements do you want in the sample?(the pages choosen will the be ones with more of each the elements choosen)",
+      "Error":"You haven't choosen any roles/tags for the sample. Please do it and try again.",
+      "Error2":"Value of size of Sample cannot be 0. Please enter new number.",
       "Table":{
         "Uri":"Uri",
         "Table":{
-          "Title":"Tables"
+          "Title":"Table"
         }, 
         "Form":{
-          "Title":"Forms"
+          "Title":"Form"
         },
         "Image":{
-          "Title":"Images",
-          "Title2":"SVGS"
+          "Title":"Image",
+          "Title2":"SVG",
+          "Title3": "Total"
         }, 
         "iFrame":{
-          "Title":"iFrames"
+          "Title":"iFrame"
         },
         "Headings":{
           "Title_1":"H1",
@@ -627,24 +631,26 @@
           "Title_3":"H3",
           "Title_4":"H4",
           "Title_5":"H5",
-          "Title_6":"H6"
+          "Title_6":"H6",
+          "Title_7": "Total"          
         },
         "LandMarks":{
-          "Title_h":"Headers",
-          "Title_a":"Asides",
-          "Title_f":"Footers",
-          "Title_m":"Mains",
-          "Title_n":"Navs",
-          "Title_s": "Section"
+          "Title_h":"Header",
+          "Title_a":"Aside",
+          "Title_f":"Footes",
+          "Title_m":"Main",
+          "Title_n":"Nav",
+          "Title_s": "Section",
+          "Title_t": "Total"
         },
         "Button":{
-          "Title":"Buttons"
+          "Title":"Button"
         },
         "Presentation":{
-          "Title":"Presentations"
+          "Title":"Presentation"
         },
         "CheckBox":{
-          "Title":"CheckBoxes"
+          "Title":"CheckBox"
         }
       }
     },

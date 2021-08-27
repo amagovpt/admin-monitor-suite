@@ -11,13 +11,18 @@
 
   <!-- Image Column -->
   <ng-container matColumnDef="Img">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"WEBSITES_PAGE.CARDS.Table.Image.Title"| translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header = "img"> {{"WEBSITES_PAGE.CARDS.Table.Image.Title"| translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.img}} </td>
   </ng-container>
 
   <ng-container matColumnDef="SVG">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"WEBSITES_PAGE.CARDS.Table.Image.Title2"| translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header= "svg"> {{"WEBSITES_PAGE.CARDS.Table.Image.Title2"| translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.svg}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Total">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header= "total"> {{"WEBSITES_PAGE.CARDS.Table.Image.Title3"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

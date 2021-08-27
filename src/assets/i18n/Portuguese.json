@@ -593,7 +593,7 @@
       "Sample_Title":"Escolha de Amostra",
       "Elements_Title":"Elementos à escolha",
       "Roles_Title":"Roles à escolha",
-      "Choice_Button":"Escolha definida",
+      "Choice_Button":"Escolha Amostra",
       "Table_Title":"Páginas com Tag <table>",
       "Form_Title":"Páginas com Tag <form>",
       "Image_Title":"Páginas com Imagens",
@@ -604,23 +604,27 @@
       "LandMark_Title_2":"Páginas sem LandMarks",
       "LandMark_Title_3":"Páginas com mais que um LandMark único",
       "Button_Title":"Páginas com Tag <button>",
-      "Presentation_Title":"Páginas com Presentations",
+      "Presentation_Title":"Páginas com Elementos com role Presentation",
       "CheckBox_Title":"Páginas com Checkboxes",
+      "Label":"Quantas páginas com cada um dos elementos ou roles selecionados pretende incluir na amostra? (serão escolhidas as páginas com maior número de elementos ou roles selecionados)",
+      "Error":"Não foram escolhidos roles/tags para a amostra. Por favor escolha e tente de novo.",
+      "Error2": "Amostra não pode ter tamanho 0. Por favor insira número maior que 0",
       "Table":{
         "Uri":"Uri",
         "Table":{
-          "Title":"Tabelas"
+          "Title":"Table"
         }, 
         "Form":{
-          "Title":"Formularios"
+          "Title":"Form"
 
         },
         "Image":{
-          "Title":"Imagens",
-          "Title2": "SVGS"
+          "Title":"Image",
+          "Title2": "SVG",
+          "Title3": "Total"
         },
         "iFrame":{
-          "Title":"iFrames"
+          "Title":"iFrame"
         }, 
         "Heading":{
           "Title_1":"H1",
@@ -628,24 +632,26 @@
           "Title_3":"H3",
           "Title_4":"H4",
           "Title_5":"H5",
-          "Title_6":"H6"
+          "Title_6":"H6",
+          "Title_7": "Total"
         },
         "LandMarks":{
-          "Title_h":"Headers",
-          "Title_a":"Asides",
-          "Title_f":"Footers",
-          "Title_m":"Mains",
-          "Title_n":"Navs",
-          "Title_s": "Section"
+          "Title_h":"Header",
+          "Title_a":"Aside",
+          "Title_f":"Footer",
+          "Title_m":"Main",
+          "Title_n":"Nav",
+          "Title_s": "Section",
+          "Title_t": "Total"
         },
         "Button":{
-          "Title":"Butões"
+          "Title":"Button"
         },
         "Presentations":{
-          "Title":"Presentations"
+          "Title":"Presentation"
         },
         "CheckBox":{
-          "Title":"CheckBoxes"
+          "Title":"CheckBox"
         }
       }
     },

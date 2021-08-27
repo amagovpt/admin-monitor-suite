@@ -1,4 +1,6 @@
-import { Component, OnInit,Input, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { ThrowStmt } from '@angular/compiler';
+import { Component, OnInit,Input, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit, ViewChildren, QueryList} from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
@@ -13,6 +15,12 @@ interface auxList{
   tags: string[]
 }
 
+interface sample{
+  uri: string;
+  
+
+}
+
 @Component({
   selector: 'app-sample-choice',
   templateUrl: './sample-choice.component.html',
@@ -21,6 +29,8 @@ interface auxList{
 
 export class SampleChoiceComponent implements OnInit,AfterViewInit {
   @Input("evaluations") evaluations: Array<any>;
+  @ViewChildren ('checkBox') checkBox:QueryList<any>;
+
 
   element:any;
   elements: string[];
@@ -47,7 +57,10 @@ export class SampleChoiceComponent implements OnInit,AfterViewInit {
   tagnumber: number[] = [];
   j: number = 0;
   k: number = 0;
-
+  h3show: boolean = false;
+  h3show2: boolean = false;
+  choice_roles: any[] = [];
+  choice_tags: any[] = []
 constructor(private activatedRoute: ActivatedRoute,private get: GetService,private cd: ChangeDetectorRef){
   this.loading = true;
   this.error = false;
@@ -93,7 +106,7 @@ for(let f =0; f<= (this.evaluations.length-1); f++){
       }
     }
 
-
+console.log(this.auxlist[f]);
 this.j = 0;
 this.k = 0;
 }
@@ -231,7 +244,7 @@ sortedAlphabeticlyAsc(){
 
 
 
-      this.element.tags = this.sortArray2 ; 
+this.element.tags = this.sortArray2 ; 
 
 }
 sortedAlphabeticlyAsc2(){
@@ -252,7 +265,7 @@ sortedAlphabeticlyAsc2(){
     }
   
 })   
-      this.element.elements = this.sortArray1 ; 
+this.element.elements = this.sortArray1 ; 
 }
 sortedbyNumberAsc(){
   
@@ -274,7 +287,7 @@ sortedbyNumberAsc(){
 
 
 
-  this.element.tags = this.sortArray2; 
+this.element.tags = this.sortArray2; 
 
   }
       
@@ -299,7 +312,7 @@ sortedbyNumberAsc2(){
 
 
 
-  this.element.elements = this.sortArray1; 
+this.element.elements = this.sortArray1; 
 }
 sortedAlphabeticlyDsc(){
    
@@ -324,7 +337,7 @@ sortedAlphabeticlyDsc(){
 
 
 
-      this.element.tags = this.sortArray2 ; 
+this.element.tags = this.sortArray2 ; 
 
 }
 sortedAlphabeticlyDsc2(){
@@ -349,7 +362,7 @@ sortedAlphabeticlyDsc2(){
   
 })   
 
-      this.element.elements = this.sortArray1 ; 
+this.element.elements = this.sortArray1 ; 
 }
 sortedbyNumberDsc(){
 
@@ -371,7 +384,7 @@ sortedbyNumberDsc(){
 
 
 
-  this.element.tags = this.sortArray2; 
+this.element.tags = this.sortArray2; 
 }
 sortedbyNumberDsc2(){
   
@@ -394,8 +407,39 @@ sortedbyNumberDsc2(){
 
 
 
-  this.element.elements = this.sortArray1; 
+this.element.elements = this.sortArray1; 
 }
+
+
+
+
+SampleChoice(size,tags:string[],roles:string[]){
+  size = parseInt(size);
+  if (tags.length === 0 || tags === undefined || tags === null && roles.length === 0 || roles === undefined|| roles === null ){
+    this.h3show = true;
+    this.sampleSize = '';    
+  }
+  else if(size === 0){
+    this.h3show2 = true;
+    this.sampleSize = '';
+  }
+  else if(roles.length === 0 || roles === undefined|| roles === null ){
+   for (let i = 0; i<= (tags.length -1); i++){
+     for(let j = 0; j<= size; j++){
+
+     }
+
+   }
+
+
+  }
+
+} 
+
+
+
+
+
 }
 
 

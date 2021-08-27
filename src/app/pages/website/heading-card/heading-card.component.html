@@ -45,8 +45,10 @@
     <td mat-cell *matCellDef="let element"> {{element.h6}} </td>
   </ng-container>
 
-
-
+  <ng-container matColumnDef="Total">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header= "total"> {{"WEBSITES_PAGE.CARDS.Table.Heading.Title_7"| translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+  </ng-container>
 
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

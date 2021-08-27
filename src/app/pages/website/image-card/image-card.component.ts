@@ -20,6 +20,7 @@ interface tablevalue{
   uri:string;
   img: number;
   svg: number;
+  total: number;
 }
 
 
@@ -48,7 +49,7 @@ interface tablevalue{
     constructor() {
       }
     ngOnInit():void{
-      this.displayedColumns = ['Uri', 'Img', 'SVG'];
+      this.displayedColumns = ['Uri', 'Img', 'SVG', 'Total'];
       for(let i = 0; i<=(this.dataSourceO.length-1); i++){
           this.obj.push({uri:"",roles:[],tags:[]})
       }
@@ -71,7 +72,7 @@ interface tablevalue{
   }
 
   for(let g = 0; g<= (this.obj.length-1);g ++){
-    this.auxdataSource.push({uri:"",img:0,svg:0});
+    this.auxdataSource.push({uri:"",img:0,svg:0, total:0});
     this.flags.push(1);
   for (let j = 0; j<=(this.obj[g].tags.length-1); j++){
       if((this.obj[g].tags[j]).includes(this.img) === true && (this.obj[g].tags[j]).includes(this.svg) === false){ 
@@ -106,7 +107,30 @@ interface tablevalue{
         this.auxdataSource.splice(h,h+1);
       }
   }
-  this.dataSource = new MatTableDataSource (this.auxdataSource);
+  for(let p = 0;p<=(this.auxdataSource.length -1);p++){
+    this.auxdataSource[p].total = this.auxdataSource[p].img + this.auxdataSource[p].svg;
+
+  }
+let compareTotal = function (a:tablevalue,b: tablevalue){
+    if (a.total > b.total){
+    return -1;
+
+    }
+    if(a.total < b.total){
+      return 1;
+
+    }
+    if (a.total === b.total){
+      return 0;
+    
+    }
+  
+}   
+    let sortedArray = this.auxdataSource.sort(compareTotal);
+
+
+
+  this.dataSource = new MatTableDataSource (sortedArray);
   if(this.dataSource !== null && this.dataSource !== undefined){
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

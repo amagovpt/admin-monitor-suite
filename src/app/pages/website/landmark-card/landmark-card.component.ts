@@ -25,6 +25,7 @@ interface tablevalue{
   main: number;
   nav: number;
   section:number;
+  total: number;
 }
 
 
@@ -58,7 +59,7 @@ interface tablevalue{
     constructor() {
       }
     ngOnInit():void{
-      this.displayedColumns = ['Uri', 'Header', 'Aside','Footer', 'Main','Nav','Section'];
+      this.displayedColumns = ['Uri', 'Header', 'Aside','Footer', 'Main','Nav','Section','Total'];
       for(let i = 0; i<=(this.dataSourceO.length-1); i++){
           this.obj.push({uri:"",roles:[],tags:[]})
       }
@@ -85,7 +86,7 @@ interface tablevalue{
 
   for(let g = 0; g<= (this.obj.length-1);g ++){
     this.flags.push(0);
-    this.auxdataSource.push({uri:"",header:0,aside:0,footer:0,main:0,nav: 0,section:0});
+    this.auxdataSource.push({uri:"",header:0,aside:0,footer:0,main:0,nav: 0,section:0,total:0});
   for (let j = 0; j<=(this.obj[g].tags.length-1); j++){
       if((this.obj[g].tags[j]).includes(this.header) === true ){
         this.auxn = j;
@@ -147,7 +148,29 @@ interface tablevalue{
         this.auxdataSource1.push(this.auxdataSource[h]);
       }
   }
-  this.dataSource = new MatTableDataSource (this.auxdataSource1);
+  for(let p = 0;p<=(this.auxdataSource1.length -1);p++){
+    this.auxdataSource1[p].total = this.auxdataSource1[p].header + this.auxdataSource1[p].aside + this.auxdataSource1[p].footer + this.auxdataSource1[p].main + this.auxdataSource1[p].nav + this.auxdataSource1[p].section;
+  
+  }
+  let compareTotal = function (a:tablevalue,b: tablevalue){
+    if (a.total > b.total){
+    return -1;
+  
+    }
+    if(a.total < b.total){
+      return 1;
+  
+    }
+    if (a.total === b.total){
+      return 0;
+    
+    }
+  
+  }   
+    let sortedArray = this.auxdataSource.sort(compareTotal);
+  
+  
+    this.dataSource = new MatTableDataSource (sortedArray);
   if(this.dataSource !== null && this.dataSource !== undefined){
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
