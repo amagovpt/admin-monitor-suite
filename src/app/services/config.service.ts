@@ -19,7 +19,7 @@ export class ConfigService {
     if (endpoint === "localhost") {
       this.server = "http://localhost:3000";
     } else {
-      localStorage.setItem('server', endpoint);
+      localStorage.setItem("server", endpoint);
       this.server = endpoint + "/api";
     }
   }
@@ -28,7 +28,7 @@ export class ConfigService {
     if (!this.server) {
       const endpoint = localStorage.getItem("server");
       if (endpoint) {
-        this.server = endpoint + '/api';
+        this.server = endpoint + "/api";
       } else {
         this.server = "http://localhost:3000";
       }

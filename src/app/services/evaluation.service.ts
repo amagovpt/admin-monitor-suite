@@ -38,6 +38,110 @@ export class EvaluationService {
     private translate: TranslateService
   ) {}
 
+  resetAdminList(): Observable<boolean> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/admin/reset"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  resetUserList(): Observable<boolean> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/user/reset"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  deleteAdminList(): Observable<boolean> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/admin/delete"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  deleteUserList(): Observable<boolean> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/user/delete"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
   reEvaluatePage(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/page/reEvaluate"), data, {

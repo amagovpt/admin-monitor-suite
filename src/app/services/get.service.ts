@@ -244,9 +244,147 @@ export class GetService {
       );
   }
 
-  numberOfPagesWaitingForEvaluation(): Observable<number> {
+  numberOfAdminPagesBeingEvaluated(): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer("/page/evaluationList"), {
+      .get<any>(
+        this.config.getServer("/page/evaluationList/admin/evaluating"),
+        {
+          observe: "response",
+        }
+      )
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <Array<number>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  numberOfAdminPagesWaitingForEvaluation(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/page/evaluationList/admin/waiting"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <Array<number>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  numberOfAdminPagesWithError(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/page/evaluationList/admin/error"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <Array<number>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  numberOfUserPagesBeingEvaluated(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/page/evaluationList/user/evaluating"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <Array<number>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  numberOfUserPagesWaitingForEvaluation(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/page/evaluationList/user/waiting"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <Array<number>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  numberOfUserPagesWithError(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/page/evaluationList/user/error"), {
         observe: "response",
       })
       .pipe(
@@ -377,7 +515,9 @@ export class GetService {
 
   listOfEntityCount(search: string): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer(`/entity/all/count/search=${search}`), { observe: "response" })
+      .get<any>(this.config.getServer(`/entity/all/count/search=${search}`), {
+        observe: "response",
+      })
       .pipe(
         retry(3),
         map((res) => {
@@ -400,9 +540,20 @@ export class GetService {
       );
   }
 
-  listOfEntities(size: number, page: number, sort: string, direction: string, search: string): Observable<Array<Entity>> {
+  listOfEntities(
+    size: number,
+    page: number,
+    sort: string,
+    direction: string,
+    search: string
+  ): Observable<Array<Entity>> {
     return this.http
-      .get<any>(this.config.getServer(`/entity/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`), { observe: "response" })
+      .get<any>(
+        this.config.getServer(
+          `/entity/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`
+        ),
+        { observe: "response" }
+      )
       .pipe(
         retry(3),
         map((res) => {
@@ -427,7 +578,9 @@ export class GetService {
 
   listOfWebsiteCount(search: string): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer(`/website/all/count/search=${search}`), { observe: "response" })
+      .get<any>(this.config.getServer(`/website/all/count/search=${search}`), {
+        observe: "response",
+      })
       .pipe(
         retry(3),
         map((res) => {
@@ -450,9 +603,20 @@ export class GetService {
       );
   }
 
-  listOfWebsites(size: number, page: number, sort: string, direction: string, search: string): Observable<Array<Website>> {
+  listOfWebsites(
+    size: number,
+    page: number,
+    sort: string,
+    direction: string,
+    search: string
+  ): Observable<Array<Website>> {
     return this.http
-      .get<any>(this.config.getServer(`/website/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`), { observe: "response" })
+      .get<any>(
+        this.config.getServer(
+          `/website/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`
+        ),
+        { observe: "response" }
+      )
       .pipe(
         retry(3),
         map((res) => {
@@ -920,7 +1084,9 @@ export class GetService {
 
   listOfPageCount(search: string): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer(`/page/all/count/search=${search}`), { observe: "response" })
+      .get<any>(this.config.getServer(`/page/all/count/search=${search}`), {
+        observe: "response",
+      })
       .pipe(
         retry(3),
         map((res) => {
@@ -943,9 +1109,20 @@ export class GetService {
       );
   }
 
-  listOfPages(size: number, page: number, sort: string, direction: string, search: string): Observable<Array<Page>> {
+  listOfPages(
+    size: number,
+    page: number,
+    sort: string,
+    direction: string,
+    search: string
+  ): Observable<Array<Page>> {
     return this.http
-      .get<any>(this.config.getServer(`/page/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`), { observe: "response" })
+      .get<any>(
+        this.config.getServer(
+          `/page/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`
+        ),
+        { observe: "response" }
+      )
       .pipe(
         retry(3),
         map((res) => {

@@ -35,8 +35,37 @@
     <br>
   </mat-card-content>
   <mat-card-actions fxLayout="column" fxLayoutAlign="center center">
-    <button mat-flat-button color="primary" (click)="generateObservatoryData()">{{ "HOME_PAGE.generate_observatory_data" | translate }}</button>
+    <div>
+      <button mat-flat-button color="primary" (click)="generateObservatoryData()">{{ "HOME_PAGE.generate_observatory_data" | translate }}</button>
+    </div>
     <br>
-    <span>{{ "HOME_PAGE.evaluations" | translate }}: {{ evaluations }}</span>
+    <div class="evaluation-list" fxLayout="row" fxLayoutAlign="space-around center">
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <button mat-flat-button color="primary" (click)="resetAdminEvaluationList()">{{ "HOME_PAGE.reset_admin_evaluation_list" | translate }}</button>
+          <button mat-flat-button color="warn" (click)="deleteAdminEvaluationList()">{{ "HOME_PAGE.delete_admin_evaluation_list" | translate }}</button>
+        </div>
+        <br>
+        <span>{{ "HOME_PAGE.admin_evaluations" | translate }}</span>
+        <br>
+        <span>{{ "HOME_PAGE.evaluations_total" | translate }}: {{ admin_total }}</span>
+        <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ admin_evaluating }}</span>
+        <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ admin_waiting }}</span>
+        <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ admin_error }}</span>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <button mat-flat-button color="primary" (click)="resetUserEvaluationList()">{{ "HOME_PAGE.reset_user_evaluation_list" | translate }}</button>
+          <button mat-flat-button color="warn" (click)="deleteUserEvaluationList()">{{ "HOME_PAGE.delete_user_evaluation_list" | translate }}</button>
+        </div>
+        <br>
+        <span>{{ "HOME_PAGE.user_evaluations" | translate }}</span>
+        <br>
+        <span>{{ "HOME_PAGE.evaluations_total" | translate }}: {{ user_total }}</span>
+        <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ user_evaluating }}</span>
+        <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ user_waiting }}</span>
+        <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ user_error }}</span>
+      </div>
+    </div>
   </mat-card-actions>
 </mat-card>

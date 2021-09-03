@@ -120,6 +120,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
 import { TagCrawlerInformationDialogComponent } from './dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component';
 import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipes";
+import { DeleteEvaluationListConfirmationDialogComponent } from './dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component';
 
 
 registerLocaleData(localeEn, "en");
@@ -369,6 +370,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TagCrawlerInformationDialogComponent,
     SumElementsPipe,
     CountTypesPipe,
+    DeleteEvaluationListConfirmationDialogComponent,
 
   ],
   imports: [

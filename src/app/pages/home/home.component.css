@@ -11,3 +11,11 @@ mat-card-actions span {
   font-size: 1.5em;
   color: gray;
 }
+
+.evaluation-list {
+  width: 80%;
+}
+
+.interactions {
+  width: 50%;
+}

@@ -1,20 +1,19 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import * as _ from 'lodash';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
+import * as _ from "lodash";
 
-import { GetService } from '../../services/get.service';
-import { EvaluationService } from '../../services/evaluation.service';
+import { GetService } from "../../services/get.service";
+import { EvaluationService } from "../../services/evaluation.service";
 
-import { Website } from '../../models/website.object';
+import { Website } from "../../models/website.object";
 
 @Component({
-  selector: 'app-website',
-  templateUrl: './website.component.html',
-  styleUrls: ['./website.component.css']
+  selector: "app-website",
+  templateUrl: "./website.component.html",
+  styleUrls: ["./website.component.css"],
 })
 export class WebsiteComponent implements OnInit, OnDestroy {
-
   loading: boolean;
   error: boolean;
   errorNoActiveDomains: boolean;
@@ -41,16 +40,17 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.activatedRoute.params.subscribe(params => {
+    this.sub = this.activatedRoute.params.subscribe((params) => {
       this.tag = params.tag || null;
-      this.user = params.user || 'admin';
+      this.user = params.user || "admin";
       this.website = params.website;
 
-      if (this.user === 'admin') {
+      if (this.user === "admin") {
         this.getListOfWebsiteDomains();
       } else {
-        this.get.listOfUserWebsitePages(this.tag, this.user, this.website)
-          .subscribe(pages => {
+        this.get
+          .listOfUserWebsitePages(this.tag, this.user, this.website)
+          .subscribe((pages) => {
             if (pages !== null) {
               this.pages = pages;
             } else {
@@ -69,24 +69,40 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   }
 
   private getListOfWebsiteDomains(): void {
-    this.get.listOfWebsiteDomains(this.user, this.website)
-      .subscribe(domains => {
+    this.get
+      .listOfWebsiteDomains(this.user, this.website)
+      .subscribe((domains) => {
         if (domains !== null) {
           this.domains = domains;
-          if (_.size(domains) > 0 && _.size(_.find(this.domains, ['Active', 1 ])) === 0){
+          if (
+            _.size(domains) > 0 &&
+            _.size(_.find(this.domains, ["Active", 1])) === 0
+          ) {
             this.errorNoActiveDomains = true;
           } else {
-            this.activeDomain = _.find(this.domains, ['Active', 1 ]).Url;
+            this.activeDomain = _.find(this.domains, ["Active", 1]).Url;
 
-            this.get.listOfDomainPages(this.user, encodeURIComponent(this.activeDomain))
-              .subscribe(pages => {
+            this.get
+              .listOfDomainPages(
+                this.user,
+                encodeURIComponent(this.activeDomain)
+              )
+              .subscribe((pages) => {
                 this.pages = _.clone(pages);
 
-                pages = pages.filter(p => p.Score !== null);
+                pages = pages.filter((p) => p.Score !== null);
 
                 this.websiteObject = new Website();
                 for (const page of pages) {
-                  this.websiteObject.addPage(page.Score, page.Errors, page.Tot, page.A, page.AA, page.AAA, page.Evaluation_Date);
+                  this.websiteObject.addPage(
+                    page.Score,
+                    page.Errors,
+                    page.Tot,
+                    page.A,
+                    page.AA,
+                    page.AAA,
+                    page.Evaluation_Date
+                  );
                 }
                 this.loading = false;
                 this.cd.detectChanges();
@@ -106,22 +122,18 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   }
 
   downloadAllPagesCSV(): void {
-    this.evaluation.downloadDomainCSV(this.activeDomain, true)
-      .subscribe();
+    this.evaluation.downloadDomainCSV(this.activeDomain, true).subscribe();
   }
 
   downloadObservatoryCSV(): void {
-    this.evaluation.downloadDomainCSV(this.activeDomain, false)
-      .subscribe();
+    this.evaluation.downloadDomainCSV(this.activeDomain, false).subscribe();
   }
 
   downloadAllPagesEARL(): void {
-    this.evaluation.downloadDomainEARL(this.activeDomain, true)
-      .subscribe();
+    this.evaluation.downloadDomainEARL(this.activeDomain, true).subscribe();
   }
 
   downloadObservatoryEARL(): void {
-    this.evaluation.downloadDomainEARL(this.activeDomain, false)
-      .subscribe();
+    this.evaluation.downloadDomainEARL(this.activeDomain, false).subscribe();
   }
 }
