@@ -124,8 +124,7 @@ this.element = {
 
 }
 ngAfterViewInit(){
-  console.log(this.choice_roles.length);
-  console.log(this.choice_tags.length);
+
   if (this.evaluations != null && this.evaluations != undefined){
    //Getting List of roles/tags in website
     this.roleList = [];
@@ -619,7 +618,7 @@ this.finalSampleT = this.finalSampleT.filter(
   (thing, i, arr) => arr.findIndex(t => t.uri === thing.uri) === i
 )
 
-console.log(this.finalSampleT)
+
 
 this.dataSource = new MatTableDataSource(this.finalSampleT);
 
@@ -957,7 +956,7 @@ if(this.dataSource !== null && this.dataSource !== undefined){
     }
     this.displayedColumns = this.columns;
   
-    for(let g = 0; g<= (this.finalSampleT.length-1) ;g++){
+    for(let g = 0; g<= (this.finalSampleR.length-1) ;g++){
       this.AuxFinalSampleRT =  this.auxlist2.filter((x) => { return x.uri.includes(this.finalSampleR[g].uri) })
       this.FinalSampleRT.push(this.AuxFinalSampleRT[0]);
   }
@@ -970,6 +969,7 @@ if(this.dataSource !== null && this.dataSource !== undefined){
   this.FinalSampleRT = this.FinalSampleRT.filter(
     (thing, i, arr) => arr.findIndex(t => t.uri === thing.uri) === i
   )
+
 
   this.dataSource = new MatTableDataSource(this.FinalSampleRT);
 
