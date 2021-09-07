@@ -609,6 +609,9 @@
       "Label":"Quantas páginas com cada um dos elementos ou roles selecionados pretende incluir na amostra? (serão escolhidas as páginas com maior número de elementos ou roles selecionados)",
       "Error":"Não foram escolhidos roles/tags para a amostra. Por favor escolha e tente de novo.",
       "Error2": "Amostra não pode ter tamanho 0. Por favor insira número maior que 0",
+      "Error3": "Amostra não pode ter tamanho menor que 0. Por favor insira número maior que 0",
+      "Error4": "Error no Sampling. Por favor tente de novo",
+      "Sample":"Amostra Escolhida:",
       "Table":{
         "Uri":"Uri",
         "Table":{

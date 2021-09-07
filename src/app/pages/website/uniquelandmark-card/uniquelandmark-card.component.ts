@@ -178,6 +178,7 @@ interface tablevalue{
   }
  
   for(let h = 0 ; h<= ((this.flags).length-1) ;h++){
+    
     if(this.flags[h]===1){
       this.auxdataSource1.push(this.auxdataSource[h]);    
     }
@@ -201,7 +202,7 @@ let compareTotal = function (a:tablevalue,b: tablevalue){
   }
 
 }   
-  let sortedArray = this.auxdataSource.sort(compareTotal);
+  let sortedArray = this.auxdataSource1.sort(compareTotal);
 
 
   this.dataSource = new MatTableDataSource (sortedArray);

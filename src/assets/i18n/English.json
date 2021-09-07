@@ -609,6 +609,9 @@
       "Label": "How many pages with each of the choosen elements do you want in the sample?(the pages choosen will the be ones with more of each the elements choosen)",
       "Error":"You haven't choosen any roles/tags for the sample. Please do it and try again.",
       "Error2":"Value of size of Sample cannot be 0. Please enter new number.",
+      "Error3":"Value of size of Sample cannot be negative. Please enter new number.",
+      "Error4":"Sampling error. Please try again.",
+      "Sample": "Sample Choosen:",
       "Table":{
         "Uri":"Uri",
         "Table":{
