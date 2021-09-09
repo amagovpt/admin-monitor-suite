@@ -11,12 +11,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { hasSubscribers } from 'diagnostic_channel';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Page } from '../../../models/page';
 import { GetService } from '../../../services/get.service';
 import { PageComponent } from '../../page/page.component';
-
-
+import { saveAs } from "file-saver";
 
 interface auxList{
   uri:string;
@@ -108,7 +107,8 @@ export class SampleChoiceComponent implements OnInit,AfterViewInit {
   dataSource: any;
   sortedArray: any;
   auxtags: string = '';
-  value: boolean = false;
+  samplechoice: boolean = false;
+  taglistaux:string[] = [];
 constructor(private activatedRoute: ActivatedRoute,private get: GetService,private cd: ChangeDetectorRef){
   this.loading = true;
   this.error = false;
@@ -457,7 +457,6 @@ this.element.elements = this.sortArray1;
 }
 
 SampleChoice(size,tags:string[],roles:string[]){
-this.value = false;
 this.tagarray =[];
 this.rolearray= [];
 this.sampleTagArray = [];
@@ -475,6 +474,7 @@ this.h3show = false;
 this.h3show2 = false;
 this.h3show3 = false;
 this.h3show4 = false;
+this.taglistaux = [];
 
   let compareValues = function (a:any,b:any,key:string){
     if (a[key] > b[key] ){
@@ -624,8 +624,13 @@ this.dataSource = new MatTableDataSource(this.finalSampleT);
 
 let columns = []
 columns.push('Uri');
+
+for(let h= 0; h<= tags.length-1;h++){
+  this.taglistaux.push("<" + tags[h] + ">")
+  }
+
 for(let f= 0; f<= tags.length-1;f++){
-  columns.push(tags[f]);
+  columns.push(this.taglistaux[f]);
   }
   this.displayedColumns = columns;
 
@@ -633,6 +638,7 @@ if(this.dataSource !== null && this.dataSource !== undefined){
   this.dataSource.sort = this.sort;
   this.dataSource.paginator = this.paginator;
 }
+this.samplechoice = true;
 
   }
 
@@ -746,6 +752,7 @@ if(this.dataSource !== null && this.dataSource !== undefined){
   this.dataSource.sort = this.sort;
   this.dataSource.paginator = this.paginator;
 }
+this.samplechoice = true;
 
     }
  
@@ -846,9 +853,14 @@ if(this.dataSource !== null && this.dataSource !== undefined){
   
  
   this.columns.push('Uri');
-  for(let f= 0; f<= tags.length-1;f++){
-    this.columns.push(tags[f]);
+  for(let h= 0; h<= tags.length-1;h++){
+    this.taglistaux.push("<" + tags[h] + ">")
     }
+  
+  for(let f= 0; f<= tags.length-1;f++){
+    this.columns.push(this.taglistaux[f]);
+    }
+  
     this.displayedColumns = this.columns;
   
    
@@ -979,7 +991,7 @@ if(this.dataSource !== null && this.dataSource !== undefined){
     this.dataSource.paginator = this.paginator;
   }
  //ends here
-   
+ this.samplechoice = true;
 
    }
 
@@ -1035,7 +1047,121 @@ addtoTagList(event, value: string){
   }
 
 }
+private generateCSV(
+  data:sampleT[],
+  skipLabels: boolean,
+): string {
+  let row: any;
+  const labels = new Array<string>();
+  if(this.displayedColumns != []){
+  for(let i = 0; i<= this.displayedColumns.length-1; i++){
+    labels.push(this.displayedColumns[i])
+  }
+  }
+  let csvContent = !skipLabels ? labels.join(";") + "\r\n" : "";
 
+  for(let row of data){
+    let newrow;
+    newrow= row.uri + ";";
+    
+    for(let label of labels){
+      if(label === 'Uri'){
+        continue
+      }
+      newrow += (row.tags[label] ? row.tags[label] : 0 )+";";
+    }
+    newrow += "\r\n";
+    csvContent += newrow;
+  }
+
+  return csvContent;
+}
+
+
+private generateCSV2(
+  data:sampleR[],
+  skipLabels: boolean,
+): string {
+  let row: any;
+  const labels = new Array<string>();
+  if(this.displayedColumns != []){
+  for(let i = 0; i<= this.displayedColumns.length-1; i++){
+    labels.push(this.displayedColumns[i])
+  }
+  }
+  let csvContent = !skipLabels ? labels.join(";") + "\r\n" : "";
+
+  for(let row of data){
+    let newrow;
+    newrow= row.uri + ";";
+    
+    for(let label of labels){
+      if(label === 'Uri'){
+        continue
+      }
+      newrow += (row.roles[label] ? row.roles[label] : 0 )+";";
+    }
+    newrow += "\r\n";
+    csvContent += newrow;
+  }
+
+  return csvContent;
+}
+
+
+private generateCSV3(
+  data:auxList[],
+  skipLabels: boolean,
+): string {
+  let row: any;
+  const labels = new Array<string>();
+  if(this.displayedColumns != []){
+  for(let i = 0; i<= this.displayedColumns.length-1; i++){
+    labels.push(this.displayedColumns[i])
+  }
+  }
+  let csvContent = !skipLabels ? labels.join(";") + "\r\n" : "";
+
+  for(let row of data){
+    let newrow;
+    newrow= row.uri + ";";
+    for(let label of labels){
+      if(label === 'Uri'){
+        continue
+      }
+
+      newrow += (row.tags[label] ? row.tags[label] : ((row.roles[label] ? row.roles[label] : 0) ))+";";
+    }
+    newrow += "\r\n";
+
+    csvContent += newrow;
+  }
+
+  return csvContent;
+  }
+
+
+
+downloadSampleCSV(): void {
+
+  if(this.FinalSampleRT.length>0){
+    const csvContent = this.generateCSV3(this.FinalSampleRT, false);
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      saveAs(blob, "sample.csv");
+      }
+
+  else if(this.finalSampleT.length>0){
+  const csvContent = this.generateCSV(this.finalSampleT, false);
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  saveAs(blob, "sample.csv");
+  }
+  else if(this.finalSampleR.length>0){
+    const csvContent = this.generateCSV2(this.finalSampleR, false);
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    saveAs(blob, "sample.csv");
+    }
+  
+} 
 }
 
 

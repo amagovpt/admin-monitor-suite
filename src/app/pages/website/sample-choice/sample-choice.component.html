@@ -39,8 +39,9 @@
     <br>
     <h3 [hidden]="h3show4 === false" >{{"WEBSITES_PAGE.CARDS.Error4" | translate }}</h3>
     <br>
-    <h3>{{"WEBSITES_PAGE.CARDS.Sample" | translate}}</h3>
+    <h3 [hidden]="samplechoice === false">{{"WEBSITES_PAGE.CARDS.Sample" | translate}}<span fxFlex></span><button class="e-sampleDowloadButton" role="Download Sample Button" [disabled]="this.finalSampleT===[] && this.finalSampleR=== [] && this.FinalSampleRT === [] " (click)=downloadSampleCSV()><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 8zM4 19h16v2H4z" fill="#000"/></svg></button></h3>
     <br>
+    
     <mat-table #table ng-show="false" [dataSource]="dataSource" matSort>
       <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
           <mat-header-cell *matHeaderCellDef mat-sort-header="{{disCol}}" >{{disCol}}</mat-header-cell>
