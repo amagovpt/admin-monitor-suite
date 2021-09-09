@@ -123,6 +123,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
 import { TagCrawlerInformationDialogComponent } from './dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component';
 import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipes";
+import { CounterPipe } from "./pipes/counterpipe.pipes";
 import { ImageCardComponent } from "./pages/website/image-card/image-card.component";
 import { IFrameCardComponent } from "./pages/website/iFrame-card/iFrame-card.component";
 import { HeadingCardComponent } from "./pages/website/heading-card/heading-card.component";
@@ -133,6 +134,7 @@ import { UniqueLandMarkCardComponent } from "./pages/website/uniquelandmark-card
 import { ButtonCardComponent } from "./pages/website/button-card/button-card.component";
 import { PresentationCardComponent } from "./pages/website/presentation-card/presentation-card.component";
 import { CheckBoxCardComponent } from "./pages/website/checkbox-card/checkbox-card.component";
+
 
 
 registerLocaleData(localeEn, "en");
@@ -395,6 +397,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CheckBoxCardComponent,
     SumElementsPipe,
     CountTypesPipe,
+    CounterPipe,
 
   ],
   imports: [

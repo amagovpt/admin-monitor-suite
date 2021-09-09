@@ -625,12 +625,9 @@ this.dataSource = new MatTableDataSource(this.finalSampleT);
 let columns = []
 columns.push('Uri');
 
-for(let h= 0; h<= tags.length-1;h++){
-  this.taglistaux.push("<" + tags[h] + ">")
-  }
 
 for(let f= 0; f<= tags.length-1;f++){
-  columns.push(this.taglistaux[f]);
+  columns.push(tags[f]);
   }
   this.displayedColumns = columns;
 
@@ -853,12 +850,10 @@ this.samplechoice = true;
   
  
   this.columns.push('Uri');
-  for(let h= 0; h<= tags.length-1;h++){
-    this.taglistaux.push("<" + tags[h] + ">")
-    }
+
   
   for(let f= 0; f<= tags.length-1;f++){
-    this.columns.push(this.taglistaux[f]);
+    this.columns.push(tags[f]);
     }
   
     this.displayedColumns = this.columns;
