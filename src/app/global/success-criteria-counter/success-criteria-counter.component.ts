@@ -27,9 +27,13 @@ export class SuccessCriteriaCounterComponent implements OnInit {
       const scs = tests[key].scs.split(",");
       for (const sc of scs || []) {
         if (this.scs.success[sc] !== undefined) {
-          this.scs.success[sc]++;
+          this.scs.success[sc].counter++;
+          this.scs.success[sc].tests.push(key);
         } else {
-          this.scs.success[sc] = 1;
+          this.scs.success[sc] = {
+            tests: [key],
+          };
+          this.scs.success[sc].counter = 1;
         }
       }
     }
@@ -40,9 +44,13 @@ export class SuccessCriteriaCounterComponent implements OnInit {
       const scs = tests[key].scs.split(",");
       for (const sc of scs || []) {
         if (this.scs.errors[sc] !== undefined) {
-          this.scs.errors[sc]++;
+          this.scs.errors[sc].counter++;
+          this.scs.errors[sc].tests.push(key);
         } else {
-          this.scs.errors[sc] = 1;
+          this.scs.errors[sc] = {
+            tests: [key],
+          };
+          this.scs.errors[sc].counter = 1;
         }
       }
     }

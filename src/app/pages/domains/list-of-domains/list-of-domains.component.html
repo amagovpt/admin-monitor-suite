@@ -75,7 +75,7 @@
           {{ "DOMAINS_PAGE.LIST.table.pages_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          {{element.Pages}}
+          {{element.Pages}} ({{element.Evaluated_Pages}})
         </mat-cell>
       </ng-container>
 

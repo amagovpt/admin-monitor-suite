@@ -6,21 +6,45 @@
   </mat-card-header>
   <mat-card-content>
     <div fxFlex fxLayout="row" fxLayoutAlign="space-around start">
-      <div>
+      <div fxFlex="40">
         <h2>{{ "STATISTICS.success_criteria_counter.good_practices" | translate }}</h2>
-        <mat-list>
-          <mat-list-item *ngFor="let s of scsSuccess; let i = index;">
-            <span class="bold">{{ "STATISTICS.success_criteria_counter.sc" | translate }} {{ s }}:</span><span>{{ scs.success[s] }}</span>
-          </mat-list-item>
-        </mat-list>
+        <div *ngFor="let s of scsSuccess; let i = index;">
+          <mat-expansion-panel [class.mat-elevation-z0]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="bold">{{ "STATISTICS.success_criteria_counter.sc" | translate }} {{ s }}:</span><span>{{ scs.success[s].counter }}</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ul>
+              <li *ngFor="let test of scs.success[s].tests; let i = index;">
+                <span [innerHTML]="'TEST_RESULTS.' + test | translate: { value: data.success[test].n_elems } | html:true"></span>
+                <span>: {{ data.success[test].n_websites || data.success[test].n_pages }} </span>
+                <span *ngIf="data.success[test].n_websites">{{ "STATISTICS.success_criteria_counter.websites" | translate }}</span>
+                <span *ngIf="!data.success[test].n_websites">{{ "STATISTICS.success_criteria_counter.pages" | translate }}</span>
+              </li>
+            </ul>
+          </mat-expansion-panel>
+        </div>
       </div>
-      <div>
+      <div fxFlex="40">
         <h2>{{ "STATISTICS.success_criteria_counter.bad_practices" | translate }}</h2>
-        <mat-list>
-          <mat-list-item *ngFor="let s of scsErrors; let i = index;">
-            <span class="bold">{{ "STATISTICS.success_criteria_counter.sc" | translate }} {{ s }}:</span><span>{{ scs.errors[s] }}</span>
-          </mat-list-item>
-        </mat-list>
+        <div *ngFor="let s of scsErrors; let i = index;">
+          <mat-expansion-panel [class.mat-elevation-z0]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="bold">{{ "STATISTICS.success_criteria_counter.sc" | translate }} {{ s }}:</span><span>{{ scs.errors[s].counter }}</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ul>
+              <li *ngFor="let test of scs.errors[s].tests; let i = index;">
+                <span [innerHTML]="'TEST_RESULTS.' + test | translate: { value: data.errors[test].n_elems } | html:true"></span>
+                <span>: {{ data.errors[test].n_websites || data.errors[test].n_pages }} </span>
+                <span *ngIf="data.errors[test].n_websites">{{ "STATISTICS.success_criteria_counter.websites" | translate }}</span>
+                <span *ngIf="!data.errors[test].n_websites">{{ "STATISTICS.success_criteria_counter.pages" | translate }}</span>
+              </li>
+            </ul>
+          </mat-expansion-panel>
+        </div>
       </div>
     </div>
   </mat-card-content>

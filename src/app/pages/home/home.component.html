@@ -33,39 +33,48 @@
       <br>
     </div>
     <br>
-  </mat-card-content>
-  <mat-card-actions fxLayout="column" fxLayoutAlign="center center">
+    <h3>{{ "HOME_PAGE.generate_observatory_title" | translate }}</h3>
     <div>
-      <button mat-flat-button color="primary" (click)="generateObservatoryData()">{{ "HOME_PAGE.generate_observatory_data" | translate }}</button>
+      <p>{{ "HOME_PAGE.generate_observatory_description" | translate }}</p>
+      <button mat-flat-button color="primary" (click)="generateObservatoryData()">{{ "HOME_PAGE.generate_observatory_button" | translate }}</button>
     </div>
     <br>
-    <div class="evaluation-list" fxLayout="row" fxLayoutAlign="space-around center">
-      <div fxLayout="column" fxLayoutAlign="start start">
-        <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button mat-flat-button color="primary" (click)="resetAdminEvaluationList()">{{ "HOME_PAGE.reset_admin_evaluation_list" | translate }}</button>
-          <button mat-flat-button color="warn" (click)="deleteAdminEvaluationList()">{{ "HOME_PAGE.delete_admin_evaluation_list" | translate }}</button>
-        </div>
-        <br>
-        <span>{{ "HOME_PAGE.admin_evaluations" | translate }}</span>
-        <br>
-        <span>{{ "HOME_PAGE.evaluations_total" | translate }}: {{ admin_total }}</span>
-        <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ admin_evaluating }}</span>
-        <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ admin_waiting }}</span>
-        <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ admin_error }}</span>
+    <h3>{{ "HOME_PAGE.evaluation_state_title" | translate }}</h3>
+    <div fxLayout="column">
+      <h4>Access Monitor evaluations</h4>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ am_counter }}</span>
+    </div>
+    <br>
+    <div fxLayout="column">
+      <h4>{{ "HOME_PAGE.evaluation_observatory_state_title" | translate }}</h4>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ ams_counter }}</span>
+      <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ admin_evaluating }}</span>
+      <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ admin_waiting }}</span>
+      <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ admin_error }}</span>
+      <div fxLayout="row">
+        <button mat-flat-button color="primary" (click)="resetAdminEvaluationList()">{{ "HOME_PAGE.reset_evaluation_list" | translate }}</button>
+        <button mat-flat-button color="warn" (click)="deleteAdminEvaluationList()">{{ "HOME_PAGE.delete_evaluation_list" | translate }}</button>
       </div>
-      <div fxLayout="column" fxLayoutAlign="start start">
-        <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button mat-flat-button color="primary" (click)="resetUserEvaluationList()">{{ "HOME_PAGE.reset_user_evaluation_list" | translate }}</button>
-          <button mat-flat-button color="warn" (click)="deleteUserEvaluationList()">{{ "HOME_PAGE.delete_user_evaluation_list" | translate }}</button>
-        </div>
-        <br>
-        <span>{{ "HOME_PAGE.user_evaluations" | translate }}</span>
-        <br>
-        <span>{{ "HOME_PAGE.evaluations_total" | translate }}: {{ user_total }}</span>
-        <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ user_evaluating }}</span>
-        <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ user_waiting }}</span>
-        <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ user_error }}</span>
+      <br>
+      <h4>{{ "HOME_PAGE.evaluation_mm_state_title" | translate }}</h4>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ mm_counter }}</span>
+      <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ user_evaluating }}</span>
+      <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ user_waiting }}</span>
+      <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ user_error }}</span>
+      <div fxLayout="row">
+        <button mat-flat-button color="primary" (click)="resetMyMonitorEvaluationList()">{{ "HOME_PAGE.reset_evaluation_list" | translate }}</button>
+        <button mat-flat-button color="warn" (click)="deleteMyMonitorEvaluationList()">{{ "HOME_PAGE.delete_evaluation_list" | translate }}</button>
+      </div>
+      <br>
+      <h4>{{ "HOME_PAGE.evaluation_sm_state_title" | translate }}</h4>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ sm_counter }}</span>
+      <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ user_evaluating }}</span>
+      <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ user_waiting }}</span>
+      <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ user_error }}</span>
+      <div fxLayout="row">
+        <button mat-flat-button color="primary" (click)="resetStudyMonitorEvaluationList()">{{ "HOME_PAGE.reset_evaluation_list" | translate }}</button>
+        <button mat-flat-button color="warn" (click)="deleteStudyMonitorEvaluationList()">{{ "HOME_PAGE.delete_evaluation_list" | translate }}</button>
       </div>
     </div>
-  </mat-card-actions>
+  </mat-card-content>
 </mat-card>

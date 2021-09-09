@@ -38,6 +38,110 @@ export class EvaluationService {
     private translate: TranslateService
   ) {}
 
+  getAMSObservatoryRequestCounter(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/ams/counter"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  getMyMonitorRequestCounter(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/mm/counter"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  getStudyMonitorRequestCounter(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/sm/counter"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  getAccessMonitorRequestCounter(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/am/counter"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
   resetAdminList(): Observable<boolean> {
     return this.http
       .get<any>(this.config.getServer("/evaluation/admin/reset"), {
@@ -64,9 +168,35 @@ export class EvaluationService {
       );
   }
 
-  resetUserList(): Observable<boolean> {
+  resetMyMonitorList(): Observable<boolean> {
     return this.http
-      .get<any>(this.config.getServer("/evaluation/user/reset"), {
+      .get<any>(this.config.getServer("/evaluation/mm/reset"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  resetStudyMonitorList(): Observable<boolean> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/sm/reset"), {
         observe: "response",
       })
       .pipe(
@@ -116,9 +246,35 @@ export class EvaluationService {
       );
   }
 
-  deleteUserList(): Observable<boolean> {
+  deleteMyMonitorList(): Observable<boolean> {
     return this.http
-      .get<any>(this.config.getServer("/evaluation/user/delete"), {
+      .get<any>(this.config.getServer("/evaluation/mm/delete"), {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  deleteStudyMonitorList(): Observable<boolean> {
+    return this.http
+      .get<any>(this.config.getServer("/evaluation/sm/delete"), {
         observe: "response",
       })
       .pipe(
@@ -145,6 +301,32 @@ export class EvaluationService {
   reEvaluatePage(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/page/reEvaluate"), data, {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(false);
+        })
+      );
+  }
+
+  reEvaluatePages(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/page/reEvaluateMulti"), data, {
         observe: "response",
       })
       .pipe(

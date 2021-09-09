@@ -24,6 +24,11 @@ export class HomeComponent implements OnInit {
   observatory_tags: number;
   observatory_websites: number;
 
+  ams_counter: number;
+  mm_counter: number;
+  sm_counter: number;
+  am_counter: number;
+
   admin_total: number;
   admin_evaluating: number;
   admin_waiting: number;
@@ -33,6 +38,8 @@ export class HomeComponent implements OnInit {
   user_evaluating: number;
   user_waiting: number;
   user_error: number;
+
+  startingDate: Date;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -51,15 +58,20 @@ export class HomeComponent implements OnInit {
     this.access_studies_websites = 0;
     this.my_monitor_websites = 0;
 
-    this.admin_total = 0;
+    this.ams_counter = 0;
+    this.mm_counter = 0;
+    this.sm_counter = 0;
+    this.am_counter = 0;
+
     this.admin_evaluating = 0;
     this.admin_waiting = 0;
     this.admin_error = 0;
 
-    this.user_total = 0;
     this.user_evaluating = 0;
     this.user_waiting = 0;
     this.user_error = 0;
+
+    this.startingDate = new Date();
   }
 
   ngOnInit(): void {
@@ -105,7 +117,6 @@ export class HomeComponent implements OnInit {
 
     this.get.numberOfAdminPagesBeingEvaluated().subscribe((total: number) => {
       this.admin_evaluating = total;
-      this.admin_total += parseInt(total + "");
       this.cd.detectChanges();
     });
 
@@ -113,19 +124,16 @@ export class HomeComponent implements OnInit {
       .numberOfAdminPagesWaitingForEvaluation()
       .subscribe((total: number) => {
         this.admin_waiting = total;
-        this.admin_total += parseInt(total + "");
         this.cd.detectChanges();
       });
 
     this.get.numberOfAdminPagesWithError().subscribe((total: number) => {
       this.admin_error = total;
-      this.admin_total += parseInt(total + "");
       this.cd.detectChanges();
     });
 
     this.get.numberOfUserPagesBeingEvaluated().subscribe((total: number) => {
       this.user_evaluating = total;
-      this.user_total += parseInt(total + "");
       this.cd.detectChanges();
     });
 
@@ -133,15 +141,41 @@ export class HomeComponent implements OnInit {
       .numberOfUserPagesWaitingForEvaluation()
       .subscribe((total: number) => {
         this.user_waiting = total;
-        this.user_total += parseInt(total + "");
         this.cd.detectChanges();
       });
 
     this.get.numberOfUserPagesWithError().subscribe((total: number) => {
       this.user_error = total;
-      this.user_total += parseInt(total + "");
       this.cd.detectChanges();
     });
+
+    this.evaluation
+      .getAMSObservatoryRequestCounter()
+      .subscribe((counter: number) => {
+        this.ams_counter = counter;
+        this.cd.detectChanges();
+      });
+
+    this.evaluation
+      .getMyMonitorRequestCounter()
+      .subscribe((counter: number) => {
+        this.mm_counter = counter;
+        this.cd.detectChanges();
+      });
+
+    this.evaluation
+      .getStudyMonitorRequestCounter()
+      .subscribe((counter: number) => {
+        this.sm_counter = counter;
+        this.cd.detectChanges();
+      });
+
+    this.evaluation
+      .getAccessMonitorRequestCounter()
+      .subscribe((counter: number) => {
+        this.am_counter = counter;
+        this.cd.detectChanges();
+      });
   }
 
   generateObservatoryData(): void {
@@ -180,15 +214,15 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  resetUserEvaluationList(): void {
-    this.evaluation.resetUserList().subscribe((success) => {
+  resetMyMonitorEvaluationList(): void {
+    this.evaluation.resetMyMonitorList().subscribe((success) => {
       if (success) {
         this.message.show("HOME_PAGE.reset_evaluation_list_message");
       }
     });
   }
 
-  deleteUserEvaluationList(): void {
+  deleteMyMonitorEvaluationList(): void {
     const deleteDialog = this.dialog.open(
       DeleteEvaluationListConfirmationDialogComponent,
       {
@@ -199,7 +233,35 @@ export class HomeComponent implements OnInit {
 
     deleteDialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.evaluation.deleteUserList().subscribe((success) => {
+        this.evaluation.deleteMyMonitorList().subscribe((success) => {
+          if (success) {
+            this.message.show("HOME_PAGE.delete_evaluation_list_message");
+          }
+        });
+      }
+    });
+  }
+
+  resetStudyMonitorEvaluationList(): void {
+    this.evaluation.resetStudyMonitorList().subscribe((success) => {
+      if (success) {
+        this.message.show("HOME_PAGE.reset_evaluation_list_message");
+      }
+    });
+  }
+
+  deleteStudyMonitorEvaluationList(): void {
+    const deleteDialog = this.dialog.open(
+      DeleteEvaluationListConfirmationDialogComponent,
+      {
+        disableClose: false,
+        hasBackdrop: true,
+      }
+    );
+
+    deleteDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.evaluation.deleteStudyMonitorList().subscribe((success) => {
           if (success) {
             this.message.show("HOME_PAGE.delete_evaluation_list_message");
           }

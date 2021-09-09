@@ -1,21 +1,21 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import * as _ from 'lodash';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
+import * as _ from "lodash";
 
-import { GetService } from '../../services/get.service';
-import { DeleteService } from '../../services/delete.service';
-import { EvaluationService } from '../../services/evaluation.service';;
+import { GetService } from "../../services/get.service";
+import { DeleteService } from "../../services/delete.service";
+import { EvaluationService } from "../../services/evaluation.service";
 
-import { Website } from '../../models/website.object';
+import { Website } from "../../models/website.object";
+import { MessageService } from "../../services/message.service";
 
 @Component({
-  selector: 'app-domain',
-  templateUrl: './domain.component.html',
-  styleUrls: ['./domain.component.css']
+  selector: "app-domain",
+  templateUrl: "./domain.component.html",
+  styleUrls: ["./domain.component.css"],
 })
 export class DomainComponent implements OnInit, OnDestroy {
-
   loading: boolean;
   error: boolean;
 
@@ -32,6 +32,7 @@ export class DomainComponent implements OnInit, OnDestroy {
     private get: GetService,
     private deleteService: DeleteService,
     private evaluation: EvaluationService,
+    private message: MessageService,
     private cd: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -39,8 +40,8 @@ export class DomainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.activatedRoute.params.subscribe(params => {
-      this.user = params.user || 'admin';
+    this.sub = this.activatedRoute.params.subscribe((params) => {
+      this.user = params.user || "admin";
       this.domain = params.domain;
 
       this.getListOfDomainPages();
@@ -52,17 +53,27 @@ export class DomainComponent implements OnInit, OnDestroy {
   }
 
   private getListOfDomainPages(): void {
-    this.get.listOfDomainPages(this.user, encodeURIComponent(this.domain))
-      .subscribe(pages => {
+    this.get
+      .listOfDomainPages(this.user, encodeURIComponent(this.domain))
+      .subscribe((pages) => {
         if (pages !== null) {
           this.pages = _.clone(pages);
 
-          pages = pages.filter(p => p.Score !== null);
+          pages = pages.filter((p) => p.Score !== null);
 
           this.websiteObject = new Website();
           for (const page of pages) {
-            console.log(page);
-            this.websiteObject.addPage(page.Score, page.Errors, page.Tot, page.A, page.AA, page.AAA, page.Evaluation_Date, page.Element_Count, page.Tag_Count);
+            this.websiteObject.addPage(
+              page.Score,
+              page.Errors,
+              page.Tot,
+              page.A,
+              page.AA,
+              page.AAA,
+              page.Evaluation_Date,
+              page.Element_Count,
+              page.Tag_Count
+            );
           }
         } else {
           this.error = true;
@@ -74,33 +85,36 @@ export class DomainComponent implements OnInit, OnDestroy {
   }
 
   deletePages(pages: number[]): void {
-    this.deleteService.pages({pages})
-      .subscribe(success => {
-        if (success !== null) {
-          this.loading = true;
-          this.cd.detectChanges();
-          this.getListOfDomainPages();
-        }
-      });
+    this.deleteService.pages({ pages }).subscribe((success) => {
+      if (success !== null) {
+        this.loading = true;
+        this.cd.detectChanges();
+        this.getListOfDomainPages();
+      }
+    });
+  }
+
+  reEvaluatePages(pages: number[]): void {
+    this.evaluation.reEvaluatePages({ pages }).subscribe((success) => {
+      if (success) {
+        this.message.show("PAGES_PAGE.LIST.re_evaluate_pages_message");
+      }
+    });
   }
 
   downloadAllPagesCSV(): void {
-    this.evaluation.downloadDomainCSV(this.domain, true)
-      .subscribe();
+    this.evaluation.downloadDomainCSV(this.domain, true).subscribe();
   }
 
   downloadObservatoryCSV(): void {
-    this.evaluation.downloadDomainCSV(this.domain, false)
-      .subscribe();
+    this.evaluation.downloadDomainCSV(this.domain, false).subscribe();
   }
 
   downloadAllPagesEARL(): void {
-    this.evaluation.downloadDomainEARL(this.domain, true)
-      .subscribe();
+    this.evaluation.downloadDomainEARL(this.domain, true).subscribe();
   }
 
   downloadObservatoryEARL(): void {
-    this.evaluation.downloadDomainEARL(this.domain, false)
-      .subscribe();
+    this.evaluation.downloadDomainEARL(this.domain, false).subscribe();
   }
 }

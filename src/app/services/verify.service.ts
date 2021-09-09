@@ -281,7 +281,7 @@ export class VerifyService {
           if (response.success !== 1) {
             throw new AdminError(response.success, response.message);
           }
-          console.log(response.result);
+
           return response.result ? { existsCrawlerWithSubdomain: true } : null;
         }),
         catchError((err) => {

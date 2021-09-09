@@ -46,7 +46,11 @@
     </div>
     <div>
       <span fxFlex></span>
-      <button mat-raised-button type="button" color="warn" (click)="openDeletePageDialog()" [disabled]="selection.selected.length === 0">
+      <button mat-flat-button color="primary" (click)="reEvaluatePages()" [disabled]="selection.selected.length === 0">
+        {{ "PAGES_PAGE.LIST.re_evaluate_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="openDeletePageDialog()" [disabled]="selection.selected.length === 0">
         {{ "PAGES_PAGE.LIST.delete_pages" | translate }}
       </button>
     </div>

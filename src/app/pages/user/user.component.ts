@@ -1,18 +1,23 @@
-import { Component, OnInit, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, Subscription } from 'rxjs';
-import * as _ from 'lodash';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  ChangeDetectorRef,
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { combineLatest, Subscription } from "rxjs";
+import * as _ from "lodash";
 
-import {GetService} from '../../services/get.service';
-import {MessageService} from '../../services/message.service';
+import { GetService } from "../../services/get.service";
+import { MessageService } from "../../services/message.service";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: "app-user",
+  templateUrl: "./user.component.html",
+  styleUrls: ["./user.component.css"],
 })
 export class UserComponent implements OnInit, OnDestroy {
-
   loading: boolean;
   error: boolean;
 
@@ -32,24 +37,23 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = this.activatedRoute.params.subscribe(params => {
+    this.sub = this.activatedRoute.params.subscribe((params) => {
       this.user = _.trim(params.user);
 
-      this.get.userType(this.user)
-        .subscribe(type => {
-          if (type !== null) {
-            if (type !== 'monitor' && type !== 'studies') {
-              this.error = true;
-            } else {
-              this.userType = type;
-            }
-          } else {
+      this.get.userType(this.user).subscribe((type) => {
+        if (type !== null) {
+          if (type !== "monitor" && type !== "studies") {
             this.error = true;
+          } else {
+            this.userType = type;
           }
+        } else {
+          this.error = true;
+        }
 
-          this.loading = false;
-          this.cd.detectChanges();
-        });
+        this.loading = false;
+        this.cd.detectChanges();
+      });
     });
   }
 
@@ -85,8 +89,6 @@ export class UserComponent implements OnInit, OnDestroy {
         } else {
           this.error = true;
         }
-        console.log('eis as tags');
-        console.log(tags);
         this.loading = false;
       });
   }*/
