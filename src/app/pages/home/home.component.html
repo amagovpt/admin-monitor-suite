@@ -41,13 +41,13 @@
     <br>
     <h3>{{ "HOME_PAGE.evaluation_state_title" | translate }}</h3>
     <div fxLayout="column">
-      <h4>Access Monitor evaluations</h4>
-      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ am_counter }}</span>
+      <h4>{{ "HOME_PAGE.evaluation_am_state_title" | translate }}</h4>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ am_date | date }}: {{ am_counter }}</span>
     </div>
     <br>
     <div fxLayout="column">
       <h4>{{ "HOME_PAGE.evaluation_observatory_state_title" | translate }}</h4>
-      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ ams_counter }}</span>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ ams_date | date }}: {{ ams_counter }}</span>
       <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ admin_evaluating }}</span>
       <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ admin_waiting }}</span>
       <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ admin_error }}</span>
@@ -57,7 +57,7 @@
       </div>
       <br>
       <h4>{{ "HOME_PAGE.evaluation_mm_state_title" | translate }}</h4>
-      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ mm_counter }}</span>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ mm_date | date }}: {{ mm_counter }}</span>
       <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ user_evaluating }}</span>
       <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ user_waiting }}</span>
       <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ user_error }}</span>
@@ -67,7 +67,7 @@
       </div>
       <br>
       <h4>{{ "HOME_PAGE.evaluation_sm_state_title" | translate }}</h4>
-      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ startingDate | date }}: {{ sm_counter }}</span>
+      <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ sm_date | date }}: {{ sm_counter }}</span>
       <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ user_evaluating }}</span>
       <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ user_waiting }}</span>
       <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ user_error }}</span>

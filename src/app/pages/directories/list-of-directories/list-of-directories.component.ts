@@ -8,7 +8,7 @@ import {
   Input,
   EventEmitter,
 } from "@angular/core";
-import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
@@ -28,7 +28,8 @@ import { DeleteService } from "../../../services/delete.service";
   styleUrls: ["./list-of-directories.component.css"],
 })
 export class ListOfDirectoriesComponent implements OnInit {
-  @Output("refreshDirectories") refreshDirectories = new EventEmitter<boolean>();
+  @Output("refreshDirectories") refreshDirectories =
+    new EventEmitter<boolean>();
   @Input() directories: any;
 
   displayedColumns = [
@@ -36,9 +37,9 @@ export class ListOfDirectoriesComponent implements OnInit {
     "Show_in_Observatory",
     "Creation_Date",
     "Tags",
-    "re-evaluate",
+    //"re-evaluate",
     "edit",
-    "delete"
+    "delete",
   ];
 
   dataSource: any;
@@ -46,7 +47,7 @@ export class ListOfDirectoriesComponent implements OnInit {
 
   @ViewChild("input") input: ElementRef;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator,  { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private dialog: MatDialog,
@@ -64,11 +65,12 @@ export class ListOfDirectoriesComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  reEvaluateDirectoryWebsites(directoryId: number): void {
+  reEvaluateDirectoriesWebsites(): void {
+    const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
-        info: directoryId,
+        info: directoriesId,
         dialog: "directory",
       },
     });
@@ -98,14 +100,16 @@ export class ListOfDirectoriesComponent implements OnInit {
   }
 
   openDeleteDirectoriesDialog(): void {
-    const directoriesId = this.selection.selected.map(d => d.DirectoryId);
-    this.deleteService.directories({
-      directoriesId: JSON.stringify(directoriesId)
-    }).subscribe(result => {
-      if (result) {
-        this.refreshDirectories.next(true);
-      }
-    });
+    const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
+    this.deleteService
+      .directories({
+        directoriesId: JSON.stringify(directoriesId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.refreshDirectories.next(true);
+        }
+      });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -117,16 +121,20 @@ export class ListOfDirectoriesComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.filteredData.forEach((row) =>
+          this.selection.select(row)
+        );
   }
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: any): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+      row.position + 1
+    }`;
   }
 }

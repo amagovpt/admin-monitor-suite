@@ -34,8 +34,8 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
 
     if (this.data.dialog === "website") {
       this.evaluation
-        .reEvaluateWebsitePages({
-          domainId: this.data.info,
+        .reEvaluateWebsitesPages({
+          domainsId: JSON.stringify(this.data.info),
           option: this.pages.value,
         })
         .subscribe((result) => {
@@ -47,8 +47,8 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
         });
     } else if (this.data.dialog === "entity") {
       this.evaluation
-        .reEvaluateEntityWebsitePages({
-          entityId: this.data.info,
+        .reEvaluateEntitiesWebsitePages({
+          entitiesId: JSON.stringify(this.data.info),
           option: this.pages.value,
         })
         .subscribe((result) => {
@@ -60,8 +60,8 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
         });
     } else if (this.data.dialog === "tag") {
       this.evaluation
-        .reEvaluateTagWebsitePages({
-          tagId: this.data.info,
+        .reEvaluateTagsWebsitePages({
+          tagsId: JSON.stringify(this.data.info),
           option: this.pages.value,
         })
         .subscribe((result) => {
@@ -73,8 +73,8 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
         });
     } else if (this.data.dialog === "directory") {
       this.evaluation
-        .reEvaluateDirectoryWebsitePages({
-          directoryId: this.data.info,
+        .reEvaluateDirectoriesWebsitePages({
+          directoriesId: JSON.stringify(this.data.info),
           option: this.pages.value,
         })
         .subscribe((result) => {

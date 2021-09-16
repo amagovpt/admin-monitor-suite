@@ -26,8 +26,15 @@ import { DeleteService } from "../../../services/delete.service";
 import { CrawlerDialogComponent } from "../../../dialogs/crawler-dialog/crawler-dialog.component";
 import { FormControl } from "@angular/forms";
 import { GetService } from "../../../services/get.service";
-import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from "rxjs/operators";
-import { merge, of } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  switchMap,
+} from "rxjs/operators";
+import { merge, of } from "rxjs";
 
 @Component({
   selector: "app-list-of-websites",
@@ -35,7 +42,6 @@ import { merge, of } from 'rxjs';
   styleUrls: ["./list-of-websites.component.css"],
 })
 export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
-
   @Output("refreshWebsites") refreshWebsites = new EventEmitter<boolean>();
   @Input("directory") directory: string;
   @Input("websites") websites: any;
@@ -45,19 +51,19 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     //"User",
     "Pages",
     "Creation_Date",
-    "re-evaluate",
+    //"re-evaluate",
     "edit",
-    "crawler",
+    //"crawler",
     "stamp",
-    "see",
-    "delete"
+    //"see",
+    "delete",
   ];
 
   // data source of domains
   dataSource: any;
   selection: SelectionModel<any>;
 
-  @ViewChild('input') input: ElementRef;
+  @ViewChild("input") input: ElementRef;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -73,7 +79,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     private digitalStamp: DigitalStampService,
     private get: GetService,
     private readonly deleteService: DeleteService,
-    private readonly cd : ChangeDetectorRef
+    private readonly cd: ChangeDetectorRef
   ) {
     this.selection = new SelectionModel<any>(true, []);
     this.loading = false;
@@ -90,26 +96,21 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator;
       this.length = this.websites.length;
     } else {
-      this.get.listOfWebsiteCount('')
-        .subscribe(count => {
-          this.length = count;
-        });
+      this.get.listOfWebsiteCount("").subscribe((count) => {
+        this.length = count;
+      });
     }
   }
 
   ngAfterViewInit(): void {
     if (!this.websites) {
       this.filter.valueChanges
-        .pipe(
-          distinctUntilChanged(),
-          debounceTime(150)
-        )
-        .subscribe(value => {
-          this.get.listOfWebsiteCount(value)
-            .subscribe(count => {
-              this.length = count;
-              this.paginator.firstPage();
-            });
+        .pipe(distinctUntilChanged(), debounceTime(150))
+        .subscribe((value) => {
+          this.get.listOfWebsiteCount(value).subscribe((count) => {
+            this.length = count;
+            this.paginator.firstPage();
+          });
         });
       merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
         .pipe(
@@ -119,9 +120,15 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
           switchMap(() => {
             this.isLoadingResults = true;
             this.cd.detectChanges();
-            return this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '');
+            return this.get.listOfWebsites(
+              this.paginator.pageSize,
+              this.paginator.pageIndex,
+              this.sort.active ?? "",
+              this.sort.direction,
+              this.filter.value ?? ""
+            );
           }),
-          map(data => {
+          map((data) => {
             // Flip flag to show that loading has finished.
             this.isLoadingResults = false;
             return data;
@@ -130,7 +137,8 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
             this.isLoadingResults = false;
             return of([]);
           })
-        ).subscribe(websites => {
+        )
+        .subscribe((websites) => {
           this.dataSource = new MatTableDataSource(websites);
           this.selection = new SelectionModel<any>(true, []);
           this.cd.detectChanges();
@@ -144,11 +152,12 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue;
   }
 
-  reEvaluateWebsitePages(domainId: number): void {
+  reEvaluateWebsitesPages(): void {
+    const domainsId = this.selection.selected.map((w) => w.DomainId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
-        info: domainId,
+        info: domainsId,
         dialog: "website",
       },
     });
@@ -168,8 +177,15 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
         if (this.websites) {
           this.refreshWebsites.next(true);
         } else {
-          this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
-            .subscribe(websites => {
+          this.get
+            .listOfWebsites(
+              this.paginator.pageSize,
+              this.paginator.pageIndex,
+              this.sort.active ?? "",
+              this.sort.direction,
+              this.filter.value ?? ""
+            )
+            .subscribe((websites) => {
               this.dataSource = new MatTableDataSource(websites);
               this.selection = new SelectionModel<any>(true, []);
               this.cd.detectChanges();
@@ -179,14 +195,19 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openCrawlerDialog(e: Event, url: string, domainId: number): void {
-    e.preventDefault();
-
+  openCrawlerDialog(): void {
+    const websites = new Array<{ url: string; domainId: number }>();
+    this.selection.selected.map((w) => {
+      websites.push({
+        url: w.Domain,
+        domainId: w.DomainId,
+      });
+    });
     this.dialog.open(CrawlerDialogComponent, {
-      width: '60vw',
+      width: "60vw",
       disableClose: false,
       hasBackdrop: true,
-      data: {url, domainId}
+      data: websites,
     });
   }
 
@@ -198,9 +219,11 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  generateWebsiteDigitalStamp(websiteId: number, name: string): void {
+  generateWebsitesDigitalStamp(): void {
+    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+
     this.digitalStamp
-      .generateForWebsite({ websiteId, name })
+      .generateForWebsites({ websitesId: JSON.stringify(websitesId) })
       .subscribe((success) => {
         if (success) {
           this.message.show("DIGITAL_STAMP.messages.generate_website_success");
@@ -213,26 +236,35 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   openDeleteWebsitesDialog(): void {
-    const websitesId = this.selection.selected.map(w => w.WebsiteId);
-    this.deleteService.websites({
-      websitesId: JSON.stringify(websitesId)
-    }).subscribe(result => {
-      if (result) {
-        if (this.websites) {
-          this.refreshWebsites.next(true);
-        } else {
-          this.get.listOfWebsites(this.paginator.pageSize, this.paginator.pageIndex, this.sort.active ?? '', this.sort.direction, this.filter.value ?? '')
-              .subscribe(websites => {
+    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+    this.deleteService
+      .websites({
+        websitesId: JSON.stringify(websitesId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          if (this.websites) {
+            this.refreshWebsites.next(true);
+          } else {
+            this.get
+              .listOfWebsites(
+                this.paginator.pageSize,
+                this.paginator.pageIndex,
+                this.sort.active ?? "",
+                this.sort.direction,
+                this.filter.value ?? ""
+              )
+              .subscribe((websites) => {
                 this.dataSource = new MatTableDataSource(websites);
                 this.selection = new SelectionModel<any>(true, []);
                 this.length = this.length - websites.length;
                 this.cd.detectChanges();
               });
-            
-          this.message.show('WEBSITES_PAGE.DELETE.messages.success');
+
+            this.message.show("WEBSITES_PAGE.DELETE.messages.success");
+          }
         }
-      }
-    });
+      });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -244,16 +276,20 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.filteredData.forEach((row) =>
+          this.selection.select(row)
+        );
   }
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: any): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+      row.position + 1
+    }`;
   }
 }

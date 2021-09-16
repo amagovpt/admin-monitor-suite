@@ -85,6 +85,7 @@
     "generate_observatory_button": "Sync Observatory",
     "generate_observatory_data_message": "Observatory data is being synchronized",
     "evaluation_state_title": "Evaluations state",
+    "evaluation_am_state_title": "Access Monitor evaluations",
     "evaluation_observatory_state_title": "AMS/Observatory evaluations",
     "evaluation_mm_state_title": "My Monitor evaluations",
     "evaluation_sm_state_title": "Study Monitor evaluations",
@@ -345,7 +346,8 @@
         "edit_tooltip": "Edit this directory",
         "see_tooltip": "See directory"
       },
-      "delete_directories": "Delete directories"
+      "delete_directories": "Delete",
+      "re_evaluate_directories": "Re-evaluate"
     },
     "ADD": {
       "title": "Create a new directory",
@@ -415,7 +417,9 @@
         "crawler_tooltip": "Click here to crawl this tag",
         "see_tooltip": "See tag"
       },
-      "delete_tags": "Delete tags"
+      "delete_tags": "Delete",
+      "re_evaluate_tags": "Re-evaluate",
+      "crawler": "Crawler"
     },
     "ADD": {
       "title": "Create a new Tag",
@@ -511,7 +515,8 @@
         "edit_tooltip": "Edit this entity",
         "see_tooltip": "See entity"
       },
-      "delete_entities": "Delete entities"
+      "delete_entities": "Delete",
+      "re_evaluate_entities": "Re-evaluate"
     },
     "ADD": {
       "title": "Create a new Entity",
@@ -606,7 +611,10 @@
         "stamp_label": "Digital stamps",
         "stamp_tooltip": "Create/update digital stamp"
       },
-      "delete_websites": "Delete websites"
+      "delete_websites": "Delete",
+      "re_evaluate_websites": "Re-evaluate",
+      "crawler": "Crawler",
+      "digital_stamps": "Generate digital stamps"
     },
     "ADD": {
       "title": "Create a new website",
@@ -1013,8 +1021,8 @@
     }
   },
   "CRAWLER": {
-    "title": "Automatic page search in domain ",
-    "error1": "Only allowed positive integer numbers",
+    "title": "Automatic page search",
+    "error1": "Only allowed zero and positive integer numbers",
     "error2": "Only allowed zero and positive integer numbers",
     "errorSubdomain": "This subdomain was already searched!",
     "PARAMETERS": {
@@ -1023,7 +1031,7 @@
       "subdomain": "Desired sub-domain"
     },
     "TOOLTIP": {
-      "depth": "Type 1 to only search for pages directly linked to the homepage (or desired sub-domain)",
+      "depth": "Type 0 to only search for pages directly linked to the homepage (or desired sub-domain)",
       "pages": "Type 0 to search for all pages",
       "subdomain": "If you want to search for pages in '",
       "subdomain2": "/abc', only type 'abc'"
@@ -1086,7 +1094,7 @@
       "pages": "Desired maximum number of pages"
     },
     "TOOLTIP": {
-      "depth": "Type 1 to only search for pages directly linked to the homepage",
+      "depth": "Type 0 to only search for pages directly linked to the homepage",
       "pages": "Type 0 to search for all pages"
     }
   },

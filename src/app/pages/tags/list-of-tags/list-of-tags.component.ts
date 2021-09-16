@@ -37,10 +37,10 @@ export class ListOfTagsComponent implements OnInit {
     "Name",
     "Creation_Date",
     "Websites",
-    "re-evaluate",
+    //"re-evaluate",
     "edit",
-    "crawler",
-    "delete"
+    //"crawler",
+    "delete",
   ];
 
   dataSource: any;
@@ -72,11 +72,12 @@ export class ListOfTagsComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  reEvaluateTagWebsites(tagId: number): void {
+  reEvaluateTagsWebsites(): void {
+    const tagsId = this.selection.selected.map((t) => t.TagId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
-        info: tagId,
+        info: tagsId,
         dialog: "tag",
       },
     });
@@ -100,23 +101,24 @@ export class ListOfTagsComponent implements OnInit {
     });
   }
 
-  openCrawlerDialog(e, tagId: number): void {
-    e.preventDefault();
-    this.crawler.crawlTag(tagId)
-      .subscribe(result => {
-        this.dialog.open(TagCrawlerInformationDialogComponent);
-      });
+  openCrawlerDialog(): void {
+    const tagsId = this.selection.selected.map((t) => t.TagId);
+    this.crawler.crawlTag(tagsId).subscribe(() => {
+      this.dialog.open(TagCrawlerInformationDialogComponent);
+    });
   }
 
   openDeleteTagsDialog(): void {
-    const tagsId = this.selection.selected.map(t => t.TagId);
-    this.deleteService.tags({
-      tagsId: JSON.stringify(tagsId)
-    }).subscribe(result => {
-      if (result) {
-        this.refreshTags.next(true);
-      }
-    });
+    const tagsId = this.selection.selected.map((t) => t.TagId);
+    this.deleteService
+      .tags({
+        tagsId: JSON.stringify(tagsId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.refreshTags.next(true);
+        }
+      });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -128,16 +130,20 @@ export class ListOfTagsComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.filteredData.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.filteredData.forEach((row) =>
+          this.selection.select(row)
+        );
   }
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: any): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+      row.position + 1
+    }`;
   }
 }

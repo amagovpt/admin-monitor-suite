@@ -350,7 +350,7 @@ export class EvaluationService {
       );
   }
 
-  reEvaluateWebsitePages(data: any): Observable<boolean> {
+  reEvaluateWebsitesPages(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/website/reEvaluate"), data, {
         observe: "response",
@@ -376,7 +376,7 @@ export class EvaluationService {
       );
   }
 
-  reEvaluateEntityWebsitePages(data: any): Observable<boolean> {
+  reEvaluateEntitiesWebsitePages(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/entity/reEvaluate"), data, {
         observe: "response",
@@ -402,7 +402,7 @@ export class EvaluationService {
       );
   }
 
-  reEvaluateTagWebsitePages(data: any): Observable<boolean> {
+  reEvaluateTagsWebsitePages(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/tag/reEvaluate"), data, {
         observe: "response",
@@ -428,7 +428,7 @@ export class EvaluationService {
       );
   }
 
-  reEvaluateDirectoryWebsitePages(data: any): Observable<boolean> {
+  reEvaluateDirectoriesWebsitePages(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/directory/reEvaluate"), data, {
         observe: "response",

@@ -24,6 +24,11 @@ export class HomeComponent implements OnInit {
   observatory_tags: number;
   observatory_websites: number;
 
+  ams_date: Date;
+  mm_date: Date;
+  sm_date: Date;
+  am_date: Date;
+
   ams_counter: number;
   mm_counter: number;
   sm_counter: number;
@@ -38,8 +43,6 @@ export class HomeComponent implements OnInit {
   user_evaluating: number;
   user_waiting: number;
   user_error: number;
-
-  startingDate: Date;
 
   constructor(
     private readonly dialog: MatDialog,
@@ -58,6 +61,11 @@ export class HomeComponent implements OnInit {
     this.access_studies_websites = 0;
     this.my_monitor_websites = 0;
 
+    this.ams_date = new Date();
+    this.mm_date = new Date();
+    this.sm_date = new Date();
+    this.am_date = new Date();
+
     this.ams_counter = 0;
     this.mm_counter = 0;
     this.sm_counter = 0;
@@ -70,8 +78,6 @@ export class HomeComponent implements OnInit {
     this.user_evaluating = 0;
     this.user_waiting = 0;
     this.user_error = 0;
-
-    this.startingDate = new Date();
   }
 
   ngOnInit(): void {
@@ -149,33 +155,29 @@ export class HomeComponent implements OnInit {
       this.cd.detectChanges();
     });
 
-    this.evaluation
-      .getAMSObservatoryRequestCounter()
-      .subscribe((counter: number) => {
-        this.ams_counter = counter;
-        this.cd.detectChanges();
-      });
+    this.evaluation.getAMSObservatoryRequestCounter().subscribe((data: any) => {
+      this.ams_date = data.date;
+      this.ams_counter = data.counter;
+      this.cd.detectChanges();
+    });
 
-    this.evaluation
-      .getMyMonitorRequestCounter()
-      .subscribe((counter: number) => {
-        this.mm_counter = counter;
-        this.cd.detectChanges();
-      });
+    this.evaluation.getMyMonitorRequestCounter().subscribe((data: any) => {
+      this.mm_date = data.date;
+      this.mm_counter = data.counter;
+      this.cd.detectChanges();
+    });
 
-    this.evaluation
-      .getStudyMonitorRequestCounter()
-      .subscribe((counter: number) => {
-        this.sm_counter = counter;
-        this.cd.detectChanges();
-      });
+    this.evaluation.getStudyMonitorRequestCounter().subscribe((data: any) => {
+      this.sm_date = data.date;
+      this.sm_counter = data.counter;
+      this.cd.detectChanges();
+    });
 
-    this.evaluation
-      .getAccessMonitorRequestCounter()
-      .subscribe((counter: number) => {
-        this.am_counter = counter;
-        this.cd.detectChanges();
-      });
+    this.evaluation.getAccessMonitorRequestCounter().subscribe((data: any) => {
+      this.am_date = data.date;
+      this.am_counter = data.counter;
+      this.cd.detectChanges();
+    });
   }
 
   generateObservatoryData(): void {
