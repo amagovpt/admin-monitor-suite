@@ -153,7 +153,7 @@ let compareTotal = function (a:tablevalue,b: tablevalue){
   }
 
 }   
-  let sortedArray = this.auxdataSource.sort(compareTotal);
+  let sortedArray = this.auxdataSource1.sort(compareTotal);
 
 
   this.dataSource = new MatTableDataSource (sortedArray);

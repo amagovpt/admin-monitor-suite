@@ -289,11 +289,14 @@ export class AddPageDialogComponent implements OnInit {
   validateFileUris(domain: string, uris: string[]): void {
     if (domain === '') {
       this.fileErrorMessage = 'invalidDomain';
+      console.log(domain)
       return;
     }
     if (uris !== undefined || uris !== []) {
       for (let url of uris) {
         if (!_.startsWith(url, domain)) {
+          console.log(url)
+          console.log(domain)
           this.fileErrorMessage = 'invalidDomain';
           return;
         } else {
