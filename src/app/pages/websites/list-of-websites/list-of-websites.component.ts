@@ -95,6 +95,8 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.length = this.websites.length;
+      this.selection = new SelectionModel<any>(true, []);
+      this.cd.detectChanges();
     } else {
       this.get.listOfWebsiteCount("").subscribe((count) => {
         this.length = count;
@@ -203,6 +205,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
         domainId: w.DomainId,
       });
     });
+
     this.dialog.open(CrawlerDialogComponent, {
       width: "60vw",
       disableClose: false,

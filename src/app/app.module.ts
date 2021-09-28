@@ -117,11 +117,10 @@ import { MatPaginatorIntlCustom } from "./paginator-intl.service";
 import { DirectoryStatisticsComponent } from "./pages/directory/directory-statistics/directory-statistics.component";
 import { CUSTOM_DATE_FORMATS, CustomDatePickerAdapter } from "./date-adapter";
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material/core";
-import { TagCrawlerInformationDialogComponent } from './dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component';
+import { TagCrawlerInformationDialogComponent } from "./dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component";
 import { SumElementsPipe } from "./pipes/sumelements.pipe";
-import { CountTypesPipe } from "./pipes/countypes.pipes";
-import { DeleteEvaluationListConfirmationDialogComponent } from './dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component';
-
+import { CountTypesPipe } from "./pipes/countypes.pipe";
+import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -371,7 +370,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SumElementsPipe,
     CountTypesPipe,
     DeleteEvaluationListConfirmationDialogComponent,
-
   ],
   imports: [
     BrowserModule,

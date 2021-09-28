@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class CountTypesPipe implements PipeTransform {
   transform(value: string): number {
     if (value) {
-      let countTypes: number = 0;
+      /*let countTypes: number = 0;
       let auxstring: string = "";
       let split1: string[] = [];
       let numberarray: number[] = [];
@@ -15,7 +15,9 @@ export class CountTypesPipe implements PipeTransform {
 
       countTypes = split1.length;
 
-      return countTypes;
+      return countTypes;*/
+      const elements = JSON.parse(value);
+      return Object.keys(elements).length;
     }
 
     return -1;
