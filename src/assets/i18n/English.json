@@ -939,6 +939,21 @@
       "close": "Close"
     }
   },
+  "EVALUATIONS_LIST_PAGE": {
+    "LIST": {
+      "title": "Evaluations with error",
+      "subtitle": "List of all page that failed to evaluate",
+      "table": {
+        "uri_label": "Uri",
+        "error_label": "Error description",
+        "creation_label": "Added to evaluate",
+        "delete_label": "Delete",
+        "delete_tooltip": "Delete page"
+      },
+      "re_evaluate_pages": "Re-evaluate",
+      "delete_pages": "Delete"
+    }
+  },
   "RESULTS": {
     "title": "Web accessibility practices report (W3C WCAG 2.1)",
     "actions": {

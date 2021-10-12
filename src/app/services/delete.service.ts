@@ -327,6 +327,38 @@ export class DeleteService {
       );
   }
 
+  pagesInEvaluationList(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(
+        this.config.getServer("/page/evaluationList/error/delete"),
+        data,
+        {
+          observe: "response",
+        }
+      )
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>(response.success === 1);
+        }),
+        catchError((err) => {
+          this.message.show("PAGES_PAGE.DELETE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   evaluation(data: any): Observable<boolean> {
     data.cookie = this.userService.getUserData();
     return ajax
@@ -386,11 +418,9 @@ export class DeleteService {
 
   crawlers(data: any): Observable<boolean> {
     return this.http
-      .post<any>(
-        this.config.getServer("/crawler/deleteBulk"),
-        data,
-        { observe: "response" }
-      )
+      .post<any>(this.config.getServer("/crawler/deleteBulk"), data, {
+        observe: "response",
+      })
       .pipe(
         retry(3),
         map((res) => {

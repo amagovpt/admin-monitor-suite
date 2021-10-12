@@ -1,0 +1,86 @@
+<mat-card class="mat-typography">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ "EVALUATIONS_LIST_PAGE.LIST.title" | translate }}</h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <h2>{{ "EVALUATIONS_LIST_PAGE.LIST.subtitle" | translate }}</h2>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="loading-shade" *ngIf="isLoadingResults">
+      <app-loading></app-loading>
+    </div>
+    <div class="table-filter">
+      <mat-form-field appearance="outline">
+        <label>{{ "MISC.filter" | translate }}
+          <input id="pages_table_filter" matInput (keyup)="applyFilter($event.target.value)">
+        </label>
+      </mat-form-field>
+      <span fxFlex></span>
+    </div>
+    <div>
+      <span fxFlex></span>
+      <button mat-flat-button color="primary" (click)="reEvaluatePages()" [disabled]="selection.selected.length === 0">
+        {{ "EVALUATIONS_LIST_PAGE.LIST.re_evaluate_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="openDeletePageDialog()" [disabled]="selection.selected.length === 0">
+        {{ "EVALUATIONS_LIST_PAGE.LIST.delete_pages" | translate }}
+      </button>
+    </div>
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="Uri">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
+          {{ "EVALUATIONS_LIST_PAGE.LIST.table.uri_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex>
+          <a [routerLink]="['/console', 'page', element.Url]">
+            <strong>{{element.Url}}</strong>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Error">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "EVALUATIONS_LIST_PAGE.LIST.table.error_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{element.Error}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Creation_Date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "EVALUATIONS_LIST_PAGE.LIST.table.creation_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{element.Creation_Date | date}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef fxFlex="5">
+          <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="5">
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)"
+            [aria-label]="checkboxLabel(element)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [length]="length" [pageSize]="50" [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]" showFirstLastButtons>
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

@@ -50,7 +50,9 @@
       <span>{{ "HOME_PAGE.evaluations_since" | translate }} {{ ams_date | date }}: {{ ams_counter }}</span>
       <span>{{ "HOME_PAGE.pages_being_evaluated" | translate }}: {{ admin_evaluating }}</span>
       <span>{{ "HOME_PAGE.waiting_evaluations" | translate }}: {{ admin_waiting }}</span>
-      <span>{{ "HOME_PAGE.evaluations_error" | translate }}: {{ admin_error }}</span>
+      <span>{{ "HOME_PAGE.evaluations_error" | translate }}: 
+        <a routerLink="/console/pages/errors">{{ admin_error }}</a>
+      </span>
       <div fxLayout="row">
         <button mat-flat-button color="primary" (click)="resetAdminEvaluationList()">{{ "HOME_PAGE.reset_evaluation_list" | translate }}</button>
         <button mat-flat-button color="warn" (click)="deleteAdminEvaluationList()">{{ "HOME_PAGE.delete_evaluation_list" | translate }}</button>

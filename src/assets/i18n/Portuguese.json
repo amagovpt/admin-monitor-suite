@@ -937,6 +937,21 @@
       "close": "Fechar"
     }
   },
+  "EVALUATIONS_LIST_PAGE": {
+    "LIST": {
+      "title": "Avaliações com erro",
+      "subtitle": "Lista de todas as páginas que falharam a avaliação",
+      "table": {
+        "uri_label": "Uri",
+        "error_label": "Descrição do erro",
+        "creation_label": "Adicionada para avaliação",
+        "delete_label": "Apagar",
+        "delete_tooltip": "Apagar página"
+      },
+      "re_evaluate_pages": "Re-avaliar",
+      "delete_pages": "Apagar"
+    }
+  },
   "RESULTS": {
     "title": "Relatório de práticas de acessibilidade Web (WCAG 2.1 do W3C)",
     "actions": {

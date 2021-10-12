@@ -121,6 +121,7 @@ import { TagCrawlerInformationDialogComponent } from "./dialogs/tag-crawler-info
 import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipe";
 import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
+import { PagesErrorsComponent } from "./pages/pages-errors/pages-errors.component";
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -239,6 +240,11 @@ const appRoutes: Routes = [
       {
         path: "pages",
         component: PagesComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: "pages/errors",
+        component: PagesErrorsComponent,
         canActivate: [AdminAuthGuard],
       },
       {
@@ -370,6 +376,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SumElementsPipe,
     CountTypesPipe,
     DeleteEvaluationListConfirmationDialogComponent,
+    PagesErrorsComponent,
   ],
   imports: [
     BrowserModule,
