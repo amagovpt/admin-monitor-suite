@@ -515,9 +515,14 @@ export class GetService {
 
   listOfEntityCount(search: string): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer(`/entity/all/count/search=${search}`), {
-        observe: "response",
-      })
+      .get<any>(
+        this.config.getServer(
+          `/entity/all/count/search=${encodeURIComponent(search)}`
+        ),
+        {
+          observe: "response",
+        }
+      )
       .pipe(
         retry(3),
         map((res) => {
@@ -550,7 +555,9 @@ export class GetService {
     return this.http
       .get<any>(
         this.config.getServer(
-          `/entity/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`
+          `/entity/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${encodeURIComponent(
+            search
+          )}`
         ),
         { observe: "response" }
       )
@@ -578,9 +585,14 @@ export class GetService {
 
   listOfWebsiteCount(search: string): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer(`/website/all/count/search=${search}`), {
-        observe: "response",
-      })
+      .get<any>(
+        this.config.getServer(
+          `/website/all/count/search=${encodeURIComponent(search)}`
+        ),
+        {
+          observe: "response",
+        }
+      )
       .pipe(
         retry(3),
         map((res) => {
@@ -613,7 +625,9 @@ export class GetService {
     return this.http
       .get<any>(
         this.config.getServer(
-          `/website/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`
+          `/website/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${encodeURIComponent(
+            search
+          )}`
         ),
         { observe: "response" }
       )
@@ -1084,9 +1098,14 @@ export class GetService {
 
   listOfPageCount(search: string): Observable<number> {
     return this.http
-      .get<any>(this.config.getServer(`/page/all/count/search=${search}`), {
-        observe: "response",
-      })
+      .get<any>(
+        this.config.getServer(
+          `/page/all/count/search=${encodeURIComponent(search)}`
+        ),
+        {
+          observe: "response",
+        }
+      )
       .pipe(
         retry(3),
         map((res) => {
@@ -1119,7 +1138,9 @@ export class GetService {
     return this.http
       .get<any>(
         this.config.getServer(
-          `/page/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${search}`
+          `/page/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${encodeURIComponent(
+            search
+          )}`
         ),
         { observe: "response" }
       )

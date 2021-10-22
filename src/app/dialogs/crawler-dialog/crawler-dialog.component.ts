@@ -63,6 +63,7 @@ export class CrawlerDialogComponent implements OnInit {
         Validators.pattern("^[0-9]*$"),
         Validators.required,
       ]),
+      waitJS: new FormControl(),
       //subDomain: new FormControl("", null, this.subDomainValidator.bind(this)),
     });
     this.error = false;
@@ -106,6 +107,7 @@ export class CrawlerDialogComponent implements OnInit {
       websites: JSON.stringify(this.websites),
       maxDepth: this.pageForm.value.maxDepth,
       maxPages: this.pageForm.value.maxPages,
+      waitJS: this.pageForm.value.waitJS ? 1 : 0,
     };
     this.crawl.callCrawler(data).subscribe((response) => {
       this.crawlExecuting = response; //always true

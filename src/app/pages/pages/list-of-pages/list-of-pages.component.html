@@ -103,12 +103,39 @@
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Types_of_Elements">
+      <!--<ng-container matColumnDef="Types_of_Elements">
         <mat-header-cell *matHeaderCellDef fxFlex="10">
           {{ "PAGES_PAGE.LIST.table.type_elements_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
           {{element.Tag_Count | countypes}}
+        </mat-cell>
+      </ng-container>-->
+
+      <ng-container matColumnDef="A">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="5">
+          A
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="5">
+          {{element.A}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="AA">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="5">
+          AA
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="5">
+          {{element.AA}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="AAA">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="5">
+          AAA
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex="5">
+          {{element.AAA}}
         </mat-cell>
       </ng-container>
 
