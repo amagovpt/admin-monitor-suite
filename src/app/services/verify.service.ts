@@ -23,7 +23,7 @@ export class VerifyService {
     private config: ConfigService
   ) {}
 
-  userExists(username: string): Observable<boolean> {
+  userExists(username: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/user/exists/" + username), {
         observe: "response",
@@ -49,7 +49,7 @@ export class VerifyService {
       );
   }
 
-  directoryNameExists(name: string): Observable<boolean> {
+  directoryNameExists(name: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/directory/exists/" + name), {
         observe: "response",
@@ -75,7 +75,7 @@ export class VerifyService {
       );
   }
 
-  tagNameExists(name: string): Observable<boolean> {
+  tagNameExists(name: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/tag/exists/" + name), {
         observe: "response",
@@ -127,7 +127,7 @@ export class VerifyService {
       );
   }
 
-  entityShortNameExists(name: string): Observable<boolean> {
+  entityShortNameExists(name: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/entity/exists/shortName/" + name), {
         observe: "response",
@@ -154,7 +154,7 @@ export class VerifyService {
       );
   }
 
-  entityLongNameExists(name: string): Observable<boolean> {
+  entityLongNameExists(name: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/entity/exists/longName/" + name), {
         observe: "response",
@@ -181,7 +181,7 @@ export class VerifyService {
       );
   }
 
-  websiteNameExists(name: string): Observable<boolean> {
+  websiteNameExists(name: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/website/exists/" + name), {
         observe: "response",
@@ -208,7 +208,7 @@ export class VerifyService {
       );
   }
 
-  domainExists(domain: string): Observable<boolean> {
+  domainExists(domain: string): Observable<any> {
     return this.http
       .get<any>(
         this.config.getServer("/domain/exists/" + encodeURIComponent(domain)),
@@ -236,7 +236,7 @@ export class VerifyService {
       );
   }
 
-  domainExistsInAdmin(domainId: string): Observable<boolean> {
+  domainExistsInAdmin(domainId: string): Observable<any> {
     return ajax(
       this.config.getServer("/admin/domains/existsAdmin/" + domainId)
     ).pipe(
@@ -261,7 +261,7 @@ export class VerifyService {
     );
   }
 
-  crawlerSearchExists(subDomain: string): Observable<boolean> {
+  crawlerSearchExists(subDomain: string): Observable<any> {
     return this.http
       .get<any>(
         this.config.getServer(

@@ -46,7 +46,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -73,7 +73,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -100,7 +100,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -127,7 +127,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -154,7 +154,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -181,7 +181,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -208,7 +208,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -235,7 +235,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -265,7 +265,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -292,7 +292,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -319,7 +319,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -346,7 +346,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -373,7 +373,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -400,7 +400,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<number>>response.result;
+          return <number>response.result;
         }),
         catchError((err) => {
           console.log(err);
