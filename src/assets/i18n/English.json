@@ -951,6 +951,7 @@
         "delete_tooltip": "Delete page"
       },
       "re_evaluate_pages": "Re-evaluate",
+      "remove_pages": "Remove from list",
       "delete_pages": "Delete"
     }
   },

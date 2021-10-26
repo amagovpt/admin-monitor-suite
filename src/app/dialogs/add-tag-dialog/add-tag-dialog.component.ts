@@ -101,11 +101,12 @@ export class AddTagDialogComponent implements OnInit {
     this.get.listOfOfficialWebsites().subscribe((websites) => {
       if (websites !== null) {
         this.websites = websites;
-        this.filteredWebsites = this.tagForm.controls.websites.valueChanges.pipe(
-          map((website: any | null) =>
-            website ? this.filterWebsite(website) : this.websites.slice()
-          )
-        );
+        this.filteredWebsites =
+          this.tagForm.controls.websites.valueChanges.pipe(
+            map((website: any | null) =>
+              website ? this.filterWebsite(website) : this.websites.slice()
+            )
+          );
       }
       this.loadingWebsites = false;
     });
@@ -113,13 +114,14 @@ export class AddTagDialogComponent implements OnInit {
     this.get.listOfDirectories().subscribe((directories) => {
       if (directories !== null) {
         this.directories = directories;
-        this.filteredDirectories = this.tagForm.controls.directories.valueChanges.pipe(
-          map((directory: any | null) =>
-            directory
-              ? this.filterDirectory(directory)
-              : this.directories.slice()
-          )
-        );
+        this.filteredDirectories =
+          this.tagForm.controls.directories.valueChanges.pipe(
+            map((directory: any | null) =>
+              directory
+                ? this.filterDirectory(directory)
+                : this.directories.slice()
+            )
+          );
       }
       this.loadingDirectories = false;
     });
@@ -200,16 +202,16 @@ export class AddTagDialogComponent implements OnInit {
     }
   }
 
-  filterWebsite(name: string) {
+  filterWebsite(url: string) {
     return this.websites.filter((website) =>
-      _.includes(website.Name.toLowerCase(), name.toLowerCase())
+      _.includes(website.Url.toLowerCase(), url.toLowerCase())
     );
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Name"] === event.option.viewValue
+      (w) => w["Url"] === event.option.viewValue
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

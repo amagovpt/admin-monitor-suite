@@ -59,12 +59,26 @@ export class PagesErrorsComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  openDeletePageDialog(): void {
+  openRemovePageFromListDialog(): void {
     this.deleteService
       .pagesInEvaluationList({
         pages: this.selection.selected.map(
           (selected) => selected.EvaluationListId
         ),
+      })
+      .subscribe((success) => {
+        if (success) {
+          window.location.reload();
+        } else {
+          this.message.show("PAGES_PAGE.DELETE.messages.error");
+        }
+      });
+  }
+
+  openDeletePageDialog(): void {
+    this.deleteService
+      .pages({
+        pages: this.selection.selected.map((selected) => selected.PageId),
       })
       .subscribe((success) => {
         if (success) {

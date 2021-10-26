@@ -26,6 +26,10 @@
         {{ "EVALUATIONS_LIST_PAGE.LIST.re_evaluate_pages" | translate }}
       </button>
       <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="openRemovePageFromListDialog()" [disabled]="selection.selected.length === 0">
+        {{ "EVALUATIONS_LIST_PAGE.LIST.remove_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
       <button mat-flat-button type="button" color="warn" (click)="openDeletePageDialog()" [disabled]="selection.selected.length === 0">
         {{ "EVALUATIONS_LIST_PAGE.LIST.delete_pages" | translate }}
       </button>
