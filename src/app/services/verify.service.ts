@@ -208,10 +208,10 @@ export class VerifyService {
       );
   }
 
-  domainExists(domain: string): Observable<any> {
+  websiteUrlExists(url: string): Observable<any> {
     return this.http
       .get<any>(
-        this.config.getServer("/domain/exists/" + encodeURIComponent(domain)),
+        this.config.getServer("/website/exists/url/" + encodeURIComponent(url)),
         { observe: "response" }
       )
       .pipe(

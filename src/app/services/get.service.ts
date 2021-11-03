@@ -1278,10 +1278,10 @@ export class GetService {
       );
   }
 
-  listOfUrisFromCrawlDomainId(crawlDomainId: number): Observable<Array<any>> {
+  listOfUrisFromCrawlWebsiteId(crawlWebsiteId: number): Observable<Array<any>> {
     return this.http
       .get<any>(
-        this.config.getServer("/crawler/getByCrawlDomainID/" + crawlDomainId),
+        this.config.getServer("/crawler/getByCrawlWebsiteID/" + crawlWebsiteId),
         { observe: "response" }
       )
       .pipe(

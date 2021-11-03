@@ -49,6 +49,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   displayedColumns = [
     "Name",
     //"User",
+    "StartingUrl",
     "Pages",
     "Creation_Date",
     //"re-evaluate",
@@ -198,11 +199,11 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   openCrawlerDialog(): void {
-    const websites = new Array<{ url: string; domainId: number }>();
+    const websites = new Array<{ url: string; websiteId: number }>();
     this.selection.selected.map((w) => {
       websites.push({
-        url: w.Domain,
-        domainId: w.DomainId,
+        url: w.StartingUrl,
+        websiteId: w.WebsiteId,
       });
     });
 

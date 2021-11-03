@@ -7,7 +7,6 @@ import { AddDirectoryDialogComponent } from "../add-directory-dialog/add-directo
 import { AddTagDialogComponent } from "../add-tag-dialog/add-tag-dialog.component";
 import { AddEntityDialogComponent } from "../add-entity-dialog/add-entity-dialog.component";
 import { AddWebsiteDialogComponent } from "../add-website-dialog/add-website-dialog.component";
-import { AddDomainDialogComponent } from "../add-domain-dialog/add-domain-dialog.component";
 import { AddPageDialogComponent } from "../add-page-dialog/add-page-dialog.component";
 
 @Component({
@@ -72,17 +71,6 @@ export class BottomSheetComponent implements OnInit {
     e.preventDefault();
 
     this.dialog.open(AddWebsiteDialogComponent, {
-      width: "60vw",
-      disableClose: false,
-      hasBackdrop: true,
-    });
-  }
-
-  openAddDomainDialog(e): void {
-    this.bottomSheetRef.dismiss();
-    e.preventDefault();
-
-    this.dialog.open(AddDomainDialogComponent, {
       width: "60vw",
       disableClose: false,
       hasBackdrop: true,

@@ -63,6 +63,15 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="StartingUrl">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
+          {{ "WEBSITES_PAGE.LIST.table.url_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex>
+          {{element.StartingUrl}}
+        </mat-cell>
+      </ng-container>
+
       <!--<ng-container matColumnDef="User">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
           {{ "WEBSITES_PAGE.LIST.table.user_label" | translate }}
