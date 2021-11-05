@@ -622,6 +622,8 @@
       "name_label": "Nome",
       "name_exists": "O nome inserido já existe",
       "domain_label": "Url inicial",
+      "domain_hint": "Informação: ",
+      "domain_hint_description": "Para mudar o url inicial, apague primeiro todas as páginas associadas.",
       "domain_exists": "O url inserido já existe",
       "domain_invalid": "Url inválido",
       "domain_missing_protocol": "O protocolo do url está em falta (http or https)",
@@ -816,8 +818,8 @@
     },
     "ADD": {
       "title": "Criar novas páginas",
-      "domain_label": "Domínio",
-      "domain_invalid": "Domínio inválido",
+      "domain_label": "Sítio web",
+      "domain_invalid": "Sítio web inválido",
       "uris_label": "Novos uris",
       "uris_invalid": "Um dos uris inseridos é inválido",
       "show_in_observatorio": "Mostrar páginas no observatório",
@@ -1081,7 +1083,7 @@
     "change_config": "Alterar configurações",
     "go_to_domain": "Lista de domínios",
     "LIST": {
-      "domain": "Domínio",
+      "domain": "Url inicial",
       "subdomain": "Sub-domínio",
       "date": "Data de início",
       "status": "Estado",

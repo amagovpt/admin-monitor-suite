@@ -622,6 +622,8 @@
       "name_label": "Name",
       "name_exists": "The inserted name already exists",
       "domain_label": "Staring url",
+      "domain_hint": "Info: ",
+      "domain_hint_description": "To change the starting url, delete all related pages first.",
       "domain_exists": "The inserted url already exists",
       "domain_invalid": "Invalid url",
       "domain_missing_protocol": "The url protocol is missing (http or https)",
@@ -818,8 +820,8 @@
     },
     "ADD": {
       "title": "Create new pages",
-      "domain_label": "Domain",
-      "domain_invalid": "Invalid domain",
+      "domain_label": "Website",
+      "domain_invalid": "Invalid website",
       "uris_label": "New uris",
       "uris_invalid": "One of the inserted uris is invalid",
       "show_in_observatorio": "Show pages in observatory",
@@ -1083,7 +1085,7 @@
     "change_config": "Change settings",
     "go_to_domain": "List of domains",
     "LIST": {
-      "domain": "Domain",
+      "domain": "Starting url",
       "subdomain": "Sub-domain",
       "date": "Initial date",
       "status": "Status",

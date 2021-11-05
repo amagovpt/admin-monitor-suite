@@ -26,17 +26,18 @@
       </mat-form-field>
       <mat-form-field>
         <label for="website_domain_input">{{ "WEBSITES_PAGE.ADD.domain_label" | translate }}</label>
-        <input id="website_domain_input" matInput formControlName="domain" [errorStateMatcher]="matcher" required>
-        <button type="button" *ngIf="websiteForm.value.domain" matSuffix mat-icon-button aria-label="Clear"
-          (click)="websiteForm.controls.domain.reset()">
+        <input id="website_domain_input" matInput formControlName="startingUrl" [errorStateMatcher]="matcher" required>
+        <button type="button" *ngIf="websiteForm.value.startingUrl" matSuffix mat-icon-button aria-label="Clear"
+          (click)="websiteForm.controls.startingUrl.reset()">
           <mat-icon aria-hidden="false">close</mat-icon>
         </button>
-        <mat-error *ngIf="websiteForm.controls.domain.status === 'PENDING'">
+        <mat-hint><strong>{{ "WEBSITES_PAGE.ADD.domain_hint" | translate }}</strong>{{ "WEBSITES_PAGE.ADD.domain_hint_description" | translate }}</mat-hint>
+        <mat-error *ngIf="websiteForm.controls.startingUrl.status === 'PENDING'">
           <mat-progress-bar mode="buffer"></mat-progress-bar>
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.domain.hasError('required')"
+        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('required')"
           [innerHTML]="'MISC.required_field' | translate"></mat-error>
-        <mat-error *ngIf="websiteForm.controls.domain.hasError('notTakenDomain')">
+        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('notTakenDomain')">
           {{ "WEBSITES_PAGE.ADD.domain_exists" | translate }}
         </mat-error>
       </mat-form-field>
@@ -196,7 +197,7 @@
     </button>
     <span fxFlex="2"></span>
     <button mat-raised-button color="primary" type="submit"
-      [disabled]="websiteForm.invalid || websiteForm.controls.domain.invalid || websiteForm.controls.user.invalid"
+      [disabled]="websiteForm.invalid || websiteForm.controls.startingUrl.invalid || websiteForm.controls.user.invalid"
       *ngIf="!loadingUpdate">
       {{ 'WEBSITES_PAGE.UPDATE.submit' | translate }}
     </button>
