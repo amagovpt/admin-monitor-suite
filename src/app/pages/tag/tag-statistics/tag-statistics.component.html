@@ -27,7 +27,7 @@
             <span><strong>{{ "STATISTICS.websites" | translate }}:</strong> {{ nWebsites }}</span>
           </mat-list-item>
           <mat-list-item>
-            <span><strong>{{ "STATISTICS.pages" | translate }}:</strong> {{ nPages }}</span>
+            <span><strong>{{ "STATISTICS.pages" | translate }}:</strong> {{ total_pages }} ({{ nPages }})</span>
           </mat-list-item>
           <mat-list-item *ngIf="nPages && nWebsites">
             <span><strong>{{ "STATISTICS.average_page" | translate }}:</strong> {{ nPages / nWebsites | toFixed: {places: 0} }}</span>
@@ -70,6 +70,9 @@
         </table>
       </div>
     </div>
+    <span fxLayout="row" fxLayoutAlign="center center" fxFlex>
+      <strong>{{ "STATISTICS.note" | translate }}</strong>
+    </span>
   </mat-card-content>
   <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
     <button mat-flat-button color="primary" (click)="openScoreDistributionDialog()">

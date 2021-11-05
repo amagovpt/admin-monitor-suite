@@ -125,11 +125,12 @@ export class EditEntityDialogComponent implements OnInit {
     this.get.listOfOfficialWebsites().subscribe((websites) => {
       if (websites !== null) {
         this.websites = this.websites.concat(websites);
-        this.filteredWebsites = this.entityForm.controls.websites.valueChanges.pipe(
-          map((website: any | null) =>
-            website ? this.filterWebsite(website) : this.websites.slice()
-          )
-        );
+        this.filteredWebsites =
+          this.entityForm.controls.websites.valueChanges.pipe(
+            map((website: any | null) =>
+              website ? this.filterWebsite(website) : this.websites.slice()
+            )
+          );
       }
 
       this.loadingWebsites = false;
@@ -192,16 +193,16 @@ export class EditEntityDialogComponent implements OnInit {
     }
   }
 
-  filterWebsite(name: string) {
+  filterWebsite(url: string) {
     return this.websites.filter((website) =>
-      _.includes(website.Name.toLowerCase(), name.toLowerCase())
+      _.includes(website.Url.toLowerCase(), url.toLowerCase())
     );
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Name"] === event.option.viewValue
+      (w) => w["Url"] === event.option.viewValue
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
