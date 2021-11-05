@@ -1,29 +1,29 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import * as _ from 'lodash';
+import { Component, OnInit, Input } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import * as _ from "lodash";
 
-import { ScoreDistributionDialogComponent } from '../../../dialogs/score-distribution-dialog/score-distribution-dialog.component';
-import { ErrorDistributionDialogComponent } from '../../../dialogs/error-distribution-dialog/error-distribution-dialog.component';
+import { ScoreDistributionDialogComponent } from "../../../dialogs/score-distribution-dialog/score-distribution-dialog.component";
+import { ErrorDistributionDialogComponent } from "../../../dialogs/error-distribution-dialog/error-distribution-dialog.component";
 
-import { Page } from '../../../models/page';
-import { CorrectionDistributionDialogComponent } from 'app/dialogs/correction-distribution-dialog/correction-distribution-dialog.component';
-import { Website } from 'app/models/website.object';
+import { Page } from "../../../models/page";
+import { CorrectionDistributionDialogComponent } from "app/dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
+import { Website } from "app/models/website.object";
 
 @Component({
-  selector: 'app-website-statistics',
-  templateUrl: './website-statistics.component.html',
-  styleUrls: ['./website-statistics.component.css']
+  selector: "app-website-statistics",
+  templateUrl: "./website-statistics.component.html",
+  styleUrls: ["./website-statistics.component.css"],
 })
 export class WebsiteStatisticsComponent implements OnInit {
-
-  @Input('pages') pages: any[];
-  @Input('data') websiteObject: Website;
+  @Input("pages") pages: any[];
+  @Input("data") websiteObject: Website;
 
   loading: boolean;
   error: boolean;
 
   score: number;
 
+  total_pages: number;
   newest_page: any;
   oldest_page: any;
 
@@ -40,22 +40,20 @@ export class WebsiteStatisticsComponent implements OnInit {
   pagesWithoutErrorsAAA: number;
   pagesWithoutErrorsAAAPercentage: string;
 
-  constructor(
-    private readonly dialog: MatDialog
-  ) {
+  constructor(private readonly dialog: MatDialog) {
     this.thresholdConfig = {
-      '0': {
-        color: 'red'
+      "0": {
+        color: "red",
       },
-      '2.5': {
-        color: 'orange'
+      "2.5": {
+        color: "orange",
       },
-      '5': {
-        color: 'yellow'
+      "5": {
+        color: "yellow",
       },
-      '7.5': {
-        color: 'green'
-      }
+      "7.5": {
+        color: "green",
+      },
     };
 
     this.pages = new Array<any>();
@@ -64,13 +62,17 @@ export class WebsiteStatisticsComponent implements OnInit {
     this.pagesWithoutErrorsA = 0;
     this.pagesWithoutErrorsAA = 0;
     this.pagesWithoutErrorsAAA = 0;
+    this.total_pages = 0;
   }
 
   ngOnInit(): void {
-    this.pages = this.pages.filter(p => p.Score !== null).map(p => {
-      p.Score = Number(p.Score);
-      return p;
-    });
+    this.total_pages = this.pages.length;
+    this.pages = this.pages
+      .filter((p) => p.Score !== null)
+      .map((p) => {
+        p.Score = Number(p.Score);
+        return p;
+      });
     const size = _.size(this.pages);
     this.newest_page = this.pages[0].Evaluation_Date;
     this.oldest_page = this.pages[0].Evaluation_Date;
@@ -103,20 +105,25 @@ export class WebsiteStatisticsComponent implements OnInit {
 
     this.pagesWithoutErrors = size - this.pagesWithErrors;
 
-    this.pagesWithErrorsPercentage = ((this.pagesWithErrors / size) * 100).toFixed(1) + '%';
-    this.pagesWithoutErrorsPercentage = ((this.pagesWithoutErrors / size) * 100).toFixed(1) + '%';
-    this.pagesWithoutErrorsAPercentage = ((this.pagesWithoutErrorsA / size) * 100).toFixed(1) + '%';
-    this.pagesWithoutErrorsAAPercentage = ((this.pagesWithoutErrorsAA / size) * 100).toFixed(1) + '%';
-    this.pagesWithoutErrorsAAAPercentage = ((this.pagesWithoutErrorsAAA / size) * 100).toFixed(1) + '%';
+    this.pagesWithErrorsPercentage =
+      ((this.pagesWithErrors / size) * 100).toFixed(1) + "%";
+    this.pagesWithoutErrorsPercentage =
+      ((this.pagesWithoutErrors / size) * 100).toFixed(1) + "%";
+    this.pagesWithoutErrorsAPercentage =
+      ((this.pagesWithoutErrorsA / size) * 100).toFixed(1) + "%";
+    this.pagesWithoutErrorsAAPercentage =
+      ((this.pagesWithoutErrorsAA / size) * 100).toFixed(1) + "%";
+    this.pagesWithoutErrorsAAAPercentage =
+      ((this.pagesWithoutErrorsAAA / size) * 100).toFixed(1) + "%";
   }
 
   openScoreDistributionDialog(): void {
     this.dialog.open(ScoreDistributionDialogComponent, {
       data: {
         number: this.pages.length,
-        pages: this.pages
+        pages: this.pages,
       },
-      width: '60vw'
+      width: "60vw",
     });
   }
 
@@ -125,9 +132,9 @@ export class WebsiteStatisticsComponent implements OnInit {
       data: {
         number: this.pages.length,
         website: this.websiteObject,
-        inTagsPage: false
+        inTagsPage: false,
       },
-      width: '80vw'
+      width: "80vw",
     });
   }
 
@@ -136,9 +143,9 @@ export class WebsiteStatisticsComponent implements OnInit {
       data: {
         number: this.pages.length,
         website: this.websiteObject,
-        inTagsPage: false
+        inTagsPage: false,
       },
-      width: '80vw'
+      width: "80vw",
     });
   }
 }

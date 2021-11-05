@@ -26,6 +26,7 @@ export class EntityStatisticsComponent implements OnInit {
 
   score: number;
 
+  total_pages: number;
   newest_page: any;
   oldest_page: any;
 
@@ -56,7 +57,7 @@ export class EntityStatisticsComponent implements OnInit {
 
     this.score = 0;
 
-    this.nPages = this.nWebsites = 0;
+    this.nPages = this.nWebsites = this.total_pages = 0;
 
     this.websitesWithErrors = 0;
     this.websitesWithoutErrorsA = 0;
@@ -70,7 +71,8 @@ export class EntityStatisticsComponent implements OnInit {
   ngOnInit(): void {
     this.get.listOfEntityWebsitePages(this.entity).subscribe((pages) => {
       if (pages.length > 0) {
-        this.pages = pages;
+        this.total_pages = pages.length;
+        this.pages = pages.filter((p) => p.Score !== null);
 
         this.tagEntity = this.createTagEntity(_.clone(this.pages));
         this.score = this.tagEntity.getScore();
