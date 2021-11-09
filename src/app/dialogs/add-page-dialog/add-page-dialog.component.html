@@ -7,22 +7,22 @@
 </div>
 <form (submit)="createPage($event)" [formGroup]="pageForm" novalidate>
   <mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
-    <div class="add-domain-block" fxLayout="column" *ngIf="!loadingDomains">
+    <div class="add-domain-block" fxLayout="column" *ngIf="!loadingWebsites">
       <mat-form-field>
         <label for="pages_domain_input">
           {{ "PAGES_PAGE.ADD.domain_label" | translate }}
         </label>
-        <input id="pages_domain_input" type="text" aria-label="Domain Name" matInput formControlName="domain" [matAutocomplete]="auto" [errorStateMatcher]="matcher" autofocus required>
+        <input id="pages_domain_input" type="text" aria-label="Domain Name" matInput formControlName="website" [matAutocomplete]="auto" [errorStateMatcher]="matcher" autofocus required>
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let domain of filteredDomains | async" [value]="domain.Url" (click)="updateUrisFromFile()">
-            {{ domain.Url }}
+          <mat-option *ngFor="let website of filteredWebsites | async" [value]="website.StartingUrl" (click)="updateUrisFromFile()">
+            {{ website.StartingUrl }}
           </mat-option>
         </mat-autocomplete>
-        <button type="button" *ngIf="pageForm.value.domain" matSuffix mat-icon-button aria-label="Clear" (click)="pageForm.controls.domain.reset()">
+        <button type="button" *ngIf="pageForm.value.website" matSuffix mat-icon-button aria-label="Clear" (click)="pageForm.controls.domain.reset()">
           <mat-icon aria-hidden="false">clear</mat-icon>
         </button>
-        <mat-error *ngIf="pageForm.controls.domain.hasError('required')" [innerHTML]="'MISC.required_field' | translate"></mat-error>
-        <mat-error *ngIf="pageForm.controls.domain.hasError('validDomain')">
+        <mat-error *ngIf="pageForm.controls.website.hasError('required')" [innerHTML]="'MISC.required_field' | translate"></mat-error>
+        <mat-error *ngIf="pageForm.controls.website.hasError('validDomain')">
           {{ "PAGES_PAGE.ADD.domain_invalid" | translate }}
         </mat-error>
       </mat-form-field>
@@ -85,7 +85,7 @@
     <button mat-raised-button color="warn" type="button" (click)="resetForm()">
       {{ "PAGES_PAGE.ADD.reset" | translate }}
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="pageForm.controls.domain.invalid ||
+    <button mat-raised-button color="primary" type="submit" [disabled]="pageForm.controls.website.invalid ||
     pageForm.hasError('requiredAtLeastOne') || pageForm.controls.uris.hasError('invalidUri') || fileErrorMessage != '' || fileLoading"
             *ngIf="!loadingCreate">
       {{ "PAGES_PAGE.ADD.submit" | translate }}

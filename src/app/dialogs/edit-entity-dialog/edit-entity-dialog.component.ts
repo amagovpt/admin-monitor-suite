@@ -195,14 +195,14 @@ export class EditEntityDialogComponent implements OnInit {
 
   filterWebsite(url: string) {
     return this.websites.filter((website) =>
-      _.includes(website.Url.toLowerCase(), url.toLowerCase())
+      _.includes(website.StartingUrl.toLowerCase(), url.toLowerCase())
     );
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Url"] === event.option.viewValue
+      (w) => w["StartingUrl"] === event.option.viewValue
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
