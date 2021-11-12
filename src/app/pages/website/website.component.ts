@@ -70,7 +70,7 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       .listOfWebsitePagesByName(this.user, this.website)
       .subscribe((pages) => {
         this.pages = _.clone(pages);
-        console.log(pages);
+
         pages = pages.filter((p) => p.Score !== null);
 
         this.websiteObject = new Website();

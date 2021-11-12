@@ -156,11 +156,11 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   reEvaluateWebsitesPages(): void {
-    const domainsId = this.selection.selected.map((w) => w.DomainId);
+    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
-        info: domainsId,
+        info: websitesId,
         dialog: "website",
       },
     });
