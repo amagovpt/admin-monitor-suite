@@ -596,7 +596,7 @@
       "table": {
         "id_label": "ID",
         "name_label": "Name",
-        "url_label": "Staring url",
+        "url_label": "Starting url",
         "entity_label": "Entity",
         "user_label": "User",
         "pages_label": "Nº pages (evaluated)",
@@ -620,7 +620,7 @@
       "title": "Create a new website",
       "name_label": "Name",
       "name_exists": "The inserted name already exists",
-      "domain_label": "Staring url",
+      "domain_label": "Starting url",
       "domain_hint": "Info: ",
       "domain_hint_description": "To change the starting url, delete all related pages first.",
       "domain_exists": "The inserted url already exists",

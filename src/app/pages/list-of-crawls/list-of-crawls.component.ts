@@ -116,10 +116,10 @@ export class ListOfCrawlsComponent implements OnInit {
   }
 
   openDeleteCrawlerDialog(): void {
-    const crawlersId = this.selection.selected.map((c) => c.CrawlDomainId);
+    const crawlersId = this.selection.selected.map((c) => c.CrawlWebsiteId);
     this.deleteService
       .crawlers({
-        crawlDomainIds: JSON.stringify(crawlersId),
+        crawlWebsiteIds: JSON.stringify(crawlersId),
       })
       .subscribe((result) => {
         if (result) {
