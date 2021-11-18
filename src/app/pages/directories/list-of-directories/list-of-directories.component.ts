@@ -21,6 +21,7 @@ import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choos
 import { TranslateService } from "@ngx-translate/core";
 import { SelectionModel } from "@angular/cdk/collections";
 import { DeleteService } from "../../../services/delete.service";
+import { MessageService } from "../../../services/message.service";
 
 @Component({
   selector: "app-list-of-directories",
@@ -54,6 +55,7 @@ export class ListOfDirectoriesComponent implements OnInit {
     private get: GetService,
     private translate: TranslateService,
     private readonly deleteService: DeleteService,
+    private readonly message: MessageService,
     private cd: ChangeDetectorRef
   ) {
     this.selection = new SelectionModel<any>(true, []);
@@ -99,7 +101,7 @@ export class ListOfDirectoriesComponent implements OnInit {
     });
   }
 
-  openDeleteDirectoriesDialog(): void {
+  deleteDirectories(): void {
     const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
     this.deleteService
       .directories({
@@ -108,6 +110,22 @@ export class ListOfDirectoriesComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.refreshDirectories.next(true);
+          this.message.show(
+            "DIRECTORIES_PAGE.DELETE.messages.directories_success"
+          );
+        }
+      });
+  }
+
+  deleteDirectoriesPages(): void {
+    const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
+    this.deleteService
+      .directoriesPages({
+        directoriesId: JSON.stringify(directoriesId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.message.show("DIRECTORIES_PAGE.DELETE.messages.pages_success");
         }
       });
   }

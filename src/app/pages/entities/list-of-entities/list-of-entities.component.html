@@ -30,7 +30,11 @@
         {{ "ENTITIES_PAGE.LIST.re_evaluate_entities" | translate }}
       </button>
       <span fxFlex="2"></span>
-      <button mat-flat-button type="button" color="warn" (click)="openDeleteEntitiesDialog()" [disabled]="selection.selected.length === 0">
+      <button mat-flat-button type="button" color="warn" (click)="deleteEntitiesPages()" [disabled]="selection.selected.length === 0">
+        {{ "ENTITIES_PAGE.LIST.delete_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="deleteEntities()" [disabled]="selection.selected.length === 0">
         {{ "ENTITIES_PAGE.LIST.delete_entities" | translate }}
       </button>
     </div>

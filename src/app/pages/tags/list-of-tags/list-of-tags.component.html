@@ -32,7 +32,11 @@
         {{ "TAGS_PAGE.LIST.crawler" | translate }}
       </button>
       <span fxFlex="2"></span>
-      <button mat-flat-button type="button" color="warn" (click)="openDeleteTagsDialog()" [disabled]="selection.selected.length === 0">
+      <button mat-flat-button type="button" color="warn" (click)="deleteTagsPages()" [disabled]="selection.selected.length === 0">
+        {{ "TAGS_PAGE.LIST.delete_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="deleteTags()" [disabled]="selection.selected.length === 0">
         {{ "TAGS_PAGE.LIST.delete_tags" | translate }}
       </button>
     </div>

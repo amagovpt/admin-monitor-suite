@@ -45,7 +45,11 @@
         {{ "WEBSITES_PAGE.LIST.digital_stamps" | translate }}
       </button>
       <span fxFlex="2"></span>
-      <button mat-flat-button type="button" color="warn" (click)="openDeleteWebsitesDialog()" [disabled]="selection.selected.length === 0">
+      <button mat-flat-button type="button" color="warn" (click)="deleteWebsitesPages()" [disabled]="selection.selected.length === 0">
+        {{ "WEBSITES_PAGE.LIST.delete_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="deleteWebsites()" [disabled]="selection.selected.length === 0">
         {{ "WEBSITES_PAGE.LIST.delete_websites" | translate }}
       </button>
     </div>

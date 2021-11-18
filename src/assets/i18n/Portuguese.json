@@ -345,7 +345,8 @@
         "edit_tooltip": "Editar este diretório",
         "see_tooltip": "Ver diretório"
       },
-      "delete_directories": "Apagar",
+      "delete_pages": "Apagar páginas",
+      "delete_directories": "Apagar diretórios",
       "re_evaluate_directories": "Re-avaliar"
     },
     "ADD": {
@@ -389,8 +390,10 @@
     },
     "DELETE": {
       "messages": {
-        "success": "Diretório apagado com sucesso",
-        "error": "Erro ao apagar o diretório"
+        "directories_success": "Diretórios apagados com sucesso",
+        "directories_error": "Erro ao apagar diretórios",
+        "pages_success": "Páginas dos diretórios apagadas com sucesso",
+        "pages_error": "Erro ao apagar as páginas dos diretórios"
       }
     }
   },
@@ -416,7 +419,8 @@
         "crawler_tooltip": "Clicque aqui para correr o crawler nesta categoria",
         "see_tooltip": "Ver categoria"
       },
-      "delete_tags": "Apagar",
+      "delete_pages": "Apagar páginas",
+      "delete_tags": "Apagar categorias",
       "re_evaluate_tags": "Re-avaliar",
       "crawler": "Crawler"
     },
@@ -492,8 +496,10 @@
     },
     "DELETE": {
       "messages": {
-        "success": "Categoria apagada com sucesso",
-        "error": "Erro ao apagar a categoria"
+        "tags_success": "Categorias apagadas com sucesso",
+        "tags_error": "Erro ao apagar categorias",
+        "pages_success": "Páginas das categorias apagadas com sucesso",
+        "pages_error": "Erro ao apagar as paginas das categorias"
       }
     }
   },
@@ -514,7 +520,8 @@
         "edit_tooltip": "Editar esta entidade",
         "see_tooltip": "Ver entidade"
       },
-      "delete_entities": "Apagar",
+      "delete_pages": "Apagar páginas",
+      "delete_entities": "Apagar entidades",
       "re_evaluate_entities": "Re-avaliar"
     },
     "ADD": {
@@ -580,8 +587,10 @@
     },
     "DELETE": {
       "messages": {
-        "success": "Entidade apagada com sucesso",
-        "error": "Erro ao apagar entidade"
+        "entities_success": "Entidades apagadas com sucesso",
+        "entities_error": "Erro ao apagar entidades",
+        "pages_success": "Páginas das entidades apagadas com sucesso",
+        "pages_error": "Erro ao apagar as páginas das entidades"
       }
     }
   },
@@ -610,7 +619,8 @@
         "stamp_label": "Selos digitais",
         "stamp_tooltip": "Criar/atualizar selo digital"
       },
-      "delete_websites": "Apagar",
+      "delete_pages": "Apagar páginas",
+      "delete_websites": "Apagar sítios web",
       "re_evaluate_websites": "Re-avaliar",
       "crawler": "Crawler",
       "digital_stamps": "Gerar selos digitais"
@@ -710,8 +720,10 @@
       "description": "Este sítio web pertence a um utilizador do My Monitor. Por favor remova o sítio web do utilizador antes de pode apagar o sítio web.",
       "button": "Ok",
       "messages": {
-        "success": "Sítio web apagado com sucesso",
-        "error": "Erro ao apagar sítio web"
+        "websites_success": "Sítios web apagados com sucesso",
+        "websites_error": "Erro ao apagar sítios web",
+        "pages_success": "Páginas dos sítios web apagadas com sucesso",
+        "pages_error": "Erro ao apagar as paǵinas dos sítios web"
       }
     }
   },

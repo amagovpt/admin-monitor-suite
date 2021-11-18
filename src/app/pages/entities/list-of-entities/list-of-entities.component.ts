@@ -179,7 +179,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDeleteEntitiesDialog(): void {
+  deleteEntities(): void {
     const entitiesId = this.selection.selected.map((e) => e.EntityId);
     this.deleteService
       .entities({
@@ -204,7 +204,20 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
               this.cd.detectChanges();
             });
 
-          this.message.show("ENTITIES_PAGE.DELETE.messages.success");
+          this.message.show("ENTITIES_PAGE.DELETE.messages.entities_success");
+        }
+      });
+  }
+
+  deleteEntitiesPages(): void {
+    const entitiesId = this.selection.selected.map((e) => e.EntityId);
+    this.deleteService
+      .entitiesPages({
+        entitiesId: JSON.stringify(entitiesId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.message.show("ENTITIES_PAGE.DELETE.messages.pages_success");
         }
       });
   }

@@ -21,7 +21,11 @@
         {{ "DIRECTORIES_PAGE.LIST.re_evaluate_directories" | translate }}
       </button>
       <span fxFlex="2"></span>
-      <button mat-flat-button type="button" color="warn" (click)="openDeleteDirectoriesDialog()" [disabled]="selection.selected.length === 0">
+      <button mat-flat-button type="button" color="warn" (click)="deleteDirectoriesPages()" [disabled]="selection.selected.length === 0">
+        {{ "DIRECTORIES_PAGE.LIST.delete_pages" | translate }}
+      </button>
+      <span fxFlex="2"></span>
+      <button mat-flat-button type="button" color="warn" (click)="deleteDirectories()" [disabled]="selection.selected.length === 0">
         {{ "DIRECTORIES_PAGE.LIST.delete_directories" | translate }}
       </button>
     </div>

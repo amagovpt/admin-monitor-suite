@@ -19,6 +19,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { DeleteService } from "../../../services/delete.service";
 import { CrawlerService } from "../../../services/crawler.service";
 import { TagCrawlerInformationDialogComponent } from "../../../dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component";
+import { MessageService } from "../../../services/message.service";
 
 @Component({
   selector: "app-list-of-tags",
@@ -53,7 +54,8 @@ export class ListOfTagsComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly deleteService: DeleteService,
-    private readonly crawler: CrawlerService
+    private readonly crawler: CrawlerService,
+    private readonly message: MessageService
   ) {
     this.loading = false;
     this.error = false;
@@ -108,7 +110,7 @@ export class ListOfTagsComponent implements OnInit {
     });
   }
 
-  openDeleteTagsDialog(): void {
+  deleteTags(): void {
     const tagsId = this.selection.selected.map((t) => t.TagId);
     this.deleteService
       .tags({
@@ -117,6 +119,20 @@ export class ListOfTagsComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.refreshTags.next(true);
+          this.message.show("TAGS_PAGE.DELETE.messages.tags_success");
+        }
+      });
+  }
+
+  deleteTagsPages(): void {
+    const tagsId = this.selection.selected.map((t) => t.TagId);
+    this.deleteService
+      .tagsPages({
+        tagsId: JSON.stringify(tagsId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          this.message.show("TAGS_PAGE.DELETE.messages.pages_success");
         }
       });
   }

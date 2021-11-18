@@ -238,7 +238,39 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     return this.digitalStamp.getDigitalStampUrl(websiteId);
   }
 
-  openDeleteWebsitesDialog(): void {
+  deleteWebsitesPages(): void {
+    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+    this.deleteService
+      .websitesPages({
+        websitesId: JSON.stringify(websitesId),
+      })
+      .subscribe((result) => {
+        if (result) {
+          if (this.websites) {
+            this.refreshWebsites.next(true);
+          } else {
+            this.get
+              .listOfWebsites(
+                this.paginator.pageSize,
+                this.paginator.pageIndex,
+                this.sort.active ?? "",
+                this.sort.direction,
+                this.filter.value ?? ""
+              )
+              .subscribe((websites) => {
+                this.dataSource = new MatTableDataSource(websites);
+                this.selection = new SelectionModel<any>(true, []);
+                this.length = this.length - websites.length;
+                this.cd.detectChanges();
+              });
+
+            this.message.show("WEBSITES_PAGE.DELETE.messages.pages_success");
+          }
+        }
+      });
+  }
+
+  deleteWebsites(): void {
     const websitesId = this.selection.selected.map((w) => w.WebsiteId);
     this.deleteService
       .websites({
@@ -264,7 +296,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
                 this.cd.detectChanges();
               });
 
-            this.message.show("WEBSITES_PAGE.DELETE.messages.success");
+            this.message.show("WEBSITES_PAGE.DELETE.messages.websites_success");
           }
         }
       });

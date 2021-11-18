@@ -345,7 +345,8 @@
         "edit_tooltip": "Edit this directory",
         "see_tooltip": "See directory"
       },
-      "delete_directories": "Delete",
+      "delete_pages": "Delete pages",
+      "delete_directories": "Delete directories",
       "re_evaluate_directories": "Re-evaluate"
     },
     "ADD": {
@@ -389,8 +390,10 @@
     },
     "DELETE": {
       "messages": {
-        "success": "Directory deleted successfully",
-        "error": "Error deleting directory"
+        "directories_success": "Directories deleted successfully",
+        "directories_error": "Error deleting directories",
+        "pages_success": "Directories pages deleted successfully",
+        "pages_error": "Error deleting directories pages"
       }
     }
   },
@@ -416,7 +419,8 @@
         "crawler_tooltip": "Click here to crawl this tag",
         "see_tooltip": "See tag"
       },
-      "delete_tags": "Delete",
+      "delete_pages": "Delete pages",
+      "delete_tags": "Delete tags",
       "re_evaluate_tags": "Re-evaluate",
       "crawler": "Crawler"
     },
@@ -492,8 +496,10 @@
     },
     "DELETE": {
       "messages": {
-        "success": "Tag deleted successfully",
-        "error": "Error deleting tag"
+        "tags_success": "Tags deleted successfully",
+        "tags_error": "Error deleting tags",
+        "pages_success": "Tags pages deleted successfully",
+        "pages_error": "Error deleting tags pages"
       }
     }
   },
@@ -514,7 +520,8 @@
         "edit_tooltip": "Edit this entity",
         "see_tooltip": "See entity"
       },
-      "delete_entities": "Delete",
+      "delete_pages": "Delete pages",
+      "delete_entities": "Delete entities",
       "re_evaluate_entities": "Re-evaluate"
     },
     "ADD": {
@@ -580,8 +587,10 @@
     },
     "DELETE": {
       "messages": {
-        "success": "Entity deleted successfully",
-        "error": "Error deleting entity"
+        "entities_success": "Entities deleted successfully",
+        "entities_error": "Error deleting entities",
+        "pages_success": "Entities pages deleted successfully",
+        "pages_error": "Error deleting entities pages"
       }
     }
   },
@@ -610,7 +619,8 @@
         "stamp_label": "Digital stamps",
         "stamp_tooltip": "Create/update digital stamp"
       },
-      "delete_websites": "Delete",
+      "delete_pages": "Delete pages",
+      "delete_websites": "Delete websites",
       "re_evaluate_websites": "Re-evaluate",
       "crawler": "Crawler",
       "digital_stamps": "Generate digital stamps"
@@ -712,8 +722,10 @@
       "description": "This website belongs to a My Monitor user. Please remove the website from the user before deleting it.",
       "button": "Ok",
       "messages": {
-        "success": "Website deleted successfully",
-        "error": "Error deleting website"
+        "websites_success": "Websites deleted successfully",
+        "websites_error": "Error deleting websites",
+        "pages_success": "Websites pages deleted successfully",
+        "pages_error": "Error deleting websites pages"
       }
     }
   },

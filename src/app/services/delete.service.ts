@@ -99,7 +99,37 @@ export class DeleteService {
           return <boolean>response.result;
         }),
         catchError((err) => {
-          this.message.show("DIRECTORIES_PAGE.DELETE.messages.error");
+          this.message.show(
+            "DIRECTORIES_PAGE.DELETE.messages.directories_error"
+          );
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  directoriesPages(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/directory/pages/deleteBulk"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("DIRECTORIES_PAGE.DELETE.messages.pages_error");
           console.log(err);
           return of(null);
         })
@@ -155,7 +185,35 @@ export class DeleteService {
           return <boolean>response.result;
         }),
         catchError((err) => {
-          this.message.show("TAGS_PAGE.DELETE.messages.error");
+          this.message.show("TAGS_PAGE.DELETE.messages.tags_error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  tagsPages(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/tag/pages/deleteBulk"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("TAGS_PAGE.DELETE.messages.pages_error");
           console.log(err);
           return of(null);
         })
@@ -183,7 +241,7 @@ export class DeleteService {
           return <boolean>response.result;
         }),
         catchError((err) => {
-          this.message.show("ENTITIES_PAGE.DELETE.messages.error");
+          this.message.show("ENTITIES_PAGE.DELETE.messages.entities_error");
           console.log(err);
           return of(null);
         })
@@ -211,7 +269,35 @@ export class DeleteService {
           return <boolean>response.result;
         }),
         catchError((err) => {
-          this.message.show("ENTITIES_PAGE.DELETE.messages.error");
+          this.message.show("ENTITIES_PAGE.DELETE.messages.entities_error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  entitiesPages(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/entity/pages/deleteBulk"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("ENTITIES_PAGE.DELETE.messages.pages_error");
           console.log(err);
           return of(null);
         })
@@ -239,7 +325,7 @@ export class DeleteService {
           return <boolean>response.result;
         }),
         catchError((err) => {
-          this.message.show("WEBSITES_PAGE.DELETE.messages.error");
+          this.message.show("WEBSITES_PAGE.DELETE.messages.websites_error");
           console.log(err);
           return of(null);
         })
@@ -267,7 +353,35 @@ export class DeleteService {
           return <boolean>response.result;
         }),
         catchError((err) => {
-          this.message.show("WEBSITES_PAGE.DELETE.messages.error");
+          this.message.show("WEBSITES_PAGE.DELETE.messages.websites_error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  websitesPages(data: any): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/website/pages/deleteBulk"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("WEBSITES_PAGE.DELETE.messages.pages_error");
           console.log(err);
           return of(null);
         })
