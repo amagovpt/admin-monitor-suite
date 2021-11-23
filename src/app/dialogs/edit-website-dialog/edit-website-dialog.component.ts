@@ -165,14 +165,15 @@ export class EditWebsiteDialogComponent implements OnInit {
       this.loadingUsers = false;
     });
 
-    this.get.listOfEntities(-1, 0, '', '', '').subscribe((entities) => {
+    this.get.listOfEntities(-1, 0, "", "", "").subscribe((entities) => {
       if (entities !== null) {
         this.entities = entities;
-        this.filteredEntities = this.websiteForm.controls.entities.valueChanges.pipe(
-          map((entity) =>
-            entity ? this.filterEntities(entity) : this.entities.slice()
-          )
-        );
+        this.filteredEntities =
+          this.websiteForm.controls.entities.valueChanges.pipe(
+            map((entity) =>
+              entity ? this.filterEntities(entity) : this.entities.slice()
+            )
+          );
       }
 
       this.loadingEntities = false;
@@ -338,17 +339,19 @@ export class EditWebsiteDialogComponent implements OnInit {
   }
 
   filterTags(name: string) {
-    return this.tags.filter((tag) => _.includes(tag.Name, name));
+    return this.tags.filter((tag) =>
+      _.includes(tag.Name.toLowerCase(), name.toLowerCase())
+    );
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"] === event.option.viewValue
+      (t) => t["Name"].trim() === event.option.viewValue.trim()
     );
     const index2 = _.findIndex(
       this.selectedTags,
-      (t) => t["Name"] === event.option.viewValue
+      (t) => t["Name"].trim() === event.option.viewValue.trim()
     );
     if (index2 === -1) {
       this.selectedTags.push(this.tags[index]);
@@ -365,28 +368,32 @@ export class EditWebsiteDialogComponent implements OnInit {
     }
   }
 
-  filterEntities(val: any): string[] {
-    return this.entities.filter((entity) => _.includes(entity.Long_Name, val));
+  filterEntities(val: string): string[] {
+    return this.entities.filter((entity) =>
+      _.includes(entity.Long_Name.toLowerCase(), val.toLowerCase())
+    );
   }
 
   selectedEntity(event: MatAutocompleteSelectedEvent): void {
-    const index = _.findIndex(
-      this.entities,
-      (e) => e["Long_Name"] === event.option.viewValue
+    const entity = this.entities.filter(
+      (e) => e.Long_Name.trim() === event.option.viewValue.trim()
     );
-    const index2 = _.findIndex(
-      this.selectedEntities,
-      (e) => e["Long_Name"] === event.option.viewValue
+
+    const selectedEntity = this.selectedEntities.filter(
+      (e) => e.Long_Name.trim() === event.option.viewValue.trim()
     );
-    if (index2 === -1) {
-      this.selectedEntities.push(this.entities[index]);
+
+    if (entity.length > 0 && selectedEntity.length === 0) {
+      this.selectedEntities.push(entity[0]);
       this.entityInput.nativeElement.value = "";
       this.websiteForm.controls.entities.setValue(null);
     }
   }
 
-  filterUser(val: any): string[] {
-    return this.monitorUsers.filter((user) => _.includes(user.Username, val));
+  filterUser(val: string): string[] {
+    return this.monitorUsers.filter((user) =>
+      _.includes(user.Username.toLowerCase(), val.toLowerCase())
+    );
   }
 
   nameValidator(control: AbstractControl): Observable<any> {

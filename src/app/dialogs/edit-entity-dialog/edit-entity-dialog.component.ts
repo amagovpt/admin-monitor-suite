@@ -157,8 +157,8 @@ export class EditEntityDialogComponent implements OnInit {
   updateEntity(e): void {
     e.preventDefault();
 
-    const shortName = this.entityForm.value.shortName;
-    const longName = this.entityForm.value.longName;
+    const shortName = this.entityForm.value.shortName.trim();
+    const longName = this.entityForm.value.longName.trim();
 
     const defaultWebsites = JSON.stringify(
       _.map(this.defaultEntity.websites, "WebsiteId")
@@ -202,7 +202,7 @@ export class EditEntityDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Url"] === event.option.viewValue
+      (w) => w["Url"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

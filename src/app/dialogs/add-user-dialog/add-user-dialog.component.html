@@ -153,7 +153,7 @@
         <mat-chip-list #websitesChipList>
           <mat-chip *ngFor="let website of selectedWebsites" [selectable]="selectable" [removable]="removable"
             (removed)="removeWebsite(website)">
-            {{website.Name}}
+            {{website.Url}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
           <input id="user_websites_input" #websiteInput formControlName="websites" [matAutocomplete]="auto2"
@@ -165,8 +165,8 @@
           </button>
         </mat-chip-list>
         <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectedWebsite($event)">
-          <mat-option *ngFor="let website of filteredWebsites | async" [value]="website.Name">
-            {{ website.Name }}
+          <mat-option *ngFor="let website of filteredWebsites | async" [value]="website.Url">
+            {{ website.Url }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

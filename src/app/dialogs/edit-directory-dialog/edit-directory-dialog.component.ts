@@ -115,7 +115,9 @@ export class EditDirectoryDialogComponent implements OnInit {
         this.directoryForm.controls.observatory.setValue(
           directory.Show_in_Observatory
         );
-        this.directoryForm.controls.method.setValue(directory.Method.toString());
+        this.directoryForm.controls.method.setValue(
+          directory.Method.toString()
+        );
         this.selectedTags = directory.tags;
 
         this.copyDirectoryForm.controls.name.setValue(directory.Name);
@@ -158,7 +160,7 @@ export class EditDirectoryDialogComponent implements OnInit {
   updateDirectory(e): void {
     e.preventDefault();
 
-    const name = this.directoryForm.value.name;
+    const name = this.directoryForm.value.name.trim();
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
     const method = parseInt(this.directoryForm.value.method);
     const defaultTags = JSON.stringify(
@@ -191,7 +193,9 @@ export class EditDirectoryDialogComponent implements OnInit {
     this.directoryForm.controls.observatory.setValue(
       this.defaultDirectory.Show_in_Observatory
     );
-    this.directoryForm.controls.method.setValue(this.defaultDirectory.Method.toString());
+    this.directoryForm.controls.method.setValue(
+      this.defaultDirectory.Method.toString()
+    );
     this.selectedTags = _.clone(this.defaultDirectory.tags);
   }
 
@@ -212,11 +216,11 @@ export class EditDirectoryDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"] === event.option.viewValue
+      (t) => t["Name"].trim() === event.option.viewValue.trim()
     );
     const index2 = _.findIndex(
       this.selectedTags,
-      (t) => t["Name"] === event.option.viewValue
+      (t) => t["Name"].trim() === event.option.viewValue.trim()
     );
     if (index2 < 0) {
       this.selectedTags.push(this.tags[index]);

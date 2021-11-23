@@ -125,14 +125,15 @@ export class AddWebsiteDialogComponent implements OnInit {
       this.loadingUsers = false;
     });
 
-    this.get.listOfEntities(-1, 0, '', '', '').subscribe((entities) => {
+    this.get.listOfEntities(-1, 0, "", "", "").subscribe((entities) => {
       if (entities !== null) {
         this.entities = entities;
-        this.filteredEntities = this.websiteForm.controls.entities.valueChanges.pipe(
-          map((entity) =>
-            entity ? this.filterEntities(entity) : this.entities.slice()
-          )
-        );
+        this.filteredEntities =
+          this.websiteForm.controls.entities.valueChanges.pipe(
+            map((entity) =>
+              entity ? this.filterEntities(entity) : this.entities.slice()
+            )
+          );
       }
 
       this.loadingEntities = false;
@@ -234,7 +235,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"] === event.option.viewValue
+      (t) => t["Name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedTags, this.tags[index])) {
       this.selectedTags.push(this.tags[index]);
@@ -260,7 +261,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   selectedEntity(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.entities,
-      (e) => e["Long_Name"] === event.option.viewValue
+      (e) => e["Long_Name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedEntities, this.entities[index])) {
       this.selectedEntities.push(this.entities[index]);

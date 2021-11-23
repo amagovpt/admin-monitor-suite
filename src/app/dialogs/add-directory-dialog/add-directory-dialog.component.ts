@@ -82,7 +82,7 @@ export class AddDirectoryDialogComponent implements OnInit {
         this.nameValidator.bind(this)
       ),
       observatory: new FormControl(),
-      method: new FormControl('0', [Validators.required]),
+      method: new FormControl("0", [Validators.required]),
       tags: new FormControl(),
     });
 
@@ -114,7 +114,7 @@ export class AddDirectoryDialogComponent implements OnInit {
   createDirectory(e): void {
     e.preventDefault();
 
-    const name = this.directoryForm.value.name;
+    const name = this.directoryForm.value.name.trim();
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
     const method = this.directoryForm.value.method;
     const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
@@ -163,7 +163,7 @@ export class AddDirectoryDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"] === event.option.viewValue
+      (t) => t["Name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedTags, this.tags[index])) {
       this.selectedTags.push(this.tags[index]);

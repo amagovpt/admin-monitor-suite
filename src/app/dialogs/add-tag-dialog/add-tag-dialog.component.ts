@@ -136,7 +136,7 @@ export class AddTagDialogComponent implements OnInit {
   createTag(e): void {
     e.preventDefault();
 
-    const name = this.tagForm.value.name;
+    const name = this.tagForm.value.name.trim();
     const directories = JSON.stringify(
       _.map(this.selectedDirectories, "DirectoryId")
     );
@@ -185,7 +185,7 @@ export class AddTagDialogComponent implements OnInit {
   selectedDirectory(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.directories,
-      (d) => d["Name"] === event.option.viewValue
+      (d) => d["Name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedDirectories, this.directories[index])) {
       this.selectedDirectories.push(this.directories[index]);

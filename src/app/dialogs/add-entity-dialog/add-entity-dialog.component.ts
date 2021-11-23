@@ -120,8 +120,8 @@ export class AddEntityDialogComponent implements OnInit {
   createEntity(e): void {
     e.preventDefault();
 
-    const shortName = this.entityForm.value.shortName;
-    const longName = this.entityForm.value.longName;
+    const shortName = this.entityForm.value.shortName.trim();
+    const longName = this.entityForm.value.longName.trim();
     const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
 
     const formData = {
@@ -168,7 +168,7 @@ export class AddEntityDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Url"] === event.option.viewValue
+      (w) => w["Url"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
