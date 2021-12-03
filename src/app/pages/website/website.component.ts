@@ -7,6 +7,8 @@ import { GetService } from "../../services/get.service";
 import { EvaluationService } from "../../services/evaluation.service";
 
 import { Website } from "../../models/website.object";
+import { DeleteService } from "../../services/delete.service";
+import { MessageService } from "../../services/message.service";
 
 @Component({
   selector: "app-website",
@@ -30,6 +32,8 @@ export class WebsiteComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private get: GetService,
     private evaluation: EvaluationService,
+    private deleteService: DeleteService,
+    private message: MessageService,
     private cd: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -92,7 +96,18 @@ export class WebsiteComponent implements OnInit, OnDestroy {
 
   refreshPages(): void {
     this.loading = true;
+    this.cd.detectChanges();
     this.getListOfWebsitePages();
+  }
+
+  deletePages(pages: any): void {
+    this.deleteService.pages({ pages }).subscribe((success) => {
+      if (success !== null) {
+        this.message.show("PAGES_PAGE.DELETE.messages.success");
+
+        this.refreshPages();
+      }
+    });
   }
 
   downloadAllPagesCSV(): void {
