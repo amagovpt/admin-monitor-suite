@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -51,7 +51,8 @@ export class CrawlerDialogComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private location: Location,
-    private dialogRef: MatDialogRef<CrawlerDialogComponent>
+    private dialogRef: MatDialogRef<CrawlerDialogComponent>,
+    private cd: ChangeDetectorRef
   ) {
     this.websites = this.data;
     this.pageForm = this.formBuilder.group({
@@ -110,7 +111,7 @@ export class CrawlerDialogComponent implements OnInit {
       waitJS: this.pageForm.value.waitJS ? 1 : 0,
     };
     this.crawl.callCrawler(data).subscribe((response) => {
-      this.crawlExecuting = response; //always true
+      this.crawlExecuting = !!response;
     });
   }
 
