@@ -1026,7 +1026,8 @@
       "element": "Elemento:",
       "attributes": "Atributos:",
       "content": "Conteúdo/texto:",
-      "code": "Código:"
+      "code": "Código:",
+      "location": "Localização:"
     }
   },
   "CODE": {
