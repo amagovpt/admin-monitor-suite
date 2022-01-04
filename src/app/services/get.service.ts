@@ -163,9 +163,63 @@ export class GetService {
       );
   }
 
+  numberOfObservatoryEntities(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/entity/observatory/total"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <number>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   numberOfStudyMonitorWebsites(): Observable<number> {
     return this.http
       .get<any>(this.config.getServer("/website/studyMonitor/total"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <number>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  numberOfObservatoryPages(): Observable<number> {
+    return this.http
+      .get<any>(this.config.getServer("/page/observatory/total"), {
         observe: "response",
       })
       .pipe(

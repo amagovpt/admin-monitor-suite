@@ -22,7 +22,9 @@ export class HomeComponent implements OnInit {
 
   observatory_directories: number;
   observatory_tags: number;
+  observatory_entities: number;
   observatory_websites: number;
+  observatory_pages: number;
 
   ams_date: Date;
   mm_date: Date;
@@ -57,7 +59,10 @@ export class HomeComponent implements OnInit {
     this.access_studies_tags = 0;
     this.observatory_directories = 0;
     this.observatory_tags = 0;
+    this.observatory_entities = 0;
     this.observatory_websites = 0;
+    this.observatory_pages = 0;
+
     this.access_studies_websites = 0;
     this.my_monitor_websites = 0;
 
@@ -116,8 +121,18 @@ export class HomeComponent implements OnInit {
       this.cd.detectChanges();
     });
 
+    this.get.numberOfObservatoryEntities().subscribe((total) => {
+      this.observatory_entities = total;
+      this.cd.detectChanges();
+    });
+
     this.get.numberOfObservatoryWebsites().subscribe((total) => {
       this.observatory_websites = total;
+      this.cd.detectChanges();
+    });
+
+    this.get.numberOfObservatoryPages().subscribe((total) => {
+      this.observatory_pages = total;
       this.cd.detectChanges();
     });
 
