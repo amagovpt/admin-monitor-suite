@@ -137,14 +137,18 @@ export class EditWebsiteDialogComponent implements OnInit {
         }
         this.websiteForm.controls.declaration.setValue(website.Declaration);
         this.websiteForm.controls.stamp.setValue(website.Stamp);
-        this.websiteForm.controls.declarationDate.setValue(
-          website.Declaration_Update_Date
-            ? new Date(website.Declaration_Update_Date)
-            : null
-        );
-        this.websiteForm.controls.stampDate.setValue(
-          website.Stamp_Update_Date ? new Date(website.Stamp_Update_Date) : null
-        );
+        if (website.Declaration_Update_Date) {
+          this.websiteForm.controls.declarationDate.setValue(
+            new Date(website.Declaration_Update_Date)
+          );
+        }
+
+        if (website.Stamp_Update_Date) {
+          this.websiteForm.controls.stampDate.setValue(
+            new Date(website.Stamp_Update_Date)
+          );
+        }
+
         this.websiteForm.controls.stampDate.setValue(website.Stamp_Update_Date);
         this.websiteForm.controls.user.setValue(website.User);
         this.selectedEntities = website.entities;
