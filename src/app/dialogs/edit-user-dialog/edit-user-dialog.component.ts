@@ -334,16 +334,24 @@ export class EditUserDialogComponent implements OnInit {
     this.userForm.controls.transfer.setValue(false);
   }
 
-  filterWebsite(name: string) {
-    return this.websites.filter((website) =>
-      _.includes(website.Name.toLowerCase(), name.toLowerCase())
-    );
+  filterWebsite(val: string) {
+    return this.websites.filter((website) => {
+      let valid = true;
+      const names = val.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [val]) {
+        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Name"].trim() === event.option.viewValue.trim()
+      (w) => w['Url'].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

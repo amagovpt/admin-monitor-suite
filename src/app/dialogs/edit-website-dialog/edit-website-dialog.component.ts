@@ -339,9 +339,17 @@ export class EditWebsiteDialogComponent implements OnInit {
   }
 
   filterTags(name: string) {
-    return this.tags.filter((tag) =>
-      _.includes(tag.Name.toLowerCase(), name.toLowerCase())
-    );
+    return this.tags.filter((tag) => {
+      let valid = true;
+      const names = name.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [name]) {
+        if (!tag.Name.toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
@@ -368,10 +376,18 @@ export class EditWebsiteDialogComponent implements OnInit {
     }
   }
 
-  filterEntities(val: string): string[] {
-    return this.entities.filter((entity) =>
-      _.includes(entity.Long_Name.toLowerCase(), val.toLowerCase())
-    );
+  filterEntities(val: any): string[] {
+    return this.entities.filter((entity) => {
+      let valid = true;
+      const names = val.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [val]) {
+        if (!(entity.Short_Name + ' ' + entity.Long_Name).toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedEntity(event: MatAutocompleteSelectedEvent): void {

@@ -155,9 +155,17 @@ export class AddDirectoryDialogComponent implements OnInit {
   }
 
   filterTag(name: string) {
-    return this.tags.filter((tag) =>
-      _.includes(tag.Name.toLowerCase(), name.toLowerCase())
-    );
+    return this.tags.filter((tag) => {
+      let valid = true;
+      const names = name.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [name]) {
+        if (!tag.Name.toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {

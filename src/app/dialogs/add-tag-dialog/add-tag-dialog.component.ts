@@ -177,9 +177,17 @@ export class AddTagDialogComponent implements OnInit {
   }
 
   filterDirectory(name: string) {
-    return this.directories.filter((directory) =>
-      _.includes(directory.Name.toLowerCase(), name.toLowerCase())
-    );
+    return this.directories.filter((directory) =>{
+      let valid = true;
+      const names = name.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [name]) {
+        if (!directory.Name.toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedDirectory(event: MatAutocompleteSelectedEvent): void {
@@ -202,10 +210,18 @@ export class AddTagDialogComponent implements OnInit {
     }
   }
 
-  filterWebsite(url: string) {
-    return this.websites.filter((website) =>
-      _.includes(website.Url.toLowerCase(), url.toLowerCase())
-    );
+  filterWebsite(val: string) {
+    return this.websites.filter((website) => {
+      let valid = true;
+      const names = val.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [val]) {
+        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {

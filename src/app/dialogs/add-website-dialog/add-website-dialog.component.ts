@@ -227,15 +227,23 @@ export class AddWebsiteDialogComponent implements OnInit {
   }
 
   filterTags(name: string) {
-    return this.tags.filter((tag) =>
-      _.includes(_.toLower(tag.Name), _.toLower(name))
-    );
+    return this.tags.filter((tag) => {
+      let valid = true;
+      const names = name.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [name]) {
+        if (!tag.Name.toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t['Name'].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedTags, this.tags[index])) {
       this.selectedTags.push(this.tags[index]);
@@ -253,9 +261,17 @@ export class AddWebsiteDialogComponent implements OnInit {
   }
 
   filterEntities(val: any): string[] {
-    return this.entities.filter((entity) =>
-      _.includes(_.toLower(entity.Long_Name), _.toLower(val))
-    );
+    return this.entities.filter((entity) => {
+      let valid = true;
+      const names = val.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [val]) {
+        if (!(entity.Short_Name + ' ' + entity.Long_Name).toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedEntity(event: MatAutocompleteSelectedEvent): void {

@@ -340,15 +340,31 @@ export class AddUserDialogComponent implements OnInit {
   }
 
   filterTag(name: string) {
-    return this.tags.filter((tag) =>
-      _.includes(tag.Name.toLowerCase(), name.toLowerCase())
-    );
+    return this.tags.filter((tag) => {
+      let valid = true;
+      const names = name.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [name]) {
+        if (!tag.Name.toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
-  filterWebsite(url: string) {
-    return this.websites.filter((website) =>
-      _.includes(website.Url.toLowerCase(), url.toLowerCase())
-    );
+  filterWebsite(val: string) {
+    return this.websites.filter((website) => {
+      let valid = true;
+      const names = val.trim().toLowerCase().split(' ');
+
+      for (const n of names ?? [val]) {
+        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+          valid = false;
+        }
+      }
+      return valid;
+    });
   }
 
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
