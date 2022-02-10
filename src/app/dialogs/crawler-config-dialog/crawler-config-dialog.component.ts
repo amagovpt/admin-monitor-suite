@@ -22,7 +22,7 @@ export class CrawlerConfigDialogComponent implements OnInit {
   pageForm: FormGroup;
 
   url: string;
-  domainId: number;
+  websiteId: number;
 
   getConfig: any;
 

@@ -208,10 +208,10 @@ export class VerifyService {
       );
   }
 
-  domainExists(domain: string): Observable<any> {
+  websiteUrlExists(url: string): Observable<any> {
     return this.http
       .get<any>(
-        this.config.getServer("/domain/exists/" + encodeURIComponent(domain)),
+        this.config.getServer("/website/exists/url/" + encodeURIComponent(url)),
         { observe: "response" }
       )
       .pipe(
@@ -227,62 +227,7 @@ export class VerifyService {
             throw new AdminError(response.success, response.message);
           }
 
-          return response.result ? { notTakenDomain: true } : null;
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
-  domainExistsInAdmin(domainId: string): Observable<any> {
-    return ajax(
-      this.config.getServer("/admin/domains/existsAdmin/" + domainId)
-    ).pipe(
-      retry(3),
-      map((res) => {
-        const response = <Response>res.response;
-
-        if (!res.response || res.status === 404) {
-          throw new AdminError(404, "Service not found", "SERIOUS");
-        }
-
-        if (response.success !== 1) {
-          throw new AdminError(response.success, response.message);
-        }
-
-        return of(response.result === "true");
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of(null);
-      })
-    );
-  }
-
-  crawlerSearchExists(subDomain: string): Observable<any> {
-    return this.http
-      .get<any>(
-        this.config.getServer(
-          "/crawler/isSubdomainDone/" + encodeURIComponent(subDomain)
-        ),
-        { observe: "response" }
-      )
-      .pipe(
-        retry(3),
-        map((res) => {
-          const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          return response.result ? { existsCrawlerWithSubdomain: true } : null;
+          return response.result ? { notTakenUrl: true } : null;
         }),
         catchError((err) => {
           console.log(err);

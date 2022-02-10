@@ -35,7 +35,7 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
     if (this.data.dialog === "website") {
       this.evaluation
         .reEvaluateWebsitesPages({
-          domainsId: JSON.stringify(this.data.info),
+          websitesId: JSON.stringify(this.data.info),
           option: this.pages.value,
         })
         .subscribe((result) => {

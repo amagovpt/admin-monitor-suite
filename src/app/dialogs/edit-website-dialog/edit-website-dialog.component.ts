@@ -104,7 +104,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
     this.websiteForm = new FormGroup({
       name: new FormControl("", Validators.required),
-      domain: new FormControl({ value: "", disabled: true }),
+      startingUrl: new FormControl({ value: "", disabled: true }),
       declaration: new FormControl(),
       stamp: new FormControl(),
       declarationDate: new FormControl(),
@@ -130,7 +130,11 @@ export class EditWebsiteDialogComponent implements OnInit {
         this.defaultWebsite = _.cloneDeep(website);
 
         this.websiteForm.controls.name.setValue(website.Name);
-        this.websiteForm.controls.domain.setValue(website.Domain);
+        this.websiteForm.controls.startingUrl.setValue(website.StartingUrl);
+
+        if (website.Pages === "0") {
+          this.websiteForm.controls.startingUrl.enable();
+        }
         this.websiteForm.controls.declaration.setValue(website.Declaration);
         this.websiteForm.controls.stamp.setValue(website.Stamp);
         this.websiteForm.controls.declarationDate.setValue(
@@ -195,7 +199,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
   setDefault(): void {
     this.websiteForm.controls.name.setValue(this.defaultWebsite.Name);
-    this.websiteForm.controls.domain.setValue(this.defaultWebsite.Domain);
+    this.websiteForm.controls.url.setValue(this.defaultWebsite.StartingUrl);
     this.websiteForm.controls.declaration.setValue(
       this.defaultWebsite.Declaration
     );
@@ -252,7 +256,9 @@ export class EditWebsiteDialogComponent implements OnInit {
     e.preventDefault();
 
     const name = _.trim(this.websiteForm.value.name);
-    const domain = encodeURIComponent(_.trim(this.websiteForm.value.domain));
+    const startingUrl = encodeURIComponent(
+      _.trim(this.websiteForm.value.startingUrl)
+    );
     const declaration =
       this.websiteForm.value.declaration === ""
         ? null
@@ -290,7 +296,7 @@ export class EditWebsiteDialogComponent implements OnInit {
     const formData = {
       websiteId: this.data.id,
       name,
-      domain,
+      startingUrl,
       declaration,
       declarationDate,
       stamp,

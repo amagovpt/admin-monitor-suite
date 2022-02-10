@@ -25,24 +25,24 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <label for="website_domain_input">{{ "WEBSITES_PAGE.ADD.domain_label" | translate }}</label>
-        <input id="website_domain_input" matInput formControlName="domain" [errorStateMatcher]="matcher" required>
-        <button type="button" *ngIf="websiteForm.value.domain" matSuffix mat-icon-button aria-label="Clear"
-          (click)="websiteForm.controls.domain.reset()">
+        <label for="website_url_input">{{ "WEBSITES_PAGE.ADD.url_label" | translate }}</label>
+        <input id="website_url_input" matInput formControlName="startingUrl" [errorStateMatcher]="matcher" required>
+        <button type="button" *ngIf="websiteForm.value.startingUrl" matSuffix mat-icon-button aria-label="Clear"
+          (click)="websiteForm.controls.startingUrl.reset()">
           <mat-icon aria-hidden="false">close</mat-icon>
         </button>
-        <mat-error *ngIf="websiteForm.controls.domain.status === 'PENDING'">
+        <mat-error *ngIf="websiteForm.controls.startingUrl.status === 'PENDING'">
           <mat-progress-bar mode="buffer"></mat-progress-bar>
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.domain.hasError('required')"
+        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('required')"
           [innerHTML]="'MISC.required_field' | translate"></mat-error>
-        <mat-error *ngIf="websiteForm.controls.domain.hasError('invalidDomain')">
-          {{ "WEBSITES_PAGE.ADD.domain_invalid" | translate }}
+        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('invalidUrl')">
+          {{ "WEBSITES_PAGE.ADD.url_invalid" | translate }}
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.domain.hasError('notTakenDomain')">
-          {{ "WEBSITES_PAGE.ADD.domain_exists" | translate }}
+        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('notTakenUrl')">
+          {{ "WEBSITES_PAGE.ADD.url_exists" | translate }}
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.domain.hasError('domainMissingProtocol')" [innerHTML]="'WEBSITES_PAGE.ADD.domain_missing_protocol' | translate"></mat-error>
+        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('urlMissingProtocol')" [innerHTML]="'WEBSITES_PAGE.ADD.url_missing_protocol' | translate"></mat-error>
       </mat-form-field>
     </div>
     <div fxLayout="row">
@@ -185,7 +185,7 @@
       {{ "WEBSITES_PAGE.ADD.reset" | translate }}
     </button>
     <button mat-raised-button color="primary" type="submit"
-      [disabled]="websiteForm.controls.name.invalid || websiteForm.controls.domain.invalid || websiteForm.controls.user.invalid"
+      [disabled]="websiteForm.controls.name.invalid || websiteForm.controls.startingUrl.invalid || websiteForm.controls.user.invalid"
       *ngIf="!loadingCreate">
       {{ 'WEBSITES_PAGE.ADD.submit' | translate }}
     </button>

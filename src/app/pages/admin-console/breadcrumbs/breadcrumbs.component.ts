@@ -15,7 +15,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
   tags: boolean;
   entities: boolean;
   websites: boolean;
-  domains: boolean;
   pages: boolean;
   settings: boolean;
 
@@ -28,7 +27,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
         this.tags = _.includes(event.url, 'tags');
         this.entities = _.includes(event.url, 'entities');
         this.websites = _.includes(event.url, 'websites');
-        this.domains = _.includes(event.url, 'domains');
         this.pages = _.includes(event.url, 'pages');
         this.settings = _.includes(event.url, 'settings');
       }

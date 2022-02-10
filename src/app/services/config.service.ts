@@ -11,13 +11,13 @@ export class ConfigService {
     if (endpoint) {
       this.server = endpoint + "/api";
     } else {
-      this.server = "http://localhost:3000";
+      this.server = "http://localhost:3001";
     }
   }
 
   setEndpoint(endpoint: string): void {
     if (endpoint === "localhost") {
-      this.server = "http://localhost:3000";
+      this.server = "http://localhost:3001";
     } else {
       localStorage.setItem("server", endpoint);
       this.server = endpoint + "/api";
@@ -30,7 +30,7 @@ export class ConfigService {
       if (endpoint) {
         this.server = endpoint + "/api";
       } else {
-        this.server = "http://localhost:3000";
+        this.server = "http://localhost:3001";
       }
     }
     return this.server + service;

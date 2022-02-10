@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 })
 export class ScoreDistributionDialogComponent implements OnInit {
 
-  @ViewChild('chartDomains', { static: true }) chartDomains: any;
+  @ViewChild('chartWebsites', { static: true }) chartWebsites: any;
   chart: any;
 
   labels: string[];
@@ -74,7 +74,7 @@ export class ScoreDistributionDialogComponent implements OnInit {
         this.freqPer[i] = tmpPer += this.percentageValues[i];
       }
 
-      this.chart = new Chart(this.chartDomains.nativeElement, {
+      this.chart = new Chart(this.chartWebsites.nativeElement, {
         type: 'bar',
         data: {
           labels: this.labels,

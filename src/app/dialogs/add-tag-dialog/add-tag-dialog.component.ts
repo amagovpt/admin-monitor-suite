@@ -216,7 +216,7 @@ export class AddTagDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -227,7 +227,7 @@ export class AddTagDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Url"] === event.option.viewValue
+      (w) => w["StartingUrl"] === event.option.viewValue
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

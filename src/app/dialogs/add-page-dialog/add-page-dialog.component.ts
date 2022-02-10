@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
@@ -6,50 +6,54 @@ import {
   FormBuilder,
   Validators,
   FormGroupDirective,
-  NgForm, ValidatorFn, ValidationErrors
-} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import * as _ from 'lodash';
+  NgForm,
+  ValidatorFn,
+  ValidationErrors,
+} from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import * as _ from "lodash";
 
-import {GetService} from '../../services/get.service';
-import {CreateService} from '../../services/create.service';
+import { GetService } from "../../services/get.service";
+import { CreateService } from "../../services/create.service";
 
-import {
-  ChooseObservatoryPagesDialogComponent
-} from '../choose-observatory-pages-dialog/choose-observatory-pages-dialog.component';
+import { ChooseObservatoryPagesDialogComponent } from "../choose-observatory-pages-dialog/choose-observatory-pages-dialog.component";
 
-import {
-  BackgroundEvaluationsInformationDialogComponent
-} from '../background-evaluations-information-dialog/background-evaluations-information-dialog.component';
+import { BackgroundEvaluationsInformationDialogComponent } from "../background-evaluations-information-dialog/background-evaluations-information-dialog.component";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
   }
 }
 
 export class UriValidation {
-
   static validUris(AC: AbstractControl) {
-    const domain = AC.get('domain').value;
-    let uris = AC.get('uris').value;
-    if (_.trim(domain) === '') {
+    const website = AC.get("website").value;
+    let uris = AC.get("uris").value;
+    if (_.trim(website) === "") {
       return null;
     }
 
-    if (_.trim(uris) !== '') {
-      uris = _.without(_.uniq(_.split(uris, '\n')), '');
+    if (_.trim(uris) !== "") {
+      uris = _.without(_.uniq(_.split(uris, "\n")), "");
       const size = _.size(uris);
       let hasError = false;
       for (let i = 0; i < size; i++) {
-        if (!_.startsWith(uris[i], domain)) {
-          AC.get('uris').setErrors({'invalidUri': true});
+        if (!_.startsWith(uris[i], website)) {
+          AC.get("uris").setErrors({ invalidUri: true });
           hasError = true;
         }
       }
@@ -62,22 +66,25 @@ export class UriValidation {
   }
 }
 
-export const atLeastOne = (validator: ValidatorFn, controls: string[]) => (group: FormGroup): ValidationErrors | null => {
-  const hasAtLeastOne = group && group.controls && controls
-    .some(k => !validator(group.controls[k]));
-  return hasAtLeastOne ? null : {'requiredAtLeastOne': true};
-};
+export const atLeastOne =
+  (validator: ValidatorFn, controls: string[]) =>
+  (group: FormGroup): ValidationErrors | null => {
+    const hasAtLeastOne =
+      group &&
+      group.controls &&
+      controls.some((k) => !validator(group.controls[k]));
+    return hasAtLeastOne ? null : { requiredAtLeastOne: true };
+  };
 
 @Component({
-  selector: 'app-add-page-dialog',
-  templateUrl: './add-page-dialog.component.html',
-  styleUrls: ['./add-page-dialog.component.css']
+  selector: "app-add-page-dialog",
+  templateUrl: "./add-page-dialog.component.html",
+  styleUrls: ["./add-page-dialog.component.css"],
 })
 export class AddPageDialogComponent implements OnInit {
-
   matcher: ErrorStateMatcher;
 
-  loadingDomains: boolean;
+  loadingWebsites: boolean;
   loadingCreate: boolean;
 
   visible = true;
@@ -87,9 +94,9 @@ export class AddPageDialogComponent implements OnInit {
 
   separatorKeysCodes = [ENTER, COMMA];
 
-  filteredDomains: Observable<string[]>;
+  filteredWebsites: Observable<string[]>;
 
-  domains: any;
+  websites: any;
 
   pageForm: FormGroup;
 
@@ -99,60 +106,64 @@ export class AddPageDialogComponent implements OnInit {
 
   fileLoading: boolean;
 
-  @ViewChild('tagInput') tagInput: ElementRef;
+  @ViewChild("tagInput") tagInput: ElementRef;
 
   constructor(
     private get: GetService,
     private create: CreateService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<AddPageDialogComponent>,
+    private dialogRef: MatDialogRef<AddPageDialogComponent>
   ) {
     this.matcher = new MyErrorStateMatcher();
 
-    this.pageForm = this.formBuilder.group({
-        domain: new FormControl('', [
+    this.pageForm = this.formBuilder.group(
+      {
+        website: new FormControl("", [
           Validators.required,
-          this.domainValidator.bind(this)
+          this.websiteValidator.bind(this),
         ]),
         uris: new FormControl(),
         files: new FormControl(),
-        observatorio: new FormControl()
+        observatorio: new FormControl(),
       },
       {
-        validators: Validators.compose([UriValidation.validUris, atLeastOne(Validators.required, ['uris', 'files'])])
-      });
-    this.loadingDomains = true;
+        validators: Validators.compose([
+          UriValidation.validUris,
+          atLeastOne(Validators.required, ["uris", "files"]),
+        ]),
+      }
+    );
+    this.loadingWebsites = true;
     this.loadingCreate = false;
     this.fileLoading = false;
     this.urisFromFile = [];
   }
 
   ngOnInit(): void {
-    this.get.listOfOfficialDomains()
-      .subscribe(domains => {
-        if (domains !== null) {
-          this.domains = domains;
-          this.filteredDomains = this.pageForm.controls.domain.valueChanges
-            .pipe(
-              map(val => this.filterDomain(val))
-            );
-        }
+    this.get.listOfOfficialWebsites().subscribe((websites) => {
+      if (websites !== null) {
+        this.websites = websites;
+        this.filteredWebsites =
+          this.pageForm.controls.website.valueChanges.pipe(
+            map((val) => this.filterWebsite(val))
+          );
+      }
 
-        this.loadingDomains = false;
-      });
-    this.urisFromFileString = '';
-    this.fileErrorMessage = '';
+      this.loadingWebsites = false;
+    });
+    this.urisFromFileString = "";
+    this.fileErrorMessage = "";
   }
 
   resetForm(): void {
-    this.fileErrorMessage = '';
+    this.fileErrorMessage = "";
     this.urisFromFile = [];
     this.pageForm.reset();
   }
 
   resetFile(): void {
-    this.fileErrorMessage = '';
+    this.fileErrorMessage = "";
     this.urisFromFile = [];
     this.pageForm.controls.files.reset();
   }
@@ -160,61 +171,86 @@ export class AddPageDialogComponent implements OnInit {
   createPage(e): void {
     e.preventDefault();
 
-    const domainId = _.find(this.domains, ['Url', this.pageForm.value.domain]).DomainId;
+    const websiteId = _.find(this.websites, [
+      "StartingUrl",
+      this.pageForm.value.website,
+    ]).WebsiteId;
 
-    this.pageForm.value.uris = this.pageForm.value.uris === null ? '' : this.pageForm.value.uris;
-    const urisWithFileUris = [...this.urisFromFile, ..._.split(this.pageForm.value.uris, '\n')];
+    this.pageForm.value.uris =
+      this.pageForm.value.uris === null ? "" : this.pageForm.value.uris;
+    const urisWithFileUris = [
+      ...this.urisFromFile,
+      ..._.split(this.pageForm.value.uris, "\n"),
+    ];
     // this.urisFromFile.join('\n') + this.pageForm.value.uris;
 
-    const uris = JSON.stringify(_.without(_.uniq(_.map(urisWithFileUris, p => {
-      if (p[_.size(p) - 1] === '/') {
-        p = p.substring(0, _.size(p) - 1);
-      }
+    const uris = JSON.stringify(
+      _.without(
+        _.uniq(
+          _.map(urisWithFileUris, (p) => {
+            if (p[_.size(p) - 1] === "/") {
+              p = p.substring(0, _.size(p) - 1);
+            }
 
-      return _.trim(p);
-    })), ''));
+            return _.trim(p);
+          })
+        ),
+        ""
+      )
+    );
 
     if (this.pageForm.value.observatorio) {
-      const chooseDialog = this.dialog.open(ChooseObservatoryPagesDialogComponent, {
-        width: '40vw',
-        data: {
-          uris: JSON.parse(uris)
+      const chooseDialog = this.dialog.open(
+        ChooseObservatoryPagesDialogComponent,
+        {
+          width: "40vw",
+          data: {
+            uris: JSON.parse(uris),
+          },
         }
-      });
+      );
 
-      chooseDialog.afterClosed().subscribe(result => {
+      chooseDialog.afterClosed().subscribe((result) => {
         if (!result.cancel) {
-          this.openAddPagesInformationDialog(domainId, uris, result.uris);
+          this.openAddPagesInformationDialog(websiteId, uris, result.uris);
         }
       });
     } else {
-      this.openAddPagesInformationDialog(domainId, uris, JSON.stringify([]));
+      this.openAddPagesInformationDialog(websiteId, uris, JSON.stringify([]));
     }
   }
 
-  private openAddPagesInformationDialog(domainId: number, uris: string, observatory: string): void {
-    this.create.newPages({ domainId, uris, observatory })
-      .subscribe(result => {
+  private openAddPagesInformationDialog(
+    websiteId: number,
+    uris: string,
+    observatory: string
+  ): void {
+    this.create
+      .newPages({ websiteId, uris, observatory })
+      .subscribe((result) => {
         if (result) {
           this.dialog.open(BackgroundEvaluationsInformationDialogComponent, {
-            width: '40vw'
+            width: "40vw",
           });
           this.dialogRef.close();
         } else {
-          alert('Error');
+          alert("Error");
         }
       });
   }
 
-  filterDomain(val: any): string[] {
-    return this.domains.filter(domain =>
-      _.includes(_.toLower(domain.Url), _.toLower(val)));
+  filterWebsite(val: any): string[] {
+    return this.websites.filter((website) =>
+      _.includes(_.toLower(website.StartingUrl), _.toLower(val))
+    );
   }
 
-  domainValidator(control: AbstractControl): any {
+  websiteValidator(control: AbstractControl): any {
     const val = control.value;
-    if (val !== '' && val !== null) {
-      return _.includes(_.map(this.domains, 'Url'), val) ? null : {'validDomain': true};
+    if (val !== "" && val !== null) {
+      return _.includes(_.map(this.websites, "StartingUrl"), val)
+        ? null
+        : { validWebsite: true };
     } else {
       return null;
     }
@@ -225,24 +261,24 @@ export class AddPageDialogComponent implements OnInit {
     const fileToRead = files.item(0);
     this.urisFromFile = [];
     if (fileToRead === null) {
-      this.fileErrorMessage = '';
+      this.fileErrorMessage = "";
       this.urisFromFile = [];
       this.pageForm.controls.files.reset();
       return;
     }
 
     switch (fileToRead.type) {
-      case ('text/plain'):
+      case "text/plain":
         //this.urisFromFile = this.parseTXT(fileToRead);
         this.parseTXT(fileToRead);
         break;
-      case ('text/xml'):
+      case "text/xml":
         //this.urisFromFile = this.parseXML(fileToRead);
         this.parseXML(fileToRead);
         break;
       default:
         this.urisFromFile = [];
-        this.fileErrorMessage = 'invalidType';
+        this.fileErrorMessage = "invalidType";
         break;
     }
   }
@@ -255,10 +291,13 @@ export class AddPageDialogComponent implements OnInit {
     // divide the url in the result array
     reader.onload = () => {
       const urlFile = reader.result.toString();
-      const lines = _.without(_.map(urlFile.split('\n'), l => _.trim(l)), '');
+      const lines = _.without(
+        _.map(urlFile.split("\n"), (l) => _.trim(l)),
+        ""
+      );
 
       this.urisFromFile = _.clone(lines);
-      this.validateFileUris(this.pageForm.value.domain, this.urisFromFile);
+      this.validateFileUris(this.pageForm.value.website, this.urisFromFile);
       this.fileLoading = false;
     };
     return result;
@@ -270,34 +309,34 @@ export class AddPageDialogComponent implements OnInit {
     reader.readAsText(file);
     reader.onload = () => {
       const parser = new DOMParser();
-      const doc = parser.parseFromString(reader.result.toString(), 'text/xml');
-      
-      const urls = doc.getElementsByTagName('loc');
+      const doc = parser.parseFromString(reader.result.toString(), "text/xml");
+
+      const urls = doc.getElementsByTagName("loc");
 
       this.urisFromFile = new Array<string>();
-      for (let i = 0 ; i < urls.length ; i++) {
+      for (let i = 0; i < urls.length; i++) {
         const url = urls.item(i);
         this.urisFromFile.push(url.textContent.trim());
       }
 
-      this.validateFileUris(this.pageForm.value.domain, this.urisFromFile);
+      this.validateFileUris(this.pageForm.value.website, this.urisFromFile);
       this.fileLoading = false;
     };
     return result;
   }
 
-  validateFileUris(domain: string, uris: string[]): void {
-    if (domain === '') {
-      this.fileErrorMessage = 'invalidDomain';
+  validateFileUris(website: string, uris: string[]): void {
+    if (website === "") {
+      this.fileErrorMessage = "invalidWebsite";
       return;
     }
     if (uris !== undefined || uris !== []) {
       for (let url of uris) {
-        if (!_.startsWith(url, domain)) {
-          this.fileErrorMessage = 'invalidDomain';
+        if (!_.startsWith(url, website)) {
+          this.fileErrorMessage = "invalidWebsite";
           return;
         } else {
-          this.fileErrorMessage = '';
+          this.fileErrorMessage = "";
         }
       }
     }
@@ -305,7 +344,7 @@ export class AddPageDialogComponent implements OnInit {
 
   updateUrisFromFile() {
     if (this.urisFromFile !== undefined) {
-      this.validateFileUris(this.pageForm.value.domain, this.urisFromFile);
+      this.validateFileUris(this.pageForm.value.website, this.urisFromFile);
     }
   }
 }

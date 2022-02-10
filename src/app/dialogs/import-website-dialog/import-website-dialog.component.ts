@@ -17,9 +17,9 @@ export class ImportWebsiteDialogComponent implements OnInit {
   websiteId: string;
   website: string;
 
-  hasDomain: boolean;
+  hasUrl: boolean;
   webName: string;
-  domain: string;
+  url: string;
 
   websiteNameExists: boolean;
   pageForm: FormGroup;
@@ -32,9 +32,9 @@ export class ImportWebsiteDialogComponent implements OnInit {
   ) {
     this.website = this.data.website;
     this.websiteId = this.data.websiteId;
-    this.hasDomain = this.data.hasDomain;
+    this.hasUrl = this.data.hasUrl;
     this.webName = this.data.webName;
-    this.domain = this.data.url;
+    this.url = this.data.url;
     this.pageForm = this.formBuilder.group({
       newWebsiteName: new FormControl('',
       [Validators.required], this.nameValidator.bind(this))
@@ -49,7 +49,7 @@ export class ImportWebsiteDialogComponent implements OnInit {
   }
 
   importWebsite(): void {
-    if (!this.hasDomain) {
+    if (!this.hasUrl) {
       this.update.importWebsite({websiteId: this.websiteId, websiteName: this.pageForm.value.newWebsiteName}).subscribe();
     } else {
       this.update.importWebsite({websiteId: this.websiteId, websiteName: this.website}).subscribe();

@@ -7,6 +7,8 @@ import { GetService } from "../../services/get.service";
 import { EvaluationService } from "../../services/evaluation.service";
 
 import { Website } from "../../models/website.object";
+import { DeleteService } from "../../services/delete.service";
+import { MessageService } from "../../services/message.service";
 
 @Component({
   selector: "app-website",
@@ -16,15 +18,12 @@ import { Website } from "../../models/website.object";
 export class WebsiteComponent implements OnInit, OnDestroy {
   loading: boolean;
   error: boolean;
-  errorNoActiveDomains: boolean;
 
   sub: Subscription;
 
   tag: string;
   user: string;
   website: string;
-  domains: Array<any>;
-  activeDomain: string;
   pages: Array<any>;
 
   websiteObject: any;
@@ -33,6 +32,8 @@ export class WebsiteComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private get: GetService,
     private evaluation: EvaluationService,
+    private deleteService: DeleteService,
+    private message: MessageService,
     private cd: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -46,7 +47,7 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       this.website = params.website;
 
       if (this.user === "admin") {
-        this.getListOfWebsiteDomains();
+        this.getListOfWebsitePages();
       } else {
         this.get
           .listOfUserWebsitePages(this.tag, this.user, this.website)
@@ -68,72 +69,60 @@ export class WebsiteComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  private getListOfWebsiteDomains(): void {
+  private getListOfWebsitePages(): void {
     this.get
-      .listOfWebsiteDomains(this.user, this.website)
-      .subscribe((domains) => {
-        if (domains !== null) {
-          this.domains = domains;
-          if (
-            _.size(domains) > 0 &&
-            _.size(_.find(this.domains, ["Active", 1])) === 0
-          ) {
-            this.errorNoActiveDomains = true;
-          } else {
-            this.activeDomain = _.find(this.domains, ["Active", 1]).Url;
+      .listOfWebsitePagesByName(this.user, this.website)
+      .subscribe((pages) => {
+        this.pages = _.clone(pages);
 
-            this.get
-              .listOfDomainPages(
-                this.user,
-                encodeURIComponent(this.activeDomain)
-              )
-              .subscribe((pages) => {
-                this.pages = _.clone(pages);
+        pages = pages.filter((p) => p.Score !== null);
 
-                pages = pages.filter((p) => p.Score !== null);
-
-                this.websiteObject = new Website();
-                for (const page of pages) {
-                  this.websiteObject.addPage(
-                    page.Score,
-                    page.Errors,
-                    page.Tot,
-                    page.A,
-                    page.AA,
-                    page.AAA,
-                    page.Evaluation_Date
-                  );
-                }
-                this.loading = false;
-                this.cd.detectChanges();
-              });
-          }
-        } else {
-          this.error = true;
+        this.websiteObject = new Website();
+        for (const page of pages) {
+          this.websiteObject.addPage(
+            page.Score,
+            page.Errors,
+            page.Tot,
+            page.A,
+            page.AA,
+            page.AAA,
+            page.Evaluation_Date
+          );
         }
-
+        this.loading = false;
         this.cd.detectChanges();
       });
   }
 
-  refreshDomains(): void {
+  refreshPages(): void {
     this.loading = true;
-    this.getListOfWebsiteDomains();
+    this.cd.detectChanges();
+    this.getListOfWebsitePages();
+  }
+
+  deletePages(pages: any): void {
+    this.deleteService.pages({ pages }).subscribe((success) => {
+      if (success !== null) {
+        this.message.show("PAGES_PAGE.DELETE.messages.success");
+
+        this.refreshPages();
+      }
+    });
   }
 
   downloadAllPagesCSV(): void {
-    this.evaluation.downloadDomainCSV(this.activeDomain, true).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.website, true).subscribe();
   }
 
   downloadObservatoryCSV(): void {
-    this.evaluation.downloadDomainCSV(this.activeDomain, false).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.website, false).subscribe();
   }
 
   downloadAllPagesEARL(): void {
-    this.evaluation.downloadDomainEARL(this.activeDomain, true).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.website, true).subscribe();
   }
 
   downloadObservatoryEARL(): void {
-    this.evaluation.downloadDomainEARL(this.activeDomain, false).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.website, false).subscribe();
   }
 }

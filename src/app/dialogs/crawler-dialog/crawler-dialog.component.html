@@ -47,22 +47,6 @@
       </mat-checkbox>
     </div>
 
-    <!--<div class="subdomain-input" fxLayout="column" *ngIf="!crawlExecuting">
-      <mat-form-field
-        hintLabel="{{'CRAWLER.TOOLTIP.subdomain' | translate}}{{url}}{{'CRAWLER.TOOLTIP.subdomain2' | translate}}">
-        <label>{{"CRAWLER.PARAMETERS.subdomain" | translate}}</label>
-        <mat-label></mat-label>
-        <input matInput formControlName="subDomain" type="text" autocomplete="off">
-        <button type="button" matSuffix mat-icon-button *ngIf="pageForm.value.subDomain"
-          (click)="pageForm.controls.subDomain.setValue('')">
-          <!-- TODO evitar espaços e enters
-          <mat-icon aria-hidden="false">close</mat-icon>
-        </button>
-        <mat-error *ngIf="pageForm.controls.subDomain.hasError('existsCrawlerWithSubdomain')"
-          [innerHTML]="'CRAWLER.errorSubdomain' | translate"></mat-error>
-      </mat-form-field>
-    </div>-->
-
     <div class="max-pages-input" fxLayout="column" *ngIf="crawlExecuting">
       <h5 align="center">{{"CRAWLER.executing" | translate}}</h5>
       <h6 align="center">{{"CRAWLER.executing2" | translate}}</h6>

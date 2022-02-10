@@ -563,19 +563,19 @@ export class EvaluationService {
   }
 
   async downloadDirectoryCSV(
-    domains: string[],
+    websites: string[],
     allPages: boolean,
     directory: string
   ): Promise<void> {
     let data = "";
     let i = 0;
 
-    for (const domain of domains) {
+    for (const website of websites) {
       const response = await this.http
         .get<any>(
           this.config.getServer(
-            `/evaluation/domain/${encodeURIComponent(
-              domain
+            `/evaluation/website/${encodeURIComponent(
+              website
             )}/evaluations/${allPages}`
           ),
           { observe: "response" }
@@ -590,7 +590,7 @@ export class EvaluationService {
         data += this.generateCSV(
           this.evaluation,
           i !== 0,
-          domain,
+          website,
           undefined,
           directory
         );
@@ -603,19 +603,19 @@ export class EvaluationService {
   }
 
   async downloadTagCSV(
-    domains: string[],
+    websites: string[],
     allPages: boolean,
     tag: string
   ): Promise<void> {
     let data = "";
     let i = 0;
 
-    for (const domain of domains) {
+    for (const website of websites) {
       const response = await this.http
         .get<any>(
           this.config.getServer(
-            `/evaluation/domain/${encodeURIComponent(
-              domain
+            `/evaluation/website/${encodeURIComponent(
+              website
             )}/evaluations/${allPages}`
           ),
           { observe: "response" }
@@ -630,7 +630,7 @@ export class EvaluationService {
         data += this.generateCSV(
           this.evaluation,
           i !== 0,
-          domain,
+          website,
           undefined,
           tag
         );
@@ -643,18 +643,18 @@ export class EvaluationService {
   }
 
   async downloadEntityCSV(
-    domains: string[],
+    websites: string[],
     allPages: boolean,
     entity: string
   ): Promise<void> {
     let data = "";
     let i = 0;
-    for (const domain of domains) {
+    for (const website of websites) {
       const response = await this.http
         .get<any>(
           this.config.getServer(
-            `/evaluation/domain/${encodeURIComponent(
-              domain
+            `/evaluation/website/${encodeURIComponent(
+              website
             )}/evaluations/${allPages}`
           ),
           { observe: "response" }
@@ -666,7 +666,7 @@ export class EvaluationService {
       for (const page of result || []) {
         this.evaluation = page;
         this.evaluation.processed = this.processData();
-        data += this.generateCSV(this.evaluation, i !== 0, domain, entity);
+        data += this.generateCSV(this.evaluation, i !== 0, website, entity);
         i++;
       }
     }
@@ -675,12 +675,12 @@ export class EvaluationService {
     saveAs(blob, "eval.csv");
   }
 
-  downloadDomainCSV(domain: string, allPages: boolean): Observable<void> {
+  downloadWebsiteCSV(website: string, allPages: boolean): Observable<void> {
     return this.http
       .get<any>(
         this.config.getServer(
-          `/evaluation/domain/${encodeURIComponent(
-            domain
+          `/evaluation/website/${encodeURIComponent(
+            website
           )}/evaluations/${allPages}`
         ),
         { observe: "response" }
@@ -703,7 +703,7 @@ export class EvaluationService {
           for (const page of response.result || []) {
             this.evaluation = page;
             this.evaluation.processed = this.processData();
-            data += this.generateCSV(this.evaluation, i !== 0, domain);
+            data += this.generateCSV(this.evaluation, i !== 0, website);
             i++;
           }
 
@@ -717,12 +717,12 @@ export class EvaluationService {
       );
   }
 
-  downloadDomainEARL(domain: string, allPages: boolean): Observable<void> {
+  downloadWebsiteEARL(website: string, allPages: boolean): Observable<void> {
     return this.http
       .get<any>(
         this.config.getServer(
-          `/evaluation/domain/${encodeURIComponent(
-            domain
+          `/evaluation/website/${encodeURIComponent(
+            website
           )}/evaluations/${allPages}`
         ),
         { observe: "response" }

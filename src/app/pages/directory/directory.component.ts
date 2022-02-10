@@ -86,7 +86,7 @@ export class DirectoryComponent implements OnInit, OnDestroy {
 
   downloadAllPagesCSV(): void {
     this.evaluation.downloadDirectoryCSV(
-      this.websites.map((w) => w.Domain),
+      this.websites.map((w) => w.StartingUrl),
       true,
       this.directory
     );
@@ -94,7 +94,7 @@ export class DirectoryComponent implements OnInit, OnDestroy {
 
   downloadObservatoryCSV(): void {
     this.evaluation.downloadDirectoryCSV(
-      this.websites.map((w) => w.Domain),
+      this.websites.map((w) => w.StartingUrl),
       false,
       this.directory
     );

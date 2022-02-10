@@ -161,33 +161,6 @@ export class CreateService {
       );
   }
 
-  newDomain(data: any): Observable<boolean> {
-    return this.http
-      .post<any>(this.config.getServer("/domain/create"), data, {
-        observe: "response",
-      })
-      .pipe(
-        map((res) => {
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          const response = <Response>res.body;
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          return <boolean>response.result;
-        }),
-        catchError((err) => {
-          this.message.show("DOMAINS_PAGE.ADD.messages.error");
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
   newPages(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/page/add"), data, {

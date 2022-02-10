@@ -263,7 +263,7 @@ export class EditTagDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -274,11 +274,11 @@ export class EditTagDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Url"] === event.option.viewValue
+      (w) => w["StartingUrl"] === event.option.viewValue
     );
     const index2 = _.findIndex(
       this.selectedWebsites,
-      (w) => w["Url"] === event.option.viewValue
+      (w) => w["StartingUrl"] === event.option.viewValue
     );
     if (index2 < 0) {
       this.selectedWebsites.push(this.websites[index]);

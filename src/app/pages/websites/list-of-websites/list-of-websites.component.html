@@ -67,6 +67,15 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="StartingUrl">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
+          {{ "WEBSITES_PAGE.LIST.table.url_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" fxFlex>
+          {{element.StartingUrl}}
+        </mat-cell>
+      </ng-container>
+
       <!--<ng-container matColumnDef="User">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20">
           {{ "WEBSITES_PAGE.LIST.table.user_label" | translate }}
@@ -100,7 +109,7 @@
           {{ "WEBSITES_PAGE.LIST.table.re_evaluate_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          <button mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.re_evaluate_tooltip' | translate }}" (click)="reEvaluateWebsitePages(element.DomainId)">
+          <button mat-icon-button matTooltip="{{ 'WEBSITES_PAGE.LIST.table.re_evaluate_tooltip' | translate }}" (click)="reEvaluateWebsitePages(element.WebsiteId)">
             <mat-icon class="md-24" aria-label="">autorenew</mat-icon>
           </button>
         </mat-cell>
@@ -120,7 +129,7 @@
       <!--<ng-container matColumnDef="crawler">
         <mat-header-cell *matHeaderCellDef fxFlex="8">{{'WEBSITES_PAGE.LIST.table.crawler_label' | translate}}</mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="8">
-          <button mat-icon-button matTooltip="{{'WEBSITES_PAGE.LIST.table.crawler_tooltip' | translate}}" (click)="openCrawlerDialog($event, element.Domain, element.DomainId)">
+          <button mat-icon-button matTooltip="{{'WEBSITES_PAGE.LIST.table.crawler_tooltip' | translate}}" (click)="openCrawlerDialog($event, element.StartingUrl, element.WebsiteId)">
             <mat-icon class="md-24" aria-label="">pageview</mat-icon>
           </button>
         </mat-cell>

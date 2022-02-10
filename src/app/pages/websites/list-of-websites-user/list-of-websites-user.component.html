@@ -63,7 +63,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10" [hidden]="type !== 'studies'">
           <button mat-raised-button color="primary"
-                  (click)="openImportWebsiteDialog(element.Name, element.WebsiteId, element.webName, element.Url, element.hasDomain)"
+                  (click)="openImportWebsiteDialog(element.Name, element.WebsiteId, element.webName, element.Url, element.hasUrl)"
                   [disabled]="element.imported">{{ "IMPORT.import" | translate }}</button>
         </mat-cell>
       </ng-container>

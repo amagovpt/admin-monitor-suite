@@ -14,7 +14,6 @@ import { User } from "../models/user";
 import { Tag } from "../models/tag";
 import { Entity } from "../models/entity";
 import { Website } from "../models/website";
-import { Domain } from "../models/domain";
 import { Page } from "../models/page";
 
 @Injectable({
@@ -1067,65 +1066,13 @@ export class GetService {
       );
   }
 
-  listOfDomains(): Observable<Array<Domain>> {
-    return this.http
-      .get<any>(this.config.getServer("/domain/all"), { observe: "response" })
-      .pipe(
-        retry(3),
-        map((res) => {
-          const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          return <Array<Domain>>response.result;
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
-  listOfOfficialDomains(): Observable<Array<Domain>> {
-    return this.http
-      .get<any>(this.config.getServer("/domain/allOfficial"), {
-        observe: "response",
-      })
-      .pipe(
-        retry(3),
-        map((res) => {
-          const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          return <Array<Domain>>response.result;
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
-  listOfWebsiteDomains(
+  listOfWebsitePagesByName(
     user: string,
     website: string
-  ): Observable<Array<Domain>> {
+  ): Observable<Array<any>> {
     return this.http
       .get<any>(
-        this.config.getServer(`/website/${website}/user/${user}/domains`),
+        this.config.getServer(`/website/${website}/user/${user}/pages`),
         { observe: "response" }
       )
       .pipe(
@@ -1141,7 +1088,7 @@ export class GetService {
             throw new AdminError(response.success, response.message);
           }
 
-          return <Array<Domain>>response.result;
+          return <Array<any>>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -1212,36 +1159,6 @@ export class GetService {
           }
 
           return <Array<Page>>response.result;
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
-  listOfDomainPages(user: string, domain: string): Observable<Array<any>> {
-    return this.http
-      .get<any>(
-        this.config.getServer(
-          `/domain/${encodeURIComponent(domain)}/user/${user}/pages`
-        ),
-        { observe: "response" }
-      )
-      .pipe(
-        retry(3),
-        map((res) => {
-          const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          return <Array<any>>response.result;
         }),
         catchError((err) => {
           console.log(err);
@@ -1332,10 +1249,10 @@ export class GetService {
       );
   }
 
-  listOfUrisFromCrawlDomainId(crawlDomainId: number): Observable<Array<any>> {
+  listOfUrisFromCrawlWebsiteId(crawlWebsiteId: number): Observable<Array<any>> {
     return this.http
       .get<any>(
-        this.config.getServer("/crawler/getByCrawlDomainID/" + crawlDomainId),
+        this.config.getServer("/crawler/getByCrawlWebsiteID/" + crawlWebsiteId),
         { observe: "response" }
       )
       .pipe(
@@ -1433,33 +1350,6 @@ export class GetService {
           }
 
           return <Array<User>>response.result;
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
-  websiteCurrentDomain(websiteId: number): Observable<string> {
-    return this.http
-      .get<any>(this.config.getServer("/website/currentDomain/" + websiteId), {
-        observe: "response",
-      })
-      .pipe(
-        retry(3),
-        map((res) => {
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          const response = <Response>res.body;
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          return <string>response.result;
         }),
         catchError((err) => {
           console.log(err);

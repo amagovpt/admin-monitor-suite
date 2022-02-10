@@ -41,7 +41,6 @@ export class ListOfUsersComponent implements OnInit {
     //'see'
   ];
 
-  // data source of domains
   dataSource: any;
   selection: any;
 

@@ -18,7 +18,6 @@ import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 import { merge, of } from "rxjs";
 
-import { DeletePageDialogComponent } from "../../../dialogs/delete-page-dialog/delete-page-dialog.component";
 import { EvaluationErrorDialogComponent } from "../../../dialogs/evaluation-error-dialog/evaluation-error-dialog.component";
 
 import { UpdateService } from "../../../services/update.service";
@@ -194,7 +193,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   openDeletePageDialog(): void {
-    const deleteDialog = this.dialog.open(DeletePageDialogComponent, {
+    /*const deleteDialog = this.dialog.open(DeletePageDialogComponent, {
       width: "60vw",
       disableClose: false,
       hasBackdrop: true,
@@ -202,15 +201,15 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
     deleteDialog.afterClosed().subscribe((result) => {
       if (result) {
-        if (this.pages) {
-          this.deletePagesEmitter.next(
-            _.map(this.selection.selected, "PageId")
-          );
-        } else {
-          this.deletePages(_.map(this.selection.selected, "PageId"));
-        }
+        
       }
-    });
+    });*/
+
+    if (this.pages) {
+      this.deletePagesEmitter.next(_.map(this.selection.selected, "PageId"));
+    } else {
+      this.deletePages(_.map(this.selection.selected, "PageId"));
+    }
   }
 
   openErrorDialog(evaluationListId: number): void {

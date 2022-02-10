@@ -148,13 +148,13 @@ export class ListOfWebsitesUserComponent implements OnInit {
     return this.translate.instant('RANGE_PAGE_LABEL_2', { startIndex: startIndex + 1, endIndex, length });
   }
 
-  openImportWebsiteDialog(websiteName, websiteId, webName, url: string, hasDomain: boolean): void {
+  openImportWebsiteDialog(websiteName, websiteId, webName, url: string, hasUrl: boolean): void {
     const importWebsiteDialog = this.dialog.open(ImportWebsiteDialogComponent, {
       width: '40vw',
       data: {
         website: websiteName,
         websiteId: websiteId,
-        hasDomain: hasDomain,
+        hasUrl: hasUrl,
         webName: webName,
         url: url
       }

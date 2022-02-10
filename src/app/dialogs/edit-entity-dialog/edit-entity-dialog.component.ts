@@ -199,7 +199,7 @@ export class EditEntityDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -210,7 +210,7 @@ export class EditEntityDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["Url"].trim() === event.option.viewValue.trim()
+      (w) => w["StartingUrl"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

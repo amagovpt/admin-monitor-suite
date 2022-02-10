@@ -49,6 +49,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   displayedColumns = [
     "Name",
     //"User",
+    "StartingUrl",
     "Pages",
     "Creation_Date",
     //"re-evaluate",
@@ -59,7 +60,6 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     "delete",
   ];
 
-  // data source of domains
   dataSource: any;
   selection: SelectionModel<any>;
 
@@ -155,11 +155,11 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   reEvaluateWebsitesPages(): void {
-    const domainsId = this.selection.selected.map((w) => w.DomainId);
+    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
-        info: domainsId,
+        info: websitesId,
         dialog: "website",
       },
     });
@@ -198,11 +198,11 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   openCrawlerDialog(): void {
-    const websites = new Array<{ url: string; domainId: number }>();
+    const websites = new Array<{ url: string; websiteId: number }>();
     this.selection.selected.map((w) => {
       websites.push({
-        url: w.Domain,
-        domainId: w.DomainId,
+        url: w.StartingUrl,
+        websiteId: w.WebsiteId,
       });
     });
 

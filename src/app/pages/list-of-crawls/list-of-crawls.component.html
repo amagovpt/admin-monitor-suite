@@ -31,24 +31,12 @@
 
     <mat-table [dataSource]="dataSource" matSort>
 
-      <ng-container matColumnDef="Domain">
+      <ng-container matColumnDef="StartingUrl">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
-          {{ "CRAWLER_PAGE.LIST.domain" | translate }}
+          {{ "CRAWLER_PAGE.LIST.url" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex>
-          <a [routerLink]="['/console', 'domain', element.DomainUri]">
-            <strong>{{element.DomainUri}}</strong>
-          </a>
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="Subdomain">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
-          {{ "CRAWLER_PAGE.LIST.subdomain" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element" fxFlex>
-          <span *ngIf="element.DomainUri === element.SubDomainUri">-</span>
-          <span *ngIf="element.DomainUri !== element.SubDomainUri">{{substringSubdomain(element.SubDomainUri)}}</span>
+          <strong>{{element.StartingUrl}}</strong>
         </mat-cell>
       </ng-container>
 
@@ -70,17 +58,6 @@
           <mat-icon *ngIf="element.Done === 1" class="md-24" aria-label="">check_circle</mat-icon>
         </mat-cell>
       </ng-container>
-
-      <!--<ng-container matColumnDef="Delete">
-        <mat-header-cell *matHeaderCellDef fxFlex="8">{{ "CRAWLER_PAGE.LIST.delete" | translate }}</mat-header-cell>
-        <mat-cell *matCellDef="let element" fxFlex="8">
-          <button *ngIf="element.Done === 1" mat-icon-button
-                  matTooltip="{{'CRAWLER_PAGE.TOOLTIP.delete_result' | translate}}"
-                  (click)="deleteCrawlerResult($event, element.CrawlDomainId)">
-            <mat-icon class="md-24" aria-label="">clear</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>-->
 
       <ng-container matColumnDef="Result">
         <mat-header-cell *matHeaderCellDef fxFlex="8">{{ "CRAWLER_PAGE.LIST.result" | translate }}</mat-header-cell>
@@ -118,8 +95,8 @@
       <h2 class="listEmptyHeader">{{ "CRAWLER_PAGE.EMPTY.part1" | translate }}</h2>
       <h3>{{ "CRAWLER_PAGE.EMPTY.part2" | translate }}<mat-icon aria-label="">pageview</mat-icon></h3>
       <button mat-raised-button type="button" color="primary"
-              (click)="goToDomainPage()">
-        {{ "CRAWLER_PAGE.go_to_domain" | translate }}
+              (click)="goToWebsitesPage()">
+        {{ "CRAWLER_PAGE.go_to_url" | translate }}
       </button>
     </div>
   </mat-card-content>
