@@ -188,9 +188,9 @@ export class AddPageDialogComponent implements OnInit {
       _.without(
         _.uniq(
           _.map(urisWithFileUris, (p) => {
-            if (p[_.size(p) - 1] === "/") {
+           /* if (p[_.size(p) - 1] === "/") {
               p = p.substring(0, _.size(p) - 1);
-            }
+            }*/
 
             return _.trim(p);
           })
