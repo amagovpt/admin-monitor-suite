@@ -5,34 +5,46 @@ import { Injectable } from "@angular/core";
 })
 export class ConfigService {
   private server: string;
+  defaultURL = "/api2";
 
   constructor() {
     const endpoint = localStorage.getItem("server");
     if (endpoint) {
-      this.server = endpoint + "/api";
+      this.server = endpoint + this.getCorrectApi(endpoint);
     } else {
-      this.server = "http://localhost:3000";
+      this.server = this.defaultURL;
     }
+    console.log("construção" + this.server);
   }
 
   setEndpoint(endpoint: string): void {
     if (endpoint === "localhost") {
-      this.server = "http://localhost:3000";
+      this.server = this.defaultURL;
     } else {
       localStorage.setItem("server", endpoint);
-      this.server = endpoint + "/api";
+      this.server = endpoint + this.getCorrectApi(endpoint);
     }
+    console.log("set" + this.server);
   }
 
   getServer(service: string): string {
+    console.log("get" + this.server);
     if (!this.server) {
       const endpoint = localStorage.getItem("server");
+      console.log("storage" + endpoint);
+
       if (endpoint) {
-        this.server = endpoint + "/api";
+        this.server = endpoint + this.getCorrectApi(endpoint);
       } else {
-        this.server = "http://localhost:3000";
+        this.server = this.defaultURL;
       }
     }
     return this.server + service;
+  }
+  private getCorrectApi(endpoint: string): string {
+    let api = "/api2";
+    if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt")
+      api = "/api";
+    return api;
   }
 }

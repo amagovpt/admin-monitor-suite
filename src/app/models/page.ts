@@ -1,6 +1,6 @@
 interface IPage {
   PageId: number;
-  DomainId: number;
+  WebsiteId: number;
   Uri: string;
   Score: number;
   A: number;
@@ -12,7 +12,7 @@ interface IPage {
 
 export class Page implements IPage {
   PageId: number;
-  DomainId: number;
+  WebsiteId: number;
   Uri: string;
   Score: number;
   A: number;
@@ -21,11 +21,11 @@ export class Page implements IPage {
   Creation_Date: Date;
   Evaluation_Date: Date;
 
-  constructor(PageId: number, DomainId: number, Uri: string, Score: number,
+  constructor(PageId: number, WebsiteId: number, Uri: string, Score: number,
     A: number, AA: number, AAA: number, Creation_Date: Date, Evaluation_Date: Date) {
 
     this.PageId = PageId;
-    this.DomainId = DomainId;
+    this.WebsiteId = WebsiteId;
     this.Uri = Uri;
     this.Score = Score;
     this.A = A;

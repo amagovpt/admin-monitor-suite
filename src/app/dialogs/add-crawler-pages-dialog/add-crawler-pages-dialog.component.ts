@@ -1,39 +1,33 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import {SelectionModel} from '@angular/cdk/collections';
-import * as _ from 'lodash';
-import {GetService} from '../../services/get.service';
-import {CreateService} from '../../services/create.service';
-import {MessageService} from '../../services/message.service';
-import {Router} from '@angular/router';
-import {Location} from '@angular/common';
-
+import { Component, OnInit, Inject } from "@angular/core";
 import {
-  BackgroundEvaluationsInformationDialogComponent
-} from '../background-evaluations-information-dialog/background-evaluations-information-dialog.component';
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from "@angular/material/dialog";
+import { MatTableDataSource } from "@angular/material/table";
+import { SelectionModel } from "@angular/cdk/collections";
+import * as _ from "lodash";
+import { GetService } from "../../services/get.service";
+import { CreateService } from "../../services/create.service";
+
+import { BackgroundEvaluationsInformationDialogComponent } from "../background-evaluations-information-dialog/background-evaluations-information-dialog.component";
 
 @Component({
-  selector: 'app-add-crawler-pages-dialog',
-  templateUrl: './add-crawler-pages-dialog.component.html',
-  styleUrls: ['./add-crawler-pages-dialog.component.css']
+  selector: "app-add-crawler-pages-dialog",
+  templateUrl: "./add-crawler-pages-dialog.component.html",
+  styleUrls: ["./add-crawler-pages-dialog.component.css"],
 })
 export class AddCrawlerPagesDialogComponent implements OnInit {
-
-  displayedColumns = [
-    'Uri',
-    'import',
-    'observatorio'
-  ];
+  displayedColumns = ["Uri", "import", "observatorio"];
 
   pages: Array<any>;
   dataSource: MatTableDataSource<any>;
   selectionImport: any;
   selectionObserv: any;
 
-  crawlDomainId: number;
-  domainUri: string;
-  domainId: number;
+  crawlWebsiteId: number;
+  websiteUri: string;
+  websiteId: number;
   error = false;
   loading = false;
   submitted: boolean;
@@ -43,15 +37,12 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<AddCrawlerPagesDialogComponent>,
     private dialog: MatDialog,
     private get: GetService,
-    private create: CreateService,
-    private msg: MessageService,
-    private router: Router,
-    private location: Location
+    private create: CreateService
   ) {
-    this.crawlDomainId = this.data.crawlDomainId;
+    this.crawlWebsiteId = this.data.crawlWebsiteId;
     this.getUrisFromCrawlId();
-    this.domainUri = this.data.domainUri;
-    this.domainId = this.data.domainId;
+    this.websiteUri = this.data.websiteUri;
+    this.websiteId = this.data.websiteId;
     this.selectionImport = new SelectionModel<any>(true, []);
     this.selectionObserv = new SelectionModel<any>(true, []);
   }
@@ -61,18 +52,25 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
   }
 
   private getUrisFromCrawlId() {
-    this.get.listOfUrisFromCrawlDomainId(this.crawlDomainId)
-      .subscribe(uris => {
+    this.get
+      .listOfUrisFromCrawlWebsiteId(this.crawlWebsiteId)
+      .subscribe((uris) => {
         if (uris !== null) {
-          const cleanUris = JSON.stringify(_.map(uris, p => {
-            let uriToClean = p['Uri'];
-            if (uriToClean[_.size(uriToClean) - 1] === '/') {
-              uriToClean = uriToClean.substring(0, _.size(uriToClean) - 1);
-            }
+          const cleanUris = JSON.stringify(
+            _.map(uris, (p) => {
+              let uriToClean = p["Uri"];
+              /*if (uriToClean[_.size(uriToClean) - 1] === "/") {
+                uriToClean = uriToClean.substring(0, _.size(uriToClean) - 1);
+              }*/
 
-            return _.trim(uriToClean);
-          }));
-          this.dataSource = new MatTableDataSource(_.map(JSON.parse(cleanUris), u => ({Uri: decodeURIComponent(u)})));
+              return _.trim(uriToClean);
+            })
+          );
+          this.dataSource = new MatTableDataSource(
+            _.map(JSON.parse(cleanUris), (u) => ({
+              Uri: decodeURIComponent(u),
+            }))
+          );
         } else {
           this.error = true;
         }
@@ -82,7 +80,10 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
   choosePages(e): void {
     e.preventDefault();
     this.submitted = true;
-    this.addPages(JSON.stringify(_.map(this.selectionImport.selected, 'Uri')), JSON.stringify(_.map(this.selectionObserv.selected, 'Uri')));
+    this.addPages(
+      JSON.stringify(_.map(this.selectionImport.selected, "Uri")),
+      JSON.stringify(_.map(this.selectionObserv.selected, "Uri"))
+    );
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -100,18 +101,19 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggleImport() {
-    this.isAllSelectedImport() ?
-      this.dataSource.data.forEach(row => {
-        if (!this.selectionObserv.isSelected(row)) {
-          this.selectionImport.deselect(row);
-        }
-      }) : this.dataSource.data.forEach(row => this.selectionImport.select(row));
+    this.isAllSelectedImport()
+      ? this.dataSource.data.forEach((row) => {
+          if (!this.selectionObserv.isSelected(row)) {
+            this.selectionImport.deselect(row);
+          }
+        })
+      : this.dataSource.data.forEach((row) => this.selectionImport.select(row));
   }
 
   masterToggleObserv() {
-    this.isAllSelectedObserv() ?
-      this.selectionObserv.clear() :
-      this.dataSource.data.forEach(row => this.selectionObserv.select(row));
+    this.isAllSelectedObserv()
+      ? this.selectionObserv.clear()
+      : this.dataSource.data.forEach((row) => this.selectionObserv.select(row));
     this.masterToggleImport();
   }
 
@@ -121,26 +123,25 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
   }
 
   private addPages(uris: any, observatorio: any): void {
-    const domainId = this.domainId;
+    const websiteId = this.websiteId;
 
     const formData = {
-      domainId,
+      websiteId,
       uris,
-      observatory: observatorio
+      observatory: observatorio,
     };
 
     this.dialogRef.close();
 
-    this.create.newPages(formData)
-      .subscribe(success => {
-        if (success !== null) {
-          if (success) {
-            this.dialogRef.close();
-            this.dialog.open(BackgroundEvaluationsInformationDialogComponent, {
-              width: '40vw'
-            });
-          }
+    this.create.newPages(formData).subscribe((success) => {
+      if (success !== null) {
+        if (success) {
+          this.dialogRef.close();
+          this.dialog.open(BackgroundEvaluationsInformationDialogComponent, {
+            width: "40vw",
+          });
         }
-      });
+      }
+    });
   }
 }

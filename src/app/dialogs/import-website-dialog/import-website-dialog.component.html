@@ -2,12 +2,12 @@
 <mat-dialog-content>
   <p><strong>{{ "IMPORT.title" | translate }}</strong></p>
   <ul>
-    <li *ngIf="!hasDomain">{{ "IMPORT.WEBSITE.list.item1" | translate }}<strong>{{domain}}</strong>{{ "IMPORT.WEBSITE.list.item2" | translate }} </li>
-    <li *ngIf="!hasDomain">{{ "IMPORT.WEBSITE.list.item3" | translate }} </li>
-    <li *ngIf="hasDomain">{{ "IMPORT.WEBSITE.list.item4" | translate }}<strong>{{domain}}</strong>{{ "IMPORT.WEBSITE.list.item5" | translate }}<strong>{{webName}}</strong>{{ "IMPORT.WEBSITE.list.item6" | translate }}</li>
+    <li *ngIf="!hasUrl">{{ "IMPORT.WEBSITE.list.item1" | translate }}<strong>{{url}}</strong>{{ "IMPORT.WEBSITE.list.item2" | translate }} </li>
+    <li *ngIf="!hasUrl">{{ "IMPORT.WEBSITE.list.item3" | translate }} </li>
+    <li *ngIf="hasUrl">{{ "IMPORT.WEBSITE.list.item4" | translate }}<strong>{{url}}</strong>{{ "IMPORT.WEBSITE.list.item5" | translate }}<strong>{{webName}}</strong>{{ "IMPORT.WEBSITE.list.item6" | translate }}</li>
     <li><strong>{{ "IMPORT.WEBSITE.list.item7" | translate }}</strong></li>
   </ul>
-  <div *ngIf="!hasDomain">
+  <div *ngIf="!hasUrl">
     <p><strong>{{ "IMPORT.WEBSITE.warning.item1" | translate }}</strong></p>
     <p><strong>{{ "IMPORT.WEBSITE.warning.item2" | translate }}</strong></p>
     <div [formGroup]="pageForm">
@@ -28,7 +28,7 @@
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
   <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="importWebsite()"
-          [disabled]="!hasDomain && pageForm.controls.newWebsiteName.invalid ">
+          [disabled]="!hasUrl && pageForm.controls.newWebsiteName.invalid ">
     {{ "IMPORT.import" | translate }}
   </button>
 </mat-dialog-actions>

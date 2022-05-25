@@ -41,10 +41,6 @@
         "title": "Website",
         "subtitle": "Create a new website"
       },
-      "domain": {
-        "title": "Domain",
-        "subtitle": "Create a new domain"
-      },
       "page": {
         "title": "Pages",
         "subtitle": "Create new pages"
@@ -58,7 +54,6 @@
     "tags": "Tags",
     "entities": "Entities",
     "websites": "Websites",
-    "domains": "Domains",
     "crawler": "Crawler",
     "pages": "Pages",
     "settings": "Settings"
@@ -599,6 +594,10 @@
   "WEBSITES_PAGE": {
     "title": "Website:",
     "subtitle": "User:",
+    "download": {
+      "allPages": "All pages",
+      "observatory": "Observatory"
+    },
     "LIST": {
       "title": "Websites",
       "subtitle": "List of all websites",
@@ -607,6 +606,7 @@
       "table": {
         "id_label": "ID",
         "name_label": "Name",
+        "url_label": "Starting url",
         "entity_label": "Entity",
         "user_label": "User",
         "pages_label": "Nº pages (evaluated)",
@@ -631,10 +631,12 @@
       "title": "Create a new website",
       "name_label": "Name",
       "name_exists": "The inserted name already exists",
-      "domain_label": "Domain",
-      "domain_exists": "The inserted domain already exists",
-      "domain_invalid": "Invalid domain",
-      "domain_missing_protocol": "The domain protocol is missing (http or https)",
+      "url_label": "Starting url",
+      "url_hint": "Info: ",
+      "url_hint_description": "To change the starting url, delete all related pages first.",
+      "url_exists": "The inserted url already exists",
+      "url_invalid": "Invalid url",
+      "url_missing_protocol": "The url protocol is missing (http or https)",
       "entity_label": "Entities (optional)",
       "entity_invalid": "The inserted entity is invalid",
       "user_label": "User (optional)",
@@ -708,7 +710,6 @@
         "list": {
           "title": "Important:",
           "item1": "This website will be deleted",
-          "item2": "All domains belonging to this website will be deleted",
           "item3": "Pages from this website won't be deleted",
           "item4": "This action can't be undone"
         },
@@ -728,77 +729,6 @@
         "websites_error": "Error deleting websites",
         "pages_success": "Websites pages deleted successfully",
         "pages_error": "Error deleting websites pages"
-      }
-    }
-  },
-  "DOMAINS_PAGE": {
-    "title": "Domain:",
-    "subtitle": "User:",
-    "download": {
-      "allPages": "All pages",
-      "observatory": "Observatory"
-    },
-    "LIST": {
-      "title": "Domains",
-      "subtitle": "List of all domains",
-      "table": {
-        "id_label": "ID",
-        "domain_label": "Domain",
-        "active_label": "Active",
-        "user_label": "User",
-        "pages_label": "Nº pages (evaluated)",
-        "start_date_label": "Start date",
-        "end_date_label": "End date",
-        "re_evaluate_label": "Re-evaluate",
-        "re_evaluate_tooltip": "Re-evaluate domain pages",
-        "edit_label": "Edit",
-        "edit_tooltip": "Edit this domain",
-        "delete_label": "Delete",
-        "delete_tooltip": "Delete domain",
-        "see_tooltip": "See domain",
-        "add_pages_label": "Crawler",
-        "add_pages_tooltip": "Automatically add pages"
-      }
-    },
-    "ADD": {
-      "title": "Create a new domain",
-      "website_label": "Website",
-      "website_invalid": "Invalid website",
-      "current_domain_label": "Current domain",
-      "domain_label": "New domain",
-      "domain_exists": "The inserted domains already exists",
-      "domain_invalid": "Invalid domain",
-      "reset": "Reset",
-      "submit": "Create",
-      "messages": {
-        "success": "Domain successfully created",
-        "error": "Error creating domain"
-      }
-    },
-    "UPDATE": {
-      "title": "Domain",
-      "url_label": "Url",
-      "default": "Set default",
-      "submit": "Update",
-      "messages": {
-        "success": "Domain updated successfully",
-        "error": "Error updating domain"
-      }
-    },
-    "DELETE": {
-      "title": "Delete this domain",
-      "list": {
-        "title": "Important:",
-        "item1": "The selected domain will be deleted",
-        "item2": "The domain's website won't be deleted",
-        "item3": "All domain pages won't be deleted",
-        "item4": "If this is the only domain of the website, or if it's the active one, errors may occur during the calculation of some data",
-        "item5": "This action can't be undone"
-      },
-      "submit": "Delete domain",
-      "messages": {
-        "success": "Domain deleted successfully",
-        "error": "Error deleting domain"
       }
     }
   },
@@ -830,8 +760,8 @@
     },
     "ADD": {
       "title": "Create new pages",
-      "domain_label": "Domain",
-      "domain_invalid": "Invalid domain",
+      "website_label": "Website",
+      "website_invalid": "Invalid website",
       "uris_label": "New uris",
       "uris_invalid": "One of the inserted uris is invalid",
       "show_in_observatorio": "Show pages in observatory",
@@ -850,7 +780,7 @@
         "message": "Some errors occurred while trying to add the following pages:"
       },
       "add_sitemap": "Add sitemap (.xml or .txt files)",
-      "sitemap_warning": "Sitemaps files need to have the first page equal to website's domain",
+      "sitemap_warning": "Sitemaps files need to have the first page equal to website's starting url",
       "sitemap_uris_invalid": "One of the given uris is invalid",
       "sitemap_type_invalid": "Given file's extension is not .xml or .txt",
       "sitemap_txt_example": "Sitemap txt example",
@@ -884,7 +814,6 @@
       "list": {
         "title": "Important:",
         "item1": "The selected pages will be deleted",
-        "item2": "The page's domain and website won't be deleted",
         "item3": "All page evaluation history will be deleted",
         "item4": "Removing the pages may affect data from the Observatory, My Monitor and Study Monitor applications",
         "item5": "This action can't be undone"
@@ -1039,7 +968,8 @@
       "element": "Element:",
       "attributes": "Attributes:",
       "content": "Content/text:",
-      "code": "Code:"
+      "code": "Code:",
+      "location": "Location:"
     }
   },
   "CODE": {
@@ -1053,18 +983,14 @@
     "title": "Automatic page search",
     "error1": "Only allowed zero and positive integer numbers",
     "error2": "Only allowed zero and positive integer numbers",
-    "errorSubdomain": "This subdomain was already searched!",
     "PARAMETERS": {
       "depth": "Maximum depth",
       "pages": "Maximum number of pages",
-      "waitJS": "Wait for JavaScript to load before crawling",
-      "subdomain": "Desired sub-domain"
+      "waitJS": "Wait for JavaScript to load before crawling"
     },
     "TOOLTIP": {
-      "depth": "Type 0 to only search for pages directly linked to the homepage (or desired sub-domain)",
-      "pages": "Type 0 to search for all pages",
-      "subdomain": "If you want to search for pages in '",
-      "subdomain2": "/abc', only type 'abc'"
+      "depth": "Type 0 to only search for pages directly linked to the homepage",
+      "pages": "Type 0 to search for all pages"
     },
     "MESSAGE": {
       "success": "Pages added successfully!",
@@ -1093,10 +1019,9 @@
     "title": "Automatic page searches",
     "subtitle": "List of all page searches still executing and already terminated",
     "change_config": "Change settings",
-    "go_to_domain": "List of domains",
+    "go_to_website": "List of websites",
     "LIST": {
-      "domain": "Domain",
-      "subdomain": "Sub-domain",
+      "url": "Starting url",
       "date": "Initial date",
       "status": "Status",
       "delete": "Delete",
@@ -1112,7 +1037,7 @@
     },
     "EMPTY": {
       "part1": "This list is empty!",
-      "part2": "To do an automatic page search, go to list of domains and press "
+      "part2": "To do an automatic page search, go to list of websites and press "
     }
   },
   "CRAWLER_CONFIG": {
@@ -1134,10 +1059,10 @@
     "WEBSITE": {
       "title": "Import website",
       "list": {
-        "item1": "This operation will import ths website and its corresponding domain (",
+        "item1": "This operation will import ths website and its corresponding website (",
         "item2": "), as well as all its pages.",
-        "item3": "If you pretend to import this domain to another existent website, you need to create that domain in that desired website first.",
-        "item4": "This operation will import the domain (",
+        "item3": "If you pretend to import this website to another existent website, you need to create that website in that desired website first.",
+        "item4": "This operation will import the website (",
         "item5": ") from this website to the website ",
         "item6": ", as well as all its pages.",
         "item7": "This action cannot be undone!"
@@ -1151,8 +1076,8 @@
     "TAG": {
       "title": "Import tag",
       "list": {
-        "item1": "This operation will import all its websites and corresponding domains, as well as all its pages.",
-        "item2": "If you pretend to import any domain to an existent website, you need to create that domain in that desired website first.",
+        "item1": "This operation will import all its websites and corresponding websites, as well as all its pages.",
+        "item2": "If you pretend to import any website to an existent website, you need to create that website in that desired website first.",
         "item3": "This action cannot be undone!"
       },
       "warning": {

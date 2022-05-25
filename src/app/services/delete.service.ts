@@ -388,31 +388,6 @@ export class DeleteService {
       );
   }
 
-  domain(data: any): Observable<boolean> {
-    data.cookie = this.userService.getUserData();
-    return ajax.post(this.config.getServer("/admin/domains/delete"), data).pipe(
-      retry(3),
-      map((res) => {
-        if (!res.response || res.status === 404) {
-          throw new AdminError(404, "Service not found", "SERIOUS");
-        }
-
-        const response = <Response>res.response;
-
-        if (response.success !== 1) {
-          throw new AdminError(response.success, response.message);
-        }
-
-        return <boolean>response.result;
-      }),
-      catchError((err) => {
-        this.message.show("DOMAINS_PAGE.DELETE.messages.error");
-        console.log(err);
-        return of(null);
-      })
-    );
-  }
-
   pages(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/page/delete"), data, {
@@ -500,11 +475,11 @@ export class DeleteService {
       );
   }
 
-  crawl(crawlDomainId: any): Observable<boolean> {
+  crawl(crawlWebsiteId: any): Observable<boolean> {
     return this.http
       .post<any>(
         this.config.getServer("/crawler/delete"),
-        { crawlDomainId },
+        { crawlWebsiteId },
         { observe: "response" }
       )
       .pipe(

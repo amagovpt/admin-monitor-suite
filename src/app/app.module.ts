@@ -35,8 +35,6 @@ import { ListOfWebsitesComponent } from "./pages/websites/list-of-websites/list-
 import { NotFound404Component } from "./pages/not-found-404/not-found-404.component";
 import { EntitiesComponent } from "./pages/entities/entities.component";
 import { ListOfEntitiesComponent } from "./pages/entities/list-of-entities/list-of-entities.component";
-import { DomainsComponent } from "./pages/domains/domains.component";
-import { ListOfDomainsComponent } from "./pages/domains/list-of-domains/list-of-domains.component";
 import { PagesComponent } from "./pages/pages/pages.component";
 import { ListOfPagesComponent } from "./pages/pages/list-of-pages/list-of-pages.component";
 import { TagsComponent } from "./pages/tags/tags.component";
@@ -46,7 +44,6 @@ import { BottomSheetComponent } from "./dialogs/bottom-sheet/bottom-sheet.compon
 import { AddUserDialogComponent } from "./dialogs/add-user-dialog/add-user-dialog.component";
 import { AddEntityDialogComponent } from "./dialogs/add-entity-dialog/add-entity-dialog.component";
 import { AddWebsiteDialogComponent } from "./dialogs/add-website-dialog/add-website-dialog.component";
-import { AddDomainDialogComponent } from "./dialogs/add-domain-dialog/add-domain-dialog.component";
 import { AddPageDialogComponent } from "./dialogs/add-page-dialog/add-page-dialog.component";
 import { EditEntityDialogComponent } from "./dialogs/edit-entity-dialog/edit-entity-dialog.component";
 import { LoadingComponent } from "./global/loading/loading.component";
@@ -61,7 +58,6 @@ import { EntityComponent } from "./pages/entity/entity.component";
 import { TagComponent } from "./pages/tag/tag.component";
 import { UserComponent } from "./pages/user/user.component";
 import { WebsiteComponent } from "./pages/website/website.component";
-import { DomainComponent } from "./pages/domain/domain.component";
 import { PageComponent } from "./pages/page/page.component";
 import { ListOfEvaluationsComponent } from "./pages/page/list-of-evaluations/list-of-evaluations.component";
 import { EvaluationResultsComponent } from "./pages/evaluation-results/evaluation-results.component";
@@ -71,13 +67,11 @@ import { ItemComponent } from "./pages/home/item/item.component";
 import { EditTagDialogComponent } from "./dialogs/edit-tag-dialog/edit-tag-dialog.component";
 import { EditUserDialogComponent } from "./dialogs/edit-user-dialog/edit-user-dialog.component";
 import { DeletePageDialogComponent } from "./dialogs/delete-page-dialog/delete-page-dialog.component";
-import { DeleteDomainDialogComponent } from "./dialogs/delete-domain-dialog/delete-domain-dialog.component";
 import { DeleteEvaluationDialogComponent } from "./dialogs/delete-evaluation-dialog/delete-evaluation-dialog.component";
 import { EditWebsiteDialogComponent } from "./dialogs/edit-website-dialog/edit-website-dialog.component";
 import { ChooseObservatoryWebsitePagesDialogComponent } from "./dialogs/choose-observatory-website-pages-dialog/choose-observatory-website-pages-dialog.component";
 import { ChooseObservatoryPagesDialogComponent } from "./dialogs/choose-observatory-pages-dialog/choose-observatory-pages-dialog.component";
 import { AddPagesErrorsDialogComponent } from "./dialogs/add-pages-errors-dialog/add-pages-errors-dialog.component";
-import { DomainStatisticsComponent } from "./pages/domain/domain-statistics/domain-statistics.component";
 import { WebsiteStatisticsComponent } from "./pages/website/website-statistics/website-statistics.component";
 import { ScoreDistributionDialogComponent } from "./dialogs/score-distribution-dialog/score-distribution-dialog.component";
 import { ErrorDistributionDialogComponent } from "./dialogs/error-distribution-dialog/error-distribution-dialog.component";
@@ -91,9 +85,6 @@ import { ListOfTagsUserComponent } from "./pages/tags/list-of-tags-user/list-of-
 import { ListOfWebsitesUserComponent } from "./pages/websites/list-of-websites-user/list-of-websites-user.component";
 import { ImportWebsiteDialogComponent } from "./dialogs/import-website-dialog/import-website-dialog.component";
 import { ImportTagDialogComponent } from "./dialogs/import-tag-dialog/import-tag-dialog.component";
-
-import { EditDomainDialogComponent } from "./dialogs/edit-domain-dialog/edit-domain-dialog.component";
-
 import { ListOfCrawlsComponent } from "./pages/list-of-crawls/list-of-crawls.component";
 import { CrawlerConfigDialogComponent } from "./dialogs/crawler-config-dialog/crawler-config-dialog.component";
 import { ChoosePagesToReEvaluateDialogComponent } from "./dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
@@ -228,16 +219,6 @@ const appRoutes: Routes = [
         canActivate: [AdminAuthGuard],
       },
       {
-        path: "domains",
-        component: DomainsComponent,
-        canActivate: [AdminAuthGuard],
-      },
-      {
-        path: "domain/:domain",
-        component: DomainComponent,
-        canActivate: [AdminAuthGuard],
-      },
-      {
         path: "pages",
         component: PagesComponent,
         canActivate: [AdminAuthGuard],
@@ -300,8 +281,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     NotFound404Component,
     EntitiesComponent,
     ListOfEntitiesComponent,
-    DomainsComponent,
-    ListOfDomainsComponent,
     PagesComponent,
     ListOfPagesComponent,
     TagsComponent,
@@ -311,7 +290,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddUserDialogComponent,
     AddEntityDialogComponent,
     AddWebsiteDialogComponent,
-    AddDomainDialogComponent,
     AddPageDialogComponent,
     EditEntityDialogComponent,
     LoadingComponent,
@@ -322,7 +300,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     TagComponent,
     UserComponent,
     WebsiteComponent,
-    DomainComponent,
     PageComponent,
     ListOfEvaluationsComponent,
     EvaluationResultsComponent,
@@ -332,13 +309,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditTagDialogComponent,
     EditUserDialogComponent,
     DeletePageDialogComponent,
-    DeleteDomainDialogComponent,
     DeleteEvaluationDialogComponent,
     EditWebsiteDialogComponent,
     ChooseObservatoryWebsitePagesDialogComponent,
     ChooseObservatoryPagesDialogComponent,
     AddPagesErrorsDialogComponent,
-    DomainStatisticsComponent,
     WebsiteStatisticsComponent,
     ScoreDistributionDialogComponent,
     ErrorDistributionDialogComponent,
@@ -353,7 +328,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ListOfWebsitesUserComponent,
     ImportWebsiteDialogComponent,
     ImportTagDialogComponent,
-    EditDomainDialogComponent,
     ListOfCrawlsComponent,
     CrawlerConfigDialogComponent,
     ChoosePagesToReEvaluateDialogComponent,
@@ -407,13 +381,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddTagDialogComponent,
     AddEntityDialogComponent,
     AddWebsiteDialogComponent,
-    AddDomainDialogComponent,
     AddPageDialogComponent,
     EditEntityDialogComponent,
     EditUserDialogComponent,
     EditTagDialogComponent,
     EditWebsiteDialogComponent,
-    DeleteDomainDialogComponent,
     DeletePageDialogComponent,
     DeleteEvaluationDialogComponent,
     BottomSheetComponent,
@@ -429,7 +401,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     DeleteTagConfirmationDialogComponent,
     ImportTagDialogComponent,
     ImportWebsiteDialogComponent,
-    EditDomainDialogComponent,
     CrawlerConfigDialogComponent,
     ChoosePagesToReEvaluateDialogComponent,
     BackgroundEvaluationsInformationDialogComponent,

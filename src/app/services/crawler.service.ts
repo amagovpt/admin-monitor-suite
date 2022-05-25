@@ -23,7 +23,6 @@ export class CrawlerService {
         observe: "response",
       })
       .pipe(
-        retry(3),
         map((res) => {
           if (!res.body || res.status === 404) {
             throw new AdminError(404, "Service not found", "SERIOUS");

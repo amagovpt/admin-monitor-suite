@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -51,7 +51,8 @@ export class CrawlerDialogComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private location: Location,
-    private dialogRef: MatDialogRef<CrawlerDialogComponent>
+    private dialogRef: MatDialogRef<CrawlerDialogComponent>,
+    private cd: ChangeDetectorRef
   ) {
     this.websites = this.data;
     this.pageForm = this.formBuilder.group({
@@ -63,8 +64,7 @@ export class CrawlerDialogComponent implements OnInit {
         Validators.pattern("^[0-9]*$"),
         Validators.required,
       ]),
-      waitJS: new FormControl(),
-      //subDomain: new FormControl("", null, this.subDomainValidator.bind(this)),
+      waitJS: new FormControl()
     });
     this.error = false;
     this.crawlExecuting = false;
@@ -80,29 +80,6 @@ export class CrawlerDialogComponent implements OnInit {
   }
 
   executeCrawler() {
-    /*if (this.subDomainValidator(this.pageForm.controls.subDomain) !== null) {
-      let v = _.trim(this.pageForm.value.subDomain);
-      if (v[0] === "/") {
-        v = v.substring(1, v.length);
-      }
-      if (v[v.length - 1] === "/") {
-        v = v.substring(0, v.length - 1);
-      }
-
-      /*
-      this.url,
-          this.domainId,
-          !this.pageForm.value.subDomain ? this.url : subDomain,
-          this.pageForm.value.maxDepth,
-          this.pageForm.value.maxPages
-          
-
-      //const subDomain = v === "" ? this.url : this.url + "/" + v;
-      this.crawl.callCrawler().subscribe((response) => {
-        this.crawlExecuting = response; //always true
-      });
-    }*/
-
     const data = {
       websites: JSON.stringify(this.websites),
       maxDepth: this.pageForm.value.maxDepth,
@@ -110,7 +87,7 @@ export class CrawlerDialogComponent implements OnInit {
       waitJS: this.pageForm.value.waitJS ? 1 : 0,
     };
     this.crawl.callCrawler(data).subscribe((response) => {
-      this.crawlExecuting = response; //always true
+      this.crawlExecuting = !!response;
     });
   }
 
@@ -118,7 +95,6 @@ export class CrawlerDialogComponent implements OnInit {
     //this.pageForm.controls.maxDepth.setValue('1');
     //this.pageForm.controls.maxPages.setValue('0');
     this.pageForm.reset();
-    this.verify.crawlerSearchExists(this.pageForm.value.subDomain);
   }
 
   closeDialog() {
@@ -129,17 +105,4 @@ export class CrawlerDialogComponent implements OnInit {
     this.closeDialog();
     this.router.navigateByUrl("/console/crawler");
   }
-
-  /*subDomainValidator(control: AbstractControl): Observable<any> {
-    let v = _.trim(control.value);
-    if (v[0] === "/") {
-      v = v.substring(1, v.length);
-    }
-    if (v[v.length - 1] === "/") {
-      v = v.substring(0, v.length - 1);
-    }
-
-    const subDomain = v === "" ? this.url : this.url + "/" + v;
-    return this.verify.crawlerSearchExists(subDomain);
-  }*/
 }

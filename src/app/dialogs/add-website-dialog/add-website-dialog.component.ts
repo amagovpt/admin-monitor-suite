@@ -91,10 +91,10 @@ export class AddWebsiteDialogComponent implements OnInit {
         [Validators.required],
         this.nameValidator.bind(this)
       ),
-      domain: new FormControl(
+      startingUrl: new FormControl(
         "",
-        [Validators.required, domainValidator, domainMissingProtocol],
-        this.domainValidator.bind(this)
+        [Validators.required, urlValidator, urlMissingProtocol],
+        this.urlValidator.bind(this)
       ),
       declaration: new FormControl(),
       stamp: new FormControl(),
@@ -163,7 +163,9 @@ export class AddWebsiteDialogComponent implements OnInit {
     e.preventDefault();
 
     const name = _.trim(this.websiteForm.value.name);
-    const domain = encodeURIComponent(_.trim(this.websiteForm.value.domain));
+    const startingUrl = encodeURIComponent(
+      _.trim(this.websiteForm.value.startingUrl)
+    );
     const declaration =
       this.websiteForm.value.declaration === ""
         ? null
@@ -187,7 +189,7 @@ export class AddWebsiteDialogComponent implements OnInit {
 
     const formData = {
       name,
-      domain,
+      startingUrl,
       declaration,
       declarationDate,
       stamp,
@@ -302,11 +304,11 @@ export class AddWebsiteDialogComponent implements OnInit {
     }
   }
 
-  domainValidator(control: AbstractControl): Observable<any> {
-    const domain = _.trim(control.value);
+  urlValidator(control: AbstractControl): Observable<any> {
+    const url = _.trim(control.value);
 
-    if (domain !== "") {
-      return this.verify.domainExists(domain);
+    if (url !== "") {
+      return this.verify.websiteUrlExists(url);
     } else {
       return null;
     }
@@ -335,35 +337,35 @@ export class AddWebsiteDialogComponent implements OnInit {
   }
 }
 
-function domainValidator(control: FormControl): ValidationErrors | null {
+function urlValidator(control: FormControl): ValidationErrors | null {
   try {
-    const domain = _.trim(control.value);
+    const url = _.trim(control.value);
 
-    if (domain === "") {
+    if (url === "") {
       return null;
     }
 
-    const invalid = domain.endsWith(".") || domain.endsWith("/");
+    const invalid = url.endsWith(".") || url.endsWith("/");
 
-    return invalid ? { invalidDomain: true } : null;
+    return invalid ? { invalidUrl: true } : null;
   } catch (err) {
     console.log(err);
     return null;
   }
 }
 
-function domainMissingProtocol(control: FormControl): ValidationErrors | null {
+function urlMissingProtocol(control: FormControl): ValidationErrors | null {
   try {
-    const domain = _.trim(control.value);
+    const url = _.trim(control.value);
 
-    if (domain === "") {
+    if (url === "") {
       return null;
     }
 
     const invalid =
-      !domain.startsWith("http://") && !domain.startsWith("https://");
+      !url.startsWith("http://") && !url.startsWith("https://");
 
-    return invalid ? { domainMissingProtocol: true } : null;
+    return invalid ? { urlMissingProtocol: true } : null;
   } catch (err) {
     console.log(err);
     return null;
