@@ -131,7 +131,6 @@ export class EditWebsiteDialogComponent implements OnInit {
 
         this.websiteForm.controls.name.setValue(website.Name);
         this.websiteForm.controls.startingUrl.setValue(website.StartingUrl);
-
         if (website.Pages === "0") {
           this.websiteForm.controls.startingUrl.enable();
         }
@@ -254,11 +253,14 @@ export class EditWebsiteDialogComponent implements OnInit {
 
   updateWebsite(e): void {
     e.preventDefault();
-
     const name = _.trim(this.websiteForm.value.name);
-    const startingUrl = encodeURIComponent(
-      _.trim(this.websiteForm.value.startingUrl)
-    );
+    const startingUrl = !this.websiteForm.value.startingUrl ? encodeURIComponent(
+      _.trim(this.websiteForm.controls.startingUrl.value))
+      : encodeURIComponent(
+        _.trim(this.websiteForm.value.startingUrl)
+      );
+    console.log(startingUrl)
+
     const declaration =
       this.websiteForm.value.declaration === ""
         ? null
@@ -275,7 +277,7 @@ export class EditWebsiteDialogComponent implements OnInit {
       : null;
     const userId = this.websiteForm.value.user
       ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
-          .UserId
+        .UserId
       : null;
 
     const olderUserId = this.defaultWebsite.User
