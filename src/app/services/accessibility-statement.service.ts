@@ -16,9 +16,9 @@ export class AccessibilityStatementService {
     private config: ConfigService
   ) { }
 
-  getByWebsiteId(id:string): Observable<Array<AccessibilityStatement>> {
+  getByWebsiteName(name:string): Observable<AccessibilityStatement> {
     return this.http
-      .get<any>(this.config.getServer("accessibility-statement/website/"+id), { observe: "response" })
+      .get<any>(this.config.getServer("/website/website/"+name), { observe: "response" })
       .pipe(
         retry(3),
         map((res) => {
@@ -31,8 +31,7 @@ export class AccessibilityStatementService {
           if (response.success !== 1) {
             throw new AdminError(response.success, response.message);
           }
-
-          return <Array<AccessibilityStatement>>response.result;
+          return <AccessibilityStatement>response.result;
         }),
         catchError((err) => {
           console.log(err);

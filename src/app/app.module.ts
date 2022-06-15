@@ -113,6 +113,8 @@ import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipe";
 import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
 import { PagesErrorsComponent } from "./pages/pages-errors/pages-errors.component";
+import { A11yStatementComponent } from './pages/website/a11y-statement/a11y-statement.component';
+import { JsonBPipe } from './pipes/json-b.pipe';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -351,6 +353,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CountTypesPipe,
     DeleteEvaluationListConfirmationDialogComponent,
     PagesErrorsComponent,
+    A11yStatementComponent,
+    JsonBPipe,
   ],
   imports: [
     BrowserModule,
