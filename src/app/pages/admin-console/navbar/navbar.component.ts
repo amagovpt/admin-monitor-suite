@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 import * as _ from "lodash";
+import { GetService } from "../../../services/get.service";
 
 @Component({
   selector: "app-navbar",
@@ -19,7 +20,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   pages: string;
   settings: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private get: GetService,) {
     this.sub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.home = _.isEqual(_.size(_.split(event.url, "/")), 2)
@@ -43,6 +44,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
           : "default";
       }
     });
+  }
+
+  getCSVData(){
+    this.get.getCSVData()
+      .subscribe(result => {
+        console.log(result);
+      });
   }
 
   ngOnInit(): void {}
