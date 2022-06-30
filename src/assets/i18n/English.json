@@ -56,7 +56,8 @@
     "websites": "Websites",
     "crawler": "Crawler",
     "pages": "Pages",
-    "settings": "Settings"
+    "settings": "Settings",
+    "csv": "CSV"
   },
   "HOME_PAGE": {
     "title": "Welcome",
