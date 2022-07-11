@@ -51,25 +51,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
   getCSVData() {
     this.get.getCSVData()
       .subscribe(results => {
-        console.log(results);
         const lineEnd = '\n'
         const sep = ',';
         let CSV = "WebsiteId,Name,StartingUrl,Declaration,Declaration_Update_Date,Stamp,Stamp_Update_Date,Creation_Date,Tags,numberOfPages,averagePoints" + lineEnd;
         results.map((result) => {
-          CSV += result.WebsiteId + sep + result.Name.replace(',', '') + sep + result.StartingUrl + sep + result.Declaration + sep + result.Declaration_Update_Date
+          CSV += result.WebsiteId + sep + result.Name.replace(',', '').replace(',','') + sep + result.StartingUrl + sep + result.Declaration + sep + result.Declaration_Update_Date
             + sep + result.Stamp + sep + result.Stamp_Update_Date + sep + result.Creation_Date + sep + this.getTagsStr(result.Tags) + sep + result.numberOfPages + sep + result.averagePoints + lineEnd;
         })
         const BOM = "\uFEFF";
-        let blob = new Blob([BOM+CSV], { type: "text/plain;charset=utf-8" });
+        let blob = new Blob([BOM + CSV], { type: "text/plain;charset=utf-8" });
         FileSaver.saveAs(blob, "data.csv");
       });
   }
 
   getTagsStr(tags) {
     return tags.reduce((res, tag, index) => {
-      console.log(tag.Name);
-      console.log(res);
-      return res + tag.Name.replace(',','') + (index === tags.length - 1 ? '' : ';');
+      return res + tag.Name.replace(',', '') + (index === tags.length - 1 ? '' : ';');
     }, '');
   }
 
