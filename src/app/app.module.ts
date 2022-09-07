@@ -113,6 +113,8 @@ import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipe";
 import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
 import { PagesErrorsComponent } from "./pages/pages-errors/pages-errors.component";
+import { GovUserComponent } from './pages/gov-user/gov-user.component';
+import { GovUsersComponent } from './pages/gov-users/gov-users.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -125,6 +127,11 @@ const appRoutes: Routes = [
     canActivate: [AdminAuthGuard],
     children: [
       { path: "", component: HomeComponent, canActivate: [AdminAuthGuard] },
+      {
+        path: "govUsers",
+        component: GovUsersComponent,
+        canActivate: [AdminAuthGuard],
+      },
       {
         path: "users",
         component: UsersComponent,
@@ -351,6 +358,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CountTypesPipe,
     DeleteEvaluationListConfirmationDialogComponent,
     PagesErrorsComponent,
+    GovUserComponent,
+    GovUsersComponent,
   ],
   imports: [
     BrowserModule,
