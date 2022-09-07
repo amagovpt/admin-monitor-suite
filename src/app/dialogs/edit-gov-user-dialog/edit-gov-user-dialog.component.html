@@ -1,5 +1,7 @@
 <div fxLayout="row">
-  <h1 class="mat-display-1" mat-dialog-title>{{ "USERS_PAGE.UPDATE.title" | translate }}</h1>
+  <h1 class="mat-display-1" mat-dialog-title>
+    {{ "USERS_PAGE.UPDATE.title" | translate }}
+  </h1>
   <span fxFlex></span>
   <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
     <mat-icon aria-hidden="false">close</mat-icon>
@@ -12,29 +14,99 @@
         <label for="user_username_input">
           {{ "USERS_PAGE.ADD.username_label" | translate }}
         </label>
-        <input id="user_username_input" matInput [errorStateMatcher]="matcher" formControlName="name" autofocus required>
+        <input
+          id="user_username_input"
+          matInput
+          [errorStateMatcher]="matcher"
+          formControlName="name"
+          autofocus
+          required
+        />
       </mat-form-field>
-        <mat-form-field>
+      <mat-form-field>
         <label for="user_username_input">
           {{ "USERS_PAGE.ADD.username_label" | translate }}
         </label>
-        <input id="user_username_input" matInput [errorStateMatcher]="matcher" formControlName="ccNumber">
+        <input
+          id="user_username_input"
+          matInput
+          [errorStateMatcher]="matcher"
+          formControlName="ccNumber"
+        />
       </mat-form-field>
-      </div>
+
+      <mat-form-field>
+        <label for="directory_users_input">{{
+          "DIRECTORIES_PAGE.UPDATE.users_label" | translate
+        }}</label>
+        <mat-chip-list #usersChipList>
+          <mat-chip
+            *ngFor="let user of selectedUsers"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="removeTag(user)"
+          >
+            {{ user.Username }}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            id="directory_users_input"
+            #userInput
+            formControlName="users"
+            [matAutocomplete]="auto2"
+            [matChipInputFor]="usersChipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+          />
+          <button
+            type="button"
+            *ngIf="selectedUsers.length > 0"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="selectedUsers = []"
+          >
+            <mat-icon aria-hidden="false">close</mat-icon>
+          </button>
+        </mat-chip-list>
+        <mat-autocomplete
+          #auto2="matAutocomplete"
+          (optionSelected)="selectedTag($event)"
+        >
+          <mat-option
+            *ngFor="let user of filteredUsers | async"
+            [value]="user.Username"
+          >
+            {{ user.Username }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button color="warn" type="button">
       {{ "USERS_PAGE.UPDATE.delete.submit" | translate }}
     </button>
     <span fxFlex></span>
-    <button mat-raised-button color="accent" type="button" (click)="setDefault()">
+    <button
+      mat-raised-button
+      color="accent"
+      type="button"
+      (click)="setDefault()"
+    >
       {{ "USERS_PAGE.UPDATE.default" | translate }}
     </button>
     <span fxFlex="2"></span>
-    <button mat-raised-button color="primary" type="submit"
-      *ngIf="!loadingUpdate">
-      {{ 'USERS_PAGE.UPDATE.submit' | translate }}
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      *ngIf="!loadingUpdate"
+    >
+      {{ "USERS_PAGE.UPDATE.submit" | translate }}
     </button>
-    <span *ngIf="loadingUpdate"><strong>{{ "MISC.loading" | translate }}</strong></span>
+    <span *ngIf="loadingUpdate"
+      ><strong>{{ "MISC.loading" | translate }}</strong></span
+    >
   </mat-dialog-actions>
 </form>
