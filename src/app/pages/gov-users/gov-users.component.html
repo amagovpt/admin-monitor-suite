@@ -41,9 +41,7 @@
           {{ "GOV_USERS_PAGE.LIST.table.username_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <a [routerLink]="['/console', 'user', element.ccNumber]">
-            <strong>{{ element.name }}</strong>
-          </a>
+          {{ element.name }}
         </mat-cell>
       </ng-container>
 

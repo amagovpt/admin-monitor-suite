@@ -115,6 +115,7 @@ import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delet
 import { PagesErrorsComponent } from "./pages/pages-errors/pages-errors.component";
 import { GovUserComponent } from './pages/gov-user/gov-user.component';
 import { GovUsersComponent } from './pages/gov-users/gov-users.component';
+import { EditGovUserDialogComponent } from './dialogs/edit-gov-user-dialog/edit-gov-user-dialog.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -360,6 +361,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PagesErrorsComponent,
     GovUserComponent,
     GovUsersComponent,
+    EditGovUserDialogComponent,
   ],
   imports: [
     BrowserModule,

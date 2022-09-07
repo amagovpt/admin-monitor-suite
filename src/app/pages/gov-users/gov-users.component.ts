@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from "lodash";
-import { EditUserDialogComponent } from '../../dialogs/edit-user-dialog/edit-user-dialog.component';
+import { EditGovUserDialogComponent } from '../../dialogs/edit-gov-user-dialog/edit-gov-user-dialog.component';
 import { GetService } from '../../services/get.service';
 
 @Component({
@@ -117,7 +117,7 @@ export class GovUsersComponent implements OnInit {
   }
 
   edit(id: number): void {
-    const editDialog = this.dialog.open(EditUserDialogComponent, {
+    const editDialog = this.dialog.open(EditGovUserDialogComponent, {
       width: "60vw",
       disableClose: false,
       hasBackdrop: true,
