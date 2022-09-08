@@ -91,27 +91,25 @@ export class EditGovUserDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const govUser = {
-      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
-      last_login: "11/11/11", userList: [{ Username: "teste" }, { Username: "teste1" }]
-    };
-    const otherUsers = [{ Username: "teste2" }, { Username: "teste3" }];
-    this.defaultGovUser = _.cloneDeep(govUser);
-    this.selectedUsers = govUser.userList;
-    this.users = otherUsers;
-    this.filteredUsers = this.userForm.controls.users.valueChanges.pipe(
-      map((user: any | null) => {
-        console.log(user);
-        console.log(user ? this.filterUser(user) : this.users.slice());
-        return user ? this.filterUser(user) : this.users.slice()
+    this.get.govUser(this.data.id).subscribe((govUser) => {
+      this.defaultGovUser = _.cloneDeep(govUser);
+      this.selectedUsers = govUser.entities;
+      this.get.listOfUsers().subscribe((otherUsers) => {
+      this.users = otherUsers;
+      this.filteredUsers = this.userForm.controls.users.valueChanges.pipe(
+        map((user: any | null) => {
+          console.log(user);
+          console.log(user ? this.filterUser(user) : this.users.slice());
+          return user ? this.filterUser(user) : this.users.slice()
+        }
+        )
+      );});
+      if (govUser !== null) {
+        this.userForm.controls.name.setValue(govUser.name);
+        this.userForm.controls.ccNumber.setValue(govUser.ccNumber);
+        this.loadingInfo = false;
       }
-      )
-    );
-    if (govUser !== null) {
-      this.userForm.controls.name.setValue(govUser.name);
-      this.userForm.controls.ccNumber.setValue(govUser.ccNumber);
-      this.loadingInfo = false;
-    }
+    })
   }
   setDefault(): void {
     this.userForm.controls.name.setValue(this.defaultGovUser.name);
@@ -131,7 +129,24 @@ export class EditGovUserDialogComponent implements OnInit {
     //send Update
     console.log("send update" + name + " " + ccNumber)
 
-    this.loadingUpdate = false;
+    const formData = {
+      userId: this.data.id,
+      name,
+      ccNumber,
+      entities: this.selectedUsers,
+
+    };
+
+    this.update.govUser(formData).subscribe((success) => {
+      if (success !== null) {
+        this.userForm.controls.name.reset();
+        this.userForm.controls.ccNumber.reset();
+        this.message.show("USERS_PAGE.UPDATE.messages.success");
+        this.dialogRef.close(true);
+      }
+
+      this.loadingUpdate = false;
+    });
   }
 
   removeUser(user: any): void {
@@ -140,6 +155,18 @@ export class EditGovUserDialogComponent implements OnInit {
     if (index >= 0) {
       this.selectedUsers.splice(index, 1);
     }
+  }
+
+
+  deleteGovUser(): void {
+    this.deleteService
+      .govUser({ userId: this.data.id })
+      .subscribe((success) => {
+        if (success !== null) {
+          this.message.show("USERS_PAGE.DELETE.messages.success");
+          this.dialogRef.close(true);
+        }
+      });
   }
 
   filterUser(name: string) {

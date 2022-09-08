@@ -50,11 +50,11 @@
       mat-raised-button
       color="primary"
       type="submit"
-      *ngIf="!loadingUpdate"
+      *ngIf="!loadingCreate"
     >
       {{ "GOV_USERS_PAGE.UPDATE.submit" | translate }}
     </button>
-    <span *ngIf="loadingUpdate"
+    <span *ngIf="loadingCreate"
       ><strong>{{ "MISC.loading" | translate }}</strong></span
     >
   </mat-dialog-actions>
