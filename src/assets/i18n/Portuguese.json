@@ -21,6 +21,10 @@
   "ADMIN_CONSOLE": {
     "add_button": "Adicionar conteúdo",
     "bottom_sheet": {
+      "govUser": {
+        "title": "Utilizador Autenticação.Gov",
+        "subtitle": "Criar um novo utilizador Autenticação.Gov"
+      },
       "user": {
         "title": "Utilizador",
         "subtitle": "Criar um novo utilizador"
@@ -253,15 +257,15 @@
   "RANGE_PAGE_LABEL_1": "0 de {{length}}",
   "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} de {{length}}",
   "GOV_USERS_PAGE": {
-    "title": "Utilizador:",
+    "title": "Utilizador Autenticação.Gov:",
     "LIST": {
       "title": "Utilizadores Autenticação.Gov",
-      "subtitle": "Lista de todos os utilizadores das aplicações Study Monitor e My Monitor",
+      "subtitle": "Lista de todos os utilizadores Autenticação.Gov",
       "table": {
         "id_label": "ID",
-        "username_label": "Utilizador",
+        "username_label": "Nome",
         "app_label": "Aplicação",
-        "websites_label": "Nº de sítios web",
+        "cc_label": "Nº do cartão de cidadão",
         "register_label": "Data de registo",
         "last_login_label": "Última sessão",
         "edit_label": "Editar",
@@ -270,27 +274,12 @@
       }
     },
     "ADD": {
-      "title": "Criar um utilizador",
+      "title": "Criar um utilizador Autenticação.Gov:",
       "subtitle": "Crie um utilizador para o Study Monitor ou para o My Monitor",
       "user_data": "Dados do utilizador",
-      "username_label": "Utilizador",
-      "username_exists": "O utilizador inserido já existe",
-      "password_label": "Palavra-chave",
-      "password_hint": "A palavra-chave deverá ter no mínimo 8 caracteres, 1 caracter maísculo, 1 caracter mínusculo, 1 número e 1 caracter especial",
-      "password_short": "A palavra-chave tem menos de 8 caracteres",
-      "password_uppercase": "A palavra-chave não tem nenhum caracter maísculo",
-      "password_lowercase": "A palavra-chave não tem nenhum caracter mínusculo",
-      "password_number": "A palavra-chave não tem nenhum número",
-      "password_special": "A palavra-chave não tem nenhum caracter especial",
-      "confirm_password_label": "Confirmar palavra-chave",
-      "confirm_password_error": "As palavras-chave não coincidem",
-      "names_label": "Nomes de contacto",
-      "emails_label": "E-mails de contacto",
-      "emails_error": "Email é <strong>inválido</strong>",
-      "choose_app": "Aplicação a que se destina",
-      "transfer_label": "Transferir páginas do observatório",
-      "websites_label": "Associar sítios web",
-      "tags_label": "Associar categorias",
+      "ccNumber_label": "Número do cartão de cidadão",
+      "name_label": "Nome",
+      "user_label": "Utilizadores associados",
       "reset": "Limpar",
       "submit": "Criar",
       "messages": {
@@ -299,7 +288,7 @@
       }
     },
     "UPDATE": {
-      "title": "Utilizador",
+      "title": "Utilizador Autenticação.Gov:",
       "subtitle": "Editar",
       "description": "Editar este utilizador",
       "default": "Reverter alterações",

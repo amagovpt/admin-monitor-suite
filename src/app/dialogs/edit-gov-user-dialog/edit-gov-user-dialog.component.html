@@ -1,6 +1,6 @@
 <div fxLayout="row">
   <h1 class="mat-display-1" mat-dialog-title>
-    {{ "USERS_PAGE.UPDATE.title" | translate }}
+    {{ "GOV_USERS_PAGE.UPDATE.title" | translate }}
   </h1>
   <span fxFlex></span>
   <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
@@ -12,7 +12,7 @@
     <div class="add-user-block" fxLayout="column">
       <mat-form-field>
         <label for="user_username_input">
-          {{ "USERS_PAGE.ADD.username_label" | translate }}
+          {{ "GOV_USERS_PAGE.ADD.name_label" | translate }}
         </label>
         <input
           id="user_username_input"
@@ -25,7 +25,7 @@
       </mat-form-field>
       <mat-form-field>
         <label for="user_username_input">
-          {{ "USERS_PAGE.ADD.username_label" | translate }}
+          {{ "GOV_USERS_PAGE.ADD.ccNumber_label" | translate }}
         </label>
         <input
           id="user_username_input"
@@ -37,14 +37,14 @@
 
       <mat-form-field>
         <label for="directory_users_input">{{
-          "DIRECTORIES_PAGE.UPDATE.users_label" | translate
+          "GOV_USERS_PAGE.ADD.user_label" | translate
         }}</label>
         <mat-chip-list #usersChipList>
           <mat-chip
             *ngFor="let user of selectedUsers"
             [selectable]="selectable"
             [removable]="removable"
-            (removed)="removeTag(user)"
+            (removed)="removeUser(user)"
           >
             {{ user.Username }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -71,7 +71,7 @@
         </mat-chip-list>
         <mat-autocomplete
           #auto2="matAutocomplete"
-          (optionSelected)="selectedTag($event)"
+          (optionSelected)="selectedUser($event)"
         >
           <mat-option
             *ngFor="let user of filteredUsers | async"
@@ -85,7 +85,7 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button color="warn" type="button">
-      {{ "USERS_PAGE.UPDATE.delete.submit" | translate }}
+      {{ "GOV_USERS_PAGE.UPDATE.delete.submit" | translate }}
     </button>
     <span fxFlex></span>
     <button
@@ -94,7 +94,7 @@
       type="button"
       (click)="setDefault()"
     >
-      {{ "USERS_PAGE.UPDATE.default" | translate }}
+      {{ "GOV_USERS_PAGE.UPDATE.default" | translate }}
     </button>
     <span fxFlex="2"></span>
     <button
@@ -103,7 +103,7 @@
       type="submit"
       *ngIf="!loadingUpdate"
     >
-      {{ "USERS_PAGE.UPDATE.submit" | translate }}
+      {{ "GOV_USERS_PAGE.UPDATE.submit" | translate }}
     </button>
     <span *ngIf="loadingUpdate"
       ><strong>{{ "MISC.loading" | translate }}</strong></span
