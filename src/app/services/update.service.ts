@@ -25,7 +25,7 @@ export class UpdateService {
 
   govUser(data: any): Observable<boolean> {
     return this.http
-      .post<any>(this.config.getServer("/govUser/update"), data, {
+      .post<any>(this.config.getServer("/gov-user/update"), data, {
         observe: "response",
       })
       .pipe(

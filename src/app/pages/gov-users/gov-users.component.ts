@@ -37,7 +37,8 @@ export class GovUsersComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private get: GetService,
   ) {
     this.loading = true;
     this.error = false;
@@ -52,40 +53,43 @@ export class GovUsersComponent implements OnInit {
       name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
       last_login: "11/11/11",
     }, {
-        name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
-        last_login: "11/11/11",
-      }, {
-        name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
-        last_login: "11/11/11",
-      }, {
-        name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
-        last_login: "11/11/11",
-      }]
-    if (users !== null) {
-      this.dataSource = new MatTableDataSource(users);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }, {
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }, {
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }]
+    this.get.govUsers().subscribe((users) => {
 
-      const paginatorIntl = new MatPaginatorIntl();
-      paginatorIntl.itemsPerPageLabel = this.translate.instant(
-        "ITEMS_PER_PAGE_LABEL"
-      );
-      paginatorIntl.nextPageLabel = this.translate.instant("NEXT_PAGE_LABEL");
-      paginatorIntl.previousPageLabel = this.translate.instant(
-        "PREVIOUS_PAGE_LABEL"
-      );
-      paginatorIntl.firstPageLabel =
-        this.translate.instant("FIRST_PAGE_LABEL");
-      paginatorIntl.lastPageLabel = this.translate.instant("LAST_PAGE_LABEL");
-      paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
+      if (users !== null) {
+        this.dataSource = new MatTableDataSource(users);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
 
-      //this.dataSource.paginator._intl = paginatorIntl; FIXME
-    } else {
-      this.error = true;
-    }
+        const paginatorIntl = new MatPaginatorIntl();
+        paginatorIntl.itemsPerPageLabel = this.translate.instant(
+          "ITEMS_PER_PAGE_LABEL"
+        );
+        paginatorIntl.nextPageLabel = this.translate.instant("NEXT_PAGE_LABEL");
+        paginatorIntl.previousPageLabel = this.translate.instant(
+          "PREVIOUS_PAGE_LABEL"
+        );
+        paginatorIntl.firstPageLabel =
+          this.translate.instant("FIRST_PAGE_LABEL");
+        paginatorIntl.lastPageLabel = this.translate.instant("LAST_PAGE_LABEL");
+        paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
 
-    this.loading = false;
-    this.cd.detectChanges();
+        //this.dataSource.paginator._intl = paginatorIntl; FIXME
+      } else {
+        this.error = true;
+      }
+
+      this.loading = false;
+      this.cd.detectChanges();
+    })
   }
 
   private getRangeLabel(

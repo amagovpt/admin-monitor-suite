@@ -31,7 +31,7 @@ export class GetService {
 
   govUser(userId: number): Observable<GovUser> {
     return this.http
-      .get<any>(this.config.getServer("/govUser/" + userId), {
+      .get<any>(this.config.getServer("/gov-user/" + userId), {
         observe: "response",
       })
       .pipe(
@@ -57,7 +57,7 @@ export class GetService {
   }
   govUsers(): Observable<GovUser[]> {
     return this.http
-      .get<any>(this.config.getServer("/govUser/all"), {
+      .get<any>(this.config.getServer("/gov-user/all"), {
         observe: "response",
       })
       .pipe(
