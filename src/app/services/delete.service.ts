@@ -24,7 +24,7 @@ export class DeleteService {
 
   govUser(data: any): Observable<boolean> {
     return this.http
-      .post(this.config.getServer("/user/delete"), data, {
+      .post(this.config.getServer("/gov-user/delete"), data, {
         observe: "response",
       })
       .pipe(

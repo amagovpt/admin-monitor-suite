@@ -160,7 +160,7 @@ export class EditGovUserDialogComponent implements OnInit {
 
   deleteGovUser(): void {
     this.deleteService
-      .govUser({ userId: this.data.id })
+      .govUser({ id: this.data.id })
       .subscribe((success) => {
         if (success !== null) {
           this.message.show("USERS_PAGE.DELETE.messages.success");
