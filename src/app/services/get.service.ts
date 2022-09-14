@@ -64,8 +64,8 @@ export class GetService {
         retry(3),
         map((res) => {
           const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
+          console.log(res);
+          if (res.status === 404) {
             throw new AdminError(404, "Service not found", "SERIOUS");
           }
 

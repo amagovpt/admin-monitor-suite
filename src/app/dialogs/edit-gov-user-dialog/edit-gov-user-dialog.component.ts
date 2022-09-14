@@ -130,7 +130,7 @@ export class EditGovUserDialogComponent implements OnInit {
     console.log("send update" + name + " " + ccNumber)
 
     const formData = {
-      userId: this.data.id,
+      id: this.data.id,
       name,
       ccNumber,
       entities: this.selectedUsers,
