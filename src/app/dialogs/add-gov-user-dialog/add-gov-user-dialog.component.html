@@ -1,0 +1,61 @@
+<div fxLayout="row">
+  <h1 class="mat-display-1" mat-dialog-title>
+    {{ "GOV_USERS_PAGE.UPDATE.title" | translate }}
+  </h1>
+  <span fxFlex></span>
+  <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
+    <mat-icon aria-hidden="false">close</mat-icon>
+  </button>
+</div>
+<form (submit)="addUser($event)" [formGroup]="userForm" novalidate>
+  <mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
+    <div class="add-user-block" fxLayout="column">
+      <mat-form-field>
+        <label for="user_username_input">
+          {{ "GOV_USERS_PAGE.ADD.name_label" | translate }}
+        </label>
+        <input
+          id="user_username_input"
+          matInput
+          [errorStateMatcher]="matcher"
+          formControlName="name"
+          autofocus
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <label for="user_username_input">
+          {{ "GOV_USERS_PAGE.ADD.ccNumber_label" | translate }}
+        </label>
+        <input
+          id="user_username_input"
+          matInput
+          [errorStateMatcher]="matcher"
+          formControlName="ccNumber"
+        />
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      color="accent"
+      type="button"
+      (click)="setDefault()"
+    >
+      {{ "GOV_USERS_PAGE.UPDATE.default" | translate }}
+    </button>
+    <span fxFlex="75"></span>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      *ngIf="!loadingCreate"
+    >
+      {{ "GOV_USERS_PAGE.UPDATE.submit" | translate }}
+    </button>
+    <span *ngIf="loadingCreate"
+      ><strong>{{ "MISC.loading" | translate }}</strong></span
+    >
+  </mat-dialog-actions>
+</form>
