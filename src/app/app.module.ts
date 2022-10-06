@@ -136,6 +136,27 @@ const appRoutes: Routes = [
         canActivate: [AdminAuthGuard],
       },
       {
+        path: "user/:user/website/:website",
+        component: WebsiteComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: "user/:user/website/:website/:page",
+        component: EvaluationResultsComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      //{ path: 'website/:user/:website/:page/:evaluation_id', component: EvaluationResultsComponent, canActivate: [AdminAuthGuard] },
+      {
+        path: "user/:user/website/:website/:page/code",
+        component: WebpageCodeComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: "user/:user/website/:website/:page/:ele",
+        component: ElementResultComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
         path: "directories",
         component: DirectoriesComponent,
         canActivate: [AdminAuthGuard],
@@ -174,27 +195,6 @@ const appRoutes: Routes = [
       {
         path: "website/:website",
         component: WebsiteComponent,
-        canActivate: [AdminAuthGuard],
-      },
-      {
-        path: "website/:user/:website",
-        component: WebsiteComponent,
-        canActivate: [AdminAuthGuard],
-      },
-      {
-        path: "website/:user/:website/:page",
-        component: EvaluationResultsComponent,
-        canActivate: [AdminAuthGuard],
-      },
-      //{ path: 'website/:user/:website/:page/:evaluation_id', component: EvaluationResultsComponent, canActivate: [AdminAuthGuard] },
-      {
-        path: "website/:user/:website/:page/code",
-        component: WebpageCodeComponent,
-        canActivate: [AdminAuthGuard],
-      },
-      {
-        path: "website/:user/:website/:page/:ele",
-        component: ElementResultComponent,
         canActivate: [AdminAuthGuard],
       },
       {
