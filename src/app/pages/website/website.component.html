@@ -5,7 +5,10 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <a mat-icon-button class="tools" [routerLink]="['/console', 'websites']" matTooltip="{{ 'RESULTS.actions.back' | translate }}">
+        <a *ngIf="user === 'admin'" mat-icon-button class="tools" [routerLink]="['/console', 'websites']" matTooltip="{{ 'RESULTS.actions.back' | translate }}">
+      <mat-icon aria-label="'RESULTS.actions.back' | translate">arrow_back</mat-icon>
+    </a>
+        <a *ngIf="user !== 'admin'" mat-icon-button class="tools" routerLink="../.." matTooltip="{{ 'RESULTS.actions.back' | translate }}">
       <mat-icon aria-label="'RESULTS.actions.back' | translate">arrow_back</mat-icon>
     </a>
     <span fxFlex></span>
@@ -40,12 +43,12 @@
 </mat-card>
 <br>
 <app-website-statistics *ngIf="!loading && !error && user === 'admin' && pages.length > 0" [pages]="pages" [data]="websiteObject"></app-website-statistics>
-<app-top-five-errors *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject.errors"></app-top-five-errors>
-<app-top-five-best-practices *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject.success"></app-top-five-best-practices>
+<app-top-five-errors *ngIf="!loading && !error && user === 'admin' && pages.length > 0" [data]="websiteObject.errors"></app-top-five-errors>
+<app-top-five-best-practices *ngIf="!loading && !error && user === 'admin' && pages.length > 0" [data]="websiteObject.success"></app-top-five-best-practices>
 <br>
-<app-accessibility-plot *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject.getAllScores()"></app-accessibility-plot>
+<app-accessibility-plot *ngIf="!loading && !error && user === 'admin' && pages.length > 0" [data]="websiteObject.getAllScores()"></app-accessibility-plot>
 <br>
-<app-success-criteria-counter *ngIf="!loading && !error && pages.length > 0" [data]="websiteObject"></app-success-criteria-counter>
+<app-success-criteria-counter *ngIf="!loading && !error && user === 'admin' && pages.length > 0" [data]="websiteObject"></app-success-criteria-counter>
 <br>
 <app-a11y-statement *ngIf="!loading && !error && a11Statement" [a11Statement]="a11Statement"></app-a11y-statement>
 <br>

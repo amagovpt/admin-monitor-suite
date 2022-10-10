@@ -62,11 +62,13 @@ export class WebsiteComponent implements OnInit, OnDestroy {
             } else {
               this.error = true;
             }
-
+            console.log(params);
+            console.log(this.pages);
             this.loading = false;
             this.cd.detectChanges();
           });
       }
+
     });
   }
 

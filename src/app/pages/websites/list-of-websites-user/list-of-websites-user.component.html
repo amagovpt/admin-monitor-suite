@@ -33,7 +33,7 @@
           <a *ngIf="tag" [routerLink]="['/console', 'tag', 'website', tag, element.User, element.Name]">
             <strong>{{element.Name}}</strong>
           </a>
-          <a *ngIf="!tag" [routerLink]="['/console', 'website', element.User, element.Name]">
+          <a *ngIf="!tag" [routerLink]="['/console','user' ,element.User,  'website',element.Name]">
             <strong>{{element.Name}}</strong>
           </a>
         </mat-cell>

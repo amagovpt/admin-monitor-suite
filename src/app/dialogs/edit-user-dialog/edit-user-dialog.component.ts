@@ -171,6 +171,7 @@ export class EditUserDialogComponent implements OnInit {
           this.get.websitesWithoutUser().subscribe((websites) => {
             if (websites !== null) {
               this.websites = this.websites.concat(websites);
+              console.log(this.websites);
               this.filteredWebsites =
                 this.userForm.controls.websites.valueChanges.pipe(
                   startWith(null),
@@ -340,7 +341,7 @@ export class EditUserDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.Url).toLowerCase().includes(n)) {
+        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -351,7 +352,7 @@ export class EditUserDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w['Url'].trim() === event.option.viewValue.trim()
+      (w) => w['StartingUrl'].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
