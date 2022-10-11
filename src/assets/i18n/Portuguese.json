@@ -1043,6 +1043,22 @@
       "part2": "Para usar a procura automática de páginas, dirija-se à lista de domínios e carregue no "
     }
   },
+  "A11_STATEMENTS_PAGE":{
+    "LIST":{
+      "title": "Declarações de acessibilidade",
+      "subtitle": "Lista de todas as declarações de acessibilidade",
+      "table": {
+        "nome_label": "Nome",
+        "date_label": "Data de criação",
+        "state_label": "Estado",
+        "conformity_label": "Conformidade",
+        "seal_label": "Selo",
+        "automatic_label": "Avaliações automáticas",
+        "manual_label": "Avaliações manuais",
+        "user_label": "Avaliações com utilizadores"
+      }
+    }
+  },
   "CRAWLER_CONFIG": {
     "title": "Configuração dos valores pré-definidos na procura automática de páginas",
     "reset": "Limpar",

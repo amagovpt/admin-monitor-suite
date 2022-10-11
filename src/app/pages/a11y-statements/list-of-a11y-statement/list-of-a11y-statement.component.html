@@ -1,10 +1,10 @@
 <mat-card class="mat-typography" *ngIf="!error" [hidden]="loading">
   <mat-card-header>
     <mat-card-title>
-      <h1>{{ "USERS_PAGE.LIST.title" | translate }}</h1>
+      <h1>{{ "A11_STATEMENTS_PAGE.LIST.title" | translate }}</h1>
     </mat-card-title>
     <mat-card-subtitle>
-      <h2>{{ "USERS_PAGE.LIST.subtitle" | translate }}</h2>
+      <h2>{{ "A11_STATEMENTS_PAGE.LIST.subtitle" | translate }}</h2>
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -30,7 +30,7 @@
 
       <ng-container matColumnDef="website">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.username_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.nome_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.website }}
@@ -39,7 +39,7 @@
 
       <ng-container matColumnDef="statementDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.app_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.date_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.statementDate | date }}
@@ -48,7 +48,7 @@
 
       <ng-container matColumnDef="state">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.websites_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.state_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.state }}
@@ -57,7 +57,7 @@
 
       <ng-container matColumnDef="conformance">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.register_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.conformity_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.conformance }}
@@ -66,7 +66,7 @@
 
       <ng-container matColumnDef="seal">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.last_login_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.seal_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.seal }}
@@ -75,7 +75,7 @@
 
       <ng-container matColumnDef="automaticEvaluations">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.last_login_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.automatic_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.automaticEvaluations }}
@@ -84,7 +84,7 @@
 
       <ng-container matColumnDef="manualEvaluations">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.last_login_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.manual_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.manualEvaluations }}
@@ -93,7 +93,7 @@
 
       <ng-container matColumnDef="userEvaluations">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "USERS_PAGE.LIST.table.last_login_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.LIST.table.user_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.userEvaluations }}
