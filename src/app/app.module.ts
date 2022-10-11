@@ -256,6 +256,11 @@ const appRoutes: Routes = [
         component: ListOfCrawlsComponent,
         canActivate: [AdminAuthGuard],
       },
+      {
+        path: "a11yStatements",
+        component: A11yStatementsComponent,
+        canActivate: [AdminAuthGuard],
+      },
     ],
   },
   { path: "**", component: NotFound404Component },
