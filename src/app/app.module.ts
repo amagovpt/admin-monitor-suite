@@ -113,9 +113,9 @@ import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipe";
 import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
 import { PagesErrorsComponent } from "./pages/pages-errors/pages-errors.component";
-import { A11yStatementComponent } from './pages/website/a11y-statement/a11y-statement.component';
 import { A11yStatementsComponent } from './pages/a11y-statements/a11y-statements.component';
 import { ListOfA11yStatementComponent } from './pages/a11y-statements/list-of-a11y-statement/list-of-a11y-statement.component';
+import { A11yStatementComponent } from "./pages/a11y-statement/a11y-statement.component";
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -259,6 +259,11 @@ const appRoutes: Routes = [
       {
         path: "a11yStatements",
         component: A11yStatementsComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: "a11yStatements/:id",
+        component: A11yStatementComponent,
         canActivate: [AdminAuthGuard],
       },
     ],

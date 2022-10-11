@@ -27,13 +27,14 @@
     </div>
 
     <mat-table #table [dataSource]="dataSource" matSort>
-
       <ng-container matColumnDef="website">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ "A11_STATEMENTS_PAGE.LIST.table.nome_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          {{ element.website }}
+          <a [routerLink]="['/console', 'a11yStatements', element.id]">
+            <strong>{{ element.website }}</strong>
+          </a>
         </mat-cell>
       </ng-container>
 

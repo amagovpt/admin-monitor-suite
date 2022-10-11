@@ -53,6 +53,7 @@ export class ListOfA11yStatementComponent implements OnInit {
 
   private getListOfA11yStatements(): void {
     const a11tStatements = [{
+        id:1,
         website:"Autenticação.Gov",
         statementDate: "11/11/2022",
         state:"completeStatement",
@@ -62,6 +63,7 @@ export class ListOfA11yStatementComponent implements OnInit {
         manualEvaluations: 2,
         userEvaluations: 3,
     },{
+        id: 2,
         website: "Autenticação.Gov",
         statementDate: "11/11/2022",
         state: "completeStatement",
