@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { GetService } from '../../services/get.service';
 
 @Component({
   selector: 'app-a11y-statement',
@@ -6,20 +7,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./a11y-statement.component.css']
 })
 export class A11yStatementComponent implements OnInit {
-  a11yStatement = {
-    id: 1,
-    website: "Autenticação.Gov",
-    statementDate: "11/11/2022",
-    state: "completeStatement",
-    seal: 'Ouro',
-    conformance: 'plenamente conforme',
-    automaticEvaluations: 1,
-    manualEvaluations: 2,
-    userEvaluations: 3,
-  };
-  constructor() { }
+  a11yStatement: any;
+  loading: boolean;
+  error: boolean;
 
-  ngOnInit(): void {
+  constructor(private get: GetService,
+    private cd: ChangeDetectorRef) {
+    this.loading = true;
+    this.error = false;
   }
 
+  ngOnInit(): void {
+    const id = 1;
+    this.get.getA11yStatementById(id).subscribe((a11tStatement) => {
+      if (a11tStatement) {
+        this.a11yStatement = a11tStatement;
+      }
+      else {
+        this.error = true;
+      }
+
+      this.loading = false;
+      this.cd.detectChanges();
+    })
+  }
 }

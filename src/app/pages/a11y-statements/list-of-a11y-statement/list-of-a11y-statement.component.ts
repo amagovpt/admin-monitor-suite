@@ -52,29 +52,9 @@ export class ListOfA11yStatementComponent implements OnInit {
   }
 
   private getListOfA11yStatements(): void {
-    const a11tStatements = [{
-        id:1,
-        website:"Autenticação.Gov",
-        statementDate: "11/11/2022",
-        state:"completeStatement",
-        seal: 'Ouro',
-        conformance: 'plenamente conforme',
-        automaticEvaluations: 1,
-        manualEvaluations: 2,
-        userEvaluations: 3,
-    },{
-        id: 2,
-        website: "Autenticação.Gov",
-        statementDate: "11/11/2022",
-        state: "completeStatement",
-        seal: 'Ouro',
-        conformance: 'plenamente conforme',
-        automaticEvaluations: 2,
-        manualEvaluations: 5,
-        userEvaluations: 3,
-      }];
-    if (a11tStatements !== null) {
-      this.dataSource = new MatTableDataSource(a11tStatements);
+    this.get.listOfA11yStatements().subscribe((a11tStatements) => {
+      if (a11tStatements !== null) {
+        this.dataSource = new MatTableDataSource(a11tStatements);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
 
@@ -98,6 +78,8 @@ export class ListOfA11yStatementComponent implements OnInit {
 
       this.loading = false;
       this.cd.detectChanges();
+    })
+
   }
 
   private getRangeLabel(
