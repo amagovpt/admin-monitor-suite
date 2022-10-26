@@ -29,6 +29,9 @@ export class ListOfUsersComponent implements OnInit {
 
   loading: boolean;
   error: boolean;
+  USER_TYPE={studies:"Study Monitor",
+             monitor: "My Monitor",
+             nimda: "AMS" }
 
   displayedColumns = [
     //'UserId',
