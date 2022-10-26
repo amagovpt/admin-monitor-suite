@@ -49,7 +49,7 @@
           {{ "USERS_PAGE.LIST.table.app_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          {{element.Type == "studies" ? "Study Monitor" : "My Monitor"}}
+          {{USER_TYPE[element.Type]}}
         </mat-cell>
       </ng-container>
 
