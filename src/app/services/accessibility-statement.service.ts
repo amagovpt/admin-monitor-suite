@@ -16,6 +16,7 @@ export class AccessibilityStatementService {
     private config: ConfigService
   ) { }
 
+
   getByWebsiteName(name:string): Observable<AccessibilityStatement> {
     return this.http
       .get<any>(this.config.getServer("/website/website/"+name), { observe: "response" })
