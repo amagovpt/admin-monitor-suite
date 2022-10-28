@@ -27,6 +27,60 @@ export class GetService {
     private message: MessageService,
     private config: ConfigService
   ) {}
+  
+  getA11yStatementById(id:number): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/accessibility-statement/"+id), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <any>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  listOfA11yStatements(): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/accessibility-statement/"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <any>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
 
 
   govUser(userId: number): Observable<GovUser> {
