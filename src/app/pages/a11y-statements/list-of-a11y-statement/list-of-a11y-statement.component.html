@@ -33,7 +33,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <a [routerLink]="['/console', 'a11yStatements', element.id]">
-            <strong>{{ element.website }}</strong>
+            <strong>{{ element.Website }}</strong>
           </a>
         </mat-cell>
       </ng-container>
@@ -79,7 +79,7 @@
           {{ "A11_STATEMENTS_PAGE.LIST.table.automatic_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          {{ element.automaticEvaluations }}
+          {{ element.automaticEvaluationList }}
         </mat-cell>
       </ng-container>
 
@@ -88,7 +88,7 @@
           {{ "A11_STATEMENTS_PAGE.LIST.table.manual_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          {{ element.manualEvaluations }}
+          {{ element.manualEvaluationList }}
         </mat-cell>
       </ng-container>
 
@@ -97,7 +97,7 @@
           {{ "A11_STATEMENTS_PAGE.LIST.table.user_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          {{ element.userEvaluations }}
+          {{ element.userEvaluationList }}
         </mat-cell>
       </ng-container>
 
