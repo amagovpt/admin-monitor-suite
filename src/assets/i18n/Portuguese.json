@@ -44,6 +44,10 @@
       "page": {
         "title": "Páginas",
         "subtitle": "Criar novas páginas"
+      },
+      "a11yStatement": {
+        "title": "Declarações de acessibilidade",
+        "subtitle": "Atualizar declarações de acessibilidade"
       }
     }
   },
