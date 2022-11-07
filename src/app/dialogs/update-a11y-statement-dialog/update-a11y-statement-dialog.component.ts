@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UpdateService } from '../../services/update.service';
 
 @Component({
   selector: 'app-update-a11y-statement-dialog',
@@ -7,10 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateA11yStatementDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(private update: UpdateService) { }
 
   ngOnInit(): void {
-    
+    this.update.a11yStatementUpdate().subscribe(data => {});
   }
-
 }
