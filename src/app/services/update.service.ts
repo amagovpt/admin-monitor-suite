@@ -51,6 +51,34 @@ export class UpdateService {
       );
   }
 
+  a11yStatementUpdate(): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/website/accessibility-statement/update"), {}, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("USERS_PAGE.UPDATE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   user(data: any): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/user/update"), data, {

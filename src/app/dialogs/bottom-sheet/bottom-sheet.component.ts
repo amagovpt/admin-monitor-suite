@@ -1,14 +1,15 @@
 import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
 import { MatBottomSheetRef } from "@angular/material/bottom-sheet";
+import { MatDialog } from "@angular/material/dialog";
 
-import { AddUserDialogComponent } from "../add-user-dialog/add-user-dialog.component";
 import { AddDirectoryDialogComponent } from "../add-directory-dialog/add-directory-dialog.component";
-import { AddTagDialogComponent } from "../add-tag-dialog/add-tag-dialog.component";
 import { AddEntityDialogComponent } from "../add-entity-dialog/add-entity-dialog.component";
-import { AddWebsiteDialogComponent } from "../add-website-dialog/add-website-dialog.component";
 import { AddPageDialogComponent } from "../add-page-dialog/add-page-dialog.component";
 import { AddGovUserDialogComponent } from "../add-gov-user-dialog/add-gov-user-dialog.component";
+import { AddTagDialogComponent } from "../add-tag-dialog/add-tag-dialog.component";
+import { AddUserDialogComponent } from "../add-user-dialog/add-user-dialog.component";
+import { AddWebsiteDialogComponent } from "../add-website-dialog/add-website-dialog.component";
+import { UpdateA11yStatementDialogComponent } from "../update-a11y-statement-dialog/update-a11y-statement-dialog.component";
 
 @Component({
   selector: "app-bottom-sheet",
@@ -19,7 +20,7 @@ export class BottomSheetComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>
-  ) {}
+  ) { }
 
   ngOnInit() {}
   
@@ -98,5 +99,17 @@ export class BottomSheetComponent implements OnInit {
       disableClose: false,
       hasBackdrop: true,
     });
+  }
+
+  openUpdateAS(e): void {
+    this.dialog.open(UpdateA11yStatementDialogComponent, {
+      width: "60vw",
+      disableClose: false,
+      hasBackdrop: true,
+    });
+
+    this.bottomSheetRef.dismiss();
+    e.preventDefault();
+
   }
 }

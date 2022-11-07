@@ -120,6 +120,7 @@ import { AddGovUserDialogComponent } from './dialogs/add-gov-user-dialog/add-gov
 import { A11yStatementsComponent } from './pages/a11y-statements/a11y-statements.component';
 import { ListOfA11yStatementComponent } from './pages/a11y-statements/list-of-a11y-statement/list-of-a11y-statement.component';
 import { A11yStatementComponent } from "./pages/a11y-statement/a11y-statement.component";
+import { UpdateA11yStatementDialogComponent } from './dialogs/update-a11y-statement-dialog/update-a11y-statement-dialog.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -380,6 +381,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddGovUserDialogComponent,
     A11yStatementsComponent,
     ListOfA11yStatementComponent,
+    UpdateA11yStatementDialogComponent,
   ],
   imports: [
     BrowserModule,
