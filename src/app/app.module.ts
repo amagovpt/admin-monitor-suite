@@ -117,6 +117,14 @@ import { A11yStatementsComponent } from './pages/a11y-statements/a11y-statements
 import { ListOfA11yStatementComponent } from './pages/a11y-statements/list-of-a11y-statement/list-of-a11y-statement.component';
 import { A11yStatementComponent } from "./pages/a11y-statement/a11y-statement.component";
 import { UpdateA11yStatementDialogComponent } from './dialogs/update-a11y-statement-dialog/update-a11y-statement-dialog.component';
+import { YearTableComponent } from './pages/a11y-statements/year-table/year-table.component';
+import { ConformanceTableComponent } from './pages/a11y-statements/conformance-table/conformance-table.component';
+import { StateTableComponent } from './pages/a11y-statements/state-table/state-table.component';
+import { StateDirectoryTableComponent } from './pages/a11y-statements/state-directory-table/state-directory-table.component';
+import { SealDirectoryTableComponent } from './pages/a11y-statements/seal-directory-table/seal-directory-table.component';
+import { ConformanceDirectoryTableComponent } from './pages/a11y-statements/conformance-directory-table/conformance-directory-table.component';
+import { OPAWTableComponent } from './pages/a11y-statements/opawtable/opawtable.component';
+import { EvaluationsTableComponent } from './pages/a11y-statements/evaluations-table/evaluations-table.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -369,6 +377,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     A11yStatementsComponent,
     ListOfA11yStatementComponent,
     UpdateA11yStatementDialogComponent,
+    YearTableComponent,
+    ConformanceTableComponent,
+    StateTableComponent,
+    StateDirectoryTableComponent,
+    SealDirectoryTableComponent,
+    ConformanceDirectoryTableComponent,
+    OPAWTableComponent,
+    EvaluationsTableComponent,
   ],
   imports: [
     BrowserModule,
