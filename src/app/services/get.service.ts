@@ -189,6 +189,33 @@ export class GetService {
       );
   }
 
+  numberfA11yStatementsBySeal(): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/accessibility-statement/seal"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <any>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   numberfA11yStatementsByConformance(): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/accessibility-statement/conformance"), {
@@ -225,6 +252,7 @@ export class GetService {
         retry(3),
         map((res) => {
           const response = <Response>res.body;
+          console.log(res);
 
           if (!res.body || res.status === 404) {
             throw new AdminError(404, "Service not found", "SERIOUS");

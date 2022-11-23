@@ -5,11 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { GetService } from '../../../services/get.service';
 
 @Component({
-  selector: 'app-conformance-table',
-  templateUrl: './conformance-table.component.html',
-  styleUrls: ['./conformance-table.component.css']
+  selector: 'app-seal-table',
+  templateUrl: './seal-table.component.html',
+  styleUrls: ['./seal-table.component.css']
 })
-export class ConformanceTableComponent implements OnInit {
+export class SealTableComponent implements OnInit {
+
   @ViewChild("input") input: ElementRef;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -17,7 +18,7 @@ export class ConformanceTableComponent implements OnInit {
   error: boolean;
 
   displayedColumns = [
-    "conformance",
+    "seal",
     "declarationNumber",
   ];
 
@@ -34,7 +35,7 @@ export class ConformanceTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get.numberfA11yStatementsByConformance().subscribe((list) => {
+    this.get.numberfA11yStatementsBySeal().subscribe((list) => {
       console.log(list);
       if (list !== null) {
         this.dataSource = new MatTableDataSource(list);

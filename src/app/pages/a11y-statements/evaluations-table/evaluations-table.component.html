@@ -1,1 +1,22 @@
-<p>evaluations-table works!</p>
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.type_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.type }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="numberOfEvaluations">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.numberOfEvaluations_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.numberOfEvaluations }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>

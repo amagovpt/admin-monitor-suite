@@ -1,1 +1,31 @@
-<p>opawtable works!</p>
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.name_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </mat-cell>
+      </ng-container>
+
+        <ng-container matColumnDef="a11yStatements">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.a11yStatements_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.a11yStatements }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.total_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.total }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>

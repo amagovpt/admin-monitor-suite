@@ -125,6 +125,7 @@ import { SealDirectoryTableComponent } from './pages/a11y-statements/seal-direct
 import { ConformanceDirectoryTableComponent } from './pages/a11y-statements/conformance-directory-table/conformance-directory-table.component';
 import { OPAWTableComponent } from './pages/a11y-statements/opawtable/opawtable.component';
 import { EvaluationsTableComponent } from './pages/a11y-statements/evaluations-table/evaluations-table.component';
+import { SealTableComponent } from './pages/a11y-statements/seal-table/seal-table.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -385,6 +386,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConformanceDirectoryTableComponent,
     OPAWTableComponent,
     EvaluationsTableComponent,
+    SealTableComponent,
   ],
   imports: [
     BrowserModule,
