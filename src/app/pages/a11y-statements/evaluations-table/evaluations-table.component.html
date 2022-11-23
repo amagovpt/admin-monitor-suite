@@ -1,7 +1,7 @@
     <mat-table #table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.type_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.EVALUATIONS_TABLE.type_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.type }}
@@ -10,7 +10,7 @@
 
       <ng-container matColumnDef="numberOfEvaluations">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.numberOfEvaluations_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.EVALUATIONS_TABLE.numberOfEvaluations_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.numberOfEvaluations }}

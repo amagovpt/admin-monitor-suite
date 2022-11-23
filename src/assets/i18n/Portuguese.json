@@ -1048,7 +1048,50 @@
     }
   },
   "A11_STATEMENTS_PAGE":{
-    "LIST":{
+    "CONFORMANCE_DIRECTORY_TABLE": {
+      "name_label": "Nome",
+      "plenamenteConforme_label": "Plenamente conforme",
+      "parcialmenteConforme_label": "Parcialmente conforme",
+      "naoConforme_label": "Não conforme"
+    },
+    "CONFORMANCE_TABLE": {
+      "state_label": "Estado",
+      "number_label": "Numero de declarações"
+    },
+    "EVALUATIONS_TABLE": {
+      "type_label": "Tipo",
+      "numberOfEvaluations_label": "Numero de avaliações"
+    },
+    "OPAW_TABLE": {
+      "name_label": "Nome",
+      "a11yStatements_label": "Numero de declarações",
+      "total_label": "Total de websites"
+    },
+    "SEAL_DIRECTORY_TABLE": {
+      "name_label": "Nome",
+      "ouro_label": "Numero de selos de ouro",
+      "prata_label": "Numero de selos de prata",
+      "bronze_label": "Numero de selos de bronze"
+    },
+    "SEAL_TABLE": {
+      "seal_label": "Selo",
+      "number_label": "Numero de websites"
+    },
+    "STATE_DIRECTORY_TABLE": {
+      "name_label": "Nome do diretório",
+      "completeStatement_label": "Complete statement",
+      "incompleteStatement_label": "Incomplete statement",
+      "possibleStatement_label": "Possible statement"
+    },
+    "STATE_TABLE": {
+      "state_label": "Estado",
+      "number_label": "Numero de declarações"
+    },
+    "YEAR_TABLE": {
+      "year_label": "Ano",
+      "number_label": "Numero de declarações"
+    },
+    "LIST": {
       "title": "Declarações de acessibilidade",
       "subtitle": "Lista de todas as declarações de acessibilidade",
       "table": {

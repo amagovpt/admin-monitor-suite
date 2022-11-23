@@ -1,7 +1,7 @@
     <mat-table #table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.name_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.OPAW_TABLE.name_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.name }}
@@ -10,7 +10,7 @@
 
         <ng-container matColumnDef="a11yStatements">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.a11yStatements_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.OPAW_TABLE.a11yStatements_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.a11yStatements }}
@@ -19,7 +19,7 @@
 
       <ng-container matColumnDef="total">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.total_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.OPAW_TABLE.total_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.total }}

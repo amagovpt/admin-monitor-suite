@@ -1,7 +1,7 @@
     <mat-table #table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="seal">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.state_label" | translate }}
+          {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.seal_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.seal }}
