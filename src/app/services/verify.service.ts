@@ -23,6 +23,33 @@ export class VerifyService {
     private config: ConfigService
   ) {}
 
+
+  govUserExists(username: string): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/gov-user/exists/" + username), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result ? { notTakenName: true } : null;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   userExists(username: string): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/user/exists/" + username), {
