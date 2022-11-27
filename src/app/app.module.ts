@@ -126,6 +126,10 @@ import { ConformanceDirectoryTableComponent } from './pages/a11y-statements/conf
 import { OPAWTableComponent } from './pages/a11y-statements/opawtable/opawtable.component';
 import { EvaluationsTableComponent } from './pages/a11y-statements/evaluations-table/evaluations-table.component';
 import { SealTableComponent } from './pages/a11y-statements/seal-table/seal-table.component';
+import { ContactTableComponent } from './pages/a11y-statement/contact-table/contact-table.component';
+import { AutomaticEvaluationTableComponent } from './pages/a11y-statement/automatic-evaluation-table/automatic-evaluation-table.component';
+import { ManualEvaluationTableComponent } from './pages/a11y-statement/manual-evaluation-table/manual-evaluation-table.component';
+import { UserEvaluationTableComponent } from './pages/a11y-statement/user-evaluation-table/user-evaluation-table.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -387,6 +391,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     OPAWTableComponent,
     EvaluationsTableComponent,
     SealTableComponent,
+    ContactTableComponent,
+    AutomaticEvaluationTableComponent,
+    ManualEvaluationTableComponent,
+    UserEvaluationTableComponent,
   ],
   imports: [
     BrowserModule,

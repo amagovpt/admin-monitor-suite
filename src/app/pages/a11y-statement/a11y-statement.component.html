@@ -1,1 +1,20 @@
+<h2>Declaração de Acessibilidade do sítio Web</h2>
+<h3>Recolha</h3>
+<ul>
+    <li>Última recolha de dados efetuada a {{a11yStatement.CreatedAt}}</li>
+    <li>Estado da leitura efetuada{{a11yStatement.state}}</li>
+</ul>
+<h3>Declaração</h3>
+<ul>
+    <li>Nome do sítio {{a11yStatement.Website.Name}}</li>
+    <li>Domínio {{a11yStatement.Website.StartingUrl}}</li>
+    <li>Data da declaração {{a11yStatement.statementDate}}</li>
+    <li>URL da declaração {{a11yStatement.statementDate}}</li>
+</ul>
+<h3>Conformidade</h3>
+<ul>
+    <li>Conformidade declarada {{a11yStatement.conformance}}</li>
+    <li>Selo de U+A {{a11yStatement.seal}}</li>
+</ul>
+
 <pre>{{ a11yStatement | json }}</pre>
