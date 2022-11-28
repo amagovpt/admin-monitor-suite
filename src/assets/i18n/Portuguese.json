@@ -1047,7 +1047,37 @@
       "part2": "Para usar a procura automática de páginas, dirija-se à lista de domínios e carregue no "
     }
   },
-  "A11_STATEMENTS_PAGE":{
+  "A11_STATEMENT_PAGE": {
+    "AUTOMATIC_EVALUATION_TABLE": {
+      "title_label": "Análise",
+      "date_label": "Data",
+      "sample_label": "Nº páginas(Amostra)",
+      "tool_label": "Ferrramentas",
+      "summary_label": "Principais resultados",
+      "url_label": "Mais detalhe"
+    },
+    "CONTACT_TABLE": {
+      "contactType_label": "Meio",
+      "contact_label": "Contacto"
+    },
+    "MANUAL_EVALUATION_TABLE": {
+      "title_label": "Análise",
+      "date_label": "Data",
+      "sample_label": "Nº páginas(Amostra)",
+      "heuristicsPassed_label": "Heurísticas passadas",
+      "heuristicsTotal_label": "Heurísticas aplicáveis",
+      "url_label": "Mais detalhe"
+    },
+    "USER_EVALUATION_TABLE": {
+      "title_label": "Análise",
+      "date_label": "Data",
+      "participants_label": "Participantes",
+      "process_label": "Tarefas/Processos",
+      "summary_label": "Principais resultados",
+      "url_label": "Mais detalhe"
+    }
+  },
+  "A11_STATEMENTS_PAGE": {
     "CONFORMANCE_DIRECTORY_TABLE": {
       "name_label": "Nome",
       "plenamenteConforme_label": "Plenamente conforme",

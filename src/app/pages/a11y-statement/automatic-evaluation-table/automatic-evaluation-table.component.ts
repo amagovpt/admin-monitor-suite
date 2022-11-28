@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,10 +29,10 @@ export class AutomaticEvaluationTableComponent implements OnInit {
 
   dataSource: any;
   selection: any;
+  @Input("list") list: any[];
+
 
   constructor(
-    private get: GetService,
-    private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -40,10 +40,9 @@ export class AutomaticEvaluationTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.get.numberfA11yStatementsBySeal().subscribe((list) => {
-      console.log(list);
-      if (list !== null) {
-        this.dataSource = new MatTableDataSource(list);
+      console.log(this.list);
+    if (this.list !== null) {
+      this.dataSource = new MatTableDataSource(this.list);
         this.dataSource.sort = this.sort;
       } else {
         this.error = true;
@@ -51,7 +50,6 @@ export class AutomaticEvaluationTableComponent implements OnInit {
 
       this.loading = false;
       this.cd.detectChanges();
-    })
 
   }
 
