@@ -282,6 +282,7 @@
       "user_label": "Utilizadores associados",
       "reset": "Limpar",
       "submit": "Criar",
+      "user_exists" : "Já existe um utilizador com este número do CC",
       "messages": {
         "success": "Utilizador criado com sucesso",
         "error": "Erro ao criar utilizador"

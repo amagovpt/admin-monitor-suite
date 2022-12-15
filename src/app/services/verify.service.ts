@@ -210,7 +210,7 @@ export class VerifyService {
 
   websiteNameExists(name: string): Observable<any> {
     return this.http
-      .get<any>(this.config.getServer("/website/exists/" + name), {
+      .get<any>(this.config.getServer("/gov-user/exists/" + name), {
         observe: "response",
       })
       .pipe(
@@ -225,7 +225,7 @@ export class VerifyService {
           if (response.success !== 1) {
             throw new AdminError(response.success, response.message);
           }
-
+          console.log(response.result);
           return response.result ? { notTakenName: true } : null;
         }),
         catchError((err) => {
