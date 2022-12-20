@@ -1,6 +1,6 @@
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder, AbstractControl, Validators } from '@angular/forms';
 import { MatChipList } from '@angular/material/chips';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +12,8 @@ import { EditGovUserDialogComponent } from '../edit-gov-user-dialog/edit-gov-use
 import * as _ from "lodash";
 import { CreateService } from '../../services/create.service';
 import { Router } from '@angular/router';
+import { VerifyService } from '../../services/verify.service';
+import { Observable } from 'rxjs';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -64,6 +66,7 @@ export class AddGovUserDialogComponent implements OnInit {
     private router: Router,
     private location: Location,
     private get: GetService,
+    private verify:VerifyService
   ) {
     this.hide = true;
     this.hide2 = true;
@@ -72,8 +75,11 @@ export class AddGovUserDialogComponent implements OnInit {
 
     this.userForm = new FormGroup({
       name: new FormControl({ value: "" }),
-      ccNumber: new FormControl({ value: "" }),
-
+      ccNumber: new FormControl(
+        "",
+        [Validators.required],
+        this.ccValidator.bind(this)
+      ),
     });
 
     this.loadingInfo = true;
@@ -128,6 +134,16 @@ export class AddGovUserDialogComponent implements OnInit {
 
       this.loadingCreate = false;
     });
+  }
+
+  ccValidator(control: AbstractControl): Observable<any> {
+    const name = _.trim(control.value);
+
+    if (name !== "") {
+      return this.verify.websiteNameExists(name);
+    } else {
+      return null;
+    }
   }
 
 

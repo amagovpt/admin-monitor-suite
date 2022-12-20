@@ -34,6 +34,9 @@
           formControlName="ccNumber"
         />
       </mat-form-field>
+      <mat-error *ngIf="userForm.controls.ccNumber.hasError('notTakenName')">
+            {{ "GOV_USERS_PAGE.ADD.user_exists" | translate }}
+          </mat-error>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
