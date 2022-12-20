@@ -53,6 +53,7 @@ export class ListOfA11yStatementComponent implements OnInit {
 
   private getListOfA11yStatements(): void {
     this.get.listOfA11yStatements().subscribe((a11tStatements) => {
+      console.log(a11tStatements);
       if (a11tStatements !== null) {
         this.dataSource = new MatTableDataSource(a11tStatements);
         this.dataSource.sort = this.sort;

@@ -1152,26 +1152,26 @@
     },
     "CONFORMANCE_TABLE": {
       "state_label": "Estado",
-      "number_label": "Numero de declarações"
+      "number_label": "Número de declarações"
     },
     "EVALUATIONS_TABLE": {
       "type_label": "Tipo",
-      "numberOfEvaluations_label": "Numero de avaliações"
+      "numberOfEvaluations_label": "Número de avaliações"
     },
     "OPAW_TABLE": {
       "name_label": "Nome",
-      "a11yStatements_label": "Numero de declarações",
+      "a11yStatements_label": "Número de declarações",
       "total_label": "Total de websites"
     },
     "SEAL_DIRECTORY_TABLE": {
       "name_label": "Nome",
-      "ouro_label": "Numero de selos de ouro",
-      "prata_label": "Numero de selos de prata",
-      "bronze_label": "Numero de selos de bronze"
+      "ouro_label": "Número de selos de ouro",
+      "prata_label": "Número de selos de prata",
+      "bronze_label": "Número de selos de bronze"
     },
     "SEAL_TABLE": {
       "seal_label": "Selo",
-      "number_label": "Numero de websites"
+      "number_label": "Número de websites"
     },
     "STATE_DIRECTORY_TABLE": {
       "name_label": "Nome do diretório",
@@ -1181,11 +1181,11 @@
     },
     "STATE_TABLE": {
       "state_label": "Estado",
-      "number_label": "Numero de declarações"
+      "number_label": "Número de declarações"
     },
     "YEAR_TABLE": {
       "year_label": "Ano",
-      "number_label": "Numero de declarações"
+      "number_label": "Número de declarações"
     },
     "LIST": {
       "title": "Declarações de acessibilidade",

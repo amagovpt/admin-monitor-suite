@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GetService } from '../../services/get.service';
 
 @Component({
@@ -12,13 +13,15 @@ export class A11yStatementComponent implements OnInit {
   error: boolean;
 
   constructor(private get: GetService,
+    private activatedRoute: ActivatedRoute,
     private cd: ChangeDetectorRef) {
     this.loading = true;
     this.error = false;
   }
 
   ngOnInit(): void {
-    const id = 1;
+    this.activatedRoute.params.subscribe((params) => {
+      const id  = params.id || null;
     this.get.getA11yStatementById(id).subscribe((a11tStatement) => {
       if (a11tStatement) {
         this.a11yStatement = a11tStatement;
@@ -30,5 +33,6 @@ export class A11yStatementComponent implements OnInit {
       this.loading = false;
       this.cd.detectChanges();
     })
-  }
+  })
+}
 }
