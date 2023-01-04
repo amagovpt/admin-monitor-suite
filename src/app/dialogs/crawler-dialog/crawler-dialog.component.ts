@@ -56,6 +56,7 @@ export class CrawlerDialogComponent implements OnInit {
   ) {
     this.websites = this.data;
     this.pageForm = this.formBuilder.group({
+      startingUrl: new FormControl(),
       maxDepth: new FormControl("", [
         Validators.pattern("^[0-9]*[0-9][0-9]*$"),
         Validators.required,
@@ -72,9 +73,12 @@ export class CrawlerDialogComponent implements OnInit {
 
   ngOnInit() {
     this.get.getCrawlerConfig().subscribe((result) => {
+      console.log(this.websites[0].url);
       if (result !== null) {
         this.pageForm.controls.maxDepth.setValue(result.maxDepth);
         this.pageForm.controls.maxPages.setValue(result.maxPages);
+        console.log(this.websites[0].url);
+        this.pageForm.controls.startingUrl.setValue(this.websites[0].url);
       }
     });
   }
@@ -90,6 +94,8 @@ export class CrawlerDialogComponent implements OnInit {
       this.crawlExecuting = !!response;
     });
   }
+
+
 
   resetForm() {
     //this.pageForm.controls.maxDepth.setValue('1');

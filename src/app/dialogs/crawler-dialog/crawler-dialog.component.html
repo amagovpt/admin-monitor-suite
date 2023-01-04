@@ -7,6 +7,20 @@
 </div>
 <form (submit)="executeCrawler()" [formGroup]="pageForm" novalidate>
   <mat-dialog-content>
+
+    <div class="max-depth-input" fxLayout="column" *ngIf="!crawlExecuting">
+      <mat-form-field hintLabel="{{'CRAWLER.TOOLTIP.depth' | translate}}">
+        <label>{{ "CRAWLER.PARAMETERS.depth" | translate }}</label>
+        <mat-label></mat-label>
+        <input matInput formControlName="startingUrl" type="text" autocomplete="off">
+        <mat-error *ngIf="pageForm.controls.startingUrl.hasError('required')"
+          [innerHTML]="'MISC.required_field' | translate"></mat-error>
+        <mat-error *ngIf="pageForm.controls.startingUrl.hasError('pattern')">
+          {{"CRAWLER.error1" | translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
     <div class="max-depth-input" fxLayout="column" *ngIf="!crawlExecuting">
       <mat-form-field hintLabel="{{'CRAWLER.TOOLTIP.depth' | translate}}">
         <label>{{ "CRAWLER.PARAMETERS.depth" | translate }}</label>

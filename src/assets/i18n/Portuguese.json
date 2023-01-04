@@ -985,6 +985,7 @@
     "error1": "Apenas permitido zero e números inteiros positivos",
     "error2": "Apenas permitido zero e números inteiros positivos",
     "PARAMETERS": {
+      "starting_url": "Url inicial",
       "depth": "Profundidade máxima",
       "pages": "Número máximo de páginas",
       "waitJS": "Esperar que o JavaScript carregue antes de começar o processo de crawling"
