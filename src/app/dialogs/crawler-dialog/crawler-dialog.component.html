@@ -8,9 +8,9 @@
 <form (submit)="executeCrawler()" [formGroup]="pageForm" novalidate>
   <mat-dialog-content>
 
-    <div class="max-depth-input" fxLayout="column" *ngIf="!crawlExecuting">
-      <mat-form-field hintLabel="{{'CRAWLER.TOOLTIP.depth' | translate}}">
-        <label>{{ "CRAWLER.PARAMETERS.depth" | translate }}</label>
+    <div class="max-depth-input" fxLayout="column" *ngIf="!crawlExecuting && websites.length===1">
+      <mat-form-field hintLabel="{{'CRAWLER.TOOLTIP.starting_url' | translate}}">
+        <label>{{ "CRAWLER.PARAMETERS.starting_url" | translate }}</label>
         <mat-label></mat-label>
         <input matInput formControlName="startingUrl" type="text" autocomplete="off">
         <mat-error *ngIf="pageForm.controls.startingUrl.hasError('required')"

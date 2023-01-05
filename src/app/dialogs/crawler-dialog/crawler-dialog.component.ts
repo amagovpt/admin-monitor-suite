@@ -84,6 +84,9 @@ export class CrawlerDialogComponent implements OnInit {
   }
 
   executeCrawler() {
+    if(this.websites.length === 1){
+      this.websites[0].url = this.pageForm.value.startingUrl;
+    }
     const data = {
       websites: JSON.stringify(this.websites),
       maxDepth: this.pageForm.value.maxDepth,

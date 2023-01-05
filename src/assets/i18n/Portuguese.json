@@ -991,6 +991,7 @@
       "waitJS": "Esperar que o JavaScript carregue antes de começar o processo de crawling"
     },
     "TOOLTIP": {
+      "starting_url": "Insira o url para procurar páginas",
       "depth": "Escreva 0 para procurar páginas diretamente ligadas à página inicial (ou sub-domínio desejado)",
       "pages": "Escreva 0 para procurar todas as páginas"
     },
