@@ -185,8 +185,12 @@ export class EditUserDialogComponent implements OnInit {
 
             this.loadingWebsites = false;
           });
+        } else if (user.Type === "nimda") {
+          this.userForm.controls.app.setValue("AMS");
+
         } else {
           this.userForm.controls.app.setValue("Study Monitor");
+
         }
       }
 

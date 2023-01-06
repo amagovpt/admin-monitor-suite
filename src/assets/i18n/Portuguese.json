@@ -1057,11 +1057,13 @@
     "error1": "Apenas permitido zero e números inteiros positivos",
     "error2": "Apenas permitido zero e números inteiros positivos",
     "PARAMETERS": {
+      "starting_url": "Url inicial",
       "depth": "Profundidade máxima",
       "pages": "Número máximo de páginas",
       "waitJS": "Esperar que o JavaScript carregue antes de começar o processo de crawling"
     },
     "TOOLTIP": {
+      "starting_url": "Insira o url para procurar páginas",
       "depth": "Escreva 0 para procurar páginas diretamente ligadas à página inicial (ou sub-domínio desejado)",
       "pages": "Escreva 0 para procurar todas as páginas"
     },
