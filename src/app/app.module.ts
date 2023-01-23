@@ -113,6 +113,26 @@ import { SumElementsPipe } from "./pipes/sumelements.pipe";
 import { CountTypesPipe } from "./pipes/countypes.pipe";
 import { DeleteEvaluationListConfirmationDialogComponent } from "./dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
 import { PagesErrorsComponent } from "./pages/pages-errors/pages-errors.component";
+import { A11yStatementsComponent } from './pages/a11y-statements/a11y-statements.component';
+import { ListOfA11yStatementComponent } from './pages/a11y-statements/list-of-a11y-statement/list-of-a11y-statement.component';
+import { A11yStatementComponent } from "./pages/a11y-statement/a11y-statement.component";
+import { UpdateA11yStatementDialogComponent } from './dialogs/update-a11y-statement-dialog/update-a11y-statement-dialog.component';
+import { YearTableComponent } from './pages/a11y-statements/year-table/year-table.component';
+import { ConformanceTableComponent } from './pages/a11y-statements/conformance-table/conformance-table.component';
+import { StateTableComponent } from './pages/a11y-statements/state-table/state-table.component';
+import { StateDirectoryTableComponent } from './pages/a11y-statements/state-directory-table/state-directory-table.component';
+import { SealDirectoryTableComponent } from './pages/a11y-statements/seal-directory-table/seal-directory-table.component';
+import { ConformanceDirectoryTableComponent } from './pages/a11y-statements/conformance-directory-table/conformance-directory-table.component';
+import { OPAWTableComponent } from './pages/a11y-statements/opawtable/opawtable.component';
+import { EvaluationsTableComponent } from './pages/a11y-statements/evaluations-table/evaluations-table.component';
+import { SealTableComponent } from './pages/a11y-statements/seal-table/seal-table.component';
+import { ContactTableComponent } from './pages/a11y-statement/contact-table/contact-table.component';
+import { AutomaticEvaluationTableComponent } from './pages/a11y-statement/automatic-evaluation-table/automatic-evaluation-table.component';
+import { ManualEvaluationTableComponent } from './pages/a11y-statement/manual-evaluation-table/manual-evaluation-table.component';
+import { UserEvaluationTableComponent } from './pages/a11y-statement/user-evaluation-table/user-evaluation-table.component';
+import { DevToolsComponent } from './pages/dev-tools/dev-tools.component';
+import { ErrorLogListComponent } from './pages/dev-tools/error-log-list/error-log-list.component';
+import { ActionLogListComponent } from './pages/dev-tools/action-log-list/action-log-list.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -253,6 +273,21 @@ const appRoutes: Routes = [
         component: ListOfCrawlsComponent,
         canActivate: [AdminAuthGuard],
       },
+      {
+        path: "a11yStatements",
+        component: A11yStatementsComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: "a11yStatements/:id",
+        component: A11yStatementComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: "devTools",
+        component: DevToolsComponent,
+        canActivate: [AdminAuthGuard],
+      }
     ],
   },
   { path: "**", component: NotFound404Component },
@@ -351,6 +386,26 @@ export function HttpLoaderFactory(http: HttpClient) {
     CountTypesPipe,
     DeleteEvaluationListConfirmationDialogComponent,
     PagesErrorsComponent,
+    A11yStatementComponent,
+    A11yStatementsComponent,
+    ListOfA11yStatementComponent,
+    UpdateA11yStatementDialogComponent,
+    YearTableComponent,
+    ConformanceTableComponent,
+    StateTableComponent,
+    StateDirectoryTableComponent,
+    SealDirectoryTableComponent,
+    ConformanceDirectoryTableComponent,
+    OPAWTableComponent,
+    EvaluationsTableComponent,
+    SealTableComponent,
+    ContactTableComponent,
+    AutomaticEvaluationTableComponent,
+    ManualEvaluationTableComponent,
+    UserEvaluationTableComponent,
+    DevToolsComponent,
+    ErrorLogListComponent,
+    ActionLogListComponent,
   ],
   imports: [
     BrowserModule,
