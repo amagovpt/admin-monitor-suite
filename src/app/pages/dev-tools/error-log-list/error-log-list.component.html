@@ -1,0 +1,6 @@
+<span>Error Log</span>
+<ul>
+    <li *ngFor="let log of logs">
+        <button (click)="getFile(log)"> {{log}}</button>
+    </li>
+</ul>

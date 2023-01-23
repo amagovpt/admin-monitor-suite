@@ -37,6 +37,16 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="updateDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "A11_STATEMENTS_PAGE.LIST.table.date_update_label" | translate }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.UpdatedAt | date }}
+        </mat-cell>
+      </ng-container>
+
+
       <ng-container matColumnDef="state">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ "A11_STATEMENTS_PAGE.LIST.table.state_label" | translate }}

@@ -68,6 +68,7 @@
 
     "pages": "Páginas",
     "settings": "Definições",
+    "devTools": "Ferramentas de programador",
     "csv": "CSV"
   },
   "HOME_PAGE": {
@@ -1195,6 +1196,7 @@
       "table": {
         "nome_label": "Nome",
         "date_label": "Data de criação",
+        "date_update_label": "Data da recolha",
         "state_label": "Estado",
         "conformity_label": "Conformidade",
         "seal_label": "Selo",

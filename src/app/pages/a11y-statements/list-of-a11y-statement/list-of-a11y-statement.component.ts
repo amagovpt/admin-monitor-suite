@@ -26,6 +26,7 @@ export class ListOfA11yStatementComponent implements OnInit {
   displayedColumns = [
     "website",
     "statementDate",
+    "updateDate",
     "state",
     "conformance",
     "seal",
