@@ -1938,6 +1938,7 @@ export class EvaluationService {
           }
 
           const result = {};
+          result["test"] = tests[test];
           result["ico"] = "assets/images/ico" + color + ".png";
           result["color"] = color;
           result["lvl"] = level;

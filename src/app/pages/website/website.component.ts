@@ -9,6 +9,8 @@ import { EvaluationService } from "../../services/evaluation.service";
 import { Website } from "../../models/website.object";
 import { DeleteService } from "../../services/delete.service";
 import { MessageService } from "../../services/message.service";
+import { AccessibilityStatement } from "../../models/accessibilityStatement";
+import { AccessibilityStatementService } from "../../services/accessibility-statement.service";
 
 @Component({
   selector: "app-website",
@@ -27,11 +29,14 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   pages: Array<any>;
 
   websiteObject: any;
+  a11Statement: AccessibilityStatement;
+  
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private get: GetService,
     private evaluation: EvaluationService,
+    private a11y: AccessibilityStatementService,
     private deleteService: DeleteService,
     private message: MessageService,
     private cd: ChangeDetectorRef
@@ -45,7 +50,7 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       this.tag = params.tag || null;
       this.user = params.user || "admin";
       this.website = params.website;
-
+      this.getA11yStatement();
       if (this.user === "admin") {
         this.getListOfWebsitePages();
       } else {
@@ -93,6 +98,15 @@ export class WebsiteComponent implements OnInit, OnDestroy {
         }
         this.loading = false;
         this.cd.detectChanges();
+      });
+  }
+
+
+  private getA11yStatement(): void {
+    this.a11y.getByWebsiteName( this.website)
+      .subscribe((a11Statement) => {
+        this.a11Statement = a11Statement;
+        console.log(a11Statement)
       });
   }
 

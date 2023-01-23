@@ -54,6 +54,7 @@
     "tags": "Tags",
     "entities": "Entities",
     "websites": "Websites",
+    "ay11Statements": "Accessibility statements",
     "crawler": "Crawler",
     "pages": "Pages",
     "settings": "Settings",
@@ -1053,6 +1054,18 @@
       "depth": "Type 0 to only search for pages directly linked to the homepage",
       "pages": "Type 0 to search for all pages"
     }
+  },
+  "A11_STATEMENTS_PAGE":{
+    "LIST":{ "table": {
+      "nome_label": "Nome",
+      "date_label": "Data de criação",
+      "state_label": "Estado",
+      "conformity_label": "Conformidade",
+      "seal_label": "Selo",
+      "automatic_label":"Avaliações automáticas",
+      "manual_label":"Avaliações manuais",
+      "user_label":"Avaliações com utilizadores"
+    } }
   },
   "IMPORT": {
     "import": "Import",

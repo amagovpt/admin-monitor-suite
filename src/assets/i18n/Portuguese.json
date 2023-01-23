@@ -44,6 +44,10 @@
       "page": {
         "title": "Páginas",
         "subtitle": "Criar novas páginas"
+      },
+      "a11yStatement": {
+        "title": "Declarações de acessibilidade",
+        "subtitle": "Atualizar declarações de acessibilidade"
       }
     }
   },
@@ -54,7 +58,9 @@
     "tags": "Categorias",
     "entities": "Entidades",
     "websites": "Sítios web",
+    "ay11Statements": "Declarações de acessbilidade",
     "crawler": "Crawler",
+
     "pages": "Páginas",
     "settings": "Definições",
     "devTools": "Ferramentas de programador",
@@ -1040,6 +1046,96 @@
     "EMPTY": {
       "part1": "A lista encontra-se vazia!",
       "part2": "Para usar a procura automática de páginas, dirija-se à lista de domínios e carregue no "
+    }
+  },
+  "A11_STATEMENT_PAGE": {
+    "AUTOMATIC_EVALUATION_TABLE": {
+      "title_label": "Análise",
+      "date_label": "Data",
+      "sample_label": "Nº páginas(Amostra)",
+      "tool_label": "Ferrramentas",
+      "summary_label": "Principais resultados",
+      "url_label": "Mais detalhe"
+    },
+    "CONTACT_TABLE": {
+      "contactType_label": "Meio",
+      "contact_label": "Contacto"
+    },
+    "MANUAL_EVALUATION_TABLE": {
+      "title_label": "Análise",
+      "date_label": "Data",
+      "sample_label": "Nº páginas(Amostra)",
+      "heuristicsPassed_label": "Heurísticas passadas",
+      "heuristicsTotal_label": "Heurísticas aplicáveis",
+      "url_label": "Mais detalhe"
+    },
+    "USER_EVALUATION_TABLE": {
+      "title_label": "Análise",
+      "date_label": "Data",
+      "participants_label": "Participantes",
+      "process_label": "Tarefas/Processos",
+      "summary_label": "Principais resultados",
+      "url_label": "Mais detalhe"
+    }
+  },
+  "A11_STATEMENTS_PAGE": {
+    "CONFORMANCE_DIRECTORY_TABLE": {
+      "name_label": "Nome",
+      "plenamenteConforme_label": "Plenamente conforme",
+      "parcialmenteConforme_label": "Parcialmente conforme",
+      "naoConforme_label": "Não conforme"
+    },
+    "CONFORMANCE_TABLE": {
+      "state_label": "Estado",
+      "number_label": "Número de declarações"
+    },
+    "EVALUATIONS_TABLE": {
+      "type_label": "Tipo",
+      "numberOfEvaluations_label": "Número de avaliações"
+    },
+    "OPAW_TABLE": {
+      "name_label": "Nome",
+      "a11yStatements_label": "Número de declarações",
+      "total_label": "Total de websites"
+    },
+    "SEAL_DIRECTORY_TABLE": {
+      "name_label": "Nome",
+      "ouro_label": "Número de selos de ouro",
+      "prata_label": "Número de selos de prata",
+      "bronze_label": "Número de selos de bronze"
+    },
+    "SEAL_TABLE": {
+      "seal_label": "Selo",
+      "number_label": "Número de websites"
+    },
+    "STATE_DIRECTORY_TABLE": {
+      "name_label": "Nome do diretório",
+      "completeStatement_label": "Complete statement",
+      "incompleteStatement_label": "Incomplete statement",
+      "possibleStatement_label": "Possible statement"
+    },
+    "STATE_TABLE": {
+      "state_label": "Estado",
+      "number_label": "Número de declarações"
+    },
+    "YEAR_TABLE": {
+      "year_label": "Ano",
+      "number_label": "Número de declarações"
+    },
+    "LIST": {
+      "title": "Declarações de acessibilidade",
+      "subtitle": "Lista de todas as declarações de acessibilidade",
+      "table": {
+        "nome_label": "Nome",
+        "date_label": "Data de criação",
+        "date_update_label": "Data da recolha",
+        "state_label": "Estado",
+        "conformity_label": "Conformidade",
+        "seal_label": "Selo",
+        "automatic_label": "Avaliações automáticas",
+        "manual_label": "Avaliações manuais",
+        "user_label": "Avaliações com utilizadores"
+      }
     }
   },
   "CRAWLER_CONFIG": {
