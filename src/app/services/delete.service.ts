@@ -532,4 +532,32 @@ export class DeleteService {
         })
       );
   }
+
+  dump(file: string): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/dump/delete-file"), { file }, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("CRAWLER_PAGE.DELETE.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
 }

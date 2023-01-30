@@ -133,6 +133,7 @@ import { UserEvaluationTableComponent } from './pages/a11y-statement/user-evalua
 import { DevToolsComponent } from './pages/dev-tools/dev-tools.component';
 import { ErrorLogListComponent } from './pages/dev-tools/error-log-list/error-log-list.component';
 import { ActionLogListComponent } from './pages/dev-tools/action-log-list/action-log-list.component';
+import { DumpListComponent } from './pages/dev-tools/dump-list/dump-list.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -406,6 +407,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DevToolsComponent,
     ErrorLogListComponent,
     ActionLogListComponent,
+    DumpListComponent,
   ],
   imports: [
     BrowserModule,

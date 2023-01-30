@@ -1961,4 +1961,49 @@ export class GetService {
         })
       );
   }
+
+  listOfDumpFiles(): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/dump/file-list"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <any>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
+  getDumpFile(fileName: string): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/dump/file/" + fileName), {
+        observe: "response",
+        responseType: 'blob' as 'json'
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          return <any>res.body;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
 }
