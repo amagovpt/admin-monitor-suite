@@ -1,8 +1,9 @@
 <span>Dump list</span>
- <button (click)="createDump()"> {{log}}</button>
+ <button (click)="createDump()">Create</button>
 <ul>
     <li *ngFor="let file of files">
-        <button (click)="getFile(file)"> {{log}}</button>
+        <span>{{file.ended}}</span>
+        <button (click)="getFile(file)"> {{file.fileName}}</button>
         <button (click)="deleteFile(file)"> <i class="material-icons">delete</i></button>
     </li>
 </ul>

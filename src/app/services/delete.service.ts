@@ -533,9 +533,9 @@ export class DeleteService {
       );
   }
 
-  dump(file: string): Observable<boolean> {
+  dump(fileName: string): Observable<boolean> {
     return this.http
-      .post<any>(this.config.getServer("/dump/delete-file"), { file }, {
+      .post<any>(this.config.getServer("/dump/delete-file"), { fileName }, {
         observe: "response",
       })
       .pipe(
