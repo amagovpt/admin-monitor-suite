@@ -29,14 +29,13 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   pages: Array<any>;
 
   websiteObject: any;
-  a11Statement: AccessibilityStatement;
-  
+  startingUrl: string;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private get: GetService,
     private evaluation: EvaluationService,
-    private a11y: AccessibilityStatementService,
     private deleteService: DeleteService,
     private message: MessageService,
     private cd: ChangeDetectorRef
@@ -50,7 +49,6 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       this.tag = params.tag || null;
       this.user = params.user || "admin";
       this.website = params.website;
-      this.getA11yStatement();
       if (this.user === "admin") {
         this.getListOfWebsitePages();
       } else {
@@ -81,7 +79,11 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       .listOfWebsitePagesByName(this.user, this.website)
       .subscribe((pages) => {
         this.pages = _.clone(pages);
-
+//FIXME
+        if (pages.length > 0){
+          let uri = pages[0].Uri;
+          this.startingUrl = uri.substring(0,uri.length-1);
+        }
         pages = pages.filter((p) => p.Score !== null);
 
         this.websiteObject = new Website();
@@ -96,17 +98,9 @@ export class WebsiteComponent implements OnInit, OnDestroy {
             page.Evaluation_Date
           );
         }
+        console.log(this.websiteObject)
         this.loading = false;
         this.cd.detectChanges();
-      });
-  }
-
-
-  private getA11yStatement(): void {
-    this.a11y.getByWebsiteName( this.website)
-      .subscribe((a11Statement) => {
-        this.a11Statement = a11Statement;
-        console.log(a11Statement)
       });
   }
 
@@ -127,18 +121,18 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   }
 
   downloadAllPagesCSV(): void {
-    this.evaluation.downloadWebsiteCSV(this.website, true).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.startingUrl, true).subscribe();
   }
 
   downloadObservatoryCSV(): void {
-    this.evaluation.downloadWebsiteCSV(this.website, false).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.startingUrl, false).subscribe();
   }
 
   downloadAllPagesEARL(): void {
-    this.evaluation.downloadWebsiteEARL(this.website, true).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.startingUrl, true).subscribe();
   }
 
   downloadObservatoryEARL(): void {
-    this.evaluation.downloadWebsiteEARL(this.website, false).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.startingUrl, false).subscribe();
   }
 }
