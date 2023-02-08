@@ -675,6 +675,37 @@ export class EvaluationService {
     saveAs(blob, "eval.csv");
   }
 
+ getWebsiteStats(website: string, allPages: boolean): Observable<any> {
+    return this.http
+      .get<any>(
+        this.config.getServer(
+          `/evaluation/website/${encodeURIComponent(
+            website
+          )}/evaluations/${allPages}`
+        ),
+        { observe: "response" }
+      )
+      .pipe(
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+         return response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   downloadWebsiteCSV(website: string, allPages: boolean): Observable<void> {
     return this.http
       .get<any>(
