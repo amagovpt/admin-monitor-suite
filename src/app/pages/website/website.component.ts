@@ -9,8 +9,7 @@ import { EvaluationService } from "../../services/evaluation.service";
 import { Website } from "../../models/website.object";
 import { DeleteService } from "../../services/delete.service";
 import { MessageService } from "../../services/message.service";
-import { AccessibilityStatement } from "../../models/accessibilityStatement";
-import { AccessibilityStatementService } from "../../services/accessibility-statement.service";
+
 
 @Component({
   selector: "app-website",
@@ -82,8 +81,11 @@ export class WebsiteComponent implements OnInit, OnDestroy {
 //FIXME
         if (pages.length > 0){
           let uri = pages[0].Uri;
-          this.startingUrl = uri.substring(0,uri.length-1);
+          uri = uri.substring(0, uri.length - 1);
+          this.startingUrl = uri
+          this.correctUrl(uri);
         }
+  //FIXME
         pages = pages.filter((p) => p.Score !== null);
 
         this.websiteObject = new Website();
@@ -119,7 +121,15 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+//FIXME
+  correctUrl(url:string): void {
+    this.evaluation.getWebsiteStats(url, true).subscribe((result)=>{
+      if(result.length === 0){
+        this.startingUrl = url + '/';
+      }
+    });
+  }
+//FIXME
   downloadAllPagesCSV(): void {
     this.evaluation.downloadWebsiteCSV(this.startingUrl, true).subscribe();
   }
