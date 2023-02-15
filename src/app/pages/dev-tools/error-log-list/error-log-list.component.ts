@@ -28,16 +28,7 @@ export class ErrorLogListComponent implements OnInit {
 
   getFile(fileName: string) {
     this.get.getErrorLog(fileName).subscribe(async (file) => {
-      let blob = new Blob([file], {
-        type: "type: 'application/octet-stream"
-      });
-      let text = '{' + await blob.text() + '}';
-      blob = new Blob([text], {
-        type: "type: 'application/octet-stream"
-      });
-      saveAs(blob, fileName);
-
-
+      saveAs(file, fileName);
     })
   }
 }
