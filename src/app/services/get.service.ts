@@ -1903,11 +1903,13 @@ export class GetService {
     return this.http
       .get<any>(this.config.getServer("/log/action-log/"+fileName), {
         observe: "response",
-        responseType: 'blob' as 'json'
+        // @ts-ignore
+        responseType: 'blob', //as 'json'
       })
       .pipe(
         retry(3),
         map((res) => {
+          // @ts-ignore
           return <any>res.body;
         }),
         catchError((err) => {
