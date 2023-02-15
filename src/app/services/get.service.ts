@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { map, retry, catchError } from "rxjs/operators";
 import * as _ from "lodash";
@@ -1998,15 +1998,17 @@ export class GetService {
       );
   }
 
-  getErrorLog(fileName: string): Observable<any> {
+  getErrorLog(fileName: string): Observable<Blob> {
     return this.http
       .get<any>(this.config.getServer("/log/error-log/" + fileName), {
         observe: "response",
-        responseType: 'blob' as 'json'
+        // @ts-ignore
+        responseType: 'blob', //as 'json'
       })
       .pipe(
         retry(3),
         map((res) => {
+          // @ts-ignore
           return <any>res.body;
         }),
         catchError((err) => {
