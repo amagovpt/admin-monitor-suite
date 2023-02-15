@@ -27,17 +27,8 @@ export class ActionLogListComponent implements OnInit {
     })}
 
   getFile(fileName: string) {
-    this.get.getActionLog(fileName).subscribe(async (file) =>{
-      let blob = new Blob([file], {
-        type: "type: 'application/octet-stream"
-      });
-      let text = '{' + await blob.text() + '}';
-      blob = new Blob([text], {
-        type: "type: 'application/octet-stream"
-      });
-      saveAs(blob, fileName);
-
-
+    this.get.getActionLog(fileName).subscribe(async (file) => {
+      saveAs(file, fileName);
     })
   }
 
