@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GetService } from '../../services/get.service';
 
 @Component({
   selector: 'app-dev-tools',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DevToolsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private get: GetService,) { }
 
   ngOnInit(): void {
+  }
+
+  restartServer(){
+    this.get.restartServer().subscribe(()=>{});
   }
 
 }

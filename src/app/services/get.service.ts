@@ -2006,4 +2006,22 @@ export class GetService {
         })
       );
   }
+
+  restartServer(): Observable<any> {
+    return this.http
+      .get<any>(this.config.getServer("/dump/restart"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+
+          return <any>res;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
 }
