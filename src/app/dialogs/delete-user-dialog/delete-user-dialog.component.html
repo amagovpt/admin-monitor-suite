@@ -1,0 +1,15 @@
+<h1 class="mat-display-1" mat-dialog-title>{{ "USERS_PAGE.DELETE.title" | translate }}</h1>
+<mat-dialog-content>
+  <p><strong>{{ "USERS_PAGE.DELETE.list.title" | translate }}</strong></p>
+  <ul>
+    <li>{{ "USERS_PAGE.DELETE.list.item1" | translate }}</li>
+    <!--<li>{{ "USERS_PAGE.DELETE.list.item2" | translate }}</li>
+    <li>{{ "USERS_PAGE.DELETE.list.item3" | translate }}</li>-->
+    <li>{{ "USERS_PAGE.DELETE.list.item2" | translate }}</li>
+  </ul>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button color="warn" [mat-dialog-close]="true">
+    {{ "USERS_PAGE.DELETE.submit" | translate }}
+  </button>
+</mat-dialog-actions>

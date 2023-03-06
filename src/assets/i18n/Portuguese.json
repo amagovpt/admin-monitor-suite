@@ -327,12 +327,19 @@
       }
     },
     "DELETE": {
+      "title": "Apagar",
+      "description": "Apagar este utilizador",
+      "list": {
+        "title": "Importante:",
+        "item1": "Este utilizador vai ser apagado",
+        "item2": "Esta ação não pode ser revertida"
+      },
+      "submit": "Apagar utilizador",
       "messages": {
-        "success": "Utilizador apagado com sucesso",
+         "success": "Utilizador apagado com sucesso",
         "error": "Erro ao apagar utilizador"
       }
-    }
-  },
+  }},
   "DIRECTORIES_PAGE": {
     "title": "Diretório:",
     "LIST": {

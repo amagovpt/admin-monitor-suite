@@ -35,6 +35,7 @@ import { VerifyService } from "../../services/verify.service";
 import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
 import { MessageService } from "../../services/message.service";
+import { DeleteUserDialogComponent } from "../delete-user-dialog/delete-user-dialog.component";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -109,7 +110,8 @@ export class EditUserDialogComponent implements OnInit {
     private get: GetService,
     private update: UpdateService,
     private deleteService: DeleteService,
-    private message: MessageService
+    private message: MessageService,
+    private dialog: MatDialog,
   ) {
     this.hide = true;
     this.hide2 = true;
@@ -216,12 +218,23 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   deleteUser(): void {
-    this.deleteService
-      .user({ userId: this.data.id, app: this.defaultUser.Type })
-      .subscribe((success) => {
-        if (success !== null) {
-          this.message.show("USERS_PAGE.DELETE.messages.success");
-          this.dialogRef.close(true);
+    const deleteDialog = this.dialog.open(DeleteUserDialogComponent, {
+      width: '60vw',
+      disableClose: false,
+      hasBackdrop: true
+    });
+
+    deleteDialog.afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.deleteService
+            .user({ userId: this.data.id, app: this.defaultUser.Type })
+            .subscribe((success) => {
+              if (success !== null) {
+                this.message.show("USERS_PAGE.DELETE.messages.success");
+                this.dialogRef.close(true);
+              }
+            });
         }
       });
   }

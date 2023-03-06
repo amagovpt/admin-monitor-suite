@@ -321,6 +321,15 @@
       }
     },
     "DELETE": {
+      "delete": {
+      "title": "Delete",
+      "description": "Delete this user",
+      "list": {
+        "title": "Important:",
+        "item1": "This user will be deleted",
+        "item2": "This action can't be undone"
+      },
+      "submit": "Delete user",
       "messages": {
         "success": "User deleted successfully",
         "error": "Error deleting user"
