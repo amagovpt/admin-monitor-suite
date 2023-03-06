@@ -1072,6 +1072,7 @@
     "title": "Beware!",
     "WEBSITE": {
       "title": "Import website",
+      "success": "Website imported",
       "list": {
         "item1": "This operation will import ths website and its corresponding website (",
         "item2": "), as well as all its pages.",
