@@ -1,35 +1,29 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
-  Component,
-  OnInit,
-  Inject,
-  ViewChild,
-  ElementRef,
+  Component, ElementRef, Inject, OnInit, ViewChild
 } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
-  FormGroup,
-  Validators,
-  FormGroupDirective,
-  NgForm,
+  FormGroup, FormGroupDirective,
+  NgForm, Validators
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { ErrorStateMatcher } from "@angular/material/core";
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA
 } from "@angular/material/dialog";
+import * as _ from "lodash";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import * as _ from "lodash";
 
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
+import { VerifyService } from "../../services/verify.service";
 
 import { DeleteWebsiteConfirmationDialogComponent } from "../../dialogs/delete-website-confirmation-dialog/delete-website-confirmation-dialog.component";
 
@@ -275,7 +269,7 @@ export class EditWebsiteDialogComponent implements OnInit {
       : null;
     const userId = this.websiteForm.value.user
       ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
-          .UserId
+        .UserId
       : null;
 
     const olderUserId = this.defaultWebsite.User
@@ -283,14 +277,14 @@ export class EditWebsiteDialogComponent implements OnInit {
       : null;
     const transfer = this.websiteForm.value.transfer;
 
-    const defaultEntities = 
+    const defaultEntities =
       _.map(this.defaultWebsite.entities, "EntityId");
 
     const entities = _.map(this.selectedEntities, "EntityId");
 
-    const defaultTags = 
+    const defaultTags =
       _.map(this.defaultWebsite.tags, "TagId");
-    const tags = _.map(this.selectedTags, "TagId"));
+    const tags = _.map(this.selectedTags, "TagId");
 
     const formData = {
       websiteId: this.data.id,
