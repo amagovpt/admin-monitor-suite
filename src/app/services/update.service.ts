@@ -330,17 +330,13 @@ export class UpdateService {
 
   observatoryPages(
     pages: Array<any>,
-    pagesId: Array<number>
   ): Observable<boolean> {
-    const data = {
-      pages: JSON.stringify(pages),
-      pagesId: JSON.stringify(pagesId),
-    };
+
 
     return this.http
       .post<any>(
         this.config.getServer("/website/pages/updateObservatory"),
-        data,
+        {pages},
         { observe: "response" }
       )
       .pipe(
