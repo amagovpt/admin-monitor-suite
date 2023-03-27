@@ -1,35 +1,29 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
-  Component,
-  OnInit,
-  Inject,
-  ViewChild,
-  ElementRef,
+  Component, ElementRef, Inject, OnInit, ViewChild
 } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
-  FormGroup,
-  Validators,
-  FormGroupDirective,
-  NgForm,
+  FormGroup, FormGroupDirective,
+  NgForm, Validators
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { ErrorStateMatcher } from "@angular/material/core";
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA
 } from "@angular/material/dialog";
+import * as _ from "lodash";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import * as _ from "lodash";
 
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
+import { VerifyService } from "../../services/verify.service";
 
 import { DeleteWebsiteConfirmationDialogComponent } from "../../dialogs/delete-website-confirmation-dialog/delete-website-confirmation-dialog.component";
 
@@ -265,14 +259,14 @@ export class EditWebsiteDialogComponent implements OnInit {
       this.websiteForm.value.declaration === ""
         ? null
         : parseInt(this.websiteForm.value.declaration);
-    const declarationDate = this.websiteForm.value.declarationDate
+    const declarationUpdateDate = this.websiteForm.value.declarationDate
       ? new Date(this.websiteForm.value.declarationDate)
       : null;
     const stamp =
       this.websiteForm.value.stamp === ""
         ? null
         : parseInt(this.websiteForm.value.stamp);
-    const stampDate = this.websiteForm.value.stampDate
+    const stampUpdateDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
     const userId = this.websiteForm.value.user
@@ -285,24 +279,23 @@ export class EditWebsiteDialogComponent implements OnInit {
       : null;
     const transfer = this.websiteForm.value.transfer;
 
-    const defaultEntities = JSON.stringify(
-      _.map(this.defaultWebsite.entities, "EntityId")
-    );
-    const entities = JSON.stringify(_.map(this.selectedEntities, "EntityId"));
+    const defaultEntities =
+      _.map(this.defaultWebsite.entities, "EntityId");
 
-    const defaultTags = JSON.stringify(
-      _.map(this.defaultWebsite.tags, "TagId")
-    );
-    const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
+    const entities = _.map(this.selectedEntities, "EntityId");
+
+    const defaultTags =
+      _.map(this.defaultWebsite.tags, "TagId");
+    const tags = _.map(this.selectedTags, "TagId");
 
     const formData = {
       websiteId: this.data.id,
       name,
       startingUrl,
       declaration,
-      declarationDate,
+      declarationUpdateDate,
       stamp,
-      stampDate,
+      stampUpdateDate,
       userId,
       olderUserId,
       transfer,

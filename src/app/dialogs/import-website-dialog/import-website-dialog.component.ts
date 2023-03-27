@@ -1,11 +1,12 @@
-  import {Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
-import {VerifyService} from '../../services/verify.service';
-import {UpdateService} from '../../services/update.service';
+import { VerifyService } from '../../services/verify.service';
+import { UpdateService } from '../../services/update.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-import-website-dialog',
@@ -29,6 +30,7 @@ export class ImportWebsiteDialogComponent implements OnInit {
     private verify: VerifyService,
     private update: UpdateService,
     private formBuilder: FormBuilder,
+    private message: MessageService,
   ) {
     this.website = this.data.website;
     this.websiteId = this.data.websiteId;
@@ -37,7 +39,7 @@ export class ImportWebsiteDialogComponent implements OnInit {
     this.url = this.data.url;
     this.pageForm = this.formBuilder.group({
       newWebsiteName: new FormControl('',
-      [Validators.required], this.nameValidator.bind(this))
+        [Validators.required], this.nameValidator.bind(this))
     });
   }
 
@@ -50,9 +52,13 @@ export class ImportWebsiteDialogComponent implements OnInit {
 
   importWebsite(): void {
     if (!this.hasUrl) {
-      this.update.importWebsite({websiteId: this.websiteId, websiteName: this.pageForm.value.newWebsiteName}).subscribe();
+      this.update.importWebsite({ websiteId: this.websiteId, websiteName: this.pageForm.value.newWebsiteName }).subscribe(() => {
+        this.message.show("PAGES_PAGE.DELETE.messages.success");
+      });
     } else {
-      this.update.importWebsite({websiteId: this.websiteId, websiteName: this.website}).subscribe();
+      this.update.importWebsite({ websiteId: this.websiteId, websiteName: this.website }).subscribe(() => {
+        this.message.show("PAGES_PAGE.DELETE.messages.success");
+      });
     }
   }
 

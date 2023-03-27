@@ -63,8 +63,12 @@ export class ChooseObservatoryWebsitePagesDialogComponent implements OnInit {
     e.preventDefault();
 
     const pagesId = _.map(this.selection.selected, 'PageId');
+    const pageList = this.pages.map((page)=>{
+      let inObservatory = pagesId.includes(page.PageId);
+      return {id:page.PageId,inObservatory}
+    })
 
-    this.update.observatoryPages(this.pages, pagesId)
+    this.update.observatoryPages(pageList)
       .subscribe(success => {
         if (success) {
           this.message.show('WEBSITES_PAGE.UPDATE.observatorio.success');
