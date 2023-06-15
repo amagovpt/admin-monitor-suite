@@ -1087,45 +1087,54 @@
   },
   "A11_STATEMENTS_PAGE": {
     "CONFORMANCE_DIRECTORY_TABLE": {
+      "caption":"Conformidade declarada por Diretório (%)",
       "name_label": "Nome",
       "plenamenteConforme_label": "Plenamente conforme",
       "parcialmenteConforme_label": "Parcialmente conforme",
       "naoConforme_label": "Não conforme"
     },
     "CONFORMANCE_TABLE": {
+      "caption":"Conformidade declarada",
       "state_label": "Estado",
       "number_label": "Número de declarações"
     },
     "EVALUATIONS_TABLE": {
+      "caption": "Balanceamento das avaliações efetuadas",
       "type_label": "Tipo",
       "numberOfEvaluations_label": "Número de avaliações"
     },
     "OPAW_TABLE": {
+      "caption": "Peso da Conformidade declarada no total sítios Web registados no OPAW, por Diretório",
       "name_label": "Nome",
       "a11yStatements_label": "Número de declarações",
       "total_label": "Total de websites"
     },
     "SEAL_DIRECTORY_TABLE": {
+      "caption":"Distribuição do Selo de Usabilidade e Acessibilidade por nível e por Diretório",
       "name_label": "Nome",
       "ouro_label": "Número de selos de ouro",
       "prata_label": "Número de selos de prata",
       "bronze_label": "Número de selos de bronze"
     },
     "SEAL_TABLE": {
+      "caption":"Distribuição do Selo de Usabilidade e Acessibilidade por nível",
       "seal_label": "Selo",
       "number_label": "Número de websites"
     },
     "STATE_DIRECTORY_TABLE": {
+      "caption":"Distribuição do estado das Declarações de Acessibilidade por Diretório",
       "name_label": "Nome do diretório",
       "completeStatement_label": "Complete statement",
       "incompleteStatement_label": "Incomplete statement",
       "possibleStatement_label": "Possible statement"
     },
     "STATE_TABLE": {
+      "caption": "Distribuição do estado das Declarações de Acessibilidade",
       "state_label": "Estado",
       "number_label": "Número de declarações"
     },
     "YEAR_TABLE": {
+      "caption":"Distribuição da idade das Declarações de Acessibilidade",
       "year_label": "Ano",
       "number_label": "Número de declarações"
     },
