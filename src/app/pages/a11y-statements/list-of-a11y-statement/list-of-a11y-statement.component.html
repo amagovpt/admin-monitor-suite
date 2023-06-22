@@ -15,8 +15,8 @@
         />
       </mat-form-field>
     </div>
-
-    <mat-table #table [dataSource]="dataSource" matSort>
+    <button (click)="exporter.exportTable('csv')">Export</button>
+    <mat-table  matTableExporter   #exporter="matTableExporter" #table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="website">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ "A11_STATEMENTS_PAGE.LIST.table.nome_label" | translate }}

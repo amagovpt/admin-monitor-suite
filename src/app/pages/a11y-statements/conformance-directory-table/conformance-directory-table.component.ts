@@ -41,6 +41,7 @@ export class ConformanceDirectoryTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.get.numberfA11yStatementsByConformanceDirectory().subscribe((list) => {
+      console.log(list);
       if (list !== null) {
         this.dataSource = new MatTableDataSource(list);
         this.dataSource.sort = this.sort;

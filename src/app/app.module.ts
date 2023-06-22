@@ -134,6 +134,8 @@ import { DevToolsComponent } from './pages/dev-tools/dev-tools.component';
 import { ErrorLogListComponent } from './pages/dev-tools/error-log-list/error-log-list.component';
 import { ActionLogListComponent } from './pages/dev-tools/action-log-list/action-log-list.component';
 import { DeleteUserDialogComponent } from './dialogs/delete-user-dialog/delete-user-dialog.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
+
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -410,6 +412,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DeleteUserDialogComponent,
   ],
   imports: [
+    MatTableExporterModule,
     BrowserModule,
     NoopAnimationsModule,
     MaterialModule,

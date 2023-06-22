@@ -1,4 +1,5 @@
-    <mat-table #table [dataSource]="dataSource" matSort>
+    <button (click)="exporter.exportTable('csv')">Export</button>
+    <mat-table matTableExporter   #exporter="matTableExporter" #table [dataSource]="dataSource" matSort>
        <caption>{{ "A11_STATEMENTS_PAGE.STATE_DIRECTORY_TABLE.caption" | translate }}</caption>
       <ng-container matColumnDef="seal">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
