@@ -11,3 +11,9 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.export{
+    display: flex;
+    justify-content: end;
+}
+
+

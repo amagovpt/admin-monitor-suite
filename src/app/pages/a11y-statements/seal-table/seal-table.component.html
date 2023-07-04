@@ -1,6 +1,5 @@
-    <button (click)="exporter.exportTable('csv')">Export</button>
+    <div><span>{{ "A11_STATEMENTS_PAGE.STATE_DIRECTORY_TABLE.caption" | translate }}</span><button  mat-flat-button type="button" color="primary" (click)="exporter.exportTable('csv')">Export</button></div>
     <mat-table matTableExporter   #exporter="matTableExporter" #table [dataSource]="dataSource" matSort>
-       <caption>{{ "A11_STATEMENTS_PAGE.STATE_DIRECTORY_TABLE.caption" | translate }}</caption>
       <ng-container matColumnDef="seal">
         <mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ "A11_STATEMENTS_PAGE.SEAL_TABLE.seal_label" | translate }}
