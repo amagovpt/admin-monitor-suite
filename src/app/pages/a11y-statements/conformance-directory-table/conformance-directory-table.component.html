@@ -1,48 +1,76 @@
-    <div><span>{{ "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.caption" | translate }}</span><button  mat-flat-button type="button" color="primary" (click)="exporter.exportTable('csv')">Export</button></div>
-    <mat-table matTableExporter   #exporter="matTableExporter" #table [dataSource]="dataSource" matSort>
-             <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.name_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.name }}
-        </mat-cell>
-      </ng-container>
+<div>
+  <span>{{
+    "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.caption" | translate
+  }}</span
+  ><button
+    mat-flat-button
+    type="button"
+    color="primary"
+    (click)="exporter.exportTable('csv')"
+  >
+    {{ "A11_STATEMENTS_PAGE.export" | translate }}
+  </button>
+</div>
+<mat-table
+  matTableExporter
+  #exporter="matTableExporter"
+  #table
+  [dataSource]="dataSource"
+  matSort
+>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{
+        "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.name_label" | translate
+      }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.name }}
+    </mat-cell>
+  </ng-container>
 
-      <ng-container matColumnDef="plenamenteConforme">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.plenamenteConforme_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.plenamenteConforme }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="plenamenteConforme">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{
+        "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.plenamenteConforme_label"
+          | translate
+      }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.plenamenteConforme }}
+    </mat-cell>
+  </ng-container>
 
-     <ng-container matColumnDef="parcialmenteConforme">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.parcialmenteConforme_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.parcialmenteConforme }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="parcialmenteConforme">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{
+        "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.parcialmenteConforme_label"
+          | translate
+      }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.parcialmenteConforme }}
+    </mat-cell>
+  </ng-container>
 
-        <ng-container matColumnDef="naoConforme">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.naoConforme_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.naoConforme }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="naoConforme">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{
+        "A11_STATEMENTS_PAGE.CONFORMANCE_DIRECTORY_TABLE.naoConforme_label"
+          | translate
+      }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.naoConforme }}
+    </mat-cell>
+  </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
 
-    </mat-table>
-
-     <mat-paginator
-      [pageSize]="50"
-      [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]"
-      showFirstLastButtons
-    ></mat-paginator>
+<mat-paginator
+  [pageSize]="50"
+  [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]"
+  showFirstLastButtons
+></mat-paginator>

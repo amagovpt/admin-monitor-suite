@@ -1,48 +1,60 @@
-    <button (click)="exporter.exportTable('csv')">Export</button>
-    <mat-table matTableExporter   #exporter="matTableExporter" #table [dataSource]="dataSource" matSort>
-             <caption>{{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.caption" | translate }}</caption>
-             <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.name_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.name }}
-        </mat-cell>
-      </ng-container>
+<button (click)="exporter.exportTable('csv')">
+  {{ "A11_STATEMENTS_PAGE.export" | translate }}
+</button>
+<mat-table
+  matTableExporter
+  #exporter="matTableExporter"
+  #table
+  [dataSource]="dataSource"
+  matSort
+>
+  <caption>
+    {{
+      "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.caption" | translate
+    }}
+  </caption>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.name_label" | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.name }}
+    </mat-cell>
+  </ng-container>
 
-      <ng-container matColumnDef="bronze">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.bronze_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.bronze }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="bronze">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.bronze_label" | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.bronze }}
+    </mat-cell>
+  </ng-container>
 
-            <ng-container matColumnDef="prata">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.prata_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.prata }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="prata">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.prata_label" | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.prata }}
+    </mat-cell>
+  </ng-container>
 
-        <ng-container matColumnDef="ouro">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.ouro_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.ouro }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="ouro">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ "A11_STATEMENTS_PAGE.SEAL_DIRECTORY_TABLE.ouro_label" | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.ouro }}
+    </mat-cell>
+  </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
 
-        <mat-paginator
-      [pageSize]="50"
-      [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]"
-      showFirstLastButtons
-    ></mat-paginator>
+<mat-paginator
+  [pageSize]="50"
+  [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]"
+  showFirstLastButtons
+></mat-paginator>

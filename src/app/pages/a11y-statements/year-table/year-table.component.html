@@ -1,4 +1,4 @@
-    <div><span>{{ "A11_STATEMENTS_PAGE.YEAR_TABLE.caption" | translate }}</span><button  mat-flat-button type="button" color="primary" (click)="exporter.exportTable('csv')">Export</button></div>
+    <div><span>{{ "A11_STATEMENTS_PAGE.YEAR_TABLE.caption" | translate }}</span><button  mat-flat-button type="button" color="primary" (click)="exporter.exportTable('csv')">{{ "A11_STATEMENTS_PAGE.export" | translate }}</button></div>
     <mat-table matTableExporter   #exporter="matTableExporter"  #table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="year">
         <mat-header-cell *matHeaderCellDef mat-sort-header>

@@ -1,23 +1,39 @@
-    <div><span>{{ "A11_STATEMENTS_PAGE.CONFORMANCE_TABLE.caption" | translate }}</span><button  mat-flat-button type="button" color="primary" (click)="exporter.exportTable('csv')">Export</button></div>
-    <mat-table matTableExporter #exporter="matTableExporter" #table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="conformance">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.CONFORMANCE_TABLE.state_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.conformance }}
-        </mat-cell>
-      </ng-container>
+<div>
+  <span>{{ "A11_STATEMENTS_PAGE.CONFORMANCE_TABLE.caption" | translate }}</span
+  ><button
+    mat-flat-button
+    type="button"
+    color="primary"
+    (click)="exporter.exportTable('csv')"
+  >
+    {{ "A11_STATEMENTS_PAGE.export" | translate }}
+  </button>
+</div>
+<mat-table
+  matTableExporter
+  #exporter="matTableExporter"
+  #table
+  [dataSource]="dataSource"
+  matSort
+>
+  <ng-container matColumnDef="conformance">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ "A11_STATEMENTS_PAGE.CONFORMANCE_TABLE.state_label" | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.conformance }}
+    </mat-cell>
+  </ng-container>
 
-      <ng-container matColumnDef="declarationNumber">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ "A11_STATEMENTS_PAGE.CONFORMANCE_TABLE.number_label" | translate }}
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          {{ element.declarationNumber }}
-        </mat-cell>
-      </ng-container>
+  <ng-container matColumnDef="declarationNumber">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ "A11_STATEMENTS_PAGE.CONFORMANCE_TABLE.number_label" | translate }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.declarationNumber }}
+    </mat-cell>
+  </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
