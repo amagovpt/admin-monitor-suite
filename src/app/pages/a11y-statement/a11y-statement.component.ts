@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GetService } from '../../services/get.service';
+import { UpdateService } from '../../services/update.service';
 
 @Component({
   selector: 'app-a11y-statement',
@@ -13,6 +14,7 @@ export class A11yStatementComponent implements OnInit {
   error: boolean;
 
   constructor(private get: GetService,
+    private update: UpdateService,
     private activatedRoute: ActivatedRoute,
     private cd: ChangeDetectorRef) {
     this.loading = true;
@@ -35,4 +37,8 @@ export class A11yStatementComponent implements OnInit {
     })
   })
 }
+  updateData() {
+    const id = this.a11yStatement.Website.id;
+    this.update.a11yStatementUpdate(id).subscribe(() => { });
+  }
 }

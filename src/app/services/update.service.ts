@@ -22,8 +22,34 @@ export class UpdateService {
     private readonly config: ConfigService,
     private readonly http: HttpClient
   ) {}
+  a11yStatementUpdate(id:number): Observable<boolean> {
+    return this.http
+      .post<any>(this.config.getServer("/website/accessibility-statement/update/" + id), {}, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
 
-  a11yStatementUpdate(): Observable<boolean> {
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("USERS_PAGE.UPDATE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+  a11yStatementUpdateAll(): Observable<boolean> {
     return this.http
       .post<any>(this.config.getServer("/website/accessibility-statement/update"), {}, {
         observe: "response",

@@ -4,9 +4,11 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
-import { EditUserDialogComponent } from '../../../dialogs/edit-user-dialog/edit-user-dialog.component';
 import { GetService } from '../../../services/get.service';
 import * as _ from "lodash";
+import { UpdateService } from '../../../services/update.service';
+import { forkJoin } from 'rxjs';
+import { UpdateA11yStatementDialogComponent } from '../../../dialogs/update-a11y-statement-dialog/update-a11y-statement-dialog.component';
 
 
 @Component({
@@ -37,10 +39,12 @@ export class ListOfA11yStatementComponent implements OnInit {
 
   dataSource: any;
   selection: any;
+  updatetAt:number;
 
   constructor(
     private dialog: MatDialog,
     private get: GetService,
+    private update: UpdateService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) {
@@ -53,7 +57,7 @@ export class ListOfA11yStatementComponent implements OnInit {
   }
 
   private getListOfA11yStatements(): void {
-    this.get.listOfA11yStatements().subscribe((a11tStatements) => {
+    forkJoin([this.get.listOfA11yStatements(),this.get.collectionDate()]).subscribe(([a11tStatements,date]) => {
       console.log(a11tStatements);
       if (a11tStatements !== null) {
         this.dataSource = new MatTableDataSource(a11tStatements);
@@ -77,11 +81,11 @@ export class ListOfA11yStatementComponent implements OnInit {
       } else {
         this.error = true;
       }
-
+      console.log(date);
+      this.updatetAt = date.createdAt;
       this.loading = false;
       this.cd.detectChanges();
     })
-
   }
 
   private getRangeLabel(
@@ -110,6 +114,14 @@ export class ListOfA11yStatementComponent implements OnInit {
     filterValue = _.trim(filterValue);
     filterValue = _.toLower(filterValue);
     this.dataSource.filter = filterValue;
+  }
+
+  updateData(){
+    this.dialog.open(UpdateA11yStatementDialogComponent, {
+      width: "60vw",
+      disableClose: false,
+      hasBackdrop: true,
+    });
   }
 
 }

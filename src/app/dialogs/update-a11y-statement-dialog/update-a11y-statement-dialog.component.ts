@@ -11,6 +11,6 @@ export class UpdateA11yStatementDialogComponent implements OnInit {
   constructor(private update: UpdateService) { }
 
   ngOnInit(): void {
-    this.update.a11yStatementUpdate().subscribe(data => {});
+    this.update.a11yStatementUpdateAll().subscribe(data => {});
   }
 }
