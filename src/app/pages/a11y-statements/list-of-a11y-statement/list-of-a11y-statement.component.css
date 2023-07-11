@@ -15,6 +15,11 @@ a:hover {
     display: flex;
     justify-content: end;
 }
+
+.menu{
+    display: flex;
+    justify-content: space-between;
+}
 .spacing{
 margin-left: 1em;}
 

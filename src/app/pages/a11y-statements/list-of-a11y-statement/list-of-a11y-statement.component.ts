@@ -82,7 +82,7 @@ export class ListOfA11yStatementComponent implements OnInit {
         this.error = true;
       }
       console.log(date);
-      this.updatetAt = date.createdAt;
+      this.updatetAt = date.CreatedAt;
       this.loading = false;
       this.cd.detectChanges();
     })
