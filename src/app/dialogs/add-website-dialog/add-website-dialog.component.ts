@@ -180,12 +180,12 @@ export class AddWebsiteDialogComponent implements OnInit {
     const stampDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
-    const entities = JSON.stringify(_.map(this.selectedEntities, "EntityId"));
+    const entities = _.map(this.selectedEntities, "EntityId");
     const userId = this.websiteForm.value.user
       ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
           .UserId
       : null;
-    const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
+    const tags = _.map(this.selectedTags, "TagId");
 
     const formData = {
       name,

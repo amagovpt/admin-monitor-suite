@@ -42,7 +42,7 @@ export class ConfigService {
     return this.server + service;
   }
   private getCorrectApi(endpoint: string): string {
-    let api = "/api2";
+    let api = "/api";
     if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt" || endpoint === "https://accessmonitor.acessibilidade.gov.pt")
       api = "/api";
     return api;
