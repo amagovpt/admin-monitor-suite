@@ -31,7 +31,6 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
 
   reEvaluatePages(e: any): void {
     e.preventDefault();
-
     if (this.data.dialog === "website") {
       this.evaluation
         .reEvaluateWebsitesPages({
