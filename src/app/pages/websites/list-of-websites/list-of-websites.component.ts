@@ -226,7 +226,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     const websitesId = this.selection.selected.map((w) => w.WebsiteId);
 
     this.digitalStamp
-      .generateForWebsites({ websitesId: JSON.stringify(websitesId) })
+      .generateForWebsites({ websitesId: websitesId })
       .subscribe((success) => {
         if (success) {
           this.message.show("DIGITAL_STAMP.messages.generate_website_success");

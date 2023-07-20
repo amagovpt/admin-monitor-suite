@@ -183,7 +183,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
     const entitiesId = this.selection.selected.map((e) => e.EntityId);
     this.deleteService
       .entities({
-        entitiesId: JSON.stringify(entitiesId),
+        entitiesId,
       })
       .subscribe((result) => {
         if (result) {
@@ -213,7 +213,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
     const entitiesId = this.selection.selected.map((e) => e.EntityId);
     this.deleteService
       .entitiesPages({
-        entitiesId: JSON.stringify(entitiesId),
+        entitiesId,
       })
       .subscribe((result) => {
         if (result) {
