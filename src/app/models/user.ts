@@ -1,23 +1,23 @@
 interface IUser {
-  UserId: number;
+  userId: number;
   Email: string;
-  Type: string;
-  Register_Date: Date;
-  Last_Login: Date;
+  type: string;
+  registerDate: Date;
+  lastLogin: Date;
 }
 
 export class User implements IUser {
-  UserId: number;
+  userId: number;
   Email: string;
-  Type: string;
-  Register_Date: Date;
-  Last_Login: Date;
+  type: string;
+  registerDate: Date;
+  lastLogin: Date;
 
-  constructor(UserId: number, Email: string, Type: string, Register_Date: Date, Last_Login: Date) {
-    this.UserId = UserId;
+  constructor(userId: number, Email: string, type: string, registerDate: Date, lastLogin: Date) {
+    this.userId = userId;
     this.Email = Email;
-    this.Type = Type;
-    this.Register_Date = Register_Date;
-    this.Last_Login = Last_Login;
+    this.type = type;
+    this.registerDate = registerDate;
+    this.lastLogin = lastLogin;
   }
 }

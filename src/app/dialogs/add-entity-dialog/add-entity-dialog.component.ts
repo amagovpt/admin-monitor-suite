@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { Location } from "@angular/common";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { Observable } from "rxjs";
+import { ErrorStateMatcher } from "@angular/material/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
 import { MessageService } from "../../services/message.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -122,7 +122,7 @@ export class AddEntityDialogComponent implements OnInit {
 
     const shortName = this.entityForm.value.shortName.trim();
     const longName = this.entityForm.value.longName.trim();
-    const websites = _.map(this.selectedWebsites, "WebsiteId");
+    const websites = _.map(this.selectedWebsites, "websiteId");
 
     const formData = {
       shortName,
@@ -165,7 +165,7 @@ export class AddEntityDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
+        if (!(website.name + ' ' + website.startingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -176,7 +176,7 @@ export class AddEntityDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["StartingUrl"].trim() === event.option.viewValue.trim()
+      (w) => w["startingUrl"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

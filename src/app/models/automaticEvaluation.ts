@@ -1,5 +1,5 @@
 interface IAutomaticEvaluation {
-  Title: string;
+  title: string;
   Url: string;
   Sample: string;
   Tool: string;
@@ -7,7 +7,7 @@ interface IAutomaticEvaluation {
 }
 
 export class AutomaticEvaluation implements IAutomaticEvaluation {
-  Title: string;
+  title: string;
   Url: string;
   Sample: string;
   Tool: string;

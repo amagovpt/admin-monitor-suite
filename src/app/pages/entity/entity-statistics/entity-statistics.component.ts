@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
-import { GetService } from "../../../services/get.service";
+import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import * as _ from "lodash";
+import { CorrectionDistributionDialogComponent } from "../../..//dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
+import { ErrorDistributionDialogComponent } from "../../..//dialogs/error-distribution-dialog/error-distribution-dialog.component";
+import { ScoreDistributionDialogComponent } from "../../..//dialogs/score-distribution-dialog/score-distribution-dialog.component";
 import { TagEntity } from "../../../models/tag-entity.object";
 import { Website } from "../../../models/website.object";
-import * as _ from "lodash";
-import { ScoreDistributionDialogComponent } from "../../..//dialogs/score-distribution-dialog/score-distribution-dialog.component";
-import { ErrorDistributionDialogComponent } from "../../..//dialogs/error-distribution-dialog/error-distribution-dialog.component";
-import { CorrectionDistributionDialogComponent } from "../../..//dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
-import { MatDialog } from "@angular/material/dialog";
+import { GetService } from "../../../services/get.service";
 
 @Component({
   selector: "app-entity-statistics",
@@ -72,7 +72,7 @@ export class EntityStatisticsComponent implements OnInit {
     this.get.listOfEntityWebsitePages(this.entity).subscribe((pages) => {
       if (pages.length > 0) {
         this.total_pages = pages.length;
-        this.pages = pages.filter((p) => p.Score !== null);
+        this.pages = pages.filter((p) => p.score !== null);
 
         this.tagEntity = this.createTagEntity(_.clone(this.pages));
         this.score = this.tagEntity.getScore();
@@ -169,9 +169,9 @@ export class EntityStatisticsComponent implements OnInit {
     const tmpWebsitesIds = new Array<number>();
     const websites = new Array<any>();
     for (const wb of pages || []) {
-      if (!tmpWebsitesIds.includes(wb.WebsiteId)) {
-        tmpWebsitesIds.push(wb.WebsiteId);
-        websites.push(wb.WebsiteId);
+      if (!tmpWebsitesIds.includes(wb.websiteId)) {
+        tmpWebsitesIds.push(wb.websiteId);
+        websites.push(wb.websiteId);
       }
     }
 
@@ -188,17 +188,17 @@ export class EntityStatisticsComponent implements OnInit {
 
     const pages = new Array<any>();
     _pages.map((p: any) => {
-      if (p.WebsiteId === website) {
+      if (p.websiteId === website) {
         pages.push({
-          pageId: p.PageId,
-          uri: p.Uri,
-          score: parseFloat(p.Score),
-          errors: p.Errors,
-          tot: p.Tot,
+          pageId: p.pageId,
+          uri: p.uri,
+          score: parseFloat(p.score),
+          errors: p.errors,
+          tot: p.tot,
           A: p.A,
           AA: p.AA,
           AAA: p.AAA,
-          evaluation_date: p.Evaluation_Date,
+          evaluation_date: p.evaluationDate,
         });
       }
     });

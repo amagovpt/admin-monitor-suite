@@ -1,40 +1,36 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
   Component,
-  OnInit,
-  Inject,
-  ViewChild,
   ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
 } from "@angular/core";
 import {
   AbstractControl,
+  FormBuilder,
   FormControl,
   FormGroup,
-  FormControlName,
-  FormBuilder,
-  ValidationErrors,
   FormGroupDirective,
   NgForm,
+  ValidationErrors
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
+import { MatChipInputEvent, MatChipList } from "@angular/material/chips";
+import { ErrorStateMatcher } from "@angular/material/core";
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-import { Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { MatChipList } from "@angular/material/chips";
 import * as _ from "lodash";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
 
-import { CreateService } from "../../services/create.service";
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
 import { DeleteUserDialogComponent } from "../delete-user-dialog/delete-user-dialog.component";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -161,11 +157,11 @@ export class EditUserDialogComponent implements OnInit {
     this.get.userInfo(this.data.id).subscribe((user) => {
       if (user !== null) {
         this.defaultUser = _.cloneDeep(user);
-        this.userForm.controls.username.setValue(user.Username);
-        this.names = _.without(_.split(user.Names, ";"), "");
-        this.emails = _.without(_.split(user.Emails, ";"), "");
+        this.userForm.controls.username.setValue(user.username);
+        this.names = _.without(_.split(user.names, ";"), "");
+        this.emails = _.without(_.split(user.emails, ";"), "");
 
-        if (user.Type === "monitor") {
+        if (user.type === "monitor") {
           this.userForm.controls.app.setValue("My Monitor");
           this.selectedWebsites = user.websites;
           this.websites = this.websites.concat(user.websites);
@@ -187,7 +183,7 @@ export class EditUserDialogComponent implements OnInit {
 
             this.loadingWebsites = false;
           });
-        } else if (user.Type === "nimda") {
+        } else if (user.type === "nimda") {
           this.userForm.controls.app.setValue("AMS");
 
         } else {
@@ -210,8 +206,8 @@ export class EditUserDialogComponent implements OnInit {
   setDefault(): void {
     this.userForm.controls.password.reset();
     this.userForm.controls.confirmPassword.reset();
-    this.names = _.without(_.split(this.defaultUser.Names, ";"), "");
-    this.emails = _.without(_.split(this.defaultUser.Emails, ";"), "");
+    this.names = _.without(_.split(this.defaultUser.names, ";"), "");
+    this.emails = _.without(_.split(this.defaultUser.emails, ";"), "");
     this.selectedWebsites = _.clone(this.defaultUser.websites);
     this.userForm.controls.transfer.disable();
     this.userForm.controls.transfer.setValue(false);
@@ -228,7 +224,7 @@ export class EditUserDialogComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           this.deleteService
-            .user({ userId: this.data.id, app: this.defaultUser.Type })
+            .user({ userId: this.data.id, app: this.defaultUser.type })
             .subscribe((success) => {
               if (success !== null) {
                 this.message.show("USERS_PAGE.DELETE.messages.success");
@@ -249,9 +245,9 @@ export class EditUserDialogComponent implements OnInit {
     const emails = _.join(this.emails, ";");
 
     const defaultWebsites = JSON.stringify(
-      _.map(this.defaultUser.websites, "WebsiteId")
+      _.map(this.defaultUser.websites, "websiteId")
     );
-    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
+    const websites = JSON.stringify(_.map(this.selectedWebsites, "websiteId"));
     const transfer = this.userForm.value.transfer;
 
     const formData = {
@@ -260,7 +256,7 @@ export class EditUserDialogComponent implements OnInit {
       confirmPassword,
       names,
       emails,
-      app: this.defaultUser.Type,
+      app: this.defaultUser.type,
       defaultWebsites,
       websites,
       transfer,
@@ -336,8 +332,8 @@ export class EditUserDialogComponent implements OnInit {
       this.userForm.controls.transfer.setValue(false);
     } else {
       const differ = _.difference(
-        _.map(this.selectedWebsites, "Name"),
-        _.map(this.defaultUser.websites, "Name")
+        _.map(this.selectedWebsites, "name"),
+        _.map(this.defaultUser.websites, "name")
       );
       if (_.size(differ) === 0) {
         this.userForm.controls.transfer.disable();
@@ -358,7 +354,7 @@ export class EditUserDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
+        if (!(website.name + ' ' + website.startingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -369,7 +365,7 @@ export class EditUserDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w['StartingUrl'].trim() === event.option.viewValue.trim()
+      (w) => w['startingUrl'].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
@@ -378,8 +374,8 @@ export class EditUserDialogComponent implements OnInit {
     }
     if (this.selectedWebsites.length > 0) {
       const differ = _.difference(
-        _.map(this.selectedWebsites, "Name"),
-        _.map(this.defaultUser.websites, "Name")
+        _.map(this.selectedWebsites, "name"),
+        _.map(this.defaultUser.websites, "name")
       );
       if (_.size(differ) > 0) {
         this.userForm.controls.transfer.enable();

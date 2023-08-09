@@ -1,5 +1,7 @@
 <div fxLayout="row">
-  <h1 class="mat-display-1" mat-dialog-title>{{ "PAGES_PAGE.ADD.title" | translate }}</h1>
+  <h1 class="mat-display-1" mat-dialog-title>
+    {{ "PAGES_PAGE.ADD.title" | translate }}
+  </h1>
   <span fxFlex></span>
   <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
     <mat-icon aria-hidden="false">close</mat-icon>
@@ -12,16 +14,40 @@
         <label for="pages_website_input">
           {{ "PAGES_PAGE.ADD.website_label" | translate }}
         </label>
-        <input id="pages_website_input" type="text" aria-label="Website Name" matInput formControlName="website" [matAutocomplete]="auto" [errorStateMatcher]="matcher" autofocus required>
+        <input
+          id="pages_website_input"
+          type="text"
+          aria-label="Website name"
+          matInput
+          formControlName="website"
+          [matAutocomplete]="auto"
+          [errorStateMatcher]="matcher"
+          autofocus
+          required
+        />
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let website of filteredWebsites | async" [value]="website.StartingUrl" (click)="updateUrisFromFile()">
-            {{ website.StartingUrl }}
+          <mat-option
+            *ngFor="let website of filteredWebsites | async"
+            [value]="website.startingUrl"
+            (click)="updateUrisFromFile()"
+          >
+            {{ website.startingUrl }}
           </mat-option>
         </mat-autocomplete>
-        <button type="button" *ngIf="pageForm.value.website" matSuffix mat-icon-button aria-label="Clear" (click)="pageForm.controls.website.reset()">
+        <button
+          type="button"
+          *ngIf="pageForm.value.website"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="pageForm.controls.website.reset()"
+        >
           <mat-icon aria-hidden="false">clear</mat-icon>
         </button>
-        <mat-error *ngIf="pageForm.controls.website.hasError('required')" [innerHTML]="'MISC.required_field' | translate"></mat-error>
+        <mat-error
+          *ngIf="pageForm.controls.website.hasError('required')"
+          [innerHTML]="'MISC.required_field' | translate"
+        ></mat-error>
         <mat-error *ngIf="pageForm.controls.website.hasError('validWebsite')">
           {{ "PAGES_PAGE.ADD.website_invalid" | translate }}
         </mat-error>
@@ -32,27 +58,61 @@
         <label label="pages_uris_input">
           {{ "PAGES_PAGE.ADD.uris_label" | translate }}
         </label>
-        <textarea id="pages_uris_input" matInput matTextareaAutosize matAutosizeMinRows="2" formControlName="uris" [errorStateMatcher]="matcher" required></textarea>
-        <button type="button" *ngIf="pageForm.value.uris" matSuffix mat-icon-button aria-label="Clear" (click)="pageForm.controls.uris.reset()">
+        <textarea
+          id="pages_uris_input"
+          matInput
+          matTextareaAutosize
+          matAutosizeMinRows="2"
+          formControlName="uris"
+          [errorStateMatcher]="matcher"
+          required
+        ></textarea>
+        <button
+          type="button"
+          *ngIf="pageForm.value.uris"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="pageForm.controls.uris.reset()"
+        >
           <mat-icon aria-hidden="false">clear</mat-icon>
         </button>
         <mat-error *ngIf="pageForm.controls.uris.status === 'PENDING'">
           <mat-progress-bar mode="buffer"></mat-progress-bar>
         </mat-error>
-        <mat-error *ngIf="pageForm.hasError('requiredAtLeastOne')" [innerHTML]="'MISC.at_least_one_required' | translate"></mat-error>
+        <mat-error
+          *ngIf="pageForm.hasError('requiredAtLeastOne')"
+          [innerHTML]="'MISC.at_least_one_required' | translate"
+        ></mat-error>
         <mat-error *ngIf="pageForm.controls.uris.hasError('invalidUri')">
           {{ "PAGES_PAGE.ADD.uris_invalid" | translate }}
         </mat-error>
       </mat-form-field>
       <div class="form-group">
-        <label for="file" matTooltip="{{ 'PAGES_PAGE.ADD.sitemap_warning' | translate}}"
-               matTooltipPosition="above">
-          {{ "PAGES_PAGE.ADD.add_sitemap" | translate}}
+        <label
+          for="file"
+          matTooltip="{{ 'PAGES_PAGE.ADD.sitemap_warning' | translate }}"
+          matTooltipPosition="above"
+        >
+          {{ "PAGES_PAGE.ADD.add_sitemap" | translate }}
         </label>
-        <br>
-        <input type="file" id="file" formControlName="files" accept="text/xml, text/plain"
-               (change)="handleFileInput($event.target.files)" > <!--(change)="handleFileInput($event.target.files)" (focus)="updateUrisFromFile()"-->
-        <button type="button" *ngIf="pageForm.value.files" matSuffix mat-icon-button aria-label="Clear" (click)="resetFile()">
+        <br />
+        <input
+          type="file"
+          id="file"
+          formControlName="files"
+          accept="text/xml, text/plain"
+          (change)="handleFileInput($event.target.files)"
+        />
+        <!--(change)="handleFileInput($event.target.files)" (focus)="updateUrisFromFile()"-->
+        <button
+          type="button"
+          *ngIf="pageForm.value.files"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="resetFile()"
+        >
           <mat-icon aria-hidden="false">clear</mat-icon>
         </button>
         <!--<mat-error *ngIf="pageForm.hasError('requiredAtLeastOne')" [innerHTML]="'MISC.at_least_one_required' | translate"></mat-error> -->
@@ -71,7 +131,7 @@
             {{ "PAGES_PAGE.ADD.sitemap_xml_example" | translate }}
           </a>
         </div>
-        <br>
+        <br />
       </div>
     </div>
     <div class="add-observatorio-block">
@@ -85,11 +145,23 @@
     <button mat-raised-button color="warn" type="button" (click)="resetForm()">
       {{ "PAGES_PAGE.ADD.reset" | translate }}
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="pageForm.controls.website.invalid ||
-    pageForm.hasError('requiredAtLeastOne') || pageForm.controls.uris.hasError('invalidUri') || fileErrorMessage != '' || fileLoading"
-            *ngIf="!loadingCreate">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="
+        pageForm.controls.website.invalid ||
+        pageForm.hasError('requiredAtLeastOne') ||
+        pageForm.controls.uris.hasError('invalidUri') ||
+        fileErrorMessage != '' ||
+        fileLoading
+      "
+      *ngIf="!loadingCreate"
+    >
       {{ "PAGES_PAGE.ADD.submit" | translate }}
     </button>
-    <span *ngIf="loadingCreate"><strong>{{ "MISC.loading" | translate }}</strong></span>
+    <span *ngIf="loadingCreate"
+      ><strong>{{ "MISC.loading" | translate }}</strong></span
+    >
   </mat-dialog-actions>
 </form>

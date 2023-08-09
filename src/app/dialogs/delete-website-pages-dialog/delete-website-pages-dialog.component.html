@@ -1,32 +1,41 @@
-<h1 mat-dialog-title>{{ "WEBSITES_PAGE.UPDATE.delete_pages.title" | translate }}</h1>
+<h1 mat-dialog-title>
+  {{ "WEBSITES_PAGE.UPDATE.delete_pages.title" | translate }}
+</h1>
 <form (submit)="deleteWebsitePages($event)" novalidate>
   <mat-dialog-content>
-
     <mat-table #table [dataSource]="dataSource" [hidden]="loading">
-
-      <ng-container matColumnDef="Uri">
+      <ng-container matColumnDef="uri">
         <mat-header-cell *matHeaderCellDef fxFlex>
           {{ "PAGES_PAGE.LIST.table.uri_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex>
-          <strong>{{element.Uri}}</strong>
+          <strong>{{ element.uri }}</strong>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
-          <mat-checkbox color="primary" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          <mat-checkbox
+            color="primary"
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
           </mat-checkbox>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+          <mat-checkbox
+            color="primary"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+          >
           </mat-checkbox>
         </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
     <app-loading *ngIf="loading"></app-loading>
     <app-error *ngIf="error"></app-error>
@@ -36,7 +45,12 @@
       {{ "WEBSITES_PAGE.UPDATE.delete_pages.cancel" | translate }}
     </button>
     <span fxFlex></span>
-    <button mat-raised-button color="primary" type="submit" [disabled]="selection.selected.length === 0">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="selection.selected.length === 0"
+    >
       {{ "WEBSITES_PAGE.UPDATE.delete_pages.submit" | translate }}
     </button>
   </mat-dialog-actions>

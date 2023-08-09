@@ -1,30 +1,29 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { Location } from "@angular/common";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   AbstractControl,
+  FormBuilder,
   FormControl,
   FormGroup,
-  FormBuilder,
-  Validators,
   FormGroupDirective,
   NgForm,
   ValidationErrors,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { Observable, of } from "rxjs";
+import { MatChipInputEvent, MatChipList } from "@angular/material/chips";
+import { ErrorStateMatcher } from "@angular/material/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { map, startWith } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { MatChipList } from "@angular/material/chips";
 import * as _ from "lodash";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
 
-import { GetService } from "../../services/get.service";
 import { CreateService } from "../../services/create.service";
-import { VerifyService } from "../../services/verify.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -222,8 +221,8 @@ export class AddUserDialogComponent implements OnInit {
     const names = _.join(this.names, ";");
     const emails = _.join(this.emails, ";");
     const type = this.userForm.value.app;
-    const tags = _.map(this.selectedTags, "TagId");
-    const websites = _.map(this.selectedWebsites, "WebsiteId");
+    const tags = _.map(this.selectedTags, "tagId");
+    const websites = _.map(this.selectedWebsites, "websiteId");
     const transfer = this.userForm.value.transfer;
     const formData = {
       username,
@@ -345,7 +344,7 @@ export class AddUserDialogComponent implements OnInit {
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!tag.Name.toLowerCase().includes(n)) {
+        if (!tag.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -359,7 +358,7 @@ export class AddUserDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
+        if (!(website.name + ' ' + website.startingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -370,7 +369,7 @@ export class AddUserDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["StartingUrl"].trim() === event.option.viewValue.trim()
+      (w) => w["startingUrl"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
@@ -385,7 +384,7 @@ export class AddUserDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t["name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedTags, this.tags[index])) {
       this.selectedTags.push(this.tags[index]);

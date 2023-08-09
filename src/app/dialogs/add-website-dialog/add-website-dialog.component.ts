@@ -1,28 +1,27 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { Location } from "@angular/common";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
-  ValidationErrors,
   FormGroupDirective,
   NgForm,
+  ValidationErrors,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { Observable } from "rxjs";
+import { ErrorStateMatcher } from "@angular/material/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
 import { MessageService } from "../../services/message.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -180,12 +179,12 @@ export class AddWebsiteDialogComponent implements OnInit {
     const stampDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
-    const entities = _.map(this.selectedEntities, "EntityId");
+    const entities = _.map(this.selectedEntities, "entityId");
     const userId = this.websiteForm.value.user
-      ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
-          .UserId
+      ? _.find(this.monitorUsers, ["username", this.websiteForm.value.user])
+        .userId
       : null;
-    const tags = _.map(this.selectedTags, "TagId");
+    const tags = _.map(this.selectedTags, "tagId");
 
     const formData = {
       name,
@@ -234,7 +233,7 @@ export class AddWebsiteDialogComponent implements OnInit {
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!tag.Name.toLowerCase().includes(n)) {
+        if (!tag.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -245,7 +244,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t['Name'].trim() === event.option.viewValue.trim()
+      (t) => t['name'].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedTags, this.tags[index])) {
       this.selectedTags.push(this.tags[index]);
@@ -268,7 +267,7 @@ export class AddWebsiteDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(entity.Short_Name + ' ' + entity.Long_Name).toLowerCase().includes(n)) {
+        if (!(entity.shortName + ' ' + entity.longName).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -279,7 +278,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   selectedEntity(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.entities,
-      (e) => e["Long_Name"].trim() === event.option.viewValue.trim()
+      (e) => e["longName"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedEntities, this.entities[index])) {
       this.selectedEntities.push(this.entities[index]);
@@ -290,7 +289,7 @@ export class AddWebsiteDialogComponent implements OnInit {
 
   filterUser(val: any): string[] {
     return this.monitorUsers.filter((user) =>
-      _.includes(_.toLower(user.Username), _.toLower(val))
+      _.includes(_.toLower(user.username), _.toLower(val))
     );
   }
 
@@ -317,7 +316,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   entityValidator(control: AbstractControl): any {
     const val = _.trim(control.value);
     if (val !== "" && val !== null) {
-      return _.includes(_.map(this.entities, "Long_Name"), val)
+      return _.includes(_.map(this.entities, "longName"), val)
         ? null
         : { validEntity: true };
     } else {
@@ -328,7 +327,7 @@ export class AddWebsiteDialogComponent implements OnInit {
   userValidator(control: AbstractControl): any {
     const val = _.trim(control.value);
     if (val !== "" && val !== null) {
-      return _.includes(_.map(this.monitorUsers, "Username"), val)
+      return _.includes(_.map(this.monitorUsers, "username"), val)
         ? null
         : { validUser: true };
     } else {

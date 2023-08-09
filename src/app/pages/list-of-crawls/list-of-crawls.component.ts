@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import { SelectionModel } from "@angular/cdk/collections";
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import * as _ from "lodash";
-import { GetService } from "../../services/get.service";
-import { DeleteService } from "../../services/delete.service";
 import { AddCrawlerPagesDialogComponent } from "../../dialogs/add-crawler-pages-dialog/add-crawler-pages-dialog.component";
-import { SelectionModel } from "@angular/cdk/collections";
 import { CrawlerConfigDialogComponent } from "../../dialogs/crawler-config-dialog/crawler-config-dialog.component";
+import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 
 @Component({
   selector: "app-list-of-crawls",
@@ -18,7 +18,7 @@ import { CrawlerConfigDialogComponent } from "../../dialogs/crawler-config-dialo
 })
 export class ListOfCrawlsComponent implements OnInit {
   displayedColumns = [
-    "StartingUrl",
+    "startingUrl",
     "InitialDate",
     "Status",
     "Result",
@@ -80,8 +80,8 @@ export class ListOfCrawlsComponent implements OnInit {
   openAddCrawlerPagesDialog(e: Event, element: any) {
     e.preventDefault();
     const crawlWebsiteId = element.CrawlWebsiteId;
-    const websiteUri = element.StartingUrl;
-    const websiteId = element.WebsiteId;
+    const websiteUri = element.startingUrl;
+    const websiteId = element.websiteId;
     this.dialog.open(AddCrawlerPagesDialogComponent, {
       width: "60vw",
       data: {
@@ -141,8 +141,8 @@ export class ListOfCrawlsComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -150,8 +150,7 @@ export class ListOfCrawlsComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 }

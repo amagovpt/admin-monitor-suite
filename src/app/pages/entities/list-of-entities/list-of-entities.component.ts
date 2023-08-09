@@ -1,25 +1,22 @@
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  ElementRef,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
   ViewChild,
 } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 
 import { GetService } from "../../../services/get.service";
 
-import { EditEntityDialogComponent } from "../../../dialogs/edit-entity-dialog/edit-entity-dialog.component";
-import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
-import { TranslateService } from "@ngx-translate/core";
 import { SelectionModel } from "@angular/cdk/collections";
-import { DeleteService } from "../../../services/delete.service";
 import { FormControl } from "@angular/forms";
+import { merge, of } from "rxjs";
 import {
   catchError,
   debounceTime,
@@ -28,9 +25,10 @@ import {
   startWith,
   switchMap,
 } from "rxjs/operators";
-import { merge } from "rxjs";
-import { of } from "rxjs";
+import { EditEntityDialogComponent } from "../../../dialogs/edit-entity-dialog/edit-entity-dialog.component";
+import { DeleteService } from "../../../services/delete.service";
 import { MessageService } from "../../../services/message.service";
+import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
 
 @Component({
   selector: "app-list-of-entities",
@@ -42,10 +40,10 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
   //@Output("refreshEntities") refreshEntities = new EventEmitter<boolean>();
 
   displayedColumns = [
-    //'EntityId',
-    "Short_Name",
-    "Long_Name",
-    "Creation_Date",
+    //'entityId',
+    "shortName",
+    "longName",
+    "creationDate",
     "Websites",
     //'re-evaluate',
     "edit",
@@ -140,7 +138,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
   }
 
   reEvaluateEntitiesWebsites(): void {
-    const entitiesId = this.selection.selected.map((e) => e.EntityId);
+    const entitiesId = this.selection.selected.map((e) => e.entityId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
@@ -180,7 +178,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
   }
 
   deleteEntities(): void {
-    const entitiesId = this.selection.selected.map((e) => e.EntityId);
+    const entitiesId = this.selection.selected.map((e) => e.entityId);
     this.deleteService
       .entities({
         entitiesId,
@@ -210,7 +208,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
   }
 
   deleteEntitiesPages(): void {
-    const entitiesId = this.selection.selected.map((e) => e.EntityId);
+    const entitiesId = this.selection.selected.map((e) => e.entityId);
     this.deleteService
       .entitiesPages({
         entitiesId,
@@ -234,8 +232,8 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -243,8 +241,7 @@ export class ListOfEntitiesComponent implements OnInit, AfterViewInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 }

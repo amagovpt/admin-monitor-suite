@@ -1,24 +1,24 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   AbstractControl,
+  FormBuilder,
   FormControl,
   FormGroup,
-  FormBuilder,
-  Validators,
   FormGroupDirective,
   NgForm,
-  ValidatorFn,
   ValidationErrors,
+  ValidatorFn,
+  Validators,
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { Observable } from "rxjs";
-import { map, startWith } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
-import { GetService } from "../../services/get.service";
 import { CreateService } from "../../services/create.service";
+import { GetService } from "../../services/get.service";
 
 import { ChooseObservatoryPagesDialogComponent } from "../choose-observatory-pages-dialog/choose-observatory-pages-dialog.component";
 
@@ -68,13 +68,13 @@ export class UriValidation {
 
 export const atLeastOne =
   (validator: ValidatorFn, controls: string[]) =>
-  (group: FormGroup): ValidationErrors | null => {
-    const hasAtLeastOne =
-      group &&
-      group.controls &&
-      controls.some((k) => !validator(group.controls[k]));
-    return hasAtLeastOne ? null : { requiredAtLeastOne: true };
-  };
+    (group: FormGroup): ValidationErrors | null => {
+      const hasAtLeastOne =
+        group &&
+        group.controls &&
+        controls.some((k) => !validator(group.controls[k]));
+      return hasAtLeastOne ? null : { requiredAtLeastOne: true };
+    };
 
 @Component({
   selector: "app-add-page-dialog",
@@ -172,9 +172,9 @@ export class AddPageDialogComponent implements OnInit {
     e.preventDefault();
 
     const websiteId = _.find(this.websites, [
-      "StartingUrl",
+      "startingUrl",
       this.pageForm.value.website,
-    ]).WebsiteId;
+    ]).websiteId;
 
     this.pageForm.value.uris =
       this.pageForm.value.uris === null ? "" : this.pageForm.value.uris;
@@ -188,9 +188,9 @@ export class AddPageDialogComponent implements OnInit {
       _.without(
         _.uniq(
           _.map(urisWithFileUris, (p) => {
-           /* if (p[_.size(p) - 1] === "/") {
-              p = p.substring(0, _.size(p) - 1);
-            }*/
+            /* if (p[_.size(p) - 1] === "/") {
+               p = p.substring(0, _.size(p) - 1);
+             }*/
 
             return _.trim(p);
           })
@@ -241,14 +241,14 @@ export class AddPageDialogComponent implements OnInit {
 
   filterWebsite(val: any): string[] {
     return this.websites.filter((website) =>
-      _.includes(_.toLower(website.StartingUrl), _.toLower(val))
+      _.includes(_.toLower(website.startingUrl), _.toLower(val))
     );
   }
 
   websiteValidator(control: AbstractControl): any {
     const val = control.value;
     if (val !== "" && val !== null) {
-      return _.includes(_.map(this.websites, "StartingUrl"), val)
+      return _.includes(_.map(this.websites, "startingUrl"), val)
         ? null
         : { validWebsite: true };
     } else {

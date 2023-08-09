@@ -1,21 +1,20 @@
 import {
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   OnInit,
   ViewChild,
-  ElementRef,
-  ChangeDetectorRef,
 } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 
 import { GetService } from "../../../services/get.service";
-import { MessageService } from "../../../services/message.service";
 
-import { EditUserDialogComponent } from "../../../dialogs/edit-user-dialog/edit-user-dialog.component";
 import { TranslateService } from "@ngx-translate/core";
+import { EditUserDialogComponent } from "../../../dialogs/edit-user-dialog/edit-user-dialog.component";
 
 @Component({
   selector: "app-list-of-users",
@@ -29,17 +28,19 @@ export class ListOfUsersComponent implements OnInit {
 
   loading: boolean;
   error: boolean;
-  USER_TYPE={studies:"Study Monitor",
-             monitor: "My Monitor",
-             nimda: "AMS" }
+  USER_TYPE = {
+    studies: "Study Monitor",
+    monitor: "My Monitor",
+    nimda: "AMS"
+  }
 
   displayedColumns = [
-    //'UserId',
-    "Username",
-    "Type",
+    //'userId',
+    "username",
+    "type",
     "Websites",
-    "Register_Date",
-    "Last_Login",
+    "registerDate",
+    "lastLogin",
     "edit",
     //'see'
   ];
@@ -63,6 +64,7 @@ export class ListOfUsersComponent implements OnInit {
 
   private getListOfUsers(): void {
     this.get.listOfUsers().subscribe((users) => {
+      console.log(users);
       if (users !== null) {
         this.dataSource = new MatTableDataSource(users);
         this.dataSource.sort = this.sort;

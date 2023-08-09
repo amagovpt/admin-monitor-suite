@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
-import * as _ from "lodash";
 
-import { GetService } from "../../services/get.service";
 import { EvaluationService } from "../../services/evaluation.service";
+import { GetService } from "../../services/get.service";
 
 @Component({
   selector: "app-directory",
@@ -86,7 +85,7 @@ export class DirectoryComponent implements OnInit, OnDestroy {
 
   downloadAllPagesCSV(): void {
     this.evaluation.downloadDirectoryCSV(
-      this.websites.map((w) => w.StartingUrl),
+      this.websites.map((w) => w.startingUrl),
       true,
       this.directory
     );
@@ -94,7 +93,7 @@ export class DirectoryComponent implements OnInit, OnDestroy {
 
   downloadObservatoryCSV(): void {
     this.evaluation.downloadDirectoryCSV(
-      this.websites.map((w) => w.StartingUrl),
+      this.websites.map((w) => w.startingUrl),
       false,
       this.directory
     );

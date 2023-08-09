@@ -1,27 +1,26 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { Location } from "@angular/common";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
+import { ErrorStateMatcher } from "@angular/material/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import * as _ from "lodash";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
 import { MessageService } from "../../services/message.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -117,7 +116,7 @@ export class AddDirectoryDialogComponent implements OnInit {
     const name = this.directoryForm.value.name.trim();
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
     const method = this.directoryForm.value.method;
-    const tags = _.map(this.selectedTags, "TagId");
+    const tags = _.map(this.selectedTags, "tagId");
 
     const formData = {
       name,
@@ -160,7 +159,7 @@ export class AddDirectoryDialogComponent implements OnInit {
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!tag.Name.toLowerCase().includes(n)) {
+        if (!tag.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -171,7 +170,7 @@ export class AddDirectoryDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t["name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedTags, this.tags[index])) {
       this.selectedTags.push(this.tags[index]);

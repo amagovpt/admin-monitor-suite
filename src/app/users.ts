@@ -240,7 +240,7 @@ const users = {
     "Benefits": "WVp LVs"
   },
   "9.4.1.2": {
-    "Description": "Name, role, value",
+    "Description": "name, role, value",
     "WCAG 2.1": "4.1.2",
     "Benefits": "WVp LVp LMSs"
   },

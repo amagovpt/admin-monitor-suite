@@ -1,14 +1,14 @@
 interface ITag {
-  Name: string;
+  name: string;
   Pages: Array<number>;
 }
 
 export class Tag implements ITag {
-  Name: string;
+  name: string;
   Pages: Array<number>;
 
-  constructor(Name: string, Pages: Array<number>) {
-    this.Name = Name;
+  constructor(name: string, Pages: Array<number>) {
+    this.name = name;
     this.Pages = Pages;
   }
 }

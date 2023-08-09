@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 export class ChooseObservatoryPagesDialogComponent implements OnInit {
 
   displayedColumns = [
-    'Uri',
+    'uri',
     'select'
   ];
 
@@ -24,7 +24,7 @@ export class ChooseObservatoryPagesDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<ChooseObservatoryPagesDialogComponent>
   ) {
-    this.dataSource = new MatTableDataSource(_.map(this.data.uris, u => ( { Uri: u } )));
+    this.dataSource = new MatTableDataSource(_.map(this.data.uris, u => ({ uri: u })));
     this.selection = new SelectionModel<any>(true, []);
     this.dialogRef.disableClose = true;
   }
@@ -37,7 +37,7 @@ export class ChooseObservatoryPagesDialogComponent implements OnInit {
 
     this.dialogRef.close({
       cancel: false,
-      uris: JSON.stringify(_.map(this.selection.selected, 'Uri'))
+      uris: JSON.stringify(_.map(this.selection.selected, 'uri'))
     });
   }
 

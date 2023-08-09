@@ -1,25 +1,25 @@
 import {
   Component,
-  OnInit,
-  ViewChild,
   ElementRef,
-  Input,
-  Output,
   EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
 } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 
-import { EditTagDialogComponent } from "../../../dialogs/edit-tag-dialog/edit-tag-dialog.component";
-import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
 import { SelectionModel } from "@angular/cdk/collections";
-import { DeleteService } from "../../../services/delete.service";
-import { CrawlerService } from "../../../services/crawler.service";
+import { EditTagDialogComponent } from "../../../dialogs/edit-tag-dialog/edit-tag-dialog.component";
 import { TagCrawlerInformationDialogComponent } from "../../../dialogs/tag-crawler-information-dialog/tag-crawler-information-dialog.component";
+import { CrawlerService } from "../../../services/crawler.service";
+import { DeleteService } from "../../../services/delete.service";
 import { MessageService } from "../../../services/message.service";
+import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
 
 @Component({
   selector: "app-list-of-tags",
@@ -35,8 +35,8 @@ export class ListOfTagsComponent implements OnInit {
   error: boolean;
 
   displayedColumns = [
-    "Name",
-    "Creation_Date",
+    "name",
+    "creationDate",
     "Websites",
     //"re-evaluate",
     "edit",
@@ -75,7 +75,7 @@ export class ListOfTagsComponent implements OnInit {
   }
 
   reEvaluateTagsWebsites(): void {
-    const tagsId = this.selection.selected.map((t) => t.TagId);
+    const tagsId = this.selection.selected.map((t) => t.tagId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
@@ -104,14 +104,14 @@ export class ListOfTagsComponent implements OnInit {
   }
 
   openCrawlerDialog(): void {
-    const tagsId = this.selection.selected.map((t) => t.TagId);
+    const tagsId = this.selection.selected.map((t) => t.tagId);
     this.crawler.crawlTag(tagsId).subscribe(() => {
       this.dialog.open(TagCrawlerInformationDialogComponent);
     });
   }
 
   deleteTags(): void {
-    const tagsId = this.selection.selected.map((t) => t.TagId);
+    const tagsId = this.selection.selected.map((t) => t.tagId);
     this.deleteService
       .tags({
         tagsId: JSON.stringify(tagsId),
@@ -125,7 +125,7 @@ export class ListOfTagsComponent implements OnInit {
   }
 
   deleteTagsPages(): void {
-    const tagsId = this.selection.selected.map((t) => t.TagId);
+    const tagsId = this.selection.selected.map((t) => t.tagId);
     this.deleteService
       .tagsPages({
         tagsId: tagsId,
@@ -149,8 +149,8 @@ export class ListOfTagsComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -158,8 +158,7 @@ export class ListOfTagsComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 }

@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import * as _ from 'lodash';
 
-import { GetService } from '../../services/get.service';
 import { DeleteService } from '../../services/delete.service';
+import { GetService } from '../../services/get.service';
 import { MessageService } from '../../services/message.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class DeleteWebsitePagesDialogComponent implements OnInit {
   error: boolean;
 
   displayedColumns = [
-    'Uri',
+    'uri',
     'select'
   ];
 
@@ -60,9 +60,9 @@ export class DeleteWebsitePagesDialogComponent implements OnInit {
   deleteWebsitePages(e): void {
     e.preventDefault();
 
-    const pages = _.map(this.selection.selected, 'PageId');
+    const pages = _.map(this.selection.selected, 'pageId');
 
-    this.remove.pages({pages})
+    this.remove.pages({ pages })
       .subscribe(success => {
         if (success) {
           this.message.show('WEBSITES_PAGE.UPDATE.delete_pages.success');

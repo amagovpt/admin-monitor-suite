@@ -1,5 +1,5 @@
 interface IManualEvaluation {
-  Title: string;
+  title: string;
   Url: string;
   Sample: string;
   Heuristics: string;
@@ -7,7 +7,7 @@ interface IManualEvaluation {
 }
 
 export class ManualEvaluation implements IManualEvaluation {
-  Title: string;
+  title: string;
   Url: string;
   Sample: string;
   Heuristics: string;

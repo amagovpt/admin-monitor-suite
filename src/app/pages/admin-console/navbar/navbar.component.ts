@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { NavigationEnd, Router } from "@angular/router";
+import FileSaver from 'file-saver';
 import * as _ from "lodash";
 import { GetService } from "../../../services/get.service";
-import FileSaver from 'file-saver';
 
 
 @Component({
@@ -53,10 +53,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .subscribe(results => {
         const lineEnd = '\n'
         const sep = ',';
-        let CSV = "WebsiteId,Name,StartingUrl,Declaration,Declaration_Update_Date,Stamp,Stamp_Update_Date,Creation_Date,Tags,numberOfPages,averagePoints" + lineEnd;
+        let CSV = "websiteId,name,startingUrl,declaration,declarationUpdateDate,Stamp,stampUpdateDate,creationDate,Tags,numberOfPages,averagePoints" + lineEnd;
         results.map((result) => {
-          CSV += result.WebsiteId + sep + result.Name.replace(',', '').replace(',','') + sep + result.StartingUrl + sep + result.Declaration + sep + result.Declaration_Update_Date
-            + sep + result.Stamp + sep + result.Stamp_Update_Date + sep + result.Creation_Date + sep + this.getTagsStr(result.Tags) + sep + result.numberOfPages + sep + result.averagePoints + lineEnd;
+          CSV += result.websiteId + sep + result.name.replace(',', '').replace(',', '') + sep + result.startingUrl + sep + result.declaration + sep + result.declarationUpdateDate
+            + sep + result.Stamp + sep + result.stampUpdateDate + sep + result.creationDate + sep + this.getTagsStr(result.Tags) + sep + result.numberOfPages + sep + result.averagePoints + lineEnd;
         })
         const BOM = "\uFEFF";
         let blob = new Blob([BOM + CSV], { type: "text/plain;charset=utf-8" });
@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   getTagsStr(tags) {
     return tags.reduce((res, tag, index) => {
-      return res + tag.Name.replace(',', '') + (index === tags.length - 1 ? '' : ';');
+      return res + tag.name.replace(',', '') + (index === tags.length - 1 ? '' : ';');
     }, '');
   }
 

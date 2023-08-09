@@ -1,28 +1,40 @@
 <h2>Declaração de Acessibilidade do sítio Web</h2>
 <h3>Recolha</h3>
 <ul>
-    <li>Última recolha de dados efetuada a {{a11yStatement.CreatedAt | date}}</li>
-    <li>Estado da leitura efetuada: {{a11yStatement.state}}</li>
+  <li>
+    Última recolha de dados efetuada a {{ a11yStatement.CreatedAt | date }}
+  </li>
+  <li>Estado da leitura efetuada: {{ a11yStatement.state }}</li>
 </ul>
 <h3>Declaração</h3>
 <ul>
-    <li>Nome do sítio: {{a11yStatement.Website.Name}}</li>
-    <li>Domínio: {{a11yStatement.Website.StartingUrl}}</li>
-    <li>Data da declaração: {{a11yStatement.statementDate | date}}</li>
-    <li>URL da declaração: {{a11yStatement.url}}</li>
+  <li>Nome do sítio: {{ a11yStatement.Website.name }}</li>
+  <li>Domínio: {{ a11yStatement.Website.startingUrl }}</li>
+  <li>Data da declaração: {{ a11yStatement.statementDate | date }}</li>
+  <li>URL da declaração: {{ a11yStatement.url }}</li>
 </ul>
 <h3>Conformidade</h3>
 <ul>
-    <li>Conformidade declarada: {{a11yStatement.conformance}}</li>
-    <li *ngIf="a11yStatement.seal">Selo de U+A: {{a11yStatement.seal}}</li>
-    <li #elseBlock>Selo de U+A: Sem selo</li>
-
+  <li>Conformidade declarada: {{ a11yStatement.conformance }}</li>
+  <li *ngIf="a11yStatement.seal">Selo de U+A: {{ a11yStatement.seal }}</li>
+  <li #elseBlock>Selo de U+A: Sem selo</li>
 </ul>
-    <app-contact-table *ngIf="a11yStatement.contacts" [list]="a11yStatement.contacts"></app-contact-table>
-    <br>
-    <app-automatic-evaluation-table *ngIf="a11yStatement.automaticEvaluationList" [list]="a11yStatement.automaticEvaluationList"></app-automatic-evaluation-table>
-    <br>
-    <app-manual-evaluation-table *ngIf="a11yStatement.manualEvaluationList" [list]="a11yStatement.manualEvaluationList" ></app-manual-evaluation-table>
-    <br>
-    <app-user-evaluation-table *ngIf="a11yStatement.userEvaluationList" [list]="a11yStatement.userEvaluationList"></app-user-evaluation-table>
-
+<app-contact-table
+  *ngIf="a11yStatement.contacts"
+  [list]="a11yStatement.contacts"
+></app-contact-table>
+<br />
+<app-automatic-evaluation-table
+  *ngIf="a11yStatement.automaticEvaluationList"
+  [list]="a11yStatement.automaticEvaluationList"
+></app-automatic-evaluation-table>
+<br />
+<app-manual-evaluation-table
+  *ngIf="a11yStatement.manualEvaluationList"
+  [list]="a11yStatement.manualEvaluationList"
+></app-manual-evaluation-table>
+<br />
+<app-user-evaluation-table
+  *ngIf="a11yStatement.userEvaluationList"
+  [list]="a11yStatement.userEvaluationList"
+></app-user-evaluation-table>

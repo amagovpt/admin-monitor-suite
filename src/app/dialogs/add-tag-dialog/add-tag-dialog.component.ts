@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { Location } from "@angular/common";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { ErrorStateMatcher } from "@angular/material/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Location } from "@angular/common";
+import * as _ from "lodash";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import * as _ from "lodash";
 
 import { CreateService } from "../../services/create.service";
 import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
 import { MessageService } from "../../services/message.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -137,9 +137,9 @@ export class AddTagDialogComponent implements OnInit {
     e.preventDefault();
 
     const name = this.tagForm.value.name.trim();
-    const directories = 
-      _.map(this.selectedDirectories, "DirectoryId");
-    const websites = _.map(this.selectedWebsites, "WebsiteId");
+    const directories =
+      _.map(this.selectedDirectories, "directoryId");
+    const websites = _.map(this.selectedWebsites, "websiteId");
 
     const formData = {
       name,
@@ -176,12 +176,12 @@ export class AddTagDialogComponent implements OnInit {
   }
 
   filterDirectory(name: string) {
-    return this.directories.filter((directory) =>{
+    return this.directories.filter((directory) => {
       let valid = true;
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!directory.Name.toLowerCase().includes(n)) {
+        if (!directory.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -192,7 +192,7 @@ export class AddTagDialogComponent implements OnInit {
   selectedDirectory(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.directories,
-      (d) => d["Name"].trim() === event.option.viewValue.trim()
+      (d) => d["name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedDirectories, this.directories[index])) {
       this.selectedDirectories.push(this.directories[index]);
@@ -215,7 +215,7 @@ export class AddTagDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
+        if (!(website.name + ' ' + website.startingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -226,7 +226,7 @@ export class AddTagDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["StartingUrl"] === event.option.viewValue
+      (w) => w["startingUrl"] === event.option.viewValue
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);

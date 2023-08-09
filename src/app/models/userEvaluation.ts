@@ -1,5 +1,5 @@
 interface IUserEvaluation {
-  Title: string;
+  title: string;
   Url: string;
   Participants: string;
   Process: string;
@@ -7,7 +7,7 @@ interface IUserEvaluation {
 }
 
 export class UserEvaluation implements IUserEvaluation {
-  Title: string;
+  title: string;
   Url: string;
   Participants: string;
   Process: string;

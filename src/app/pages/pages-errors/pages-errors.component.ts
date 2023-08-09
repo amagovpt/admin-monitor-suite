@@ -1,12 +1,12 @@
+import { SelectionModel } from "@angular/cdk/collections";
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel } from "@angular/cdk/collections";
-import { GetService } from "../../services/get.service";
-import { EvaluationService } from "../../services/evaluation.service";
-import { MessageService } from "../../services/message.service";
 import { DeleteService } from "../../services/delete.service";
+import { EvaluationService } from "../../services/evaluation.service";
+import { GetService } from "../../services/get.service";
+import { MessageService } from "../../services/message.service";
 
 @Component({
   selector: "app-pages-errors",
@@ -25,7 +25,7 @@ export class PagesErrorsComponent implements OnInit {
   length: number;
   isLoadingResults: boolean;
 
-  displayedColumns = ["Uri", "Error", "Creation_Date", "delete"];
+  displayedColumns = ["uri", "Error", "creationDate", "delete"];
 
   constructor(
     private readonly get: GetService,
@@ -78,7 +78,7 @@ export class PagesErrorsComponent implements OnInit {
   openDeletePageDialog(): void {
     this.deleteService
       .pages({
-        pages: this.selection.selected.map((selected) => selected.PageId),
+        pages: this.selection.selected.map((selected) => selected.pageId),
       })
       .subscribe((success) => {
         if (success) {
@@ -113,8 +113,8 @@ export class PagesErrorsComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -122,8 +122,7 @@ export class PagesErrorsComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 }

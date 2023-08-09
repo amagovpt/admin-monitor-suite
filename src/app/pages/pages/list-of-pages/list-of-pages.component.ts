@@ -1,28 +1,25 @@
+import { SelectionModel } from "@angular/cdk/collections";
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  ViewChild,
-  ElementRef,
   ChangeDetectorRef,
-  Input,
-  Output,
+  Component,
+  ElementRef,
   EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
 } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel } from "@angular/cdk/collections";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 import { merge, of } from "rxjs";
 
 import { EvaluationErrorDialogComponent } from "../../../dialogs/evaluation-error-dialog/evaluation-error-dialog.component";
 
-import { UpdateService } from "../../../services/update.service";
-import { OpenDataService } from "../../../services/open-data.service";
-import { GetService } from "../../../services/get.service";
 import {
   catchError,
   debounceTime,
@@ -32,8 +29,11 @@ import {
   switchMap,
 } from "rxjs/operators";
 import { DeleteService } from "../../../services/delete.service";
-import { MessageService } from "../../../services/message.service";
 import { EvaluationService } from "../../../services/evaluation.service";
+import { GetService } from "../../../services/get.service";
+import { MessageService } from "../../../services/message.service";
+import { OpenDataService } from "../../../services/open-data.service";
+import { UpdateService } from "../../../services/update.service";
 
 @Component({
   selector: "app-list-of-pages",
@@ -48,10 +48,10 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   @Input("pages") pages: Array<any>;
 
   displayedColumns = [
-    // 'PageId',
-    "Uri",
-    "Score",
-    "Evaluation_Date",
+    // 'pageId',
+    "uri",
+    "score",
+    "evaluationDate",
     "Elements",
     //"Types_of_Elements",
     "A",
@@ -168,7 +168,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
   setPageInObservatory(checkbox: any, page: any): void {
     this.update
-      .page({ pageId: page.PageId, checked: checkbox.checked })
+      .page({ pageId: page.pageId, checked: checkbox.checked })
       .subscribe((result) => {
         if (!result) {
           checkbox.source.checked = !checkbox.checked;
@@ -178,11 +178,11 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
   reEvaluatePages(): void {
     if (this.pages) {
-      this.reEvaluatePagesEmitter.next(_.map(this.selection.selected, "Uri"));
+      this.reEvaluatePagesEmitter.next(_.map(this.selection.selected, "uri"));
     } else {
       this.evaluationService
         .reEvaluatePages({
-          pages: _.map(this.selection.selected, "Uri"),
+          pages: _.map(this.selection.selected, "uri"),
         })
         .subscribe((success) => {
           if (success) {
@@ -206,9 +206,9 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     });*/
 
     if (this.pages) {
-      this.deletePagesEmitter.next(_.map(this.selection.selected, "PageId"));
+      this.deletePagesEmitter.next(_.map(this.selection.selected, "pageId"));
     } else {
-      this.deletePages(_.map(this.selection.selected, "PageId"));
+      this.deletePages(_.map(this.selection.selected, "pageId"));
     }
   }
 
@@ -271,8 +271,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -280,9 +280,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 
   deletePages(pages: any): void {

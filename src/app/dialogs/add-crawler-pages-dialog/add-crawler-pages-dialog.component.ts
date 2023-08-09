@@ -1,14 +1,14 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { SelectionModel } from "@angular/cdk/collections";
+import { Component, Inject, OnInit } from "@angular/core";
 import {
-  MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialog,
+  MatDialogRef,
 } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel } from "@angular/cdk/collections";
 import * as _ from "lodash";
-import { GetService } from "../../services/get.service";
 import { CreateService } from "../../services/create.service";
+import { GetService } from "../../services/get.service";
 
 import { BackgroundEvaluationsInformationDialogComponent } from "../background-evaluations-information-dialog/background-evaluations-information-dialog.component";
 
@@ -18,7 +18,7 @@ import { BackgroundEvaluationsInformationDialogComponent } from "../background-e
   styleUrls: ["./add-crawler-pages-dialog.component.css"],
 })
 export class AddCrawlerPagesDialogComponent implements OnInit {
-  displayedColumns = ["Uri", "import", "observatorio"];
+  displayedColumns = ["uri", "import", "observatorio"];
 
   pages: Array<any>;
   dataSource: MatTableDataSource<any>;
@@ -58,7 +58,7 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
         if (uris !== null) {
           const cleanUris = JSON.stringify(
             _.map(uris, (p) => {
-              let uriToClean = p["Uri"];
+              let uriToClean = p["uri"];
               /*if (uriToClean[_.size(uriToClean) - 1] === "/") {
                 uriToClean = uriToClean.substring(0, _.size(uriToClean) - 1);
               }*/
@@ -68,7 +68,7 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
           );
           this.dataSource = new MatTableDataSource(
             _.map(JSON.parse(cleanUris), (u) => ({
-              Uri: decodeURIComponent(u),
+              uri: decodeURIComponent(u),
             }))
           );
         } else {
@@ -81,8 +81,8 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
     e.preventDefault();
     this.submitted = true;
     this.addPages(
-      JSON.stringify(_.map(this.selectionImport.selected, "Uri")),
-      JSON.stringify(_.map(this.selectionObserv.selected, "Uri"))
+      JSON.stringify(_.map(this.selectionImport.selected, "uri")),
+      JSON.stringify(_.map(this.selectionObserv.selected, "uri"))
     );
   }
 
@@ -103,10 +103,10 @@ export class AddCrawlerPagesDialogComponent implements OnInit {
   masterToggleImport() {
     this.isAllSelectedImport()
       ? this.dataSource.data.forEach((row) => {
-          if (!this.selectionObserv.isSelected(row)) {
-            this.selectionImport.deselect(row);
-          }
-        })
+        if (!this.selectionObserv.isSelected(row)) {
+          this.selectionImport.deselect(row);
+        }
+      })
       : this.dataSource.data.forEach((row) => this.selectionImport.select(row));
   }
 

@@ -1,9 +1,9 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
-  ViewChild,
-  ChangeDetectorRef
+  ViewChild
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
@@ -16,17 +16,11 @@ import {
   GetService
 } from '../../../services/get.service';
 
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
-import {
-  AddCrawlerPagesDialogComponent
-} from '../../../dialogs/add-crawler-pages-dialog/add-crawler-pages-dialog.component';
 import {
   ImportWebsiteDialogComponent
 } from '../../../dialogs/import-website-dialog/import-website-dialog.component';
-import {
-  UpdateService
-} from '../../../services/update.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-of-websites-user',
@@ -35,9 +29,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ListOfWebsitesUserComponent implements OnInit {
   displayedColumns = [
-    'Name',
+    'name',
     //'Entity',
-    'Creation_Date',
+    'creationDate',
     'Import',
   ];
 
@@ -63,7 +57,7 @@ export class ListOfWebsitesUserComponent implements OnInit {
     private dialog: MatDialog,
     private translate: TranslateService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -139,7 +133,7 @@ export class ListOfWebsitesUserComponent implements OnInit {
 
   private getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0 || pageSize === 0) {
-        return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
+      return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
     }
     length = Math.max(length, 0);
     const startIndex = page * pageSize;
@@ -161,7 +155,7 @@ export class ListOfWebsitesUserComponent implements OnInit {
     });
     importWebsiteDialog.afterClosed().subscribe(result => {
       if (result) {
-        const website = _.filter(this.websites, ['WebsiteId', websiteId]);
+        const website = _.filter(this.websites, ['websiteId', websiteId]);
         website[0].imported = true;
         this.cd.detectChanges();
         //window.location.reload();

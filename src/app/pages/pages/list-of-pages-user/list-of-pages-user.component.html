@@ -18,43 +18,67 @@
         (click)="this.parent.getElementById('odfFile').click()"
       </mat-form-field>-->
       <mat-form-field appearance="outline">
-        <label>{{ "MISC.filter" | translate }}
-          <input id="pages_user_table_filter" matInput (keyup)="applyFilter($event.target.value)">
+        <label
+          >{{ "MISC.filter" | translate }}
+          <input
+            id="pages_user_table_filter"
+            matInput
+            (keyup)="applyFilter($event.target.value)"
+          />
         </label>
       </mat-form-field>
-
     </div>
     <mat-table [dataSource]="dataSource" matSort>
-
-      <ng-container matColumnDef="Uri">
+      <ng-container matColumnDef="uri">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex>
           {{ "PAGES_PAGE.LIST.table.uri_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex>
-          <a *ngIf="tag" [routerLink]="['/console', 'tag', 'website', tag, user, website, element.Uri]">
-            <strong>{{element.Uri}}</strong>
+          <a
+            *ngIf="tag"
+            [routerLink]="[
+              '/console',
+              'tag',
+              'website',
+              tag,
+              user,
+              website,
+              element.uri
+            ]"
+          >
+            <strong>{{ element.uri }}</strong>
           </a>
-          <a *ngIf="!tag" [routerLink]="['/console','user' ,user,  'website', website, element.Uri]">
-            <strong>{{element.Uri}}</strong>
+          <a
+            *ngIf="!tag"
+            [routerLink]="[
+              '/console',
+              'user',
+              user,
+              'website',
+              website,
+              element.uri
+            ]"
+          >
+            <strong>{{ element.uri }}</strong>
           </a>
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Score">
+      <ng-container matColumnDef="score">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
           {{ "PAGES_PAGE.LIST.table.score_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          {{element.Score}}
+          {{ element.score }}
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Evaluation_Date">
+      <ng-container matColumnDef="evaluationDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10">
           {{ "PAGES_PAGE.LIST.table.last_updated_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          {{element.Evaluation_Date | date}}
+          {{ element.evaluationDate | date }}
         </mat-cell>
       </ng-container>
 
@@ -63,17 +87,25 @@
           {{ "IMPORT.import" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element" fxFlex="10">
-          <button mat-raised-button color="primary"
-                  (click)="setPageinAMS(element.PageId)"
-                  [disabled]="element.Show_In[0] === '1'">{{ "IMPORT.import" | translate }}</button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="setPageinAMS(element.pageId)"
+            [disabled]="element.Show_In[0] === '1'"
+          >
+            {{ "IMPORT.import" | translate }}
+          </button>
         </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
 
-    <mat-paginator [pageSize]="50" [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]"
-                   showFirstLastButtons></mat-paginator>
+    <mat-paginator
+      [pageSize]="50"
+      [pageSizeOptions]="[10, 20, 50, 100, 250, 500, 1000]"
+      showFirstLastButtons
+    ></mat-paginator>
   </mat-card-content>
 </mat-card>

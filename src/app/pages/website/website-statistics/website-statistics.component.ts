@@ -1,11 +1,10 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 
-import { ScoreDistributionDialogComponent } from "../../../dialogs/score-distribution-dialog/score-distribution-dialog.component";
 import { ErrorDistributionDialogComponent } from "../../../dialogs/error-distribution-dialog/error-distribution-dialog.component";
+import { ScoreDistributionDialogComponent } from "../../../dialogs/score-distribution-dialog/score-distribution-dialog.component";
 
-import { Page } from "../../../models/page";
 import { CorrectionDistributionDialogComponent } from "app/dialogs/correction-distribution-dialog/correction-distribution-dialog.component";
 import { Website } from "app/models/website.object";
 
@@ -68,14 +67,14 @@ export class WebsiteStatisticsComponent implements OnInit {
   ngOnInit(): void {
     this.total_pages = this.pages.length;
     this.pages = this.pages
-      .filter((p) => p.Score !== null)
+      .filter((p) => p.score !== null)
       .map((p) => {
-        p.Score = Number(p.Score);
+        p.score = Number(p.score);
         return p;
       });
     const size = _.size(this.pages);
-    this.newest_page = this.pages[0].Evaluation_Date;
-    this.oldest_page = this.pages[0].Evaluation_Date;
+    this.newest_page = this.pages[0].evaluationDate;
+    this.oldest_page = this.pages[0].evaluationDate;
 
     for (let i = 0; i < size; i++) {
       if (this.pages[i].A === 0) {
@@ -92,13 +91,13 @@ export class WebsiteStatisticsComponent implements OnInit {
         this.pagesWithErrors++;
       }
 
-      if (this.pages[i].Evaluation_Date > this.newest_page) {
-        this.newest_page = this.pages[i].Evaluation_Date;
-      } else if (this.pages[i].Evaluation_Date < this.oldest_page) {
-        this.oldest_page = this.pages[i].Evaluation_Date;
+      if (this.pages[i].evaluationDate > this.newest_page) {
+        this.newest_page = this.pages[i].evaluationDate;
+      } else if (this.pages[i].evaluationDate < this.oldest_page) {
+        this.oldest_page = this.pages[i].evaluationDate;
       }
 
-      this.score += this.pages[i].Score;
+      this.score += this.pages[i].score;
     }
 
     this.score /= size;

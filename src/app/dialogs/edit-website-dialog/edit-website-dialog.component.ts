@@ -1,35 +1,35 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
   Component,
-  OnInit,
-  Inject,
-  ViewChild,
   ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
 } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { ErrorStateMatcher } from "@angular/material/core";
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
+import * as _ from "lodash";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import * as _ from "lodash";
 
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
+import { VerifyService } from "../../services/verify.service";
 
 import { DeleteWebsiteConfirmationDialogComponent } from "../../dialogs/delete-website-confirmation-dialog/delete-website-confirmation-dialog.component";
 
@@ -129,23 +129,23 @@ export class EditWebsiteDialogComponent implements OnInit {
       if (website !== null) {
         this.defaultWebsite = _.cloneDeep(website);
 
-        this.websiteForm.controls.name.setValue(website.Name);
-        this.websiteForm.controls.startingUrl.setValue(website.StartingUrl);
+        this.websiteForm.controls.name.setValue(website.name);
+        this.websiteForm.controls.startingUrl.setValue(website.startingUrl);
 
         if (website.Pages === "0") {
           this.websiteForm.controls.startingUrl.enable();
         }
-        this.websiteForm.controls.declaration.setValue(website.Declaration);
+        this.websiteForm.controls.declaration.setValue(website.declaration);
         this.websiteForm.controls.stamp.setValue(website.Stamp);
         this.websiteForm.controls.declarationDate.setValue(
-          website.Declaration_Update_Date
-            ? new Date(website.Declaration_Update_Date)
+          website.declarationUpdateDate
+            ? new Date(website.declarationUpdateDate)
             : null
         );
         this.websiteForm.controls.stampDate.setValue(
-          website.Stamp_Update_Date ? new Date(website.Stamp_Update_Date) : null
+          website.stampUpdateDate ? new Date(website.stampUpdateDate) : null
         );
-        this.websiteForm.controls.stampDate.setValue(website.Stamp_Update_Date);
+        this.websiteForm.controls.stampDate.setValue(website.stampUpdateDate);
         this.websiteForm.controls.user.setValue(website.User);
         this.selectedEntities = website.entities;
         this.selectedTags = website.tags;
@@ -198,17 +198,17 @@ export class EditWebsiteDialogComponent implements OnInit {
   }
 
   setDefault(): void {
-    this.websiteForm.controls.name.setValue(this.defaultWebsite.Name);
-    this.websiteForm.controls.url.setValue(this.defaultWebsite.StartingUrl);
+    this.websiteForm.controls.name.setValue(this.defaultWebsite.name);
+    this.websiteForm.controls.url.setValue(this.defaultWebsite.startingUrl);
     this.websiteForm.controls.declaration.setValue(
-      this.defaultWebsite.Declaration
+      this.defaultWebsite.declaration
     );
     this.websiteForm.controls.stamp.setValue(this.defaultWebsite.Stamp);
     this.websiteForm.controls.declarationDate.setValue(
-      this.defaultWebsite.Declaration_Update_Date
+      this.defaultWebsite.declarationUpdateDate
     );
     this.websiteForm.controls.stampDate.setValue(
-      this.defaultWebsite.Stamp_Update_Date
+      this.defaultWebsite.stampUpdateDate
     );
     this.websiteForm.controls.user.setValue(this.defaultWebsite.User);
     this.websiteForm.controls.transfer.disable();
@@ -274,22 +274,22 @@ export class EditWebsiteDialogComponent implements OnInit {
       ? new Date(this.websiteForm.value.stampDate)
       : null;
     const userId = this.websiteForm.value.user
-      ? _.find(this.monitorUsers, ["Username", this.websiteForm.value.user])
-          .UserId
+      ? _.find(this.monitorUsers, ["username", this.websiteForm.value.user])
+        .userId
       : null;
 
     const olderUserId = this.defaultWebsite.User
-      ? _.find(this.monitorUsers, ["Username", this.defaultWebsite.User]).UserId
+      ? _.find(this.monitorUsers, ["username", this.defaultWebsite.User]).userId
       : null;
     const transfer = this.websiteForm.value.transfer;
 
-    const defaultEntities = 
-      _.map(this.defaultWebsite.entities, "EntityId");
-    const entities = _.map(this.selectedEntities, "EntityId");
+    const defaultEntities =
+      _.map(this.defaultWebsite.entities, "entityId");
+    const entities = _.map(this.selectedEntities, "entityId");
 
-    const defaultTags = 
-      _.map(this.defaultWebsite.tags, "TagId");
-    const tags =_.map(this.selectedTags, "TagId");
+    const defaultTags =
+      _.map(this.defaultWebsite.tags, "tagId");
+    const tags = _.map(this.selectedTags, "tagId");
 
     const formData = {
       websiteId: this.data.id,
@@ -348,7 +348,7 @@ export class EditWebsiteDialogComponent implements OnInit {
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!tag.Name.toLowerCase().includes(n)) {
+        if (!tag.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -359,11 +359,11 @@ export class EditWebsiteDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t["name"].trim() === event.option.viewValue.trim()
     );
     const index2 = _.findIndex(
       this.selectedTags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t["name"].trim() === event.option.viewValue.trim()
     );
     if (index2 === -1) {
       this.selectedTags.push(this.tags[index]);
@@ -386,7 +386,7 @@ export class EditWebsiteDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(entity.Short_Name + ' ' + entity.Long_Name).toLowerCase().includes(n)) {
+        if (!(entity.shortName + ' ' + entity.longName).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -396,11 +396,11 @@ export class EditWebsiteDialogComponent implements OnInit {
 
   selectedEntity(event: MatAutocompleteSelectedEvent): void {
     const entity = this.entities.filter(
-      (e) => e.Long_Name.trim() === event.option.viewValue.trim()
+      (e) => e.longName.trim() === event.option.viewValue.trim()
     );
 
     const selectedEntity = this.selectedEntities.filter(
-      (e) => e.Long_Name.trim() === event.option.viewValue.trim()
+      (e) => e.longName.trim() === event.option.viewValue.trim()
     );
 
     if (entity.length > 0 && selectedEntity.length === 0) {
@@ -412,7 +412,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
   filterUser(val: string): string[] {
     return this.monitorUsers.filter((user) =>
-      _.includes(user.Username.toLowerCase(), val.toLowerCase())
+      _.includes(user.username.toLowerCase(), val.toLowerCase())
     );
   }
 
@@ -420,8 +420,8 @@ export class EditWebsiteDialogComponent implements OnInit {
     const name = control.value.trim();
     if (
       name !== "" &&
-      name !== this.defaultWebsite.Name &&
-      name.toLowerCase() !== this.defaultWebsite.Name.toLowerCase()
+      name !== this.defaultWebsite.name &&
+      name.toLowerCase() !== this.defaultWebsite.name.toLowerCase()
     ) {
       return this.verify.websiteNameExists(name);
     } else {
@@ -433,7 +433,7 @@ export class EditWebsiteDialogComponent implements OnInit {
     const val = _.trim(control.value);
 
     if (val) {
-      return _.includes(_.map(this.entities, "Long_Name"), val)
+      return _.includes(_.map(this.entities, "longName"), val)
         ? null
         : { validEntity: true };
     } else {
@@ -444,7 +444,7 @@ export class EditWebsiteDialogComponent implements OnInit {
   userValidator(control: AbstractControl): any {
     const val = _.trim(control.value);
     if (val) {
-      return _.includes(_.map(this.monitorUsers, "Username"), val)
+      return _.includes(_.map(this.monitorUsers, "username"), val)
         ? null
         : { validUser: true };
     } else {

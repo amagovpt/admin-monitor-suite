@@ -1,27 +1,27 @@
 import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
   ChangeDetectorRef,
-  Output,
-  Input,
+  Component,
+  ElementRef,
   EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
 } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
 
 import { GetService } from "../../../services/get.service";
 
-import { EditDirectoryDialogComponent } from "../../../dialogs/edit-directory-dialog/edit-directory-dialog.component";
-import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
-import { TranslateService } from "@ngx-translate/core";
 import { SelectionModel } from "@angular/cdk/collections";
+import { TranslateService } from "@ngx-translate/core";
+import { EditDirectoryDialogComponent } from "../../../dialogs/edit-directory-dialog/edit-directory-dialog.component";
 import { DeleteService } from "../../../services/delete.service";
 import { MessageService } from "../../../services/message.service";
+import { ChoosePagesToReEvaluateDialogComponent } from "./../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
 
 @Component({
   selector: "app-list-of-directories",
@@ -34,9 +34,9 @@ export class ListOfDirectoriesComponent implements OnInit {
   @Input() directories: any;
 
   displayedColumns = [
-    "Name",
-    "Show_in_Observatory",
-    "Creation_Date",
+    "name",
+    "showInObservatory",
+    "creationDate",
     "Tags",
     //"re-evaluate",
     "edit",
@@ -68,7 +68,7 @@ export class ListOfDirectoriesComponent implements OnInit {
   }
 
   reEvaluateDirectoriesWebsites(): void {
-    const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
+    const directoriesId = this.selection.selected.map((d) => d.directoryId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
@@ -102,7 +102,7 @@ export class ListOfDirectoriesComponent implements OnInit {
   }
 
   deleteDirectories(): void {
-    const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
+    const directoriesId = this.selection.selected.map((d) => d.directoryId);
     this.deleteService
       .directories({
         directoriesId,
@@ -118,7 +118,7 @@ export class ListOfDirectoriesComponent implements OnInit {
   }
 
   deleteDirectoriesPages(): void {
-    const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
+    const directoriesId = this.selection.selected.map((d) => d.directoryId);
     this.deleteService
       .directoriesPages({
         directoriesId,
@@ -142,8 +142,8 @@ export class ListOfDirectoriesComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -151,8 +151,7 @@ export class ListOfDirectoriesComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 }

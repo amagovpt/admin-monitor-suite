@@ -355,12 +355,9 @@ export class UpdateService {
   }
 
   observatoryPages(
-    pages: Array<any>,
-    pagesId: Array<number>
-  ): Observable<boolean> {
+    pages: Array<any>): Observable<boolean> {
     const data = {
       pages,
-      pagesId,
     };
 
     return this.http

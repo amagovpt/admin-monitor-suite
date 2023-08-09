@@ -1,31 +1,31 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
   Component,
-  OnInit,
-  Inject,
-  ViewChild,
   ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
 } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Observable, of } from "rxjs";
-import { map, startWith } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import * as _ from "lodash";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -111,16 +111,16 @@ export class EditDirectoryDialogComponent implements OnInit {
       if (directory !== null) {
         this.defaultDirectory = _.cloneDeep(directory);
 
-        this.directoryForm.controls.name.setValue(directory.Name);
+        this.directoryForm.controls.name.setValue(directory.name);
         this.directoryForm.controls.observatory.setValue(
-          directory.Show_in_Observatory
+          directory.showInObservatory
         );
         this.directoryForm.controls.method.setValue(
-          directory.Method.toString()
+          directory.method.toString()
         );
         this.selectedTags = directory.tags;
 
-        this.copyDirectoryForm.controls.name.setValue(directory.Name);
+        this.copyDirectoryForm.controls.name.setValue(directory.name);
 
         this.directoryForm.controls.name.setAsyncValidators(
           this.nameValidator.bind(this)
@@ -163,8 +163,8 @@ export class EditDirectoryDialogComponent implements OnInit {
     const name = this.directoryForm.value.name.trim();
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
     const method = parseInt(this.directoryForm.value.method);
-    const defaultTags = _.map(this.defaultDirectory.tags, "TagId");
-    const tags = _.map(this.selectedTags, "TagId");
+    const defaultTags = _.map(this.defaultDirectory.tags, "tagId");
+    const tags = _.map(this.selectedTags, "tagId");
 
     const formData = {
       directoryId: this.data.id,
@@ -187,12 +187,12 @@ export class EditDirectoryDialogComponent implements OnInit {
   }
 
   setDefault(): void {
-    this.directoryForm.controls.name.setValue(this.defaultDirectory.Name);
+    this.directoryForm.controls.name.setValue(this.defaultDirectory.name);
     this.directoryForm.controls.observatory.setValue(
-      this.defaultDirectory.Show_in_Observatory
+      this.defaultDirectory.showInObservatory
     );
     this.directoryForm.controls.method.setValue(
-      this.defaultDirectory.Method.toString()
+      this.defaultDirectory.method.toString()
     );
     this.selectedTags = _.clone(this.defaultDirectory.tags);
   }
@@ -211,7 +211,7 @@ export class EditDirectoryDialogComponent implements OnInit {
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!tag.Name.toLowerCase().includes(n)) {
+        if (!tag.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -222,11 +222,11 @@ export class EditDirectoryDialogComponent implements OnInit {
   selectedTag(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.tags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t["name"].trim() === event.option.viewValue.trim()
     );
     const index2 = _.findIndex(
       this.selectedTags,
-      (t) => t["Name"].trim() === event.option.viewValue.trim()
+      (t) => t["name"].trim() === event.option.viewValue.trim()
     );
     if (index2 < 0) {
       this.selectedTags.push(this.tags[index]);
@@ -240,8 +240,8 @@ export class EditDirectoryDialogComponent implements OnInit {
 
     if (
       name !== "" &&
-      name !== this.defaultDirectory.Name &&
-      name.toLowerCase() !== this.defaultDirectory.Name.toLowerCase()
+      name !== this.defaultDirectory.name &&
+      name.toLowerCase() !== this.defaultDirectory.name.toLowerCase()
     ) {
       return this.verify.directoryNameExists(name);
     } else {

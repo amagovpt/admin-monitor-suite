@@ -1,14 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {GetService} from '../../../services/get.service';
+import { GetService } from '../../../services/get.service';
 
-import * as _ from 'lodash';
-import {ActivatedRoute} from '@angular/router';
-import {ImportTagDialogComponent} from '../../../dialogs/import-tag-dialog/import-tag-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import * as _ from 'lodash';
+import { ImportTagDialogComponent } from '../../../dialogs/import-tag-dialog/import-tag-dialog.component';
 
 @Component({
   selector: 'app-list-of-tags-user',
@@ -23,9 +23,9 @@ export class ListOfTagsUserComponent implements OnInit {
   user: string;
 
   displayedColumns = [
-    'Name',
+    'name',
     //'Show_in_Observatorio',
-    'Creation_Date',
+    'creationDate',
     'Websites',
     'Import'
   ];
@@ -84,7 +84,7 @@ export class ListOfTagsUserComponent implements OnInit {
 
   private getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0 || pageSize === 0) {
-        return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
+      return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
     }
     length = Math.max(length, 0);
     const startIndex = page * pageSize;

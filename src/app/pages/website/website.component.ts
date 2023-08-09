@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
 import * as _ from "lodash";
+import { Subscription } from "rxjs";
 
-import { GetService } from "../../services/get.service";
 import { EvaluationService } from "../../services/evaluation.service";
+import { GetService } from "../../services/get.service";
 
 import { Website } from "../../models/website.object";
 import { DeleteService } from "../../services/delete.service";
@@ -78,26 +78,26 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       .listOfWebsitePagesByName(this.user, this.website)
       .subscribe((pages) => {
         this.pages = _.clone(pages);
-//FIXME
-        if (pages.length > 0){
-          let uri = pages[0].Uri;
+        //FIXME
+        if (pages.length > 0) {
+          let uri = pages[0].uri;
           uri = uri.substring(0, uri.length - 1);
           this.startingUrl = uri
           this.correctUrl(uri);
         }
-  //FIXME
-        pages = pages.filter((p) => p.Score !== null);
+        //FIXME
+        pages = pages.filter((p) => p.score !== null);
 
         this.websiteObject = new Website();
         for (const page of pages) {
           this.websiteObject.addPage(
-            page.Score,
-            page.Errors,
-            page.Tot,
+            page.score,
+            page.errors,
+            page.tot,
             page.A,
             page.AA,
             page.AAA,
-            page.Evaluation_Date
+            page.evaluationDate
           );
         }
         console.log(this.websiteObject)
@@ -121,15 +121,15 @@ export class WebsiteComponent implements OnInit, OnDestroy {
       }
     });
   }
-//FIXME
-  correctUrl(url:string): void {
-    this.evaluation.getWebsiteStats(url, true).subscribe((result)=>{
-      if(result.length === 0){
+  //FIXME
+  correctUrl(url: string): void {
+    this.evaluation.getWebsiteStats(url, true).subscribe((result) => {
+      if (result.length === 0) {
         this.startingUrl = url + '/';
       }
     });
   }
-//FIXME
+  //FIXME
   downloadAllPagesCSV(): void {
     this.evaluation.downloadWebsiteCSV(this.startingUrl, true).subscribe();
   }

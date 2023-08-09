@@ -1,13 +1,13 @@
-import { Component, OnInit, AfterViewInit, Input, Output, ViewChild, ElementRef, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import * as _ from 'lodash';
 
-import { UpdateService } from '../../../services/update.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UpdateService } from '../../../services/update.service';
 
 @Component({
   selector: 'app-list-of-pages-user',
@@ -20,9 +20,9 @@ export class ListOfPagesUserComponent implements OnInit, AfterViewInit {
   @Input('pages') pages: Array<any>;
 
   displayedColumns = [
-    'Uri',
-    'Score',
-    'Evaluation_Date',
+    'uri',
+    'score',
+    'evaluationDate',
     'Import',
   ];
 
@@ -48,7 +48,8 @@ export class ListOfPagesUserComponent implements OnInit, AfterViewInit {
     private cd: ChangeDetectorRef
   ) {
     this.pagesForm = this.formBuilder.group({
-      file: new FormControl()});
+      file: new FormControl()
+    });
   }
 
   ngOnInit(): void {
@@ -87,7 +88,7 @@ export class ListOfPagesUserComponent implements OnInit, AfterViewInit {
 
   private getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0 || pageSize === 0) {
-        return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
+      return this.translate.instant('RANGE_PAGE_LABEL_1', { length });
     }
     length = Math.max(length, 0);
     const startIndex = page * pageSize;
@@ -103,10 +104,10 @@ export class ListOfPagesUserComponent implements OnInit, AfterViewInit {
   }
 
   setPageinAMS(pageId: string): void {
-    this.update.importPage({ pageId: pageId, user: this.user, tag: this.tag, website: this.website})
+    this.update.importPage({ pageId: pageId, user: this.user, tag: this.tag, website: this.website })
       .subscribe(result => {
         if (result) {
-          const page = _.filter(this.pages, ['PageId', pageId]);
+          const page = _.filter(this.pages, ['pageId', pageId]);
           page[0].Show_In = '1' + page[0].Show_In[1] + page[0].Show_In[2];
           this.cd.detectChanges();
         }

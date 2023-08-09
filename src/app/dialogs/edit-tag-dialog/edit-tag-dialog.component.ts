@@ -1,31 +1,31 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
   Component,
-  OnInit,
-  Inject,
-  ViewChild,
   ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
 } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import * as _ from "lodash";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import * as _ from "lodash";
 
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -117,11 +117,11 @@ export class EditTagDialogComponent implements OnInit {
       if (tag !== null) {
         this.defaultTag = _.cloneDeep(tag);
 
-        this.tagForm.controls.name.setValue(tag.Name);
+        this.tagForm.controls.name.setValue(tag.name);
         this.selectedDirectories = tag.directories;
         this.selectedWebsites = tag.websites;
 
-        this.copyTagForm.controls.name.setValue(tag.Name);
+        this.copyTagForm.controls.name.setValue(tag.name);
 
         this.tagForm.controls.name.setAsyncValidators(
           this.nameValidator.bind(this)
@@ -164,7 +164,7 @@ export class EditTagDialogComponent implements OnInit {
   }
 
   setDefault(): void {
-    this.tagForm.controls.name.setValue(this.defaultTag.Name);
+    this.tagForm.controls.name.setValue(this.defaultTag.name);
     this.selectedDirectories = _.clone(this.defaultTag.directories);
     this.selectedWebsites = _.clone(this.defaultTag.websites);
   }
@@ -184,13 +184,13 @@ export class EditTagDialogComponent implements OnInit {
     const name = this.tagForm.value.name.trim();
 
     const defaultDirectories =
-      _.map(this.defaultTag.directories, "DirectoryId");
+      _.map(this.defaultTag.directories, "directoryId");
     const directories =
-      _.map(this.selectedDirectories, "DirectoryId");
+      _.map(this.selectedDirectories, "directoryId");
 
-    const defaultWebsites = 
-      _.map(this.defaultTag.websites, "WebsiteId");
-    const websites = _.map(this.selectedWebsites, "WebsiteId");
+    const defaultWebsites =
+      _.map(this.defaultTag.websites, "websiteId");
+    const websites = _.map(this.selectedWebsites, "websiteId");
 
     const formData = {
       tagId: this.data.id,
@@ -221,12 +221,12 @@ export class EditTagDialogComponent implements OnInit {
   }
 
   filterDirectory(name: string) {
-    return this.directories.filter((directory) =>{
+    return this.directories.filter((directory) => {
       let valid = true;
       const names = name.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [name]) {
-        if (!directory.Name.toLowerCase().includes(n)) {
+        if (!directory.name.toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -237,7 +237,7 @@ export class EditTagDialogComponent implements OnInit {
   selectedDirectory(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.directories,
-      (d) => d["Name"].trim() === event.option.viewValue.trim()
+      (d) => d["name"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedDirectories, this.directories[index])) {
       this.selectedDirectories.push(this.directories[index]);
@@ -260,7 +260,7 @@ export class EditTagDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
+        if (!(website.name + ' ' + website.startingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -271,11 +271,11 @@ export class EditTagDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["StartingUrl"] === event.option.viewValue
+      (w) => w["startingUrl"] === event.option.viewValue
     );
     const index2 = _.findIndex(
       this.selectedWebsites,
-      (w) => w["StartingUrl"] === event.option.viewValue
+      (w) => w["startingUrl"] === event.option.viewValue
     );
     if (index2 < 0) {
       this.selectedWebsites.push(this.websites[index]);
@@ -289,8 +289,8 @@ export class EditTagDialogComponent implements OnInit {
 
     if (
       name !== "" &&
-      name !== this.defaultTag.Name &&
-      name.toLowerCase() !== this.defaultTag.Name.toLowerCase()
+      name !== this.defaultTag.name &&
+      name.toLowerCase() !== this.defaultTag.name.toLowerCase()
     ) {
       return this.verify.tagNameExists(name);
     } else {

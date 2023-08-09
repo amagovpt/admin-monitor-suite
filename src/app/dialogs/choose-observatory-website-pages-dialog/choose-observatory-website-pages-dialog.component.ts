@@ -1,12 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import * as _ from 'lodash';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { GetService } from '../../services/get.service';
-import { UpdateService } from '../../services/update.service';
 import { MessageService } from '../../services/message.service';
+import { UpdateService } from '../../services/update.service';
 
 @Component({
   selector: 'app-choose-observatory-website-pages-dialog',
@@ -19,7 +18,7 @@ export class ChooseObservatoryWebsitePagesDialogComponent implements OnInit {
   error: boolean;
 
   displayedColumns = [
-    'Uri',
+    'uri',
     'select'
   ];
 
@@ -61,10 +60,12 @@ export class ChooseObservatoryWebsitePagesDialogComponent implements OnInit {
 
   updateObservatoryPages(e): void {
     e.preventDefault();
+    const pagesId = this.pages.map((page) => {
+      let selected = this.selection.isSelected(page.pageId);
+      return { id: page.pageId, inObservatory: selected }
+    });
 
-    const pagesId = _.map(this.selection.selected, 'PageId');
-
-    this.update.observatoryPages(this.pages, pagesId)
+    this.update.observatoryPages(pagesId)
       .subscribe(success => {
         if (success) {
           this.message.show('WEBSITES_PAGE.UPDATE.observatorio.success');

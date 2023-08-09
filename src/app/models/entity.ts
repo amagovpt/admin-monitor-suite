@@ -1,20 +1,20 @@
 interface IEntity {
-  EntityId: number;
-  Short_Name: string;
-  Long_Name: string;
-  Creation_Date: Date;
+  entityId: number;
+  shortName: string;
+  longName: string;
+  creationDate: Date;
 }
 
 export class Entity implements IEntity {
-  EntityId: number;
-  Short_Name: string;
-  Long_Name: string;
-  Creation_Date: Date;
+  entityId: number;
+  shortName: string;
+  longName: string;
+  creationDate: Date;
 
-  constructor(EntityId: number, Short_Name: string, Long_Name: string, Creation_Date: Date) {
-    this.EntityId = EntityId;
-    this.Short_Name = Short_Name;
-    this.Long_Name = Long_Name;
-    this.Creation_Date = Creation_Date;
+  constructor(entityId: number, shortName: string, longName: string, creationDate: Date) {
+    this.entityId = entityId;
+    this.shortName = shortName;
+    this.longName = longName;
+    this.creationDate = creationDate;
   }
 }

@@ -2,42 +2,69 @@
 <form (submit)="choosePages($event)" novalidate>
   <mat-dialog-content>
     <mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="Uri" class="mat-column-uri">
+      <ng-container matColumnDef="uri" class="mat-column-uri">
         <mat-header-cell *matHeaderCellDef>
           {{ "CRAWLER.RESULT_LIST.uri_label" | translate }}
         </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <strong>{{element.Uri}}</strong>
+          <strong>{{ element.uri }}</strong>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="import" class="mat-column-select">
         <mat-header-cell *matHeaderCellDef>
-          <mat-checkbox color="primary" style="margin-bottom: 0" (change)="$event ? masterToggleImport() : null" [checked]="selectionImport.hasValue() && isAllSelectedImport()" [disabled]="selectionObserv.hasValue() && isAllSelectedObserv()"
-                        [indeterminate]="selectionImport.hasValue() && !isAllSelectedImport()">
+          <mat-checkbox
+            color="primary"
+            style="margin-bottom: 0"
+            (change)="$event ? masterToggleImport() : null"
+            [checked]="selectionImport.hasValue() && isAllSelectedImport()"
+            [disabled]="selectionObserv.hasValue() && isAllSelectedObserv()"
+            [indeterminate]="
+              selectionImport.hasValue() && !isAllSelectedImport()
+            "
+          >
           </mat-checkbox>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <mat-checkbox color="primary" style="margin-bottom: 0" (click)="$event.stopPropagation()" (change)="$event ? selectionImport.toggle(row) : null" [checked]="selectionImport.isSelected(row)" [disabled]="selectionObserv.isSelected(row)">
+          <mat-checkbox
+            color="primary"
+            style="margin-bottom: 0"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selectionImport.toggle(row) : null"
+            [checked]="selectionImport.isSelected(row)"
+            [disabled]="selectionObserv.isSelected(row)"
+          >
           </mat-checkbox>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="observatorio" class="mat-column-select">
         <mat-header-cell *matHeaderCellDef>
-          <mat-checkbox color="primary" style="margin-bottom: 0" (change)="$event ? masterToggleObserv() : null" [checked]="selectionObserv.hasValue() && isAllSelectedObserv()"
-                        [indeterminate]="selectionObserv.hasValue() && !isAllSelectedObserv()">
+          <mat-checkbox
+            color="primary"
+            style="margin-bottom: 0"
+            (change)="$event ? masterToggleObserv() : null"
+            [checked]="selectionObserv.hasValue() && isAllSelectedObserv()"
+            [indeterminate]="
+              selectionObserv.hasValue() && !isAllSelectedObserv()
+            "
+          >
           </mat-checkbox>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <mat-checkbox color="primary" style="margin-bottom: 0" (click)="$event.stopPropagation()" (change)="$event ? toggleBoth(row) : null" [checked]="selectionObserv.isSelected(row)">
+          <mat-checkbox
+            color="primary"
+            style="margin-bottom: 0"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? toggleBoth(row) : null"
+            [checked]="selectionObserv.isSelected(row)"
+          >
           </mat-checkbox>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="header-uri" class="mat-column-uri">
-        <mat-header-cell *matHeaderCellDef>
-        </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
       </ng-container>
       <ng-container matColumnDef="header-import" class="mat-column-select">
         <mat-header-cell *matHeaderCellDef>
@@ -50,21 +77,35 @@
         </mat-header-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="['header-uri','header-import','header-observ']"></mat-header-row>
+      <mat-header-row
+        *matHeaderRowDef="['header-uri', 'header-import', 'header-observ']"
+      ></mat-header-row>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
   </mat-dialog-content>
 
   <mat-dialog-actions>
     <button mat-raised-button color="warn" mat-dialog-close>
-    {{ "CRAWLER.RESULT_LIST.cancel" | translate }}
+      {{ "CRAWLER.RESULT_LIST.cancel" | translate }}
     </button>
     <span fxFlex></span>
-    <span *ngIf="dataSource" fxFlex="10">{{ "CRAWLER.RESULT_LIST.total" | translate }} {{ dataSource.data.length  }}</span>
-    <span fxFlex="10">{{ "CRAWLER.RESULT_LIST.selected" | translate }} {{ selectionImport.selected.length  }}</span>
-    <button *ngIf="!submitted" mat-raised-button color="primary" type="submit" [disabled]="this.selectionImport.selected.length === 0">
+    <span *ngIf="dataSource" fxFlex="10"
+      >{{ "CRAWLER.RESULT_LIST.total" | translate }}
+      {{ dataSource.data.length }}</span
+    >
+    <span fxFlex="10"
+      >{{ "CRAWLER.RESULT_LIST.selected" | translate }}
+      {{ selectionImport.selected.length }}</span
+    >
+    <button
+      *ngIf="!submitted"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="this.selectionImport.selected.length === 0"
+    >
       {{ "CRAWLER.RESULT_LIST.submit" | translate }}
     </button>
     <button *ngIf="submitted" mat-raised-button disabled>

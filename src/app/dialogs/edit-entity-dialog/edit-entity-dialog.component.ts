@@ -1,32 +1,32 @@
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
   Component,
-  OnInit,
-  Inject,
-  ViewChild,
   ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
 } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  Validators,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import * as _ from "lodash";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import * as _ from "lodash";
 
 import { CreateService } from "../../services/create.service";
-import { GetService } from "../../services/get.service";
-import { VerifyService } from "../../services/verify.service";
-import { UpdateService } from "../../services/update.service";
 import { DeleteService } from "../../services/delete.service";
+import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { UpdateService } from "../../services/update.service";
+import { VerifyService } from "../../services/verify.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -106,8 +106,8 @@ export class EditEntityDialogComponent implements OnInit {
       if (entity !== null) {
         this.defaultEntity = _.cloneDeep(entity);
 
-        this.entityForm.controls.shortName.setValue(entity.Short_Name);
-        this.entityForm.controls.longName.setValue(entity.Long_Name);
+        this.entityForm.controls.shortName.setValue(entity.shortName);
+        this.entityForm.controls.longName.setValue(entity.longName);
         this.selectedWebsites = entity.websites;
         this.websites = this.websites.concat(entity.websites);
 
@@ -138,8 +138,8 @@ export class EditEntityDialogComponent implements OnInit {
   }
 
   setDefault(): void {
-    this.entityForm.controls.shortName.setValue(this.defaultEntity.Short_Name);
-    this.entityForm.controls.longName.setValue(this.defaultEntity.Long_Name);
+    this.entityForm.controls.shortName.setValue(this.defaultEntity.shortName);
+    this.entityForm.controls.longName.setValue(this.defaultEntity.longName);
     this.selectedWebsites = _.clone(this.defaultEntity.websites);
   }
 
@@ -160,8 +160,8 @@ export class EditEntityDialogComponent implements OnInit {
     const shortName = this.entityForm.value.shortName.trim();
     const longName = this.entityForm.value.longName.trim();
 
-    const defaultWebsites = _.map(this.defaultEntity.websites, "WebsiteId");
-    const websites =_.map(this.selectedWebsites, "WebsiteId");
+    const defaultWebsites = _.map(this.defaultEntity.websites, "websiteId");
+    const websites = _.map(this.selectedWebsites, "websiteId");
 
     const formData = {
       entityId: this.data.id,
@@ -197,7 +197,7 @@ export class EditEntityDialogComponent implements OnInit {
       const names = val.trim().toLowerCase().split(' ');
 
       for (const n of names ?? [val]) {
-        if (!(website.Name + ' ' + website.StartingUrl).toLowerCase().includes(n)) {
+        if (!(website.name + ' ' + website.startingUrl).toLowerCase().includes(n)) {
           valid = false;
         }
       }
@@ -208,7 +208,7 @@ export class EditEntityDialogComponent implements OnInit {
   selectedWebsite(event: MatAutocompleteSelectedEvent): void {
     const index = _.findIndex(
       this.websites,
-      (w) => w["StartingUrl"].trim() === event.option.viewValue.trim()
+      (w) => w["startingUrl"].trim() === event.option.viewValue.trim()
     );
     if (!_.includes(this.selectedWebsites, this.websites[index])) {
       this.selectedWebsites.push(this.websites[index]);
@@ -222,8 +222,8 @@ export class EditEntityDialogComponent implements OnInit {
 
     if (
       name !== "" &&
-      name !== this.defaultEntity.Short_Name &&
-      name.toLowerCase() !== this.defaultEntity.Short_Name.toLowerCase()
+      name !== this.defaultEntity.shortName &&
+      name.toLowerCase() !== this.defaultEntity.shortName.toLowerCase()
     ) {
       return this.verify.entityShortNameExists(name);
     } else {
@@ -236,8 +236,8 @@ export class EditEntityDialogComponent implements OnInit {
 
     if (
       name !== "" &&
-      name !== this.defaultEntity.Long_Name &&
-      name.toLowerCase() !== this.defaultEntity.Long_Name.toLowerCase()
+      name !== this.defaultEntity.longName &&
+      name.toLowerCase() !== this.defaultEntity.longName.toLowerCase()
     ) {
       return this.verify.entityLongNameExists(name);
     } else {

@@ -1,14 +1,14 @@
 interface IWebsite {
-  WebsiteId: number;
-  Name: string;
+  websiteId: number;
+  name: string;
 }
 
 export class Website implements IWebsite {
-  WebsiteId: number;
-  Name: string;
+  websiteId: number;
+  name: string;
 
-  constructor(WebsiteId: number, Name: string) {
-    this.WebsiteId = WebsiteId;
-    this.Name = Name;
+  constructor(websiteId: number, name: string) {
+    this.websiteId = websiteId;
+    this.name = name;
   }
 }

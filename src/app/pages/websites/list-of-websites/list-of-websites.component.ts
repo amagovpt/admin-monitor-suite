@@ -1,31 +1,27 @@
+import { Overlay } from "@angular/cdk/overlay";
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  Input,
-  Output,
-  ViewChild,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
   EventEmitter,
-  ChangeDetectorRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
 } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
-import { Overlay } from "@angular/cdk/overlay";
 import * as _ from "lodash";
 
-import { MessageService } from "./../../../services/message.service";
 import { DigitalStampService } from "./../../../services/digital-stamp.service";
+import { MessageService } from "./../../../services/message.service";
 
-import { EditWebsiteDialogComponent } from "../../../dialogs/edit-website-dialog/edit-website-dialog.component";
-import { ChoosePagesToReEvaluateDialogComponent } from "../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
 import { SelectionModel } from "@angular/cdk/collections";
-import { DeleteService } from "../../../services/delete.service";
-import { CrawlerDialogComponent } from "../../../dialogs/crawler-dialog/crawler-dialog.component";
 import { FormControl } from "@angular/forms";
-import { GetService } from "../../../services/get.service";
+import { merge, of } from "rxjs";
 import {
   catchError,
   debounceTime,
@@ -34,7 +30,11 @@ import {
   startWith,
   switchMap,
 } from "rxjs/operators";
-import { merge, of } from "rxjs";
+import { ChoosePagesToReEvaluateDialogComponent } from "../../../dialogs/choose-pages-to-re-evaluate-dialog/choose-pages-to-re-evaluate-dialog.component";
+import { CrawlerDialogComponent } from "../../../dialogs/crawler-dialog/crawler-dialog.component";
+import { EditWebsiteDialogComponent } from "../../../dialogs/edit-website-dialog/edit-website-dialog.component";
+import { DeleteService } from "../../../services/delete.service";
+import { GetService } from "../../../services/get.service";
 
 @Component({
   selector: "app-list-of-websites",
@@ -47,11 +47,11 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   @Input("websites") websites: any;
 
   displayedColumns = [
-    "Name",
+    "name",
     //"User",
-    "StartingUrl",
+    "startingUrl",
     "Pages",
-    "Creation_Date",
+    "creationDate",
     //"re-evaluate",
     "edit",
     //"crawler",
@@ -155,7 +155,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   reEvaluateWebsitesPages(): void {
-    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+    const websitesId = this.selection.selected.map((w) => w.websiteId);
     this.dialog.open(ChoosePagesToReEvaluateDialogComponent, {
       width: "40vw",
       data: {
@@ -201,8 +201,8 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     const websites = new Array<{ url: string; websiteId: number }>();
     this.selection.selected.map((w) => {
       websites.push({
-        url: w.StartingUrl,
-        websiteId: w.WebsiteId,
+        url: w.startingUrl,
+        websiteId: w.websiteId,
       });
     });
 
@@ -223,7 +223,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   generateWebsitesDigitalStamp(): void {
-    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+    const websitesId = this.selection.selected.map((w) => w.websiteId);
 
     this.digitalStamp
       .generateForWebsites({ websitesId: websitesId })
@@ -239,7 +239,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   deleteWebsitesPages(): void {
-    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+    const websitesId = this.selection.selected.map((w) => w.websiteId);
     this.deleteService
       .websitesPages({
         websitesId: websitesId,
@@ -271,7 +271,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
   }
 
   deleteWebsites(): void {
-    const websitesId = this.selection.selected.map((w) => w.WebsiteId);
+    const websitesId = this.selection.selected.map((w) => w.websiteId);
     this.deleteService
       .websites({
         websitesId: websitesId,
@@ -314,8 +314,8 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.filteredData.forEach((row) =>
-          this.selection.select(row)
-        );
+        this.selection.select(row)
+      );
   }
 
   /** The label for the checkbox on the passed row */
@@ -323,8 +323,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     if (!row) {
       return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.position + 1
+      }`;
   }
 }
