@@ -2,7 +2,7 @@ const tests = {
   img_01a: {
     type: "fals",
     elem: "img",
-    test: "imgAltNo",
+    test: "imgAlt",
     score: 10,
     level: "a",
     trust: "0.9",
@@ -64,7 +64,7 @@ const tests = {
   area_01a: {
     type: "fals",
     elem: "area",
-    test: "areaAltNo",
+    test: "areaAltYes",
     score: 10,
     level: "a",
     trust: "0.9",
@@ -88,7 +88,7 @@ const tests = {
   inp_img_01a: {
     type: "fals",
     elem: "inpImg",
-    test: "inpImgAltNo",
+    test: "inpImgAltYes",
     score: 10,
     level: "a",
     trust: "0.9",
@@ -190,7 +190,7 @@ const tests = {
   a_01b: {
     type: "fals",
     elem: "a",
-    test: "aSkipFirst",
+    test: "aSkipFirstNo",
     score: 3,
     level: "a",
     trust: "0.9",
@@ -202,7 +202,7 @@ const tests = {
   a_02a: {
     type: "fals",
     elem: "a",
-    test: "aSkip",
+    test: "aSkipNo",
     score: 3,
     level: "a",
     trust: "0.9",
@@ -226,7 +226,7 @@ const tests = {
   hx_01a: {
     type: "fals",
     elem: "all",
-    test: "hx",
+    test: "hxNone",
     score: 3,
     level: "A",
     trust: "1",
@@ -353,8 +353,8 @@ const tests = {
   },
   input_02b: {
     type: "fals",
-    elem: "inputLabel",
-    test: "inputLabelNo",
+    elem: "all",
+    test: "inputLabel",
     score: 10,
     level: "a",
     trust: "0.7",
@@ -414,7 +414,7 @@ const tests = {
   form_01a: {
     type: "fals",
     elem: "form",
-    test: "formSubmitNo",
+    test: "formSubmit",
     score: 10,
     level: "a",
     trust: "1",
@@ -782,7 +782,7 @@ const tests = {
   w3c_validator_01a: {
     type: "fals",
     elem: "w3cValidator",
-    test: "w3cValidatorErrors",
+    test: "w3cValidatorErrorsNo",
     score: 10,
     level: "a",
     trust: "1",
@@ -822,7 +822,7 @@ const tests = {
   layout_01a: {
     type: "fals",
     elem: "all",
-    test: "layoutElem",
+    test: "layoutElemNo",
     score: 10,
     level: "a",
     trust: "1",
@@ -1862,7 +1862,7 @@ const tests = {
     result: "passed",
   },
   landmark_06: {
-    type: "decr",
+    type: "fals",
     elem: "all",
     test: "contentinfoNotTopLevel",
     score: 4,
@@ -1886,7 +1886,7 @@ const tests = {
     result: "passed",
   },
   landmark_08: {
-    type: "decr",
+    type: "fals",
     elem: "all",
     test: "mainNotTopLevel",
     score: 4,
