@@ -283,15 +283,13 @@ export class EditWebsiteDialogComponent implements OnInit {
       : null;
     const transfer = this.websiteForm.value.transfer;
 
-    const defaultEntities = JSON.stringify(
-      _.map(this.defaultWebsite.entities, "EntityId")
-    );
-    const entities = JSON.stringify(_.map(this.selectedEntities, "EntityId"));
+    const defaultEntities = 
+      _.map(this.defaultWebsite.entities, "EntityId");
+    const entities = _.map(this.selectedEntities, "EntityId");
 
-    const defaultTags = JSON.stringify(
-      _.map(this.defaultWebsite.tags, "TagId")
-    );
-    const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
+    const defaultTags = 
+      _.map(this.defaultWebsite.tags, "TagId");
+    const tags =_.map(this.selectedTags, "TagId");
 
     const formData = {
       websiteId: this.data.id,

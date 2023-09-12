@@ -226,7 +226,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     const websitesId = this.selection.selected.map((w) => w.WebsiteId);
 
     this.digitalStamp
-      .generateForWebsites({ websitesId: JSON.stringify(websitesId) })
+      .generateForWebsites({ websitesId: websitesId })
       .subscribe((success) => {
         if (success) {
           this.message.show("DIGITAL_STAMP.messages.generate_website_success");
@@ -242,7 +242,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     const websitesId = this.selection.selected.map((w) => w.WebsiteId);
     this.deleteService
       .websitesPages({
-        websitesId: JSON.stringify(websitesId),
+        websitesId: websitesId,
       })
       .subscribe((result) => {
         if (result) {
@@ -274,7 +274,7 @@ export class ListOfWebsitesComponent implements OnInit, AfterViewInit {
     const websitesId = this.selection.selected.map((w) => w.WebsiteId);
     this.deleteService
       .websites({
-        websitesId: JSON.stringify(websitesId),
+        websitesId: websitesId,
       })
       .subscribe((result) => {
         if (result) {

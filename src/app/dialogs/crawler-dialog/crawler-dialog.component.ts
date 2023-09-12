@@ -81,7 +81,7 @@ export class CrawlerDialogComponent implements OnInit {
 
   executeCrawler() {
     const data = {
-      websites: JSON.stringify(this.websites),
+      websites: this.websites,
       maxDepth: this.pageForm.value.maxDepth,
       maxPages: this.pageForm.value.maxPages,
       waitJS: this.pageForm.value.waitJS ? 1 : 0,

@@ -163,10 +163,8 @@ export class EditDirectoryDialogComponent implements OnInit {
     const name = this.directoryForm.value.name.trim();
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
     const method = parseInt(this.directoryForm.value.method);
-    const defaultTags = JSON.stringify(
-      _.map(this.defaultDirectory.tags, "TagId")
-    );
-    const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
+    const defaultTags = _.map(this.defaultDirectory.tags, "TagId");
+    const tags = _.map(this.selectedTags, "TagId");
 
     const formData = {
       directoryId: this.data.id,

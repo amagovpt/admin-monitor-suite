@@ -128,7 +128,7 @@ export class ListOfTagsComponent implements OnInit {
     const tagsId = this.selection.selected.map((t) => t.TagId);
     this.deleteService
       .tagsPages({
-        tagsId: JSON.stringify(tagsId),
+        tagsId: tagsId,
       })
       .subscribe((result) => {
         if (result) {

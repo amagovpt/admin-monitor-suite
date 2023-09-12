@@ -117,7 +117,7 @@ export class AddDirectoryDialogComponent implements OnInit {
     const name = this.directoryForm.value.name.trim();
     const observatory = this.directoryForm.value.observatory ? 1 : 0;
     const method = this.directoryForm.value.method;
-    const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
+    const tags = _.map(this.selectedTags, "TagId");
 
     const formData = {
       name,
