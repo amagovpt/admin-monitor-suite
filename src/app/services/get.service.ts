@@ -25,7 +25,7 @@ export class GetService {
     private http: HttpClient,
     private message: MessageService,
     private config: ConfigService
-  ) {}
+  ) { }
 
   observatoryData(): Observable<any> {//{CreatedAt,ID}
     return this.http
@@ -188,7 +188,7 @@ export class GetService {
         })
       );
   }
-  
+
   numberfA11yStatementsByStateDirectory(): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/accessibility-statement/directory/state"), {
@@ -324,10 +324,10 @@ export class GetService {
         })
       );
   }
-  
-  getA11yStatementById(id:number): Observable<any> {
+
+  getA11yStatementById(id: number): Observable<any> {
     return this.http
-      .get<any>(this.config.getServer("/accessibility-statement/id/"+id), {
+      .get<any>(this.config.getServer("/accessibility-statement/id/" + id), {
         observe: "response",
       })
       .pipe(
@@ -1953,9 +1953,9 @@ export class GetService {
       );
   }
 
-  getActionLog(fileName:string): Observable<any> {
+  getActionLog(fileName: string): Observable<any> {
     return this.http
-      .get<any>(this.config.getServer("/log/action-log/"+fileName), {
+      .get<any>(this.config.getServer("/log/action-log/" + fileName), {
         observe: "response",
         // @ts-ignore
         responseType: 'blob', //as 'json'

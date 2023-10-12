@@ -21,6 +21,10 @@
   "ADMIN_CONSOLE": {
     "add_button": "Adicionar conteúdo",
     "bottom_sheet": {
+      "govUser": {
+        "title": "Utilizador Autenticação.Gov",
+        "subtitle": "Criar um novo utilizador Autenticação.Gov"
+      },
       "user": {
         "title": "Utilizador",
         "subtitle": "Criar um novo utilizador"
@@ -53,6 +57,7 @@
   },
   "MENU": {
     "home": "Início",
+    "govUsers": "Utilizadores Gov",
     "users": "Utilizadores",
     "directories": "Diretórios",
     "tags": "Categorias",
@@ -258,6 +263,67 @@
   "LAST_PAGE_LABEL": "Última páginas",
   "RANGE_PAGE_LABEL_1": "0 de {{length}}",
   "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} de {{length}}",
+  "GOV_USERS_PAGE": {
+    "title": "Utilizador Autenticação.Gov:",
+    "LIST": {
+      "title": "Utilizadores Autenticação.Gov",
+      "subtitle": "Lista de todos os utilizadores Autenticação.Gov",
+      "table": {
+        "id_label": "ID",
+        "username_label": "Nome",
+        "app_label": "Aplicação",
+        "cc_label": "Nº do cartão de cidadão",
+        "register_label": "Data de registo",
+        "last_login_label": "Última sessão",
+        "edit_label": "Editar",
+        "edit_tooltip": "Editar este utilizador",
+        "see_tooltip": "Ver utilizador"
+      }
+    },
+    "ADD": {
+      "title": "Criar um utilizador Autenticação.Gov:",
+      "subtitle": "Crie um utilizador para o Study Monitor ou para o My Monitor",
+      "user_data": "Dados do utilizador",
+      "ccNumber_label": "Número do cartão de cidadão",
+      "name_label": "Nome",
+      "user_label": "Utilizadores associados",
+      "reset": "Limpar",
+      "submit": "Criar",
+      "user_exists" : "Já existe um utilizador com este número do CC",
+      "messages": {
+        "success": "Utilizador criado com sucesso",
+        "error": "Erro ao criar utilizador"
+      }
+    },
+    "UPDATE": {
+      "title": "Utilizador Autenticação.Gov:",
+      "subtitle": "Editar",
+      "description": "Editar este utilizador",
+      "default": "Reverter alterações",
+      "submit": "Atualizar",
+      "delete": {
+        "title": "Apagar",
+        "description": "Apagar este utilizador",
+        "list": {
+          "title": "Importante:",
+          "item1": "O utilizador e toda a sua informação serão apagados",
+          "item2": "Se o utilizador pertencer à aplicação Study Monitor, os seus sítios web e categorias serão apagados",
+          "item3": "Esta acção não pode ser revertida"
+        },
+        "submit": "Apagar utilizador"
+      },
+      "messages": {
+        "success": "Utilizador atualizado com sucesso",
+        "error": "Erro ao atualizar utilizador"
+      }
+    },
+    "DELETE": {
+      "messages": {
+        "success": "Utilizador apagado com sucesso",
+        "error": "Erro ao apagar utilizador"
+      }
+    }
+  },
   "USERS_PAGE": {
     "title": "Utilizador:",
     "LIST": {

@@ -49,6 +49,7 @@
   },
   "MENU": {
     "home": "Home",
+    "govUsers": "GovUsers",
     "users": "Users",
     "directories": "Directories",
     "tags": "Tags",
@@ -330,6 +331,81 @@
         "item2": "This action can't be undone"
       },
       "submit": "Delete user",
+      "messages": {
+        "success": "User deleted successfully",
+        "error": "Error deleting user"
+      }
+    }
+  },
+  "GOV_USERS_PAGE": {
+    "title": "Gov user:",
+    "LIST": {
+      "title": "Gov Users",
+      "subtitle": "List of all users from the applications Study Monitor and My Monitor",
+      "table": {
+        "id_label": "ID",
+        "username_label": "Username",
+        "app_label": "App",
+        "websites_label": "Nº Websites",
+        "register_label": "Register date",
+        "last_login_label": "Last login",
+        "edit_label": "Edit",
+        "edit_tooltip": "Edit this user",
+        "see_tooltip": "See user"
+      }
+    },
+    "ADD": {
+      "title": "Create a new user",
+      "subtitle": "Create a new use for one og the following applications: Study Monitor or My Monitor",
+      "user_data": "User data",
+      "username_label": "Username",
+      "username_exists": "The inserted username already exists",
+      "password_label": "Password",
+      "password_hint": "The password should have at least 8 characters, 1 upper case character, 1 lower case character, 1 number and 1 special character",
+      "password_short": "The password has less than 8 characters",
+      "password_uppercase": "The password does not contain any upper case character",
+      "password_lowercase": "The password does not contain any lower case character",
+      "password_number": "The password does not contain any number",
+      "password_special": "The password does not contain any special character",
+      "confirm_password_label": "Confirm password",
+      "confirm_password_error": "Passwords don't match",
+      "names_label": "Contact names",
+      "emails_label": "Contact e-mails",
+      "emails_error": "Email is <strong>invalid</strong>",
+      "choose_app": "Application",
+      "transfer_label": "Transfer pages from observatory",
+      "websites_label": "Choose websites",
+      "tags_label": "Choose tags",
+      "reset": "Reset",
+      "submit": "Create",
+      "messages": {
+        "success": "User created successfully",
+        "error": "Error creating user"
+      }
+    },
+    "UPDATE": {
+      "title": "User",
+      "subtitle": "Edit",
+      "description": "Edit this user",
+      "default": "Undo changes",
+      "submit": "Update",
+      "delete": {
+        "title": "Delete",
+        "description": "Delete this user",
+        "list": {
+          "title": "Important:",
+          "item1": "The user and all it's data will be deleted",
+          "item2": "If the user belongs to the Study Monitor application, all it's websites and tags will be deleted",
+          "item3": "This action can't be undone"
+        },
+        "submit": "Delete user"
+      },
+      "messages": {
+        "success": "User updated successfully",
+        "error": "Error updating user"
+      }
+    },
+    "DELETE": {
       "messages": {
         "success": "User deleted successfully",
         "error": "Error deleting user"
