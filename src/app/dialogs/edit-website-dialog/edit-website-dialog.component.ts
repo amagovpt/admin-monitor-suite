@@ -104,7 +104,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
     this.websiteForm = new FormGroup({
       name: new FormControl("", Validators.required),
-      startingUrl: new FormControl({ value: "", disabled: false }),
+      startingUrl: new FormControl({ value: "", disabled: true }),
       declaration: new FormControl(),
       stamp: new FormControl(),
       declarationDate: new FormControl(),
