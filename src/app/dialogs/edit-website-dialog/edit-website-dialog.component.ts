@@ -257,7 +257,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
     const name = _.trim(this.websiteForm.value.name);
     const startingUrl = encodeURIComponent(
-      _.trim(this.websiteForm.value.startingUrl)//this.defaultWebsite.StartingUrl
+      _.trim(this.defaultWebsite.StartingUrl)//this.websiteForm.value.startingUrl
     );
     const declaration =
       this.websiteForm.value.declaration === ""
