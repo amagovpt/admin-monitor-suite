@@ -104,7 +104,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
     this.websiteForm = new FormGroup({
       name: new FormControl("", Validators.required),
-      startingUrl: new FormControl({ value: "", disabled: true }),
+      startingUrl: new FormControl({ value: "", disabled: false }),
       declaration: new FormControl(),
       stamp: new FormControl(),
       declarationDate: new FormControl(),
@@ -257,7 +257,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
     const name = _.trim(this.websiteForm.value.name);
     const startingUrl = encodeURIComponent(
-      _.trim(this.websiteForm.value.startingUrl)
+      _.trim(this.websiteForm.value.startingUrl)//this.defaultWebsite.StartingUrl
     );
     const declaration =
       this.websiteForm.value.declaration === ""
