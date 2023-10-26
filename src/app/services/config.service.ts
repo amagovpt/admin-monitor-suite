@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 })
 export class ConfigService {
   private server: string;
-  defaultURL = "/api2";
+  defaultURL = "/api";
 
   constructor() {
     const endpoint = localStorage.getItem("server");
