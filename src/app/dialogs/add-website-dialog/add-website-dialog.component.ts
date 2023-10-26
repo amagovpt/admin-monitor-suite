@@ -170,14 +170,14 @@ export class AddWebsiteDialogComponent implements OnInit {
       this.websiteForm.value.declaration === ""
         ? null
         : parseInt(this.websiteForm.value.declaration);
-    const declarationDate = this.websiteForm.value.declarationDate
+    const declaration_Update_Date = this.websiteForm.value.declarationDate
       ? new Date(this.websiteForm.value.declarationDate)
       : null;
     const stamp =
       this.websiteForm.value.stamp === ""
         ? null
         : parseInt(this.websiteForm.value.stamp);
-    const stampDate = this.websiteForm.value.stampDate
+    const stamp_Update_Date = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
     const entities = _.map(this.selectedEntities, "EntityId");
@@ -191,9 +191,9 @@ export class AddWebsiteDialogComponent implements OnInit {
       name,
       startingUrl,
       declaration,
-      declarationDate,
+      declaration_Update_Date,
       stamp,
-      stampDate,
+      stamp_Update_Date,
       entities,
       userId,
       tags,
