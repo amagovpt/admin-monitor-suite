@@ -263,14 +263,14 @@ export class EditWebsiteDialogComponent implements OnInit {
       this.websiteForm.value.declaration === ""
         ? null
         : parseInt(this.websiteForm.value.declaration);
-    const declaration_Update_Date = this.websiteForm.value.declarationDate
+    const declarationUpdateDate = this.websiteForm.value.declarationDate
       ? new Date(this.websiteForm.value.declarationDate)
       : null;
     const stamp =
       this.websiteForm.value.stamp === ""
         ? null
         : parseInt(this.websiteForm.value.stamp);
-    const stamp_Update_Date = this.websiteForm.value.stampDate
+    const stampUpdateDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
     const userId = this.websiteForm.value.user
@@ -296,9 +296,9 @@ export class EditWebsiteDialogComponent implements OnInit {
       name,
       startingUrl,
       declaration,
-      declaration_Update_Date,
+      declarationUpdateDate,
       stamp,
-      stamp_Update_Date,
+      stampUpdateDate,
       userId,
       olderUserId,
       transfer,
