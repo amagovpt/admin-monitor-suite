@@ -1,5 +1,7 @@
 <div fxLayout="row">
-  <h1 class="mat-display-1" mat-dialog-title>{{ "WEBSITES_PAGE.ADD.title" | translate }}</h1>
+  <h1 class="mat-display-1" mat-dialog-title>
+    {{ "WEBSITES_PAGE.ADD.title" | translate }}
+  </h1>
   <span fxFlex></span>
   <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
     <mat-icon aria-hidden="false">close</mat-icon>
@@ -9,54 +11,104 @@
   <mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
     <div class="add-website-block" fxLayout="column">
       <mat-form-field>
-        <label for="website_name_input">{{ "WEBSITES_PAGE.ADD.name_label" | translate }}</label>
-        <input id="website_name_input" matInput formControlName="name" [errorStateMatcher]="matcher" cdkFocusInitial required>
-        <button type="button" *ngIf="websiteForm.value.name" matSuffix mat-icon-button aria-label="Clear"
-          (click)="websiteForm.controls.name.reset()">
+        <label for="website_name_input">{{
+          "WEBSITES_PAGE.ADD.name_label" | translate
+        }}</label>
+        <input
+          id="website_name_input"
+          matInput
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+          cdkFocusInitial
+          required
+        />
+        <button
+          type="button"
+          *ngIf="websiteForm.value.name"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="websiteForm.controls.name.reset()"
+        >
           <mat-icon aria-hidden="false">close</mat-icon>
         </button>
         <mat-error *ngIf="websiteForm.controls.name.status === 'PENDING'">
           <mat-progress-bar mode="buffer"></mat-progress-bar>
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.name.hasError('required')"
-          [innerHTML]="'MISC.required_field' | translate"></mat-error>
+        <mat-error
+          *ngIf="websiteForm.controls.name.hasError('required')"
+          [innerHTML]="'MISC.required_field' | translate"
+        ></mat-error>
         <mat-error *ngIf="websiteForm.controls.name.hasError('notTakenName')">
           {{ "WEBSITES_PAGE.ADD.name_exists" | translate }}
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <label for="website_url_input">{{ "WEBSITES_PAGE.ADD.url_label" | translate }}</label>
-        <input id="website_url_input" matInput formControlName="startingUrl" [errorStateMatcher]="matcher" required>
-        <button type="button" *ngIf="websiteForm.value.startingUrl" matSuffix mat-icon-button aria-label="Clear"
-          (click)="websiteForm.controls.startingUrl.reset()">
+        <label for="website_url_input">{{
+          "WEBSITES_PAGE.ADD.url_label" | translate
+        }}</label>
+        <input
+          id="website_url_input"
+          matInput
+          formControlName="startingUrl"
+          [errorStateMatcher]="matcher"
+          required
+        />
+        <button
+          type="button"
+          *ngIf="websiteForm.value.startingUrl"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="websiteForm.controls.startingUrl.reset()"
+        >
           <mat-icon aria-hidden="false">close</mat-icon>
         </button>
-        <mat-error *ngIf="websiteForm.controls.startingUrl.status === 'PENDING'">
+        <mat-error
+          *ngIf="websiteForm.controls.startingUrl.status === 'PENDING'"
+        >
           <mat-progress-bar mode="buffer"></mat-progress-bar>
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('required')"
-          [innerHTML]="'MISC.required_field' | translate"></mat-error>
-        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('invalidUrl')">
+        <mat-error
+          *ngIf="websiteForm.controls.startingUrl.hasError('required')"
+          [innerHTML]="'MISC.required_field' | translate"
+        ></mat-error>
+        <mat-error
+          *ngIf="websiteForm.controls.startingUrl.hasError('invalidUrl')"
+        >
           {{ "WEBSITES_PAGE.ADD.url_invalid" | translate }}
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('notTakenUrl')">
+        <mat-error
+          *ngIf="websiteForm.controls.startingUrl.hasError('notTakenUrl')"
+        >
           {{ "WEBSITES_PAGE.ADD.url_exists" | translate }}
         </mat-error>
-        <mat-error *ngIf="websiteForm.controls.startingUrl.hasError('urlMissingProtocol')" [innerHTML]="'WEBSITES_PAGE.ADD.url_missing_protocol' | translate"></mat-error>
+        <mat-error
+          *ngIf="
+            websiteForm.controls.startingUrl.hasError('urlMissingProtocol')
+          "
+          [innerHTML]="'WEBSITES_PAGE.ADD.url_missing_protocol' | translate"
+        ></mat-error>
       </mat-form-field>
     </div>
     <div fxLayout="row">
       <div class="add-declaration-block" fxLayout="row" fxFlex>
         <mat-form-field fxFlex>
-          <label for="website_declaration_input">{{ "WEBSITES_PAGE.UPDATE.declaration_label" | translate }}</label>
-          <mat-select id="website_declaration_input" formControlName="declaration">
-            <mat-option [value]="">
-            </mat-option>
+          <label for="website_declaration_input">{{
+            "WEBSITES_PAGE.UPDATE.declaration_label" | translate
+          }}</label>
+          <mat-select
+            id="website_declaration_input"
+            formControlName="declaration"
+          >
+            <mat-option [value]=""> </mat-option>
             <mat-option [value]="1">
               {{ "WEBSITES_PAGE.UPDATE.declaration_non_conform" | translate }}
             </mat-option>
             <mat-option [value]="2">
-              {{ "WEBSITES_PAGE.UPDATE.declaration_partial_conform" | translate }}
+              {{
+                "WEBSITES_PAGE.UPDATE.declaration_partial_conform" | translate
+              }}
             </mat-option>
             <mat-option [value]="3">
               {{ "WEBSITES_PAGE.UPDATE.declaration_conform" | translate }}
@@ -67,10 +119,11 @@
       <span fxFlex="5"></span>
       <div class="add-stamp-block" fxLayout="row" fxFlex>
         <mat-form-field fxFlex>
-          <label for="website_stamp_input">{{ "WEBSITES_PAGE.UPDATE.stamp_label" | translate }}</label>
+          <label for="website_stamp_input">{{
+            "WEBSITES_PAGE.UPDATE.stamp_label" | translate
+          }}</label>
           <mat-select id="website_stamp_input" formControlName="stamp">
-            <mat-option [value]="">
-            </mat-option>
+            <mat-option [value]=""> </mat-option>
             <mat-option [value]="1">
               {{ "WEBSITES_PAGE.UPDATE.stamp_bronze" | translate }}
             </mat-option>
@@ -87,37 +140,78 @@
     <div fxLayout="row">
       <div class="add-declaration-date-block" fxLayout="row" fxFlex>
         <mat-form-field fxFlex>
-          <label for="declaration_date">{{ "WEBSITES_PAGE.UPDATE.declaration_date_label" | translate }}</label>
-          <input id="declaration_date" matInput formControlName="declarationDate" [matDatepicker]="picker">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker disabled="false">
-          </mat-datepicker>
+          <label for="declaration_date">{{
+            "WEBSITES_PAGE.UPDATE.declaration_date_label" | translate
+          }}</label>
+          <input
+            id="declaration_date"
+            matInput
+            formControlName="declarationDate"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="false"> </mat-datepicker>
         </mat-form-field>
       </div>
       <span fxFlex="5"></span>
       <div class="add-stamp-date-block" fxLayout="row" fxFlex>
         <mat-form-field fxFlex>
-          <label for="stamp_date">{{ "WEBSITES_PAGE.UPDATE.stamp_date_label" | translate }}</label>
-          <input id="stamp_date" matInput formControlName="stampDate" [matDatepicker]="picker2">
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2 disabled="false">
-          </mat-datepicker>
+          <label for="stamp_date">{{
+            "WEBSITES_PAGE.UPDATE.stamp_date_label" | translate
+          }}</label>
+          <input
+            id="stamp_date"
+            matInput
+            formControlName="stampDate"
+            [matDatepicker]="picker2"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2 disabled="false"> </mat-datepicker>
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row">
-      <div class="add-user-block" *ngIf="!loadingUsers" fxLayout="row" fxFlex="45">
+      <div
+        class="add-user-block"
+        *ngIf="!loadingUsers"
+        fxLayout="row"
+        fxFlex="45"
+      >
         <mat-form-field fxFlex>
-          <label for="website_user_input">{{ "WEBSITES_PAGE.ADD.user_label" | translate }}</label>
-          <input id="website_user_input" type="text" aria-label="Utilizador" matInput formControlName="user"
-            [matAutocomplete]="auto2" [errorStateMatcher]="matcher">
+          <label for="website_user_input">{{
+            "WEBSITES_PAGE.ADD.user_label" | translate
+          }}</label>
+          <input
+            id="website_user_input"
+            type="text"
+            aria-label="Utilizador"
+            matInput
+            formControlName="user"
+            [matAutocomplete]="auto2"
+            [errorStateMatcher]="matcher"
+          />
           <mat-autocomplete #auto2="matAutocomplete">
-            <mat-option *ngFor="let user of filteredUsers | async" [value]="user.Username">
+            <mat-option
+              *ngFor="let user of filteredUsers | async"
+              [value]="user.Username"
+            >
               {{ user.Username }}
             </mat-option>
           </mat-autocomplete>
-          <button type="button" *ngIf="websiteForm.value.user" matSuffix mat-icon-button aria-label="Clear"
-            (click)="websiteForm.controls.user.reset()">
+          <button
+            type="button"
+            *ngIf="websiteForm.value.user"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="websiteForm.controls.user.reset()"
+          >
             <mat-icon aria-hidden="false">close</mat-icon>
           </button>
           <mat-error *ngIf="websiteForm.controls.user.hasError('validUser')">
@@ -126,53 +220,107 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="add-entities-block" *ngIf="!loadingEntities" fxLayout="column" fxLayoutAlign="start stretch">
+    <div
+      class="add-entities-block"
+      *ngIf="!loadingEntities"
+      fxLayout="column"
+      fxLayoutAlign="start stretch"
+    >
       <mat-form-field>
         <label for="website_entities_input">
           {{ "WEBSITES_PAGE.ADD.entity_label" | translate }}
         </label>
-        <mat-chip-list #entitiesChipList>
-          <mat-chip *ngFor="let entity of selectedEntities" [selectable]="selectable" [removable]="removable"
-            (removed)="removeEntity(entity)">
-            {{entity.Long_Name}}
+        <mat-chip-listbox #entitiesChipList>
+          <mat-chip-option
+            *ngFor="let entity of selectedEntities"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="removeEntity(entity)"
+          >
+            {{ entity.Long_Name }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-          <input id="website_entities_input" #entityInput formControlName="entities" [matAutocomplete]="auto4"
-            [matChipInputFor]="entitiesChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur" />
-          <button type="button" *ngIf="selectedEntities.length > 0" matSuffix mat-icon-button aria-label="Clear"
-            (click)="selectedEntities = []">
+          </mat-chip-option>
+          <input
+            id="website_entities_input"
+            #entityInput
+            formControlName="entities"
+            [matAutocomplete]="auto4"
+            [matChipInputFor]="entitiesChipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+          />
+          <button
+            type="button"
+            *ngIf="selectedEntities.length > 0"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="selectedEntities = []"
+          >
             <mat-icon aria-hidden="false">close</mat-icon>
           </button>
-        </mat-chip-list>
-        <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="selectedEntity($event)">
-          <mat-option *ngFor="let entity of filteredEntities | async" [value]="entity.Long_Name">
+        </mat-chip-listbox>
+        <mat-autocomplete
+          #auto4="matAutocomplete"
+          (optionSelected)="selectedEntity($event)"
+        >
+          <mat-option
+            *ngFor="let entity of filteredEntities | async"
+            [value]="entity.Long_Name"
+          >
             {{ entity.Long_Name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </div>
-    <div class="add-tags-block" *ngIf="!loadingTags" fxLayout="column" fxLayoutAlign="start stretch">
+    <div
+      class="add-tags-block"
+      *ngIf="!loadingTags"
+      fxLayout="column"
+      fxLayoutAlign="start stretch"
+    >
       <mat-form-field>
         <label for="website_tags_input">
           {{ "WEBSITES_PAGE.ADD.tags_label" | translate }}
         </label>
-        <mat-chip-list #tagsChipList>
-          <mat-chip *ngFor="let tag of selectedTags" [selectable]="selectable" [removable]="removable"
-            (removed)="removeTag(tag)">
-            {{tag.Name}}
+        <mat-chip-listbox #tagsChipList>
+          <mat-chip-option
+            *ngFor="let tag of selectedTags"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="removeTag(tag)"
+          >
+            {{ tag.Name }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-          <input id="website_tags_input" #tagInput formControlName="tags" [matAutocomplete]="auto3"
-            [matChipInputFor]="tagsChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur" />
-          <button type="button" *ngIf="selectedTags.length > 0" matSuffix mat-icon-button aria-label="Clear"
-            (click)="selectedTags = []">
+          </mat-chip-option>
+          <input
+            id="website_tags_input"
+            #tagInput
+            formControlName="tags"
+            [matAutocomplete]="auto3"
+            [matChipInputFor]="tagsChipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+          />
+          <button
+            type="button"
+            *ngIf="selectedTags.length > 0"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="selectedTags = []"
+          >
             <mat-icon aria-hidden="false">close</mat-icon>
           </button>
-        </mat-chip-list>
-        <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="selectedTag($event)">
-          <mat-option *ngFor="let tag of filteredTags | async" [value]="tag.Name">
+        </mat-chip-listbox>
+        <mat-autocomplete
+          #auto3="matAutocomplete"
+          (optionSelected)="selectedTag($event)"
+        >
+          <mat-option
+            *ngFor="let tag of filteredTags | async"
+            [value]="tag.Name"
+          >
             {{ tag.Name }}
           </mat-option>
         </mat-autocomplete>
@@ -184,11 +332,21 @@
     <button mat-raised-button color="warn" type="button" (click)="resetForm()">
       {{ "WEBSITES_PAGE.ADD.reset" | translate }}
     </button>
-    <button mat-raised-button color="primary" type="submit"
-      [disabled]="websiteForm.controls.name.invalid || websiteForm.controls.startingUrl.invalid || websiteForm.controls.user.invalid"
-      *ngIf="!loadingCreate">
-      {{ 'WEBSITES_PAGE.ADD.submit' | translate }}
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="
+        websiteForm.controls.name.invalid ||
+        websiteForm.controls.startingUrl.invalid ||
+        websiteForm.controls.user.invalid
+      "
+      *ngIf="!loadingCreate"
+    >
+      {{ "WEBSITES_PAGE.ADD.submit" | translate }}
     </button>
-    <span *ngIf="loadingCreate"><strong>{{ "MISC.loading" | translate }}</strong></span>
+    <span *ngIf="loadingCreate"
+      ><strong>{{ "MISC.loading" | translate }}</strong></span
+    >
   </mat-dialog-actions>
 </form>

@@ -2,7 +2,7 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, ValidationErrors, FormGroupDirective, NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipList, MatChipInputEvent } from '@angular/material/chips';
+import { MatChipListbox, MatChipInputEvent } from '@angular/material/chips';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, startWith, map } from 'rxjs';
@@ -34,7 +34,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class EditGovUserDialogComponent implements OnInit {
 
-  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipList;
+  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipListbox;
   matcher: ErrorStateMatcher;
 
   loadingInfo: boolean;
@@ -76,8 +76,8 @@ export class EditGovUserDialogComponent implements OnInit {
     this.matcher = new MyErrorStateMatcher();
 
     this.userForm = new FormGroup({
-      name: new FormControl({ value: "" }),
-      ccNumber: new FormControl({ value: "" }),
+      name: new FormControl({ value: "",disabled:false}),
+      ccNumber: new FormControl({ value: "", disabled: false }),
       users: new FormControl(),
 
     });

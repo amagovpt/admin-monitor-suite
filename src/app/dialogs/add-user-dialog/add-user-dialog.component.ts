@@ -18,7 +18,7 @@ import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { map, startWith } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { MatChipList } from "@angular/material/chips";
+import { MatChipListbox } from "@angular/material/chips";
 import * as _ from "lodash";
 
 import { GetService } from "../../services/get.service";
@@ -60,7 +60,7 @@ export class PasswordValidation {
   styleUrls: ["./add-user-dialog.component.css"],
 })
 export class AddUserDialogComponent implements OnInit {
-  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipList;
+  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipListbox;
 
   loadingCreate: boolean;
   loadingTags: boolean;
@@ -171,12 +171,13 @@ export class AddUserDialogComponent implements OnInit {
       this.loadingTags = false;
     });
 
+    /*fixme
     this.userForm
       .get("emails")
       .statusChanges.subscribe(
         (status) =>
           (this.emailsChipList.errorState = status === "INVALID" ? true : false)
-      );
+      );*/
   }
 
   changeApp(): void {

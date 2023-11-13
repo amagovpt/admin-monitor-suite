@@ -39,8 +39,8 @@
         <label for="directory_users_input">{{
           "GOV_USERS_PAGE.ADD.user_label" | translate
         }}</label>
-        <mat-chip-list #usersChipList>
-          <mat-chip
+        <mat-chip-listbox #usersChipList>
+          <mat-chip-option
             *ngFor="let user of selectedUsers"
             [selectable]="selectable"
             [removable]="removable"
@@ -48,7 +48,7 @@
           >
             {{ user.Username }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
+          </mat-chip-option>
           <input
             id="directory_users_input"
             #userInput
@@ -68,7 +68,7 @@
           >
             <mat-icon aria-hidden="false">close</mat-icon>
           </button>
-        </mat-chip-list>
+        </mat-chip-listbox>
         <mat-autocomplete
           #auto2="matAutocomplete"
           (optionSelected)="selectedUser($event)"
@@ -84,7 +84,12 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button color="warn" type="button" (click)="deleteGovUser()">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      (click)="deleteGovUser()"
+    >
       {{ "GOV_USERS_PAGE.UPDATE.delete.submit" | translate }}
     </button>
     <span fxFlex></span>

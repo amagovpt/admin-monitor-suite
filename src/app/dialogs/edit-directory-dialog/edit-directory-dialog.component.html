@@ -1,5 +1,7 @@
 <div fxLayout="row">
-  <h1 class="mat-display-1" mat-dialog-title>{{ "DIRECTORIES_PAGE.UPDATE.title" | translate }}</h1>
+  <h1 class="mat-display-1" mat-dialog-title>
+    {{ "DIRECTORIES_PAGE.UPDATE.title" | translate }}
+  </h1>
   <span fxFlex></span>
   <button mat-icon-button aria-label="Close dialog" mat-dialog-close>
     <mat-icon aria-hidden="false">close</mat-icon>
@@ -9,19 +11,39 @@
   <mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
     <div class="edit-directory-block" fxLayout="column">
       <mat-form-field>
-        <label for="directory_name_input">{{ "DIRECTORIES_PAGE.ADD.name_label" | translate }}</label>
-        <input id="directory_name_input" matInput formControlName="name" [errorStateMatcher]="matcher" autofocus required>
-        <button type="button" *ngIf="directoryForm.value.name" matSuffix mat-icon-button aria-label="Clear"
-          (click)="directoryForm.controls.name.reset()">
+        <label for="directory_name_input">{{
+          "DIRECTORIES_PAGE.ADD.name_label" | translate
+        }}</label>
+        <input
+          id="directory_name_input"
+          matInput
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+          autofocus
+          required
+        />
+        <button
+          type="button"
+          *ngIf="directoryForm.value.name"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="directoryForm.controls.name.reset()"
+        >
           <mat-icon aria-hidden="false">close</mat-icon>
         </button>
         <mat-error *ngIf="directoryForm.controls.name.status === 'PENDING'">
           <mat-progress-bar mode="buffer"></mat-progress-bar>
         </mat-error>
-        <mat-error *ngIf="directoryForm.controls.name.hasError('required')" [innerHTML]="'MISC.required_field' | translate">
+        <mat-error
+          *ngIf="directoryForm.controls.name.hasError('required')"
+          [innerHTML]="'MISC.required_field' | translate"
+        >
         </mat-error>
-        <mat-error *ngIf="directoryForm.controls.name.hasError('notTakenName')">{{ "DIRECTORIES_PAGE.ADD.name_exists" |
-                translate }}</mat-error>
+        <mat-error
+          *ngIf="directoryForm.controls.name.hasError('notTakenName')"
+          >{{ "DIRECTORIES_PAGE.ADD.name_exists" | translate }}</mat-error
+        >
       </mat-form-field>
     </div>
     <div class="edit-observatorio-block">
@@ -30,10 +52,16 @@
       </mat-checkbox>
     </div>
     <div class="add-method-block">
-      <label for="add-method">{{ "DIRECTORIES_PAGE.ADD.method_label" | translate }}</label>
-      <br>
-      <br>
-      <mat-radio-group id="add-method" formControlName="method" aria-label="Select an option">
+      <label for="add-method">{{
+        "DIRECTORIES_PAGE.ADD.method_label" | translate
+      }}</label>
+      <br />
+      <br />
+      <mat-radio-group
+        id="add-method"
+        formControlName="method"
+        aria-label="Select an option"
+      >
         <mat-radio-button value="0">
           {{ "DIRECTORIES_PAGE.ADD.method_intersection_label" | translate }}
         </mat-radio-button>
@@ -43,25 +71,54 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    <div class="edit-tags-block" *ngIf="!loadingTags" fxLayout="column" fxLayoutAlign="start stretch">
+    <div
+      class="edit-tags-block"
+      *ngIf="!loadingTags"
+      fxLayout="column"
+      fxLayoutAlign="start stretch"
+    >
       <mat-form-field>
-        <label for="directory_tags_input">{{ "DIRECTORIES_PAGE.UPDATE.tags_label" | translate }}</label>
-        <mat-chip-list #tagsChipList>
-          <mat-chip *ngFor="let tag of selectedTags" [selectable]="selectable" [removable]="removable"
-            (removed)="removeTag(tag)">
-            {{tag.Name}}
+        <label for="directory_tags_input">{{
+          "DIRECTORIES_PAGE.UPDATE.tags_label" | translate
+        }}</label>
+        <mat-chip-listbox #tagsChipList>
+          <mat-chip-option
+            *ngFor="let tag of selectedTags"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="removeTag(tag)"
+          >
+            {{ tag.Name }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-          <input id="directory_tags_input" #tagInput formControlName="tags" [matAutocomplete]="auto2"
-            [matChipInputFor]="tagsChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur" />
-          <button type="button" *ngIf="selectedTags.length > 0" matSuffix mat-icon-button aria-label="Clear"
-            (click)="selectedTags = []">
+          </mat-chip-option>
+          <input
+            id="directory_tags_input"
+            #tagInput
+            formControlName="tags"
+            [matAutocomplete]="auto2"
+            [matChipInputFor]="tagsChipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+          />
+          <button
+            type="button"
+            *ngIf="selectedTags.length > 0"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="selectedTags = []"
+          >
             <mat-icon aria-hidden="false">close</mat-icon>
           </button>
-        </mat-chip-list>
-        <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectedTag($event)">
-          <mat-option *ngFor="let tag of filteredTags | async" [value]="tag.Name">
+        </mat-chip-listbox>
+        <mat-autocomplete
+          #auto2="matAutocomplete"
+          (optionSelected)="selectedTag($event)"
+        >
+          <mat-option
+            *ngFor="let tag of filteredTags | async"
+            [value]="tag.Name"
+          >
             {{ tag.Name }}
           </mat-option>
         </mat-autocomplete>
@@ -69,19 +126,35 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button color="warn" type="button" (click)="deleteDirectory()">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      (click)="deleteDirectory()"
+    >
       {{ "DIRECTORIES_PAGE.UPDATE.delete.submit" | translate }}
     </button>
     <span fxFlex></span>
-    <button mat-raised-button color="accent" type="button" (click)="setDefault()">
+    <button
+      mat-raised-button
+      color="accent"
+      type="button"
+      (click)="setDefault()"
+    >
       {{ "DIRECTORIES_PAGE.UPDATE.default" | translate }}
     </button>
     <span fxFlex="2"></span>
-    <button mat-raised-button color="primary" type="submit" [disabled]="directoryForm.controls.name.invalid"
-      *ngIf="!loadingUpdate">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="directoryForm.controls.name.invalid"
+      *ngIf="!loadingUpdate"
+    >
       {{ "DIRECTORIES_PAGE.UPDATE.submit" | translate }}
     </button>
-    <span *ngIf="loadingUpdate"><strong>{{ "MISC.loading" | translate }}</strong></span>
+    <span *ngIf="loadingUpdate"
+      ><strong>{{ "MISC.loading" | translate }}</strong></span
+    >
   </mat-dialog-actions>
 </form>
-

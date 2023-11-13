@@ -330,7 +330,7 @@ export class AddPageDialogComponent implements OnInit {
       this.fileErrorMessage = "invalidWebsite";
       return;
     }
-    if (uris !== undefined || uris !== []) {
+    if (uris !== undefined ) {
       for (let url of uris) {
         if (!_.startsWith(url, website)) {
           this.fileErrorMessage = "invalidWebsite";

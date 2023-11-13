@@ -1,7 +1,7 @@
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder, AbstractControl, Validators } from '@angular/forms';
-import { MatChipList } from '@angular/material/chips';
+import { MatChipListbox } from '@angular/material/chips';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Location } from "@angular/common";
@@ -35,7 +35,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./add-gov-user-dialog.component.css']
 })
 export class AddGovUserDialogComponent implements OnInit {
-  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipList;
+  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipListbox;
   matcher: ErrorStateMatcher;
 
   loadingInfo: boolean;
@@ -74,7 +74,7 @@ export class AddGovUserDialogComponent implements OnInit {
     this.matcher = new MyErrorStateMatcher();
 
     this.userForm = new FormGroup({
-      name: new FormControl({ value: "" }),
+      name: new FormControl({ value: "",disable:false }),
       ccNumber: new FormControl(
         "",
         [Validators.required],

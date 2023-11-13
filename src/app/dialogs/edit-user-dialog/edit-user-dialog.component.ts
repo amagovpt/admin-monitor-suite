@@ -26,7 +26,7 @@ import {
 import { Observable, of } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { MatChipList } from "@angular/material/chips";
+import { MatChipListbox } from "@angular/material/chips";
 import * as _ from "lodash";
 
 import { CreateService } from "../../services/create.service";
@@ -72,7 +72,7 @@ export class PasswordValidation {
   styleUrls: ["./edit-user-dialog.component.css"],
 })
 export class EditUserDialogComponent implements OnInit {
-  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipList;
+  @ViewChild("emailsChipList", { static: true }) emailsChipList: MatChipListbox;
 
   matcher: ErrorStateMatcher;
 
@@ -198,13 +198,13 @@ export class EditUserDialogComponent implements OnInit {
 
       this.loadingInfo = false;
     });
-
+  /*fixme
     this.userForm
       .get("emails")
       .statusChanges.subscribe(
         (status) =>
           (this.emailsChipList.errorState = status === "INVALID" ? true : false)
-      );
+      );*/
   }
 
   setDefault(): void {
