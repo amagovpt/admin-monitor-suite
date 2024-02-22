@@ -24,11 +24,11 @@ export class ConfigService {
       localStorage.setItem("server", endpoint);
       this.server = endpoint + this.getCorrectApi(endpoint);
     }
-    console.log("set" + this.server);
+    console.log("set " + this.server);
   }
 
   getServer(service: string): string {
-    console.log("get" + this.server);
+    console.log("get " + this.server);
     if (!this.server) {
       const endpoint = localStorage.getItem("server");
       console.log("storage" + endpoint);
