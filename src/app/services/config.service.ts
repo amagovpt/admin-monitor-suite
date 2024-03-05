@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 })
 export class ConfigService {
   private server: string;
-  defaultURL = "";
+  defaultURL = "/api";
 
   constructor() {
     const endpoint = localStorage.getItem("server");
@@ -56,7 +56,7 @@ export class ConfigService {
   }
 
   private getCorrectApi(endpoint: string): string {
-    let api = "";
+    let api = "/api";
     if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt" || endpoint === "https://accessmonitor.acessibilidade.gov.pt")
       api = "/api";
     return api;
