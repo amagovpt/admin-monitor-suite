@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 })
 export class ConfigService {
   private server: string;
-  defaultURL = "/api";
+  defaultURL = "";
 
   constructor() {
     const endpoint = localStorage.getItem("server");
@@ -41,8 +41,22 @@ export class ConfigService {
     }
     return this.server + service;
   }
+
+  getEnvironment() : string {
+    let environment : string = "";
+    const endpoint = localStorage.getItem("server");
+    if (endpoint.includes("preprod")) {
+      environment = "PPR";
+    } else if (endpoint.includes("acessibilidade.gov.pt")) {
+      environment = "PRD";
+    } else {
+      environment = "DEV";
+    }
+    return environment;
+  }
+
   private getCorrectApi(endpoint: string): string {
-    let api = "/api";
+    let api = "";
     if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt" || endpoint === "https://accessmonitor.acessibilidade.gov.pt")
       api = "/api";
     return api;
