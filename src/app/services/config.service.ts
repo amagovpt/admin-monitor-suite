@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -6,6 +7,8 @@ import { Injectable } from "@angular/core";
 export class ConfigService {
   private server: string;
   defaultURL = "/api";
+  private environment = new BehaviorSubject<string>("");
+  currentEnvironment = this.environment.asObservable(); 
 
   constructor() {
     const endpoint = localStorage.getItem("server");
@@ -42,17 +45,15 @@ export class ConfigService {
     return this.server + service;
   }
 
-  getEnvironment() : string {
-    let environment : string = "";
+  setEnvironment() : void {
     const endpoint = localStorage.getItem("server");
     if (endpoint.includes("preprod")) {
-      environment = "PPR";
+      this.environment.next("PPR");
     } else if (endpoint.includes("acessibilidade.gov.pt")) {
-      environment = "PRD";
+      this.environment.next("PRD");
     } else {
-      environment = "DEV";
+      this.environment.next("DEV");
     }
-    return environment;
   }
 
   private getCorrectApi(endpoint: string): string {
