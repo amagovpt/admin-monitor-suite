@@ -104,7 +104,10 @@
     "delete_evaluation_list": "Apagar",
     "delete_evaluation_list_confirmation": "Confirme que quer apagar a lista de avaliações",
     "delete_evaluation_list_message": "Lista de avaliações apagada com sucesso",
-    "confirm_button": "Confirmar"
+    "confirm_button": "Confirmar",
+    "load_data_title": "Carregamento de dados",
+    "load_data_description": "Suporte para carregamento de dados a partir de um ficheiro. O ficheiro deve conter informação de diretoria, categoria, nome do sítio, url. Cada coluna deve estar separada por um ponto e vírgula. O ficheiro deve ser do tipo .csv",
+    "load_data_button": "Carregar dados"
   },
   "STATISTICS": {
     "title": "Estatísticas",

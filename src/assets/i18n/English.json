@@ -94,7 +94,10 @@
     "delete_evaluation_list": "Delete",
     "delete_evaluation_list_confirmation": "Confirm that you want to delete the evaluation list",
     "delete_evaluation_list_message": "Evaluation list deleted successfully",
-    "confirm_button": "Confirm"
+    "confirm_button": "Confirm",
+    "load_data_title": "Load data",
+    "load_data_description": "Use to load data from a file. File must contain directory, category, site name, url. The file must be in .csv format. Use semi-colon as separator.",
+    "load_data_button": "Carregar dados"
   },
   "STATISTICS": {
     "title": "Statistics",
