@@ -15,6 +15,7 @@ import { Tag } from "../models/tag";
 import { Entity } from "../models/entity";
 import { Website } from "../models/website";
 import { Page } from "../models/page";
+import { GovUser } from "../models/govUser";
 
 @Injectable({
   providedIn: "root",
@@ -25,7 +26,88 @@ export class GetService {
     private http: HttpClient,
     private message: MessageService,
     private config: ConfigService
-  ) {}
+  ) { }
+
+
+  govUser(userId: number): Observable<GovUser> {
+    return this.http
+      .get<any>(this.config.getServer("/gov-user/" + userId), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <any>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+  govUsers(): Observable<GovUser[]> {
+    return this.http
+      .get<any>(this.config.getServer("/gov-user/all"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+          console.log(res);
+          if (res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <GovUser[]>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+  
+  observatoryData(): Observable<any> {//{CreatedAt,ID}
+    return this.http
+      .get<any>(this.config.getServer("/observatory/all"), {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <any>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
 
   collectionDate(): Observable<any> {//{CreatedAt,ID}
     return this.http
@@ -161,7 +243,7 @@ export class GetService {
         })
       );
   }
-  
+
   numberfA11yStatementsByStateDirectory(): Observable<any> {
     return this.http
       .get<any>(this.config.getServer("/accessibility-statement/directory/state"), {
@@ -297,10 +379,10 @@ export class GetService {
         })
       );
   }
-  
-  getA11yStatementById(id:number): Observable<any> {
+
+  getA11yStatementById(id: number): Observable<any> {
     return this.http
-      .get<any>(this.config.getServer("/accessibility-statement/id/"+id), {
+      .get<any>(this.config.getServer("/accessibility-statement/id/" + id), {
         observe: "response",
       })
       .pipe(
@@ -1926,9 +2008,9 @@ export class GetService {
       );
   }
 
-  getActionLog(fileName:string): Observable<any> {
+  getActionLog(fileName: string): Observable<any> {
     return this.http
-      .get<any>(this.config.getServer("/log/action-log/"+fileName), {
+      .get<any>(this.config.getServer("/log/action-log/" + fileName), {
         observe: "response",
         // @ts-ignore
         responseType: 'blob', //as 'json'

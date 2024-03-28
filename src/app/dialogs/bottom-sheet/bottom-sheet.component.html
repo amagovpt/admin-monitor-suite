@@ -6,6 +6,11 @@
   </button>
 </div>-->
 <mat-nav-list>
+    <a href="#" mat-list-item (click)="openAddGovUserDialog($event)">
+    <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.govUser.title" | translate }}</span>
+    <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.govUser.subtitle" | translate }}</span>
+  </a>
+
   <a href="#" mat-list-item (click)="openAddUserDialog($event)">
     <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.user.title" | translate }}</span>
     <span mat-line>{{ "ADMIN_CONSOLE.bottom_sheet.user.subtitle" | translate }}</span>

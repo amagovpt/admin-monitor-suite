@@ -22,6 +22,34 @@ export class DeleteService {
     private readonly http: HttpClient
   ) {}
 
+  govUser(data: any): Observable<boolean> {
+    return this.http
+      .post(this.config.getServer("/gov-user/delete"), data, {
+        observe: "response",
+      })
+      .pipe(
+        retry(3),
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          this.message.show("USERS_PAGE.DELETE.messages.error");
+          console.log(err);
+          return of(null);
+        })
+      );
+  }
+
   user(data: any): Observable<boolean> {
     return this.http
       .post(this.config.getServer("/user/delete"), data, {

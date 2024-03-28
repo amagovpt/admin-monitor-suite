@@ -4,20 +4,16 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
-import { GetService } from '../../../services/get.service';
 import * as _ from "lodash";
-import { UpdateService } from '../../../services/update.service';
-import { forkJoin } from 'rxjs';
-import { UpdateA11yStatementDialogComponent } from '../../../dialogs/update-a11y-statement-dialog/update-a11y-statement-dialog.component';
-
+import { EditGovUserDialogComponent } from '../../dialogs/edit-gov-user-dialog/edit-gov-user-dialog.component';
+import { GetService } from '../../services/get.service';
 
 @Component({
-  selector: 'app-list-of-a11y-statement',
-  templateUrl: './list-of-a11y-statement.component.html',
-  styleUrls: ['./list-of-a11y-statement.component.css']
+  selector: 'app-gov-users',
+  templateUrl: './gov-users.component.html',
+  styleUrls: ['./gov-users.component.css']
 })
-export class ListOfA11yStatementComponent implements OnInit {
-
+export class GovUsersComponent implements OnInit {
   @ViewChild("input") input: ElementRef;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -26,41 +22,50 @@ export class ListOfA11yStatementComponent implements OnInit {
   error: boolean;
 
   displayedColumns = [
-    "website",
-    "statementDate",
-    "updateDate",
-    "state",
-    "conformance",
-    "seal",
-    "automaticEvaluations",
-    "manualEvaluations",
-    "userEvaluations",
+    //'UserId',
+    "name",
+    "ccNumber",
+    "register_date",
+    "last_login",
+    "edit",
+    //'see'
   ];
 
   dataSource: any;
   selection: any;
-  updatetAt:number;
 
   constructor(
     private dialog: MatDialog,
-    private get: GetService,
-    private update: UpdateService,
     private translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private get: GetService,
   ) {
     this.loading = true;
     this.error = false;
   }
 
   ngOnInit(): void {
-    this.getListOfA11yStatements();
+    this.getListOfUsers();
   }
 
-  private getListOfA11yStatements(): void {
-    forkJoin([this.get.listOfA11yStatements(),this.get.collectionDate()]).subscribe(([a11tStatements,date]) => {
-      console.log(a11tStatements);
-      if (a11tStatements !== null) {
-        this.dataSource = new MatTableDataSource(a11tStatements);
+  private getListOfUsers(): void {
+    const users = [{
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }, {
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }, {
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }, {
+      name: "teste123teste", ccNumber: "123456789", register_date: "11/11/11",
+      last_login: "11/11/11",
+    }]
+    this.get.govUsers().subscribe((users) => {
+
+      if (users !== null) {
+        this.dataSource = new MatTableDataSource(users);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
 
@@ -77,12 +82,11 @@ export class ListOfA11yStatementComponent implements OnInit {
         paginatorIntl.lastPageLabel = this.translate.instant("LAST_PAGE_LABEL");
         paginatorIntl.getRangeLabel = this.getRangeLabel.bind(this);
 
-        this.dataSource.paginator._intl = paginatorIntl;
+        //this.dataSource.paginator._intl = paginatorIntl; FIXME
       } else {
         this.error = true;
       }
-      console.log(date);
-      this.updatetAt = date.createdAt;
+
       this.loading = false;
       this.cd.detectChanges();
     })
@@ -116,11 +120,19 @@ export class ListOfA11yStatementComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  updateData(){
-    this.dialog.open(UpdateA11yStatementDialogComponent, {
+  edit(id: number): void {
+    const editDialog = this.dialog.open(EditGovUserDialogComponent, {
       width: "60vw",
       disableClose: false,
       hasBackdrop: true,
+      data: { id },
+    });
+
+    editDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loading = true;
+        this.getListOfUsers();
+      }
     });
   }
 

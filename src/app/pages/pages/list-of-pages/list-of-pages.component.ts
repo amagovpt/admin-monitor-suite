@@ -176,10 +176,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       });
   }
 
-  reEvaluatePages(): void {
-    if (this.pages) {
-      this.reEvaluatePagesEmitter.next(_.map(this.selection.selected, "Uri"));
-    } else {
+  reEvaluatePages(): void {  
       this.evaluationService
         .reEvaluatePages({
           pages: _.map(this.selection.selected, "Uri"),
@@ -189,7 +186,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
             this.message.show("PAGES_PAGE.LIST.re_evaluate_pages_message");
           }
         });
-    }
   }
 
   openDeletePageDialog(): void {

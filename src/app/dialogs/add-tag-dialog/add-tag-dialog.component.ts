@@ -137,10 +137,9 @@ export class AddTagDialogComponent implements OnInit {
     e.preventDefault();
 
     const name = this.tagForm.value.name.trim();
-    const directories = JSON.stringify(
-      _.map(this.selectedDirectories, "DirectoryId")
-    );
-    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
+    const directories = 
+      _.map(this.selectedDirectories, "DirectoryId");
+    const websites = _.map(this.selectedWebsites, "WebsiteId");
 
     const formData = {
       name,

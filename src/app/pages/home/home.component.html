@@ -34,13 +34,19 @@
       </div>
       <br>
     </div>
-    <br>
+
     <h3>{{ "HOME_PAGE.generate_observatory_title" | translate }}</h3>
     <div>
       <p>{{ "HOME_PAGE.generate_observatory_description" | translate }}</p>
       <button mat-flat-button color="primary" (click)="generateObservatoryData()">{{ "HOME_PAGE.generate_observatory_button" | translate }}</button>
     </div>
-    <br>
+
+    <h3>{{ "HOME_PAGE.load_data_title" | translate }}</h3>
+    <div>
+      <p>{{ "HOME_PAGE.load_data_description" | translate }}</p>
+      <button mat-flat-button color="primary" (click)="loadDataFromFile()">{{ "HOME_PAGE.load_data_button" | translate }}</button>
+    </div>
+    
     <h3>{{ "HOME_PAGE.evaluation_state_title" | translate }}</h3>
     <div fxLayout="column">
       <h4>{{ "HOME_PAGE.evaluation_am_state_title" | translate }}</h4>

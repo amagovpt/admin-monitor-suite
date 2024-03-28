@@ -105,7 +105,7 @@ export class ListOfDirectoriesComponent implements OnInit {
     const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
     this.deleteService
       .directories({
-        directoriesId: JSON.stringify(directoriesId),
+        directoriesId,
       })
       .subscribe((result) => {
         if (result) {
@@ -121,7 +121,7 @@ export class ListOfDirectoriesComponent implements OnInit {
     const directoriesId = this.selection.selected.map((d) => d.DirectoryId);
     this.deleteService
       .directoriesPages({
-        directoriesId: JSON.stringify(directoriesId),
+        directoriesId,
       })
       .subscribe((result) => {
         if (result) {

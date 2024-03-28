@@ -47,7 +47,7 @@ export class CrawlerService {
     return this.http
       .post<any>(
         this.config.getServer("/crawler/tags"),
-        { tagsId: JSON.stringify(tagsId) },
+        { tagsId },
         { observe: "response" }
       )
       .pipe(

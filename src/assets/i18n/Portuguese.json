@@ -21,6 +21,10 @@
   "ADMIN_CONSOLE": {
     "add_button": "Adicionar conteúdo",
     "bottom_sheet": {
+      "govUser": {
+        "title": "Utilizador Autenticação.Gov",
+        "subtitle": "Criar um novo utilizador Autenticação.Gov"
+      },
       "user": {
         "title": "Utilizador",
         "subtitle": "Criar um novo utilizador"
@@ -53,6 +57,7 @@
   },
   "MENU": {
     "home": "Início",
+    "govUsers": "Utilizadores Gov",
     "users": "Utilizadores",
     "directories": "Diretórios",
     "tags": "Categorias",
@@ -99,7 +104,10 @@
     "delete_evaluation_list": "Apagar",
     "delete_evaluation_list_confirmation": "Confirme que quer apagar a lista de avaliações",
     "delete_evaluation_list_message": "Lista de avaliações apagada com sucesso",
-    "confirm_button": "Confirmar"
+    "confirm_button": "Confirmar",
+    "load_data_title": "Carregamento de dados",
+    "load_data_description": "Suporte para carregamento de dados a partir de um ficheiro. O ficheiro deve conter informação de diretoria, categoria, nome do sítio, url. Cada coluna deve estar separada por um ponto e vírgula. O ficheiro deve ser do tipo .csv",
+    "load_data_button": "Carregar dados"
   },
   "STATISTICS": {
     "title": "Estatísticas",
@@ -258,6 +266,67 @@
   "LAST_PAGE_LABEL": "Última páginas",
   "RANGE_PAGE_LABEL_1": "0 de {{length}}",
   "RANGE_PAGE_LABEL_2": "{{startIndex}} - {{endIndex}} de {{length}}",
+  "GOV_USERS_PAGE": {
+    "title": "Utilizador Autenticação.Gov:",
+    "LIST": {
+      "title": "Utilizadores Autenticação.Gov",
+      "subtitle": "Lista de todos os utilizadores Autenticação.Gov",
+      "table": {
+        "id_label": "ID",
+        "username_label": "Nome",
+        "app_label": "Aplicação",
+        "cc_label": "Nº do cartão de cidadão",
+        "register_label": "Data de registo",
+        "last_login_label": "Última sessão",
+        "edit_label": "Editar",
+        "edit_tooltip": "Editar este utilizador",
+        "see_tooltip": "Ver utilizador"
+      }
+    },
+    "ADD": {
+      "title": "Criar um utilizador Autenticação.Gov:",
+      "subtitle": "Crie um utilizador para o Study Monitor ou para o My Monitor",
+      "user_data": "Dados do utilizador",
+      "ccNumber_label": "Número do cartão de cidadão",
+      "name_label": "Nome",
+      "user_label": "Utilizadores associados",
+      "reset": "Limpar",
+      "submit": "Criar",
+      "user_exists" : "Já existe um utilizador com este número do CC",
+      "messages": {
+        "success": "Utilizador criado com sucesso",
+        "error": "Erro ao criar utilizador"
+      }
+    },
+    "UPDATE": {
+      "title": "Utilizador Autenticação.Gov:",
+      "subtitle": "Editar",
+      "description": "Editar este utilizador",
+      "default": "Reverter alterações",
+      "submit": "Atualizar",
+      "delete": {
+        "title": "Apagar",
+        "description": "Apagar este utilizador",
+        "list": {
+          "title": "Importante:",
+          "item1": "O utilizador e toda a sua informação serão apagados",
+          "item2": "Se o utilizador pertencer à aplicação Study Monitor, os seus sítios web e categorias serão apagados",
+          "item3": "Esta acção não pode ser revertida"
+        },
+        "submit": "Apagar utilizador"
+      },
+      "messages": {
+        "success": "Utilizador atualizado com sucesso",
+        "error": "Erro ao atualizar utilizador"
+      }
+    },
+    "DELETE": {
+      "messages": {
+        "success": "Utilizador apagado com sucesso",
+        "error": "Erro ao apagar utilizador"
+      }
+    }
+  },
   "USERS_PAGE": {
     "title": "Utilizador:",
     "LIST": {
@@ -1826,6 +1895,14 @@
       "s": "Encontrei <mark>{{value}}</mark> atributo aria-* que não está na especificação ARIA.",
       "p": "Encontrei <mark>{{value}}</mark> atributos aria-* que não estão na especificação ARIA."
     },
+    "aria_09": {
+      "s": "Encontrei <mark>{{value}}</mark> referência de um atributo aria-controls que não existe na página.",
+      "p": "Encontrei <mark>{{value}}</mark> referências de atributos aria-controls que não existem na página."
+    },
+    "aria_10": {
+      "s": "Constatei que <mark>a referência</mark> de um atributo aria-controls existe na página.",
+      "p": "Constatei que <mark>todas as referências</mark> de atributos aria-controls existem na página."
+    },
     "audio_video_01": {
       "s": "Não encontrei <mark>nenhum</mark> elemento <code>&lt;audio&gt;</code> ou <code>&lt;video&gt;</code> que iniciasse automaticamente.",
       "p": "Não encontrei <mark>nenhum</mark> elemento <code>&lt;audio&gt;</code> ou <code>&lt;video&gt;</code> que iniciasse automaticamente."
@@ -2230,7 +2307,8 @@
     "9e45ec": "Espaçamento de palavras nos atributos de estilo não é !important",
     "59br37": "Nó de texto ampliado não é cortado por CSS <code>overflow</code>",
     "ARIA11": "Usar landmarks ARIA para identificar regiões da página",
-    "H40": "Usar listas de descrição"
+    "H40": "Usar listas de descrição",
+    "in6db8": "Referências ARIA existem"
   },
   "TXT_TECHNIQUES": {
     "H37": "<p>Verifique se o equivalente alternativo em texto existente nas imagens serve informação ou função igual à desempenhada pela imagem na página.</p>",
@@ -2323,7 +2401,8 @@
     "9e45ec": "<p>Um espaçamento entre palavras igual ou superior a 0,16 vezes o tamanho da fonte é importante para garantir que todos os utilizadores conseguem ler o texto. Os estilos CSS não devem impedir que os utilizadores aumentem o espaçamento entre palavras se assim o entenderem.</p>",
     "59br37": "<p>Ao ampliar a página a dimensão relativa do texto e dos seus contentores pode mudar o que faz com que estes possam necessitar de mais espaço para apresentar o mesmo texto. A propriedade CSS <code>overflow</code> determina como os contentores se ajustam. Alguns dos seus valores podem resultar no texto ser cortado.</p>",
     "ARIA11": "<p>Garanta que só há um elemento com a semântica de main na página. Elementos com esta semântica designam a parte principal da página e permitem que utilizadores de leitor de ecrã naveguem rapidamente para essa parte da página. Cada página só deve ter um conteúdo principal, independentemente de ser especificado usando HTML5 ou ARIA.</p>",
-    "H40": "<p>Se uma lista de descrições conter elementos que não são itens da lista, ou se a ordem dos elementos não estiver correta, isto é, os elementos <dt> precederem os elementos <dd>, a lista estará mal formatada, e tecnologias de apoio não serão capazes de a apresentar corretamente.</p>"
+    "H40": "<p>Se uma lista de descrições conter elementos que não são itens da lista, ou se a ordem dos elementos não estiver correta, isto é, os elementos <dt> precederem os elementos <dd>, a lista estará mal formatada, e tecnologias de apoio não serão capazes de a apresentar corretamente.</p>",
+    "in6db8": "<p>Todas as referências obrigatórias a elementos indicadas num atributo WAI-ARIA têm de existir na página.</p>"
   },
   "TECHFAIL": {
     "relationF": "Esta falha WCAG 2.1 está relacionada com:",

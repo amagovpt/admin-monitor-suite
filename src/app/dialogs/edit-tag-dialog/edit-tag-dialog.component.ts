@@ -183,17 +183,14 @@ export class EditTagDialogComponent implements OnInit {
 
     const name = this.tagForm.value.name.trim();
 
-    const defaultDirectories = JSON.stringify(
-      _.map(this.defaultTag.directories, "DirectoryId")
-    );
-    const directories = JSON.stringify(
-      _.map(this.selectedDirectories, "DirectoryId")
-    );
+    const defaultDirectories =
+      _.map(this.defaultTag.directories, "DirectoryId");
+    const directories =
+      _.map(this.selectedDirectories, "DirectoryId");
 
-    const defaultWebsites = JSON.stringify(
-      _.map(this.defaultTag.websites, "WebsiteId")
-    );
-    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
+    const defaultWebsites = 
+      _.map(this.defaultTag.websites, "WebsiteId");
+    const websites = _.map(this.selectedWebsites, "WebsiteId");
 
     const formData = {
       tagId: this.data.id,

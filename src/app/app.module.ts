@@ -136,6 +136,10 @@ import { ActionLogListComponent } from './pages/dev-tools/action-log-list/action
 import { DeleteUserDialogComponent } from './dialogs/delete-user-dialog/delete-user-dialog.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 
+import { GovUserComponent } from './pages/gov-user/gov-user.component';
+import { GovUsersComponent } from './pages/gov-users/gov-users.component';
+import { EditGovUserDialogComponent } from './dialogs/edit-gov-user-dialog/edit-gov-user-dialog.component';
+import { AddGovUserDialogComponent } from './dialogs/add-gov-user-dialog/add-gov-user-dialog.component';
 
 registerLocaleData(localeEn, "en");
 registerLocaleData(localePt, "pt", localePtExtra);
@@ -148,6 +152,11 @@ const appRoutes: Routes = [
     canActivate: [AdminAuthGuard],
     children: [
       { path: "", component: HomeComponent, canActivate: [AdminAuthGuard] },
+      {
+        path: "govUsers",
+        component: GovUsersComponent,
+        canActivate: [AdminAuthGuard],
+      },
       {
         path: "users",
         component: UsersComponent,
@@ -410,6 +419,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ErrorLogListComponent,
     ActionLogListComponent,
     DeleteUserDialogComponent,
+    GovUserComponent,
+    GovUsersComponent,
+    EditGovUserDialogComponent,
+    AddGovUserDialogComponent,
   ],
   imports: [
     MatTableExporterModule,

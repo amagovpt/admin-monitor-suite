@@ -1,6 +1,6 @@
-const tests_colors = {
+export default {
   a_01a: "Y",
-  a_01b: "R",
+  a_01b: "Y",
   a_02a: "R",
   a_02b: "Y",
   a_03: "R",
@@ -25,6 +25,8 @@ const tests_colors = {
   aria_06: "R",
   aria_07: "G",
   aria_08: "R",
+  aria_09: "R",
+  aria_10: "G",
   audio_video_01: "G",
   audio_video_02: "R",
   autocomplete_01: "G",
@@ -159,8 +161,8 @@ const tests_colors = {
   table_06: "R",
   table_07: "G",
   table_08: "R",
-  textC_01: "G",
-  textC_02: "R",
+  textC_01: "Y",
+  textC_02: "Y",
   title_01: "R",
   title_02: "R",
   title_03: "R",
@@ -175,10 +177,8 @@ const tests_colors = {
   video_01: "G",
   video_02: "G",
   w3c_validator_01a: "G",
-  w3c_validator_01b: "R",
+  w3c_validator_01b: "Y",
   win_01: "Y",
   word_01: "G",
   word_02: "R",
 };
-
-export default tests_colors;

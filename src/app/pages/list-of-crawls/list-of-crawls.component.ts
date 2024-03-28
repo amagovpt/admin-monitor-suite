@@ -119,7 +119,7 @@ export class ListOfCrawlsComponent implements OnInit {
     const crawlersId = this.selection.selected.map((c) => c.CrawlWebsiteId);
     this.deleteService
       .crawlers({
-        crawlWebsiteIds: JSON.stringify(crawlersId),
+        crawlWebsiteIds: crawlersId,
       })
       .subscribe((result) => {
         if (result) {

@@ -160,10 +160,8 @@ export class EditEntityDialogComponent implements OnInit {
     const shortName = this.entityForm.value.shortName.trim();
     const longName = this.entityForm.value.longName.trim();
 
-    const defaultWebsites = JSON.stringify(
-      _.map(this.defaultEntity.websites, "WebsiteId")
-    );
-    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
+    const defaultWebsites = _.map(this.defaultEntity.websites, "WebsiteId");
+    const websites =_.map(this.selectedWebsites, "WebsiteId");
 
     const formData = {
       entityId: this.data.id,

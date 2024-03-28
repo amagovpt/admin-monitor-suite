@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class ConfigService {
   private server: string;
-  defaultURL = "/api2";
+  defaultURL = "/api";
+  private environment = new BehaviorSubject<string>("");
+  currentEnvironment = this.environment.asObservable(); 
 
   constructor() {
     const endpoint = localStorage.getItem("server");
@@ -24,11 +27,11 @@ export class ConfigService {
       localStorage.setItem("server", endpoint);
       this.server = endpoint + this.getCorrectApi(endpoint);
     }
-    console.log("set" + this.server);
+    console.log("set " + this.server);
   }
 
   getServer(service: string): string {
-    console.log("get" + this.server);
+    console.log("get " + this.server);
     if (!this.server) {
       const endpoint = localStorage.getItem("server");
       console.log("storage" + endpoint);
@@ -41,8 +44,20 @@ export class ConfigService {
     }
     return this.server + service;
   }
+
+  setEnvironment() : void {
+    const endpoint = localStorage.getItem("server");
+    if (endpoint.includes("preprod")) {
+      this.environment.next("PPR");
+    } else if (endpoint.includes("acessibilidade.gov.pt")) {
+      this.environment.next("PRD");
+    } else {
+      this.environment.next("DEV");
+    }
+  }
+
   private getCorrectApi(endpoint: string): string {
-    let api = "/api2";
+    let api = "/api";
     if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt" || endpoint === "https://accessmonitor.acessibilidade.gov.pt")
       api = "/api";
     return api;

@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import * as _ from "lodash";
 
 import { UserService } from "../../services/user.service";
+import { ConfigService } from "../../services/config.service";
 
 @Component({
   selector: "app-login",
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
   // login form
   loginForm: FormGroup;
 
-  constructor(private user: UserService, private cd: ChangeDetectorRef) {
+  constructor(private user: UserService, private cd: ChangeDetectorRef, private config: ConfigService) {
     this.hide = true;
     this.loginLoading = false;
 
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
     this.user.login(endpoint, username, password).subscribe(() => {
       this.loginLoading = false;
       this.cd.detectChanges();
+      this.config.setEnvironment();
     });
   }
 }
