@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.environment = this.config.getEnvironment();
     this.config.currentEnvironment.subscribe((env) => {
       this.environment = env;
     });

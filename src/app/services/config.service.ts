@@ -56,6 +56,18 @@ export class ConfigService {
     }
   }
 
+  getEnvironment() : string {
+    const endpoint = localStorage.getItem("server");
+    if (endpoint.includes("preprod")) {
+      return "PPR";
+    } else if (endpoint.includes("acessibilidade.gov.pt")) {
+      return "PRD";
+    } else {
+      return "DEV";
+    }
+  }
+
+
   private getCorrectApi(endpoint: string): string {
     let api = "/api";
     if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt" || endpoint === "https://accessmonitor.acessibilidade.gov.pt")
