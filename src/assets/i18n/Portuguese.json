@@ -2575,6 +2575,8 @@
     "all": "Todos",
     "area": "<area>",
     "applet": "<applet>",
+    "dd,dt": "<dd>, <dt>",
+    "dl": "<dl>",
     "ehandler": "Manipuladores de eventos",
     "embed": "<embed>",
     "fontValues": "Tamanho de letra",
