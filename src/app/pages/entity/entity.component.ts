@@ -61,7 +61,7 @@ export class EntityComponent implements OnInit, OnDestroy {
 
   downloadAllPagesCSV(): void {
     this.evaluation.downloadEntityCSV(
-      this.websites.map((w) => w.Url),
+      this.websites.map((w) => w.StartingUrl),
       true,
       this.entity
     );
@@ -69,7 +69,7 @@ export class EntityComponent implements OnInit, OnDestroy {
 
   downloadObservatoryCSV(): void {
     this.evaluation.downloadEntityCSV(
-      this.websites.map((w) => w.Url),
+      this.websites.map((w) => w.StartingUrl),
       false,
       this.entity
     );
