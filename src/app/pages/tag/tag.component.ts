@@ -64,7 +64,7 @@ export class TagComponent implements OnInit, OnDestroy {
 
   downloadAllPagesCSV(): void {
     this.evaluation.downloadTagCSV(
-      this.websites.map((w) => w.Url),
+      this.websites.map((w) => w.StartingUrl),
       true,
       this.tag
     );
@@ -72,7 +72,7 @@ export class TagComponent implements OnInit, OnDestroy {
 
   downloadObservatoryCSV(): void {
     this.evaluation.downloadTagCSV(
-      this.websites.map((w) => w.Url),
+      this.websites.map((w) => w.StartingUrl),
       false,
       this.tag
     );
