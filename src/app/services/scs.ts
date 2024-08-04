@@ -31,6 +31,10 @@ const scs: any = {
     '0': 'orientation',
     '1': 'AA'
   },
+  '1.3.5': {
+    '0': 'identify-input-purpose',
+    '1': 'AA'
+  },
   '1.4.3': {
     '0': 'contrast-minimum',
     '1': 'AA'
