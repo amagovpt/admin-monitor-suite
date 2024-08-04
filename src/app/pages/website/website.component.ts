@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import * as _ from "lodash";
+import { saveAs } from "file-saver";
 
 import { GetService } from "../../services/get.service";
 import { EvaluationService } from "../../services/evaluation.service";
@@ -100,7 +101,6 @@ export class WebsiteComponent implements OnInit, OnDestroy {
             page.Evaluation_Date
           );
         }
-        console.log(this.websiteObject)
         this.loading = false;
         this.cd.detectChanges();
       });
@@ -122,27 +122,26 @@ export class WebsiteComponent implements OnInit, OnDestroy {
     });
   }
 //FIXME
-  correctUrl(url:string): void {
-    this.evaluation.getWebsiteStats(url, true).subscribe((result)=>{
-      if(result.length === 0){
-        this.startingUrl = url + '/';
-      }
-    });
+  async correctUrl(url:string): Promise<void> {
+    const result = await this.evaluation.getWebsiteStats(url, true);    
+    if(result.length === 0){
+      this.startingUrl = url + '/';
+    }
   }
 //FIXME
   downloadAllPagesCSV(): void {
-    this.evaluation.downloadWebsiteCSV(this.startingUrl, true).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.startingUrl, true);
   }
 
   downloadObservatoryCSV(): void {
-    this.evaluation.downloadWebsiteCSV(this.startingUrl, false).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.startingUrl, false);
   }
 
   downloadAllPagesEARL(): void {
-    this.evaluation.downloadWebsiteEARL(this.startingUrl, true).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.startingUrl, true);
   }
 
   downloadObservatoryEARL(): void {
-    this.evaluation.downloadWebsiteEARL(this.startingUrl, false).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.startingUrl, false);
   }
 }
