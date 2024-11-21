@@ -663,7 +663,7 @@ export class EvaluationService {
       data += this.generateCSV(this.evaluation, i !== 0, website);
       i++;
     }
-    const blob = new Blob([data], { type: "text/json" });
+    const blob = new Blob([data], { type: "text/csv" });
     saveAs(blob, "eval.csv");
   } 
 
