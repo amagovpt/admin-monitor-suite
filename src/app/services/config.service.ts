@@ -31,7 +31,7 @@ export class ConfigService {
   }
 
   getServer(service: string): string {
-    console.log("get " + this.server);
+    // console.log("server:", this.server, " service:", service)
     if (!this.server) {
       const endpoint = localStorage.getItem("server");
       console.log("storage" + endpoint);
@@ -69,7 +69,7 @@ export class ConfigService {
 
 
   private getCorrectApi(endpoint: string): string {
-    let api = "/api";
+    let api = "";
     if (endpoint === "https://preprodaccessmonitor.acessibilidade.gov.pt" || endpoint === "https://accessmonitor.acessibilidade.gov.pt")
       api = "/api";
     return api;
