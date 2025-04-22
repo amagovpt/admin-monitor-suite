@@ -4,12 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build:dev": "ng build --configuration production --build-optimizer --base-href=\"/ams/\"",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve",
+    "build:dev": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration production --build-optimizer --base-href=\"/ams/\"",
     "build:prod": "ng build --configuration production --build-optimizer",
-    "build:stats": "ng build --configuration production --build-optimizer --stats-json",
-    "test": "ng test",
-    "test:aStatement": "ng test --include=src/app/services/accessibility-statement.service.spec.ts",
+    "build:stats": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration production --build-optimizer --stats-json",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider ng test",
+    "test:aStatement": "NODE_OPTIONS=--openssl-legacy-provider ng test --include=src/app/services/accessibility-statement.service.spec.ts",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
