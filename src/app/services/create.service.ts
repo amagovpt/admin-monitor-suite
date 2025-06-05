@@ -229,6 +229,49 @@ export class CreateService {
       );
   }
 
+  newEvaluation(data: any): Observable<boolean> {
+    const pageId = data.pageId;
+
+    data = data.data;
+    
+    return this.http
+      .post<any>(this.config.getServer(`/evaluation/amp/extension/${pageId}`), { data }, {
+        observe: "response",
+      })
+      .pipe(
+        map((res) => {
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          const response = <Response>res.body;
+
+          if (response.success !== 1) {
+            throw new AdminError(
+              response.success,
+              response.message,
+              "NORMAL",
+              response.errors,
+              response.result
+            );
+          }
+
+          return <boolean>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          if (err.code === 0) {
+            // this.dialog.open(UploadEvaluationErrorsDialogComponent, {
+            //   data: err.errors,
+            // });
+          } else {
+            this.message.show("UPLOAD_EVALUATIONS_PAGE.ADD.messages.error");
+          }
+          return of(null);
+        })
+      );
+  }
+
   observatoryData(): Observable<boolean> {
     return this.http
       .post<any>(
