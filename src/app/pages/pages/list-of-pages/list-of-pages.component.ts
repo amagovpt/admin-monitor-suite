@@ -197,6 +197,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
       // Setup pagination and sorting subscription (after ViewChild initialization)
       setTimeout(() => {
+        console.log("Checking ViewChild components - sort:", !!this.sort, "paginator:", !!this.paginator);
         if (this.sort && this.paginator) {
           console.log("Setting up pagination and sorting subscriptions");
           merge(this.sort.sortChange, this.paginator.page)
@@ -208,6 +209,23 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
               console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
               this.loadPagesData(this.filter.value ?? "");
             });
+        } else {
+          console.log("ViewChild components not ready, trying again...");
+          setTimeout(() => {
+            console.log("Second attempt - sort:", !!this.sort, "paginator:", !!this.paginator);
+            if (this.sort && this.paginator) {
+              console.log("Setting up pagination and sorting subscriptions (second attempt)");
+              merge(this.sort.sortChange, this.paginator.page)
+                .pipe(
+                  distinctUntilChanged(),
+                  debounceTime(150)
+                )
+                .subscribe(() => {
+                  console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
+                  this.loadPagesData(this.filter.value ?? "");
+                });
+            }
+          }, 500);
         }
       }, 0);
     }
@@ -247,6 +265,10 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         this.dataSource = new MatTableDataSource(pages || []);
         this.selection = new SelectionModel<any>(true, []);
+        
+        // Important: DON'T connect paginator/sort to dataSource for server-side pagination
+        // We handle pagination manually through API calls
+        
         this.cd.detectChanges();
       },
       error: (error) => {
