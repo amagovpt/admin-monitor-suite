@@ -123,8 +123,11 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   private configureForDatasetSize(count: number): void {
+    console.log(`Configuring for dataset size: ${count}`);
     this.isLargeDataset = count > 5000;
     this.requiresSearch = count > 10000;
+    
+    console.log(`isLargeDataset: ${this.isLargeDataset}, requiresSearch: ${this.requiresSearch}`);
     
     // Optimize page size for large datasets
     if (count > 10000) {
@@ -141,7 +144,31 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     
     if (this.requiresSearch) {
       this.message.show("Very large dataset. Please use search filter (minimum 3 characters) to load data.");
+      // Don't load data initially for very large datasets
+      this.dataSource = new MatTableDataSource([]);
+      console.log("Preventing initial load due to large dataset");
+    } else {
+      // Trigger initial load for smaller datasets
+      console.log("Triggering initial load for smaller dataset");
+      this.triggerInitialLoad();
     }
+  }
+
+  private triggerInitialLoad(): void {
+    this.isLoadingResults = true;
+    this.cd.detectChanges();
+    this.get.listOfPages(
+      this.paginator.pageSize,
+      this.paginator.pageIndex,
+      this.sort.active ?? "",
+      this.sort.direction,
+      ""
+    ).subscribe((pages) => {
+      this.isLoadingResults = false;
+      this.dataSource = new MatTableDataSource(pages || []);
+      this.selection = new SelectionModel<any>(true, []);
+      this.cd.detectChanges();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -168,15 +195,18 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
         .pipe(
           distinctUntilChanged(),
           debounceTime(300), // Increased debounce
-          startWith({}),
           switchMap(() => {
             // Check if search is required for large datasets
             const searchValue = this.filter.value ?? "";
+            console.log(`switchMap triggered - requiresSearch: ${this.requiresSearch}, searchValue: "${searchValue}", length: ${searchValue.length}`);
+            
             if (this.requiresSearch && searchValue.length < this.minSearchLength) {
+              console.log("Blocking load due to insufficient search criteria");
               this.isLoadingResults = false;
               return of([]);
             }
             
+            console.log("Proceeding with page load");
             this.isLoadingResults = true;
             this.cd.detectChanges();
             return this.get.listOfPages(
