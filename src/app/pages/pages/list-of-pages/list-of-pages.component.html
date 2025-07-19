@@ -23,11 +23,11 @@
       <mat-form-field appearance="outline">
         <label>{{ "MISC.filter" | translate }}
           <input *ngIf="!pages" id="pages_table_filter" matInput [formControl]="filter" 
-                 [placeholder]="requiresSearch ? 'Search required (min 3 characters)' : 'Filter pages...'"> 
+                 [placeholder]="requiresSearch ? ('PAGES_PAGE.LIST.search_placeholder_required' | translate) : ('PAGES_PAGE.LIST.search_placeholder_normal' | translate)"> 
           <input *ngIf="pages" id="pages_table_filter" matInput (keyup)="applyFilter($event.target.value)">
         </label>
-        <mat-hint *ngIf="isLargeDataset && !requiresSearch">Large dataset detected. Consider using filters for better performance.</mat-hint>
-        <mat-hint *ngIf="requiresSearch">Very large dataset. Please enter at least {{ minSearchLength }} characters to search.</mat-hint>
+        <mat-hint *ngIf="isLargeDataset && !requiresSearch">{{ "PAGES_PAGE.LIST.search_hint_large" | translate }}</mat-hint>
+        <mat-hint *ngIf="requiresSearch">{{ "PAGES_PAGE.LIST.search_hint_required" | translate:{minLength: minSearchLength} }}</mat-hint>
       </mat-form-field>
 
       <span fxFlex></span>
@@ -62,16 +62,16 @@
     <div *ngIf="requiresSearch && (!filter.value || filter.value.length < minSearchLength) && !isLoadingResults" 
          class="search-required-message" style="text-align: center; padding: 2rem; color: #666;">
       <mat-icon style="font-size: 48px; height: 48px; width: 48px;">search</mat-icon>
-      <h3>Search Required</h3>
-      <p>This dataset is very large. Please enter at least {{ minSearchLength }} characters in the search field to load pages.</p>
+      <h3>{{ "PAGES_PAGE.LIST.search_required_title" | translate }}</h3>
+      <p>{{ "PAGES_PAGE.LIST.search_required_description" | translate:{minLength: minSearchLength} }}</p>
     </div>
 
     <!-- Message for large dataset but no results -->
     <div *ngIf="!requiresSearch && dataSource.data.length === 0 && !isLoadingResults && length > 0" 
          class="no-results-message" style="text-align: center; padding: 2rem; color: #666;">
       <mat-icon style="font-size: 48px; height: 48px; width: 48px;">filter_list</mat-icon>
-      <h3>No Results Found</h3>
-      <p>Try adjusting your search criteria or clearing the filter.</p>
+      <h3>{{ "PAGES_PAGE.LIST.no_results_title" | translate }}</h3>
+      <p>{{ "PAGES_PAGE.LIST.no_results_description" | translate }}</p>
     </div>
 
     <mat-table [dataSource]="dataSource" matSort 

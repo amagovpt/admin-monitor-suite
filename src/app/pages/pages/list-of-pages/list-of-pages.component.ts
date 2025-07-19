@@ -120,11 +120,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   private configureForDatasetSize(count: number): void {
-    console.log(`Configuring for dataset size: ${count}`);
     this.isLargeDataset = count > 5000;
     this.requiresSearch = count > 10000;
-    
-    console.log(`isLargeDataset: ${this.isLargeDataset}, requiresSearch: ${this.requiresSearch}`);
     
     // Optimize page size for large datasets
     if (count > 10000) {
@@ -136,17 +133,15 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     }
     
     if (this.isLargeDataset) {
-      this.message.show("Large dataset detected. Consider using filters to improve performance.");
+      this.message.show("PAGES_PAGE.LIST.large_dataset_message");
     }
     
     if (this.requiresSearch) {
-      this.message.show("Very large dataset. Please use search filter (minimum 3 characters) to load data.");
+      this.message.show("PAGES_PAGE.LIST.search_required_message");
       // Don't load data initially for very large datasets
       this.dataSource = new MatTableDataSource([]);
-      console.log("Preventing initial load due to large dataset");
     } else {
       // Trigger initial load for smaller datasets
-      console.log("Triggering initial load for smaller dataset");
       this.triggerInitialLoad();
     }
   }
@@ -177,8 +172,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
           debounceTime(300)
         )
         .subscribe((value) => {
-          console.log(`Filter changed to: "${value}"`);
-          
           // Update count first
           if (this.requiresSearch && (!value || value.length < this.minSearchLength)) {
             this.dataSource = new MatTableDataSource([]);
@@ -189,7 +182,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
           this.get.listOfPageCount(value).subscribe((count) => {
             this.length = count;
             this.paginator.firstPage();
-            console.log(`Updated count to: ${count}`);
             
             // Then load data if criteria met
             this.loadPagesData(value);
@@ -209,38 +201,28 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
     // Wait for next tick to ensure table is rendered
     setTimeout(() => {
-      console.log("Setting up pagination - sort:", !!this.sort, "paginator:", !!this.paginator);
-      
       if (this.sort && this.paginator) {
-        console.log("Setting up pagination and sorting subscriptions");
         merge(this.sort.sortChange, this.paginator.page)
           .pipe(
             distinctUntilChanged(),
             debounceTime(150)
           )
           .subscribe(() => {
-            console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
             this.loadPagesData(this.filter.value ?? "");
           });
         
         this.paginationSubscriptionSetup = true;
-      } else {
-        console.log("ViewChild components still not ready for pagination setup");
       }
     }, 100);
   }
 
   private loadPagesData(searchValue: string): void {
-    console.log(`loadPagesData called with: "${searchValue}"`);
-    
     // Check if search is required for large datasets
     if (this.requiresSearch && searchValue.length < this.minSearchLength) {
-      console.log("Blocking load due to insufficient search criteria");
       this.dataSource = new MatTableDataSource([]);
       return;
     }
     
-    console.log("Proceeding with page load");
     this.isLoadingResults = true;
     this.cd.detectChanges();
     
@@ -250,8 +232,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     const pageSize = this.paginator?.pageSize || 10;
     const pageIndex = this.paginator?.pageIndex || 0;
     
-    console.log(`Loading with params - pageSize: ${pageSize}, pageIndex: ${pageIndex}, sort: ${sortField}, direction: ${sortDirection}`);
-    
     this.get.listOfPages(
       pageSize,
       pageIndex,
@@ -260,7 +240,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       searchValue
     ).subscribe({
       next: (pages) => {
-        console.log(`Loaded ${pages?.length || 0} pages`);
         this.isLoadingResults = false;
         this.dataSource = new MatTableDataSource(pages || []);
         this.selection = new SelectionModel<any>(true, []);
@@ -273,7 +252,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       error: (error) => {
         console.error('Error loading pages:', error);
         this.isLoadingResults = false;
-        this.message.show("Error loading pages. Please try using filters or reducing page size.");
+        this.message.show("PAGES_PAGE.LIST.error_loading_message");
         this.dataSource = new MatTableDataSource([]);
         this.cd.detectChanges();
       }
