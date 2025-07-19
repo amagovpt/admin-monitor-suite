@@ -16,7 +16,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
-import { merge, of } from "rxjs";
+import { merge } from "rxjs";
 
 import { EvaluationErrorDialogComponent } from "../../../dialogs/evaluation-error-dialog/evaluation-error-dialog.component";
 
@@ -24,12 +24,8 @@ import { UpdateService } from "../../../services/update.service";
 import { OpenDataService } from "../../../services/open-data.service";
 import { GetService } from "../../../services/get.service";
 import {
-  catchError,
   debounceTime,
   distinctUntilChanged,
-  map,
-  startWith,
-  switchMap,
 } from "rxjs/operators";
 import { DeleteService } from "../../../services/delete.service";
 import { MessageService } from "../../../services/message.service";
@@ -173,13 +169,16 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (!this.pages) {
+      // Combined subscription for both count and data loading
       this.filter.valueChanges
         .pipe(
           distinctUntilChanged(), 
-          debounceTime(300) // Increased debounce for large datasets
+          debounceTime(300)
         )
         .subscribe((value) => {
-          // Validate search requirements for large datasets
+          console.log(`Filter changed to: "${value}"`);
+          
+          // Update count first
           if (this.requiresSearch && (!value || value.length < this.minSearchLength)) {
             this.dataSource = new MatTableDataSource([]);
             this.length = 0;
@@ -189,51 +188,62 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
           this.get.listOfPageCount(value).subscribe((count) => {
             this.length = count;
             this.paginator.firstPage();
+            console.log(`Updated count to: ${count}`);
+            
+            // Then load data if criteria met
+            this.loadPagesData(value);
           });
         });
-      merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
+
+      // Handle pagination and sorting changes
+      merge(this.sort.sortChange, this.paginator.page)
         .pipe(
           distinctUntilChanged(),
-          debounceTime(300), // Increased debounce
-          switchMap(() => {
-            // Check if search is required for large datasets
-            const searchValue = this.filter.value ?? "";
-            console.log(`switchMap triggered - requiresSearch: ${this.requiresSearch}, searchValue: "${searchValue}", length: ${searchValue.length}`);
-            
-            if (this.requiresSearch && searchValue.length < this.minSearchLength) {
-              console.log("Blocking load due to insufficient search criteria");
-              this.isLoadingResults = false;
-              return of([]);
-            }
-            
-            console.log("Proceeding with page load");
-            this.isLoadingResults = true;
-            this.cd.detectChanges();
-            return this.get.listOfPages(
-              this.paginator.pageSize,
-              this.paginator.pageIndex,
-              this.sort.active ?? "",
-              this.sort.direction,
-              searchValue
-            );
-          }),
-          map((data) => {
-            this.isLoadingResults = false;
-            return data;
-          }),
-          catchError((error) => {
-            this.isLoadingResults = false;
-            console.error('Error loading pages:', error);
-            this.message.show("Error loading pages. Please try using filters or reducing page size.");
-            return of([]);
-          })
+          debounceTime(150)
         )
-        .subscribe((pages) => {
-          this.dataSource = new MatTableDataSource(pages);
-          this.selection = new SelectionModel<any>(true, []);
-          this.cd.detectChanges();
+        .subscribe(() => {
+          console.log("Sort or pagination changed");
+          this.loadPagesData(this.filter.value ?? "");
         });
     }
+  }
+
+  private loadPagesData(searchValue: string): void {
+    console.log(`loadPagesData called with: "${searchValue}"`);
+    
+    // Check if search is required for large datasets
+    if (this.requiresSearch && searchValue.length < this.minSearchLength) {
+      console.log("Blocking load due to insufficient search criteria");
+      this.dataSource = new MatTableDataSource([]);
+      return;
+    }
+    
+    console.log("Proceeding with page load");
+    this.isLoadingResults = true;
+    this.cd.detectChanges();
+    
+    this.get.listOfPages(
+      this.paginator.pageSize,
+      this.paginator.pageIndex,
+      this.sort.active ?? "",
+      this.sort.direction,
+      searchValue
+    ).subscribe({
+      next: (pages) => {
+        console.log(`Loaded ${pages?.length || 0} pages`);
+        this.isLoadingResults = false;
+        this.dataSource = new MatTableDataSource(pages || []);
+        this.selection = new SelectionModel<any>(true, []);
+        this.cd.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading pages:', error);
+        this.isLoadingResults = false;
+        this.message.show("Error loading pages. Please try using filters or reducing page size.");
+        this.dataSource = new MatTableDataSource([]);
+        this.cd.detectChanges();
+      }
+    });
   }
 
   applyFilter(filterValue: string): void {
