@@ -80,6 +80,11 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   length: number;
   isLoadingResults: boolean;
   filter: FormControl;
+  
+  // Large dataset handling
+  isLargeDataset: boolean = false;
+  requiresSearch: boolean = false;
+  minSearchLength: number = 3;
 
   constructor(
     private get: GetService,
@@ -107,6 +112,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     if (!this.pages) {
       this.get.listOfPageCount("").subscribe((count) => {
         this.length = count;
+        this.configureForDatasetSize(count);
       });
     } else {
       this.dataSource = new MatTableDataSource(this.pages);
@@ -116,11 +122,43 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private configureForDatasetSize(count: number): void {
+    this.isLargeDataset = count > 5000;
+    this.requiresSearch = count > 10000;
+    
+    // Optimize page size for large datasets
+    if (count > 10000) {
+      this.paginator.pageSize = 10;
+    } else if (count > 5000) {
+      this.paginator.pageSize = 25;
+    } else {
+      this.paginator.pageSize = 50;
+    }
+    
+    if (this.isLargeDataset) {
+      this.message.show("Large dataset detected. Consider using filters to improve performance.");
+    }
+    
+    if (this.requiresSearch) {
+      this.message.show("Very large dataset. Please use search filter (minimum 3 characters) to load data.");
+    }
+  }
+
   ngAfterViewInit(): void {
     if (!this.pages) {
       this.filter.valueChanges
-        .pipe(distinctUntilChanged(), debounceTime(150))
+        .pipe(
+          distinctUntilChanged(), 
+          debounceTime(300) // Increased debounce for large datasets
+        )
         .subscribe((value) => {
+          // Validate search requirements for large datasets
+          if (this.requiresSearch && (!value || value.length < this.minSearchLength)) {
+            this.dataSource = new MatTableDataSource([]);
+            this.length = 0;
+            return;
+          }
+          
           this.get.listOfPageCount(value).subscribe((count) => {
             this.length = count;
             this.paginator.firstPage();
@@ -129,9 +167,16 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
         .pipe(
           distinctUntilChanged(),
-          debounceTime(150),
+          debounceTime(300), // Increased debounce
           startWith({}),
           switchMap(() => {
+            // Check if search is required for large datasets
+            const searchValue = this.filter.value ?? "";
+            if (this.requiresSearch && searchValue.length < this.minSearchLength) {
+              this.isLoadingResults = false;
+              return of([]);
+            }
+            
             this.isLoadingResults = true;
             this.cd.detectChanges();
             return this.get.listOfPages(
@@ -139,16 +184,17 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
               this.paginator.pageIndex,
               this.sort.active ?? "",
               this.sort.direction,
-              this.filter.value ?? ""
+              searchValue
             );
           }),
           map((data) => {
-            // Flip flag to show that loading has finished.
             this.isLoadingResults = false;
             return data;
           }),
-          catchError(() => {
+          catchError((error) => {
             this.isLoadingResults = false;
+            console.error('Error loading pages:', error);
+            this.message.show("Error loading pages. Please try using filters or reducing page size.");
             return of([]);
           })
         )

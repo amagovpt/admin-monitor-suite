@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { map, retry, catchError } from "rxjs/operators";
+import { map, retry, catchError, timeout } from "rxjs/operators";
 import * as _ from "lodash";
 
 import { ConfigService } from "./config.service";
@@ -1553,6 +1553,7 @@ export class GetService {
         { observe: "response" }
       )
       .pipe(
+        timeout(30000), // 30 second timeout for large page requests
         retry(3),
         map((res) => {
           const response = <Response>res.body;
@@ -1568,7 +1569,10 @@ export class GetService {
           return <Array<Page>>response.result;
         }),
         catchError((err) => {
-          console.log(err);
+          console.log('Error in listOfPages:', err);
+          if (err.name === 'TimeoutError') {
+            throw new AdminError(408, "Request timeout - dataset too large, please use filters", "NORMAL");
+          }
           return of(null);
         })
       );
