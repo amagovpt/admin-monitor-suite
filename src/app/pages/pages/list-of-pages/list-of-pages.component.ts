@@ -81,6 +81,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   isLargeDataset: boolean = false;
   requiresSearch: boolean = false;
   minSearchLength: number = 3;
+  paginationSubscriptionSetup: boolean = false;
 
   constructor(
     private get: GetService,
@@ -192,43 +193,41 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
             
             // Then load data if criteria met
             this.loadPagesData(value);
+            
+            // Setup pagination/sort subscriptions AFTER table is rendered
+            this.setupPaginationSubscriptions();
           });
         });
 
-      // Setup pagination and sorting subscription (after ViewChild initialization)
-      setTimeout(() => {
-        console.log("Checking ViewChild components - sort:", !!this.sort, "paginator:", !!this.paginator);
-        if (this.sort && this.paginator) {
-          console.log("Setting up pagination and sorting subscriptions");
-          merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-              distinctUntilChanged(),
-              debounceTime(150)
-            )
-            .subscribe(() => {
-              console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
-              this.loadPagesData(this.filter.value ?? "");
-            });
-        } else {
-          console.log("ViewChild components not ready, trying again...");
-          setTimeout(() => {
-            console.log("Second attempt - sort:", !!this.sort, "paginator:", !!this.paginator);
-            if (this.sort && this.paginator) {
-              console.log("Setting up pagination and sorting subscriptions (second attempt)");
-              merge(this.sort.sortChange, this.paginator.page)
-                .pipe(
-                  distinctUntilChanged(),
-                  debounceTime(150)
-                )
-                .subscribe(() => {
-                  console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
-                  this.loadPagesData(this.filter.value ?? "");
-                });
-            }
-          }, 500);
-        }
-      }, 0);
     }
+  }
+
+  private setupPaginationSubscriptions(): void {
+    if (this.paginationSubscriptionSetup) {
+      return; // Already set up
+    }
+
+    // Wait for next tick to ensure table is rendered
+    setTimeout(() => {
+      console.log("Setting up pagination - sort:", !!this.sort, "paginator:", !!this.paginator);
+      
+      if (this.sort && this.paginator) {
+        console.log("Setting up pagination and sorting subscriptions");
+        merge(this.sort.sortChange, this.paginator.page)
+          .pipe(
+            distinctUntilChanged(),
+            debounceTime(150)
+          )
+          .subscribe(() => {
+            console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
+            this.loadPagesData(this.filter.value ?? "");
+          });
+        
+        this.paginationSubscriptionSetup = true;
+      } else {
+        console.log("ViewChild components still not ready for pagination setup");
+      }
+    }, 100);
   }
 
   private loadPagesData(searchValue: string): void {
