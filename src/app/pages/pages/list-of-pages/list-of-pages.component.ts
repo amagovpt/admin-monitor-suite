@@ -195,18 +195,21 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
           });
         });
 
-      // Handle pagination and sorting changes (only if components are ready)
-      if (this.sort && this.paginator) {
-        merge(this.sort.sortChange, this.paginator.page)
-          .pipe(
-            distinctUntilChanged(),
-            debounceTime(150)
-          )
-          .subscribe(() => {
-            console.log("Sort or pagination changed");
-            this.loadPagesData(this.filter.value ?? "");
-          });
-      }
+      // Setup pagination and sorting subscription (after ViewChild initialization)
+      setTimeout(() => {
+        if (this.sort && this.paginator) {
+          console.log("Setting up pagination and sorting subscriptions");
+          merge(this.sort.sortChange, this.paginator.page)
+            .pipe(
+              distinctUntilChanged(),
+              debounceTime(150)
+            )
+            .subscribe(() => {
+              console.log("Pagination or sort changed - page:", this.paginator.pageIndex, "size:", this.paginator.pageSize, "sort:", this.sort.active);
+              this.loadPagesData(this.filter.value ?? "");
+            });
+        }
+      }, 0);
     }
   }
 
