@@ -69,8 +69,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   jsonFromFile: string;
 
   @ViewChild("input") input: ElementRef;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   loading: boolean;
   length: number;
