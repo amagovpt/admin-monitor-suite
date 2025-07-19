@@ -195,16 +195,18 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
           });
         });
 
-      // Handle pagination and sorting changes
-      merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-          distinctUntilChanged(),
-          debounceTime(150)
-        )
-        .subscribe(() => {
-          console.log("Sort or pagination changed");
-          this.loadPagesData(this.filter.value ?? "");
-        });
+      // Handle pagination and sorting changes (only if components are ready)
+      if (this.sort && this.paginator) {
+        merge(this.sort.sortChange, this.paginator.page)
+          .pipe(
+            distinctUntilChanged(),
+            debounceTime(150)
+          )
+          .subscribe(() => {
+            console.log("Sort or pagination changed");
+            this.loadPagesData(this.filter.value ?? "");
+          });
+      }
     }
   }
 
@@ -222,11 +224,19 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     this.isLoadingResults = true;
     this.cd.detectChanges();
     
+    // Safe access to sort properties with fallbacks
+    const sortField = this.sort?.active || "";
+    const sortDirection = this.sort?.direction || "";
+    const pageSize = this.paginator?.pageSize || 10;
+    const pageIndex = this.paginator?.pageIndex || 0;
+    
+    console.log(`Loading with params - pageSize: ${pageSize}, pageIndex: ${pageIndex}, sort: ${sortField}, direction: ${sortDirection}`);
+    
     this.get.listOfPages(
-      this.paginator.pageSize,
-      this.paginator.pageIndex,
-      this.sort.active ?? "",
-      this.sort.direction,
+      pageSize,
+      pageIndex,
+      sortField,
+      sortDirection,
       searchValue
     ).subscribe({
       next: (pages) => {
