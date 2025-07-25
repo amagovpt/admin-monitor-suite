@@ -32,11 +32,17 @@ ng build --configuration production --build-optimizer
 # Unit tests
 npm test
 
+# Run specific test (example: accessibility statement service)
+npm run test:aStatement
+
 # Linting
 npm run lint
 
 # End-to-end tests
 npm run e2e
+
+# Build with bundle analysis
+npm run build:stats
 ```
 
 ### Admin Management
@@ -67,11 +73,18 @@ node admin.js
 - **Token Storage**: `AMS-SSID` in localStorage for session persistence
 
 #### Core Services Pattern
+All services follow a consistent pattern with robust error handling:
+
 - **GetService**: Comprehensive data retrieval with pagination, search, and error retry (3 attempts)
+  - Timeout handling for large datasets (30s timeout)
+  - Structured response mapping and validation
+  - Fallback to `null` or empty arrays on error
 - **CreateService**: Entity creation (Users, Websites, Pages, Tags, Entities, Directories)
 - **UpdateService**: Entity updates and accessibility statement management
 - **DeleteService**: Single and bulk deletion operations
 - **EvaluationService**: Complex accessibility evaluation processing and export (CSV/EARL)
+- **CrawlerService**: Website crawling and URL discovery functionality
+- **VerifyService**: Data validation and verification operations
 
 ### API Response Format
 All API responses follow this structure:
@@ -123,6 +136,35 @@ All API responses follow this structure:
 - **Base href** modification required for deployment (`/ams/` for dev builds)
 
 ### Testing
-- **Karma + Jasmine** for unit tests
+- **Karma + Jasmine** for unit tests with custom matchers
 - **Protractor** for end-to-end tests
+- **Test Isolation**: Individual test runs available (e.g., `npm run test:aStatement`)
 - Configuration files: `karma.conf.js`, `protractor.conf.js`
+- **Coverage**: Tests include service layer, components, and integration scenarios
+
+## Key Development Patterns
+
+### Component Architecture
+- **Modular Design**: Feature-based component organization under `/pages/`
+- **Dialog System**: Extensive use of Angular Material dialogs for modals and forms
+- **Shared Components**: Global reusable components in `/global/` (loading, error handling, plots)
+- **Layout Components**: Header, footer, and navigation components with responsive design
+
+### Routing Strategy
+- **Guard-Protected Routes**: All admin routes protected by `AdminAuthGuard`
+- **Nested Routes**: Complex navigation hierarchy with nested child routes
+- **Dynamic Parameters**: Route parameters for entities (user, website, page, tag, directory)
+- **Breadcrumb Navigation**: Automatic breadcrumb generation for current route context
+
+### State Management
+- **Service-Based State**: No external state management library; uses Angular services
+- **BehaviorSubject Pattern**: For reactive state updates and environment detection
+- **Local Storage**: Session persistence and server endpoint configuration
+- **HTTP Caching**: Built-in retry mechanisms and error recovery
+
+### UI/UX Patterns
+- **Angular Material**: Consistent Material Design components throughout
+- **Responsive Design**: Flex layout for mobile and desktop compatibility
+- **Internationalization**: English and Portuguese language support via ngx-translate
+- **Data Tables**: Paginated tables with sorting, filtering, and export capabilities
+- **Progress Indicators**: Loading states and progress gauges for long-running operations
