@@ -1184,6 +1184,12 @@ export class EvaluationService {
     };
 
     for (const test in evaluation.data.tot.results || {}) {
+      // Skip test if it's not defined in the tests object
+      if (!tests[test]) {
+        console.warn(`Test definition not found for: ${test}`);
+        continue;
+      }
+      
       const value = evaluation.processed.results.filter(
         (r) => r.msg === test
       )[0].tech_list.tot;
