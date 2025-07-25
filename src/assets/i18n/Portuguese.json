@@ -2141,8 +2141,8 @@
       "p": "Localizei <mark>{{value}}</mark> atributos <code>headers</code> que apontam para células fora das suas tabelas."
     },
     "id_01": {
-      "s": "Constatei que nesta página <mark>não há</marks> atributos <code>id</code> repetidos.",
-      "p": "Constatei que nesta página <mark>não há</marks> atributos <code>id</code> repetidos."
+      "s": "Constatei que nesta página <mark>não há</mark> atributos <code>id</code> repetidos.",
+      "p": "Constatei que nesta página <mark>não há</mark> atributos <code>id</code> repetidos."
     },
     "id_02": {
       "s": "Encontrei nesta página <mark>{{value}}</mark> atributo <code>id</code> repetido.",
