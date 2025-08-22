@@ -74,7 +74,7 @@
       <p>{{ "PAGES_PAGE.LIST.no_results_description" | translate }}</p>
     </div>
 
-    <mat-table [dataSource]="dataSource" matSort 
+    <mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)"
                *ngIf="!requiresSearch || (filter.value && filter.value.length >= minSearchLength)">
 
       <!--<ng-container matColumnDef="PageId">

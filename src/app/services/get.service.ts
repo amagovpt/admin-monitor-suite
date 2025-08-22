@@ -1504,6 +1504,74 @@ export class GetService {
       );
   }
 
+  listOfWebsitePagesCount(
+    user: string,
+    website: string,
+    search: string
+  ): Observable<number> {
+    const searchParam = search || '-';
+    const url = this.config.getServer(`/website/${encodeURIComponent(website)}/user/${user}/pages/count/${encodeURIComponent(searchParam)}`);
+    return this.http
+      .get<any>(url, { observe: "response" })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <number>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of(0);
+        })
+      );
+  }
+
+  listOfWebsitePagesPaginated(
+    user: string,
+    website: string,
+    size: number,
+    page: number,
+    sort: string,
+    direction: string,
+    search: string
+  ): Observable<Array<any>> {
+    const searchParam = search || '-';
+    const url = this.config.getServer(
+      `/website/${encodeURIComponent(website)}/user/${user}/pages/all/${size}/${page}/sort=${sort}/direction=${direction}/search=${encodeURIComponent(searchParam)}`
+    );
+    return this.http
+      .get<any>(url, { observe: "response" })
+      .pipe(
+        retry(3),
+        map((res) => {
+          const response = <Response>res.body;
+
+          if (!res.body || res.status === 404) {
+            throw new AdminError(404, "Service not found", "SERIOUS");
+          }
+
+          if (response.success !== 1) {
+            throw new AdminError(response.success, response.message);
+          }
+
+          return <Array<any>>response.result;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of([]);
+        })
+      );
+  }
+
   listOfPageCount(search: string): Observable<number> {
     return this.http
       .get<any>(

@@ -30,6 +30,9 @@ export class WebsiteComponent implements OnInit, OnDestroy {
 
   websiteObject: any;
   startingUrl: string;
+  
+  // New properties for pagination support
+  pagesForStatistics: Array<any>;
 
 
   constructor(
@@ -75,10 +78,11 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   }
 
   private getListOfWebsitePages(): void {
+    // Load all pages for statistics calculation only
     this.get
       .listOfWebsitePagesByName(this.user, this.website)
       .subscribe((pages) => {
-        this.pages = _.clone(pages);
+        this.pagesForStatistics = _.clone(pages);
 //FIXME
         if (pages.length > 0){
           let uri = pages[0].Uri;
@@ -87,10 +91,10 @@ export class WebsiteComponent implements OnInit, OnDestroy {
           this.correctUrl(uri);
         }
   //FIXME
-        pages = pages.filter((p) => p.Score !== null);
+        const pagesForStats = pages.filter((p) => p.Score !== null);
 
         this.websiteObject = new Website();
-        for (const page of pages) {
+        for (const page of pagesForStats) {
           this.websiteObject.addPage(
             page.Score,
             page.Errors,
@@ -101,6 +105,10 @@ export class WebsiteComponent implements OnInit, OnDestroy {
             page.Evaluation_Date
           );
         }
+        
+        // Clear the pages array to trigger pagination mode in list-of-pages component
+        this.pages = null;
+        
         this.loading = false;
         this.cd.detectChanges();
       });

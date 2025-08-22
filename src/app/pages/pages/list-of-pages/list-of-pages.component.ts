@@ -42,6 +42,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     Array<number>
   >();
   @Input("pages") pages: Array<any>;
+  @Input("websiteContext") websiteContext: { user: string; website: string };
 
   displayedColumns = [
     // 'PageId',
@@ -69,8 +70,8 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   jsonFromFile: string;
 
   @ViewChild("input") input: ElementRef;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   loading: boolean;
   length: number;
@@ -82,6 +83,10 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   requiresSearch: boolean = false;
   minSearchLength: number = 3;
   paginationSubscriptionSetup: boolean = false;
+  
+  // Sort state management (since ViewChild isn't reliable)
+  currentSortField: string = "";
+  currentSortDirection: string = "";
 
   constructor(
     private get: GetService,
@@ -106,17 +111,14 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (!this.pages) {
-      this.get.listOfPageCount("").subscribe((count) => {
-        this.length = count;
-        this.configureForDatasetSize(count);
-      });
-    } else {
+    // Handle the case where pages are provided directly (old behavior)
+    if (this.pages) {
       this.dataSource = new MatTableDataSource(this.pages);
       this.length = this.pages.length;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
+    // For pagination mode, setup is moved to ngAfterViewInit where @Input websiteContext is available
   }
 
   private configureForDatasetSize(count: number): void {
@@ -147,50 +149,46 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   private triggerInitialLoad(): void {
-    this.isLoadingResults = true;
-    this.cd.detectChanges();
-    this.get.listOfPages(
-      this.paginator.pageSize,
-      this.paginator.pageIndex,
-      this.sort.active ?? "",
-      this.sort.direction,
-      ""
-    ).subscribe((pages) => {
-      this.isLoadingResults = false;
-      this.dataSource = new MatTableDataSource(pages || []);
-      this.selection = new SelectionModel<any>(true, []);
-      this.cd.detectChanges();
-    });
+    this.loadPagesData("");
   }
 
   ngAfterViewInit(): void {
     if (!this.pages) {
-      // Combined subscription for both count and data loading
-      this.filter.valueChanges
-        .pipe(
-          distinctUntilChanged(), 
-          debounceTime(300)
-        )
-        .subscribe((value) => {
-          // Update count first
-          if (this.requiresSearch && (!value || value.length < this.minSearchLength)) {
-            this.dataSource = new MatTableDataSource([]);
-            this.length = 0;
-            return;
-          }
-          
-          this.get.listOfPageCount(value).subscribe((count) => {
+      // Set up initial count (now that @Input websiteContext is available)
+      if (this.websiteContext) {
+        this.get.listOfWebsitePagesCount(this.websiteContext.user, this.websiteContext.website, "").subscribe({
+          next: (count) => {
             this.length = count;
-            this.paginator.firstPage();
-            
-            // Then load data if criteria met
-            this.loadPagesData(value);
-            
-            // Setup pagination/sort subscriptions AFTER table is rendered
-            this.setupPaginationSubscriptions();
-          });
+            this.configureForDatasetSize(count);
+          },
+          error: (error) => {
+            console.error('Error getting website pages count:', error);
+            this.length = 0;
+          }
         });
+      } else {
+        this.get.listOfPageCount("").subscribe((count) => {
+          this.length = count;
+          this.configureForDatasetSize(count);
+        });
+      }
 
+      // Set up filter subscription for count updates
+      this.filter.valueChanges
+        .pipe(distinctUntilChanged(), debounceTime(150))
+        .subscribe((value) => {
+          if (this.websiteContext) {
+            this.get.listOfWebsitePagesCount(this.websiteContext.user, this.websiteContext.website, value).subscribe((count) => {
+              this.length = count;
+              this.paginator.firstPage();
+            });
+          } else {
+            this.get.listOfPageCount(value).subscribe((count) => {
+              this.length = count;
+              this.paginator.firstPage();
+            });
+          }
+        });
     }
   }
 
@@ -199,21 +197,24 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       return; // Already set up
     }
 
-    // Wait for next tick to ensure table is rendered
-    setTimeout(() => {
-      if (this.sort && this.paginator) {
-        merge(this.sort.sortChange, this.paginator.page)
-          .pipe(
-            distinctUntilChanged(),
-            debounceTime(150)
-          )
-          .subscribe(() => {
-            this.loadPagesData(this.filter.value ?? "");
-          });
+    // Wait for next tick to ensure table is rendered, then keep trying until ViewChild is available
+    const trySetup = (retryCount = 0) => {
+      // Set up paginator subscription immediately if available (it's always rendered)
+      if (this.paginator && !this.paginationSubscriptionSetup) {
+        this.paginator.page.pipe(
+          distinctUntilChanged(),
+          debounceTime(150)
+        ).subscribe(() => {
+          this.loadPagesData(this.filter.value ?? "");
+        });
         
         this.paginationSubscriptionSetup = true;
+        return; // Exit early, pagination is set up
       }
-    }, 100);
+    };
+
+    // Start trying after initial delay
+    setTimeout(() => trySetup(), 100);
   }
 
   private loadPagesData(searchValue: string): void {
@@ -226,19 +227,32 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     this.isLoadingResults = true;
     this.cd.detectChanges();
     
-    // Safe access to sort properties with fallbacks
-    const sortField = this.sort?.active || "";
-    const sortDirection = this.sort?.direction || "";
+    // Use stored sort state instead of ViewChild (which may not be available)
+    const sortField = this.currentSortField;
+    const sortDirection = this.currentSortDirection;
     const pageSize = this.paginator?.pageSize || 10;
     const pageIndex = this.paginator?.pageIndex || 0;
     
-    this.get.listOfPages(
-      pageSize,
-      pageIndex,
-      sortField,
-      sortDirection,
-      searchValue
-    ).subscribe({
+    
+    const apiCall = this.websiteContext 
+      ? this.get.listOfWebsitePagesPaginated(
+          this.websiteContext.user,
+          this.websiteContext.website,
+          pageSize,
+          pageIndex,
+          sortField,
+          sortDirection,
+          searchValue
+        )
+      : this.get.listOfPages(
+          pageSize,
+          pageIndex,
+          sortField,
+          sortDirection,
+          searchValue
+        );
+    
+    apiCall.subscribe({
       next: (pages) => {
         this.isLoadingResults = false;
         this.dataSource = new MatTableDataSource(pages || []);
@@ -248,9 +262,12 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
         // We handle pagination manually through API calls
         
         this.cd.detectChanges();
+        
+        // Setup pagination/sort subscriptions AFTER initial data loads successfully
+        this.setupPaginationSubscriptions();
       },
       error: (error) => {
-        console.error('Error loading pages:', error);
+        console.error('Error loading pages data:', error);
         this.isLoadingResults = false;
         this.message.show("PAGES_PAGE.LIST.error_loading_message");
         this.dataSource = new MatTableDataSource([]);
@@ -263,6 +280,15 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     filterValue = _.trim(filterValue);
     filterValue = _.toLower(filterValue);
     this.dataSource.filter = filterValue;
+  }
+
+  onSortChange(sortState: any): void {
+    // Store the current sort state
+    this.currentSortField = sortState.active || "";
+    this.currentSortDirection = sortState.direction || "";
+    // Reset pagination to first page when sorting
+    this.paginator.pageIndex = 0;
+    this.loadPagesData(this.filter.value ?? "");
   }
 
   setPageInObservatory(checkbox: any, page: any): void {
