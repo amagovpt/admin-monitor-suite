@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve",
-    "build:dev": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration production --build-optimizer --base-href=\"/ams/\"",
+    "build:dev": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration production --build-optimizer --base-href=\"/ams-old/\"",
     "build:prod": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration production --build-optimizer",
     "build:stats": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration production --build-optimizer --stats-json",
     "test": "NODE_OPTIONS=--openssl-legacy-provider ng test",
