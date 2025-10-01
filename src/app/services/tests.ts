@@ -1,4 +1,4 @@
-const tests = {
+export default {
   img_01a: {
     type: "fals",
     elem: "img",
@@ -197,7 +197,7 @@ const tests = {
     ref: "G1",
     scs: "2.4.1",
     dis: "43522",
-    result: "failed",
+    result: "warning",
   },
   a_02a: {
     type: "fals",
@@ -795,7 +795,7 @@ const tests = {
     type: "decr",
     elem: "w3cValidator",
     test: "w3cValidatorErrors",
-    score: 5,
+    score: 10,
     level: "A",
     trust: "1",
     top: 10,
@@ -1027,6 +1027,30 @@ const tests = {
     dis: "43353",
     result: "fail",
   },
+  heading_03: {
+    type: "true",
+    elem: "h1",
+    test: "onlyOneh1",
+    score: 10,
+    level: "A",
+    trust: "1",
+    ref: "H42",
+    scs: "1.3.1",
+    dis: "43353",
+    result: "passed",
+  },
+  heading_04: {
+    type: "fals",
+    elem: "h1",
+    test: "notOneh1",
+    score: 1,
+    level: "A",
+    trust: "1",
+    ref: "H42",
+    scs: "1.3.1",
+    dis: "43353",
+    result: "failed",
+  },  
   aria_01: {
     type: "true",
     elem: "all",
@@ -1122,6 +1146,30 @@ const tests = {
     scs: "",
     dis: "43353",
     result: "fail",
+  },
+  aria_09: {
+    type: "prop",
+    elem: "all",
+    test: "ariaControlsIdNotFound",
+    score: 1,
+    level: "A",
+    trust: "1",
+    ref: "in6db8",
+    scs: "",
+    dis: "43353",
+    result: "failed",
+  },
+  aria_10: {
+    type: "true",
+    elem: "all",
+    test: "ariaControlsIdFound",
+    score: 10,
+    level: "A",
+    trust: "1",
+    ref: "in6db8",
+    scs: "",
+    dis: "43353",
+    result: "passed",
   },
   audio_video_01: {
     type: "true",
@@ -2066,5 +2114,3 @@ const tests = {
     result: "fail",
   },
 };
-
-export default tests;

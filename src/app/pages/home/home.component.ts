@@ -4,6 +4,7 @@ import { CreateService } from "../../services/create.service";
 import { EvaluationService } from "../../services/evaluation.service";
 import { GetService } from "../../services/get.service";
 import { MessageService } from "../../services/message.service";
+import { VerifyService } from "../../services/verify.service";
 
 import { DeleteEvaluationListConfirmationDialogComponent } from "../../dialogs/delete-evaluation-list-confirmation-dialog/delete-evaluation-list-confirmation-dialog.component";
 
@@ -52,7 +53,8 @@ export class HomeComponent implements OnInit {
     private readonly get: GetService,
     private readonly evaluation: EvaluationService,
     private readonly message: MessageService,
-    private readonly cd: ChangeDetectorRef
+    private readonly cd: ChangeDetectorRef,
+    private readonly verify: VerifyService
   ) {
     this.access_studies_users = 0;
     this.my_monitor_users = 0;
@@ -286,4 +288,122 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  loadDataFromFile() {
+    // Open file dialog
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv";
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target.result;
+        this.processFileContent(content as string);
+        };
+      reader.readAsText(file);
+    };
+    input.click();
+  }
+
+  processFileContent(content: string) {
+    const lines = content.split("\n");
+    // Remove first line if it does not include the string http
+    if (!lines[0].includes("http")) {
+      lines.shift();
+    }
+    const numberLines = lines.length;
+    this.processLine(0, lines, numberLines);
+  }
+
+  processLine(index: number, lines: string[], numberLines: number) {
+    const parts = lines[index].split(";");
+    const directory = parts[0];
+    const category = parts[1];
+    const name = parts[2];
+    const url = parts[3];
+    this.processDirectoryData(directory, category, name, url, index, lines, numberLines);
+  }
+
+  processDirectoryData(directory: string, category: string, name: string, url: string, index: number, lines: string[], numberLines: number) {
+    this.get.listOfDirectories().subscribe((directories) => {
+      let dirId : number = this.getDirectoryId(directory, directories);
+      if (dirId === -1) {
+        const directoryData = { name: directory, observatory: 0, method: "0", tags: [] };
+        this.create.newDirectory(directoryData).subscribe(() => {
+          this.get.listOfDirectories().subscribe((newDirectories) => {
+            dirId = this.getDirectoryId(directoryData.name, newDirectories);
+            this.processCategoryData(category, dirId, name, url, index, lines, numberLines);
+          });
+        });
+      } else {
+        this.processCategoryData(category, dirId, name, url, index, lines, numberLines);
+      }
+    });
+  }
+
+  processCategoryData(category: string, directory: number, name: string, url: string, index: number, lines: string[], numberLines: number) {
+    this.get.listOfTags().subscribe((tags) => {
+      let tagId : number = this.getTagId(category, tags);
+      if (tagId === -1) {
+        const tagData = { name: category, directories: [directory], websites: [] };
+        this.create.newTag(tagData).subscribe(() => {
+          this.get.listOfTags().subscribe((newTags) => {
+            tagId = this.getTagId(tagData.name, newTags);
+            this.processSiteData(name, url, tagId, category, index, lines, numberLines);
+          });
+        });
+      } else {
+        this.processSiteData(name, url, tagId, category, index, lines, numberLines);
+      }
+    });
+  }
+
+  processSiteData(name: string, url: string, tagId: number, tag: string, index: number, lines: string[], numberLines: number) {
+    this.get.listOfTagWebsites(null, tag).subscribe((websites) => {
+      for (const website of websites) {
+        if (website.Name === name) {
+          if (index + 1 < numberLines){
+            this.processLine(index + 1, lines, numberLines);
+          }
+          return;
+        }
+      }
+      const websiteData = {
+        name: name,
+        startingUrl: url,
+        declaration: null,
+        declaration_Update_Date: null,
+        stamp: null,
+        stamp_Update_Date: null,
+        entities: null,
+        userId: null,
+        tags: [tagId],
+      };
+      this.create.newWebsite(websiteData).subscribe();
+      if (index + 1 < numberLines){
+        this.processLine(index + 1, lines, numberLines);
+      }
+});
+  }
+  
+
+  private getDirectoryId(name: string, directories: any[]) : number {
+    for (const directory of directories) {
+      if (directory.Name === name) {
+        return directory.DirectoryId;
+      }
+    }
+    return -1;
+  }
+
+  private getTagId(name: string, tags: any[]) : number {
+    for (const tag of tags) {
+      if (tag.Name === name) {
+        return tag.TagId;
+      }
+    }
+    return -1;
+  }
+
 }

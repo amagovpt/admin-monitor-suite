@@ -31,11 +31,10 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
 
   reEvaluatePages(e: any): void {
     e.preventDefault();
-
     if (this.data.dialog === "website") {
       this.evaluation
         .reEvaluateWebsitesPages({
-          websitesId: JSON.stringify(this.data.info),
+          websitesId: this.data.info,
           option: this.pages.value,
         })
         .subscribe((result) => {
@@ -48,7 +47,7 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
     } else if (this.data.dialog === "entity") {
       this.evaluation
         .reEvaluateEntitiesWebsitePages({
-          entitiesId: JSON.stringify(this.data.info),
+          entitiesId: this.data.info,
           option: this.pages.value,
         })
         .subscribe((result) => {
@@ -61,7 +60,7 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
     } else if (this.data.dialog === "tag") {
       this.evaluation
         .reEvaluateTagsWebsitePages({
-          tagsId: JSON.stringify(this.data.info),
+          tagsId: this.data.info,
           option: this.pages.value,
         })
         .subscribe((result) => {
@@ -74,7 +73,7 @@ export class ChoosePagesToReEvaluateDialogComponent implements OnInit {
     } else if (this.data.dialog === "directory") {
       this.evaluation
         .reEvaluateDirectoriesWebsitePages({
-          directoriesId: JSON.stringify(this.data.info),
+          directoriesId: this.data.info,
           option: this.pages.value,
         })
         .subscribe((result) => {

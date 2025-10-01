@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import * as _ from "lodash";
+import { saveAs } from "file-saver";
 
 import { GetService } from "../../services/get.service";
 import { EvaluationService } from "../../services/evaluation.service";
@@ -29,6 +30,9 @@ export class WebsiteComponent implements OnInit, OnDestroy {
 
   websiteObject: any;
   startingUrl: string;
+  
+  // New properties for pagination support
+  pagesForStatistics: Array<any>;
 
 
   constructor(
@@ -74,10 +78,11 @@ export class WebsiteComponent implements OnInit, OnDestroy {
   }
 
   private getListOfWebsitePages(): void {
+    // Load all pages for statistics calculation only
     this.get
       .listOfWebsitePagesByName(this.user, this.website)
       .subscribe((pages) => {
-        this.pages = _.clone(pages);
+        this.pagesForStatistics = _.clone(pages);
 //FIXME
         if (pages.length > 0){
           let uri = pages[0].Uri;
@@ -86,10 +91,10 @@ export class WebsiteComponent implements OnInit, OnDestroy {
           this.correctUrl(uri);
         }
   //FIXME
-        pages = pages.filter((p) => p.Score !== null);
+        const pagesForStats = pages.filter((p) => p.Score !== null);
 
         this.websiteObject = new Website();
-        for (const page of pages) {
+        for (const page of pagesForStats) {
           this.websiteObject.addPage(
             page.Score,
             page.Errors,
@@ -100,7 +105,10 @@ export class WebsiteComponent implements OnInit, OnDestroy {
             page.Evaluation_Date
           );
         }
-        console.log(this.websiteObject)
+        
+        // Clear the pages array to trigger pagination mode in list-of-pages component
+        this.pages = null;
+        
         this.loading = false;
         this.cd.detectChanges();
       });
@@ -122,27 +130,26 @@ export class WebsiteComponent implements OnInit, OnDestroy {
     });
   }
 //FIXME
-  correctUrl(url:string): void {
-    this.evaluation.getWebsiteStats(url, true).subscribe((result)=>{
-      if(result.length === 0){
-        this.startingUrl = url + '/';
-      }
-    });
+  async correctUrl(url:string): Promise<void> {
+    const result = await this.evaluation.getWebsiteStats(url, true);    
+    if(result.length === 0){
+      this.startingUrl = url + '/';
+    }
   }
 //FIXME
   downloadAllPagesCSV(): void {
-    this.evaluation.downloadWebsiteCSV(this.startingUrl, true).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.startingUrl, true);
   }
 
   downloadObservatoryCSV(): void {
-    this.evaluation.downloadWebsiteCSV(this.startingUrl, false).subscribe();
+    this.evaluation.downloadWebsiteCSV(this.startingUrl, false);
   }
 
   downloadAllPagesEARL(): void {
-    this.evaluation.downloadWebsiteEARL(this.startingUrl, true).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.startingUrl, true);
   }
 
   downloadObservatoryEARL(): void {
-    this.evaluation.downloadWebsiteEARL(this.startingUrl, false).subscribe();
+    this.evaluation.downloadWebsiteEARL(this.startingUrl, false);
   }
 }

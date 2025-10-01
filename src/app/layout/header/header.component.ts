@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '../../services/user.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-header',
@@ -9,9 +10,19 @@ import { UserService } from '../../services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public user: UserService) { }
+  environment : string;
+
+  constructor(public user: UserService, public config: ConfigService) {
+   }
 
   ngOnInit() {
+    this.config.currentEnvironment.subscribe((env) => {
+      this.environment = env;
+    });
+  }
+
+  ngAfterContentChecked() { 
+    this.environment = this.config.getEnvironment();
   }
 
   logout() {

@@ -16,7 +16,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import * as _ from "lodash";
-import { merge, of } from "rxjs";
+import { merge } from "rxjs";
 
 import { EvaluationErrorDialogComponent } from "../../../dialogs/evaluation-error-dialog/evaluation-error-dialog.component";
 
@@ -24,12 +24,8 @@ import { UpdateService } from "../../../services/update.service";
 import { OpenDataService } from "../../../services/open-data.service";
 import { GetService } from "../../../services/get.service";
 import {
-  catchError,
   debounceTime,
   distinctUntilChanged,
-  map,
-  startWith,
-  switchMap,
 } from "rxjs/operators";
 import { DeleteService } from "../../../services/delete.service";
 import { MessageService } from "../../../services/message.service";
@@ -46,6 +42,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
     Array<number>
   >();
   @Input("pages") pages: Array<any>;
+  @Input("websiteContext") websiteContext: { user: string; website: string };
 
   displayedColumns = [
     // 'PageId',
@@ -80,6 +77,16 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   length: number;
   isLoadingResults: boolean;
   filter: FormControl;
+  
+  // Large dataset handling
+  isLargeDataset: boolean = false;
+  requiresSearch: boolean = false;
+  minSearchLength: number = 3;
+  paginationSubscriptionSetup: boolean = false;
+  
+  // Sort state management (since ViewChild isn't reliable)
+  currentSortField: string = "";
+  currentSortDirection: string = "";
 
   constructor(
     private get: GetService,
@@ -104,66 +111,186 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (!this.pages) {
-      this.get.listOfPageCount("").subscribe((count) => {
-        this.length = count;
-      });
-    } else {
+    // Handle the case where pages are provided directly (old behavior)
+    if (this.pages) {
       this.dataSource = new MatTableDataSource(this.pages);
       this.length = this.pages.length;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
+    // For pagination mode, setup is moved to ngAfterViewInit where @Input websiteContext is available
+  }
+
+  private configureForDatasetSize(count: number): void {
+    this.isLargeDataset = count > 5000;
+    this.requiresSearch = count > 10000;
+    
+    // Optimize page size for large datasets
+    if (count > 10000) {
+      this.paginator.pageSize = 10;
+    } else if (count > 5000) {
+      this.paginator.pageSize = 25;
+    } else {
+      this.paginator.pageSize = 50;
+    }
+    
+    if (this.isLargeDataset) {
+      this.message.show("PAGES_PAGE.LIST.large_dataset_message");
+    }
+    
+    if (this.requiresSearch) {
+      this.message.show("PAGES_PAGE.LIST.search_required_message");
+      // Don't load data initially for very large datasets
+      this.dataSource = new MatTableDataSource([]);
+    } else {
+      // Trigger initial load for smaller datasets
+      this.triggerInitialLoad();
+    }
+  }
+
+  private triggerInitialLoad(): void {
+    this.loadPagesData("");
   }
 
   ngAfterViewInit(): void {
     if (!this.pages) {
+      // Set up initial count (now that @Input websiteContext is available)
+      if (this.websiteContext) {
+        this.get.listOfWebsitePagesCount(this.websiteContext.user, this.websiteContext.website, "").subscribe({
+          next: (count) => {
+            this.length = count;
+            this.configureForDatasetSize(count);
+          },
+          error: (error) => {
+            console.error('Error getting website pages count:', error);
+            this.length = 0;
+          }
+        });
+      } else {
+        this.get.listOfPageCount("").subscribe((count) => {
+          this.length = count;
+          this.configureForDatasetSize(count);
+        });
+      }
+
+      // Set up filter subscription for count updates
       this.filter.valueChanges
         .pipe(distinctUntilChanged(), debounceTime(150))
         .subscribe((value) => {
-          this.get.listOfPageCount(value).subscribe((count) => {
-            this.length = count;
-            this.paginator.firstPage();
-          });
-        });
-      merge(this.sort.sortChange, this.paginator.page, this.filter.valueChanges)
-        .pipe(
-          distinctUntilChanged(),
-          debounceTime(150),
-          startWith({}),
-          switchMap(() => {
-            this.isLoadingResults = true;
-            this.cd.detectChanges();
-            return this.get.listOfPages(
-              this.paginator.pageSize,
-              this.paginator.pageIndex,
-              this.sort.active ?? "",
-              this.sort.direction,
-              this.filter.value ?? ""
-            );
-          }),
-          map((data) => {
-            // Flip flag to show that loading has finished.
-            this.isLoadingResults = false;
-            return data;
-          }),
-          catchError(() => {
-            this.isLoadingResults = false;
-            return of([]);
-          })
-        )
-        .subscribe((pages) => {
-          this.dataSource = new MatTableDataSource(pages);
-          this.selection = new SelectionModel<any>(true, []);
-          this.cd.detectChanges();
+          if (this.websiteContext) {
+            this.get.listOfWebsitePagesCount(this.websiteContext.user, this.websiteContext.website, value).subscribe((count) => {
+              this.length = count;
+              this.paginator.firstPage();
+              this.loadPagesData(value);
+            });
+          } else {
+            this.get.listOfPageCount(value).subscribe((count) => {
+              this.length = count;
+              this.paginator.firstPage();
+              this.loadPagesData(value);
+            });
+          }
         });
     }
+  }
+
+  private setupPaginationSubscriptions(): void {
+    if (this.paginationSubscriptionSetup) {
+      return; // Already set up
+    }
+
+    // Wait for next tick to ensure table is rendered, then keep trying until ViewChild is available
+    const trySetup = (retryCount = 0) => {
+      // Set up paginator subscription immediately if available (it's always rendered)
+      if (this.paginator && !this.paginationSubscriptionSetup) {
+        this.paginator.page.pipe(
+          distinctUntilChanged(),
+          debounceTime(150)
+        ).subscribe(() => {
+          this.loadPagesData(this.filter.value ?? "");
+        });
+        
+        this.paginationSubscriptionSetup = true;
+        return; // Exit early, pagination is set up
+      }
+    };
+
+    // Start trying after initial delay
+    setTimeout(() => trySetup(), 100);
+  }
+
+  private loadPagesData(searchValue: string): void {
+    // Check if search is required for large datasets
+    if (this.requiresSearch && searchValue.length < this.minSearchLength) {
+      this.dataSource = new MatTableDataSource([]);
+      return;
+    }
+    
+    this.isLoadingResults = true;
+    this.cd.detectChanges();
+    
+    // Use stored sort state instead of ViewChild (which may not be available)
+    const sortField = this.currentSortField;
+    const sortDirection = this.currentSortDirection;
+    const pageSize = this.paginator?.pageSize || 10;
+    const pageIndex = this.paginator?.pageIndex || 0;
+    
+    
+    const apiCall = this.websiteContext 
+      ? this.get.listOfWebsitePagesPaginated(
+          this.websiteContext.user,
+          this.websiteContext.website,
+          pageSize,
+          pageIndex,
+          sortField,
+          sortDirection,
+          searchValue
+        )
+      : this.get.listOfPages(
+          pageSize,
+          pageIndex,
+          sortField,
+          sortDirection,
+          searchValue
+        );
+    
+    apiCall.subscribe({
+      next: (pages) => {
+        this.isLoadingResults = false;
+        this.dataSource = new MatTableDataSource(pages || []);
+        this.selection = new SelectionModel<any>(true, []);
+        
+        // Important: DON'T connect paginator/sort to dataSource for server-side pagination
+        // We handle pagination manually through API calls
+        
+        this.cd.detectChanges();
+        
+        // Setup pagination/sort subscriptions AFTER initial data loads successfully
+        this.setupPaginationSubscriptions();
+      },
+      error: (error) => {
+        console.error('Error loading pages data:', error);
+        this.isLoadingResults = false;
+        this.message.show("PAGES_PAGE.LIST.error_loading_message");
+        this.dataSource = new MatTableDataSource([]);
+        this.cd.detectChanges();
+      }
+    });
   }
 
   applyFilter(filterValue: string): void {
     filterValue = _.trim(filterValue);
     filterValue = _.toLower(filterValue);
     this.dataSource.filter = filterValue;
+  }
+
+  onSortChange(sortState: any): void {
+    // Store the current sort state
+    this.currentSortField = sortState.active || "";
+    this.currentSortDirection = sortState.direction || "";
+    // Reset pagination to first page when sorting
+    this.paginator.pageIndex = 0;
+    this.loadPagesData(this.filter.value ?? "");
   }
 
   setPageInObservatory(checkbox: any, page: any): void {
@@ -176,10 +303,7 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
       });
   }
 
-  reEvaluatePages(): void {
-    if (this.pages) {
-      this.reEvaluatePagesEmitter.next(_.map(this.selection.selected, "Uri"));
-    } else {
+  reEvaluatePages(): void {  
       this.evaluationService
         .reEvaluatePages({
           pages: _.map(this.selection.selected, "Uri"),
@@ -189,7 +313,6 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
             this.message.show("PAGES_PAGE.LIST.re_evaluate_pages_message");
           }
         });
-    }
   }
 
   openDeletePageDialog(): void {

@@ -232,8 +232,8 @@ export class AddUserDialogComponent implements OnInit {
       names,
       emails,
       type,
-      tags: JSON.stringify(tags),
-      websites: JSON.stringify(websites),
+      tags,
+      websites,
       transfer,
     };
 

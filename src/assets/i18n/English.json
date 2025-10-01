@@ -49,6 +49,7 @@
   },
   "MENU": {
     "home": "Home",
+    "govUsers": "GovUsers",
     "users": "Users",
     "directories": "Directories",
     "tags": "Tags",
@@ -93,7 +94,10 @@
     "delete_evaluation_list": "Delete",
     "delete_evaluation_list_confirmation": "Confirm that you want to delete the evaluation list",
     "delete_evaluation_list_message": "Evaluation list deleted successfully",
-    "confirm_button": "Confirm"
+    "confirm_button": "Confirm",
+    "load_data_title": "Load data",
+    "load_data_description": "Use to load data from a file. File must contain directory, category, site name, url. The file must be in .csv format. Use semi-colon as separator.",
+    "load_data_button": "Carregar dados"
   },
   "STATISTICS": {
     "title": "Statistics",
@@ -330,6 +334,81 @@
         "item2": "This action can't be undone"
       },
       "submit": "Delete user",
+      "messages": {
+        "success": "User deleted successfully",
+        "error": "Error deleting user"
+      }
+    }
+  },
+  "GOV_USERS_PAGE": {
+    "title": "Gov user:",
+    "LIST": {
+      "title": "Gov Users",
+      "subtitle": "List of all users from the applications Study Monitor and My Monitor",
+      "table": {
+        "id_label": "ID",
+        "username_label": "Username",
+        "app_label": "App",
+        "websites_label": "Nº Websites",
+        "register_label": "Register date",
+        "last_login_label": "Last login",
+        "edit_label": "Edit",
+        "edit_tooltip": "Edit this user",
+        "see_tooltip": "See user"
+      }
+    },
+    "ADD": {
+      "title": "Create a new user",
+      "subtitle": "Create a new use for one og the following applications: Study Monitor or My Monitor",
+      "user_data": "User data",
+      "username_label": "Username",
+      "username_exists": "The inserted username already exists",
+      "password_label": "Password",
+      "password_hint": "The password should have at least 8 characters, 1 upper case character, 1 lower case character, 1 number and 1 special character",
+      "password_short": "The password has less than 8 characters",
+      "password_uppercase": "The password does not contain any upper case character",
+      "password_lowercase": "The password does not contain any lower case character",
+      "password_number": "The password does not contain any number",
+      "password_special": "The password does not contain any special character",
+      "confirm_password_label": "Confirm password",
+      "confirm_password_error": "Passwords don't match",
+      "names_label": "Contact names",
+      "emails_label": "Contact e-mails",
+      "emails_error": "Email is <strong>invalid</strong>",
+      "choose_app": "Application",
+      "transfer_label": "Transfer pages from observatory",
+      "websites_label": "Choose websites",
+      "tags_label": "Choose tags",
+      "reset": "Reset",
+      "submit": "Create",
+      "messages": {
+        "success": "User created successfully",
+        "error": "Error creating user"
+      }
+    },
+    "UPDATE": {
+      "title": "User",
+      "subtitle": "Edit",
+      "description": "Edit this user",
+      "default": "Undo changes",
+      "submit": "Update",
+      "delete": {
+        "title": "Delete",
+        "description": "Delete this user",
+        "list": {
+          "title": "Important:",
+          "item1": "The user and all it's data will be deleted",
+          "item2": "If the user belongs to the Study Monitor application, all it's websites and tags will be deleted",
+          "item3": "This action can't be undone"
+        },
+        "submit": "Delete user"
+      },
+      "messages": {
+        "success": "User updated successfully",
+        "error": "Error updating user"
+      }
+    },
+    "DELETE": {
       "messages": {
         "success": "User deleted successfully",
         "error": "Error deleting user"
@@ -752,6 +831,17 @@
       "re_evaluate_pages": "Re-evaluate",
       "re_evaluate_pages_message": "Pages set to evaluate successfully",
       "delete_pages": "Delete",
+      "large_dataset_message": "Large dataset detected. Consider using filters to improve performance.",
+      "search_required_message": "Very large dataset. Please use search filter (minimum 3 characters) to load data.",
+      "error_loading_message": "Error loading pages. Please try using filters or reducing page size.",
+      "search_placeholder_required": "Search required (min 3 characters)",
+      "search_placeholder_normal": "Filter pages...",
+      "search_hint_large": "Large dataset detected. Consider using filters for better performance.",
+      "search_hint_required": "Very large dataset. Please enter at least {{minLength}} characters to search.",
+      "search_required_title": "Search Required",
+      "search_required_description": "This dataset is very large. Please enter at least {{minLength}} characters in the search field to load pages.",
+      "no_results_title": "No Results Found",
+      "no_results_description": "Try adjusting your search criteria or clearing the filter.",
       "table": {
         "id_label": "ID",
         "uri_label": "Uri",
@@ -1347,6 +1437,7 @@
     "frame_02": "Webpage based on frame structure but with incorrect DTD declaration",
     "heading_01": "Headings with accessible name",
     "heading_02": "Headings without accessible name",
+    "heading_03": "Heading Level 1",
     "hx_01a": "No headings",
     "hx_01b": "Headings on the page",
     "hx_01c": "No main heading (h1) found",
@@ -1749,6 +1840,14 @@
       "s": "I have identified <mark>{{value}}</mark> heading without an accessible name.",
       "p": "I have identified <mark>{{value}}</mark> headings without an accessible name."
     },
+    "heading_03": {
+      "s": "I have identified exactly one level 1 heading.",
+      "p": "I have identified exactly one level 1 heading."
+    },
+    "heading_04": {
+      "s": "I have identified <mark>{{value}}</mark> level 1 headings. There should be one.",
+      "p": "I have identified <mark>{{value}}</mark> level 1 headings. There should be one."
+    },
     "aria_01": {
       "s": "I noticed that <mark>all elements</mark> with an explicit semantic role exist inside their required contexts.",
       "p": "I noticed that <mark>all elements</mark> with an explicit semantic role exist inside their required contexts."
@@ -1780,6 +1879,14 @@
     "aria_08": {
       "s": "I found <mark>{{value}}</mark> aria-* attribute that is not defined in the ARIA specification.",
       "p": "I found <mark>{{value}}</mark> aria-* attributes that are not defined in the ARIA specification."
+    },
+    "aria_09": {
+      "s": "I found <mark>{{value}}</mark> references of aria-controls attribute that do not exist in the page.",
+      "p": "I found <mark>{{value}}</mark> references of aria-controls attributes that do not exist in the page."
+    },
+    "aria_10": {
+      "s": "I found that <mark>all references</mark> of aria-controls attribute exist in the page.",
+      "p": "I found that <mark>all references</mark> of aria-controls attributes exist in the page."
     },
     "audio_video_01": {
       "s": "I haven’t found <mark>any</mark> <code>&lt;audio&gt;</code> or <code>&lt;video&gt;</code> element that plays automatically.",
@@ -2185,7 +2292,8 @@
     "9e45ec": "Word spacing in style attributes is not !important",
     "59br37": "Zoomed text node is not clipped with CSS <code>overflow</code>",
     "ARIA11": "Using ARIA landmarks to identify regions of a page",
-    "H40": "Using description lists"
+    "H40": "Using description lists",
+    "in6db8": "ARIA required ID references exist"
   },
   "TXT_TECHNIQUES": {
     "H37": "<p>Check if the alternative text equivalent found in the images provides equal information or function as the one performed by the image on the page.</p>",
@@ -2278,7 +2386,8 @@
     "9e45ec": "<p>A word spacing equal to or larger than 0.16 times the font size is important to ensure that all users are able to read the text. CSS styles should not prevent users from increasing the word spacing if they so desire.</p>",
     "59br37": "<p>When zooming on a page, the relative size of text and respective container might change, resulting in extra space being needed to present the same text. The CSS property <code>overflow</code> determines how the containers adjust when zooming. Some of its values might result in text clipping.</p>",
     "ARIA11": "<p>Ensure that there is only one main landmark in the page. Main landmarks designate the main content of the page and make it easy for screen reader users to quickly navigate to it. Each page should only have one main content, irrespectively of it being designated using HTML5 or ARIA.</p>",
-    "H40": "<p>If description lists contain non list item elements, or if the order of the list item elements is not appropriate, that is, <dt> elements should precede <dd> elements, the list will be incorrectly marked up, and assistive technologies will not be able to render it correctly.</p>"
+    "H40": "<p>If description lists contain non list item elements, or if the order of the list item elements is not appropriate, that is, <dt> elements should precede <dd> elements, the list will be incorrectly marked up, and assistive technologies will not be able to render it correctly.</p>",
+    "in6db8": "<p>Check that every ID reference required by WAI-ARIA exists.</p>"
   },
   "TECHFAIL": {
     "relationF": "This WCAG 2.1 failure is related to:",

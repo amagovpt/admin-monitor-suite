@@ -122,7 +122,7 @@ export class AddEntityDialogComponent implements OnInit {
 
     const shortName = this.entityForm.value.shortName.trim();
     const longName = this.entityForm.value.longName.trim();
-    const websites = JSON.stringify(_.map(this.selectedWebsites, "WebsiteId"));
+    const websites = _.map(this.selectedWebsites, "WebsiteId");
 
     const formData = {
       shortName,

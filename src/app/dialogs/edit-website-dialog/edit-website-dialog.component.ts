@@ -199,7 +199,7 @@ export class EditWebsiteDialogComponent implements OnInit {
 
   setDefault(): void {
     this.websiteForm.controls.name.setValue(this.defaultWebsite.Name);
-    this.websiteForm.controls.url.setValue(this.defaultWebsite.StartingUrl);
+    this.websiteForm.controls.startingUrl.setValue(this.defaultWebsite.StartingUrl);
     this.websiteForm.controls.declaration.setValue(
       this.defaultWebsite.Declaration
     );
@@ -256,21 +256,22 @@ export class EditWebsiteDialogComponent implements OnInit {
     e.preventDefault();
 
     const name = _.trim(this.websiteForm.value.name);
+    const startingUrlValue = this.websiteForm.value.startingUrl || this.defaultWebsite.StartingUrl;
     const startingUrl = encodeURIComponent(
-      _.trim(this.websiteForm.value.startingUrl)
+      _.trim(startingUrlValue)//this.websiteForm.value.startingUrl
     );
     const declaration =
       this.websiteForm.value.declaration === ""
         ? null
         : parseInt(this.websiteForm.value.declaration);
-    const declarationDate = this.websiteForm.value.declarationDate
+    const declarationUpdateDate = this.websiteForm.value.declarationDate
       ? new Date(this.websiteForm.value.declarationDate)
       : null;
     const stamp =
       this.websiteForm.value.stamp === ""
         ? null
         : parseInt(this.websiteForm.value.stamp);
-    const stampDate = this.websiteForm.value.stampDate
+    const stampUpdateDate = this.websiteForm.value.stampDate
       ? new Date(this.websiteForm.value.stampDate)
       : null;
     const userId = this.websiteForm.value.user
@@ -283,24 +284,22 @@ export class EditWebsiteDialogComponent implements OnInit {
       : null;
     const transfer = this.websiteForm.value.transfer;
 
-    const defaultEntities = JSON.stringify(
-      _.map(this.defaultWebsite.entities, "EntityId")
-    );
-    const entities = JSON.stringify(_.map(this.selectedEntities, "EntityId"));
+    const defaultEntities = 
+      _.map(this.defaultWebsite.entities, "EntityId");
+    const entities = _.map(this.selectedEntities, "EntityId");
 
-    const defaultTags = JSON.stringify(
-      _.map(this.defaultWebsite.tags, "TagId")
-    );
-    const tags = JSON.stringify(_.map(this.selectedTags, "TagId"));
+    const defaultTags = 
+      _.map(this.defaultWebsite.tags, "TagId");
+    const tags =_.map(this.selectedTags, "TagId");
 
     const formData = {
       websiteId: this.data.id,
       name,
       startingUrl,
       declaration,
-      declarationDate,
+      declarationUpdateDate,
       stamp,
-      stampDate,
+      stampUpdateDate,
       userId,
       olderUserId,
       transfer,

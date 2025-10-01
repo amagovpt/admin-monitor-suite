@@ -22,9 +22,12 @@
       </mat-form-field>-->
       <mat-form-field appearance="outline">
         <label>{{ "MISC.filter" | translate }}
-          <input *ngIf="!pages" id="pages_table_filter" matInput [formControl]="filter"> <!-- (keyup)="applyFilter($event.target.value)" -->
+          <input *ngIf="!pages" id="pages_table_filter" matInput [formControl]="filter" 
+                 [placeholder]="requiresSearch ? ('PAGES_PAGE.LIST.search_placeholder_required' | translate) : ('PAGES_PAGE.LIST.search_placeholder_normal' | translate)"> 
           <input *ngIf="pages" id="pages_table_filter" matInput (keyup)="applyFilter($event.target.value)">
         </label>
+        <mat-hint *ngIf="isLargeDataset && !requiresSearch">{{ "PAGES_PAGE.LIST.search_hint_large" | translate }}</mat-hint>
+        <mat-hint *ngIf="requiresSearch">{{ "PAGES_PAGE.LIST.search_hint_required" | translate:{minLength: minSearchLength} }}</mat-hint>
       </mat-form-field>
 
       <span fxFlex></span>
@@ -54,7 +57,25 @@
         {{ "PAGES_PAGE.LIST.delete_pages" | translate }}
       </button>
     </div>
-    <mat-table [dataSource]="dataSource" matSort>
+    
+    <!-- Message for when search is required but not provided -->
+    <div *ngIf="requiresSearch && (!filter.value || filter.value.length < minSearchLength) && !isLoadingResults" 
+         class="search-required-message" style="text-align: center; padding: 2rem; color: #666;">
+      <mat-icon style="font-size: 48px; height: 48px; width: 48px;">search</mat-icon>
+      <h3>{{ "PAGES_PAGE.LIST.search_required_title" | translate }}</h3>
+      <p>{{ "PAGES_PAGE.LIST.search_required_description" | translate:{minLength: minSearchLength} }}</p>
+    </div>
+
+    <!-- Message for large dataset but no results -->
+    <div *ngIf="!requiresSearch && dataSource.data.length === 0 && !isLoadingResults && length > 0" 
+         class="no-results-message" style="text-align: center; padding: 2rem; color: #666;">
+      <mat-icon style="font-size: 48px; height: 48px; width: 48px;">filter_list</mat-icon>
+      <h3>{{ "PAGES_PAGE.LIST.no_results_title" | translate }}</h3>
+      <p>{{ "PAGES_PAGE.LIST.no_results_description" | translate }}</p>
+    </div>
+
+    <mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)"
+               *ngIf="!requiresSearch || (filter.value && filter.value.length >= minSearchLength)">
 
       <!--<ng-container matColumnDef="PageId">
         <mat-header-cell *matHeaderCellDef mat-sort-header>

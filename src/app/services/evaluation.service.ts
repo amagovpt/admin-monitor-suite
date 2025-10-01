@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpEventType } from "@angular/common/http";
 import { TranslateService } from "@ngx-translate/core";
-import { Observable, of } from "rxjs";
+import { lastValueFrom, Observable, of } from "rxjs";
 import { map, retry, catchError } from "rxjs/operators";
 import { saveAs } from "file-saver";
 import * as _ from "lodash";
@@ -571,19 +571,7 @@ export class EvaluationService {
     let i = 0;
 
     for (const website of websites) {
-      const response = await this.http
-        .get<any>(
-          this.config.getServer(
-            `/evaluation/website/${encodeURIComponent(
-              website
-            )}/evaluations/${allPages}`
-          ),
-          { observe: "response" }
-        )
-        .toPromise();
-
-      const result = response.body.result;
-
+      const result : any[] = await this.downloadEvaluations(website, allPages);
       for (const page of result || []) {
         this.evaluation = page;
         this.evaluation.processed = this.processData();
@@ -609,21 +597,10 @@ export class EvaluationService {
   ): Promise<void> {
     let data = "";
     let i = 0;
+    let part : number = 1;
 
     for (const website of websites) {
-      const response = await this.http
-        .get<any>(
-          this.config.getServer(
-            `/evaluation/website/${encodeURIComponent(
-              website
-            )}/evaluations/${allPages}`
-          ),
-          { observe: "response" }
-        )
-        .toPromise();
-
-      const result = response.body.result;
-
+      const result : any[] = await this.downloadEvaluations(website, allPages);
       for (const page of result || []) {
         this.evaluation = page;
         this.evaluation.processed = this.processData();
@@ -636,10 +613,18 @@ export class EvaluationService {
         );
         i++;
       }
+      if (i > part * 5500) {
+        const blob = new Blob([data], { type: "text/json" });
+        const fileName = tag + " part" + part + ".csv";
+        saveAs(blob, fileName);
+        part++;
+        data = "";
+      }
     }
 
     const blob = new Blob([data], { type: "text/json" });
-    saveAs(blob, "eval.csv");
+    const fileName = tag + " part" + part + ".csv";
+    saveAs(blob, fileName);
   }
 
   async downloadEntityCSV(
@@ -650,19 +635,7 @@ export class EvaluationService {
     let data = "";
     let i = 0;
     for (const website of websites) {
-      const response = await this.http
-        .get<any>(
-          this.config.getServer(
-            `/evaluation/website/${encodeURIComponent(
-              website
-            )}/evaluations/${allPages}`
-          ),
-          { observe: "response" }
-        )
-        .toPromise();
-
-      const result = response.body.result;
-
+      const result : any[] = await this.downloadEvaluations(website, allPages);
       for (const page of result || []) {
         this.evaluation = page;
         this.evaluation.processed = this.processData();
@@ -675,124 +648,41 @@ export class EvaluationService {
     saveAs(blob, "eval.csv");
   }
 
- getWebsiteStats(website: string, allPages: boolean): Observable<any> {
-    return this.http
-      .get<any>(
-        this.config.getServer(
-          `/evaluation/website/${encodeURIComponent(
-            website
-          )}/evaluations/${allPages}`
-        ),
-        { observe: "response" }
-      )
-      .pipe(
-        map((res) => {
-          const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-         return response.result;
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
+ async getWebsiteStats(website: string, allPages: boolean): Promise<any> {
+    const results : any[] = await this.downloadEvaluations(website, allPages);
+    return results;
   }
 
-  downloadWebsiteCSV(website: string, allPages: boolean): Observable<void> {
-    return this.http
-      .get<any>(
-        this.config.getServer(
-          `/evaluation/website/${encodeURIComponent(
-            website
-          )}/evaluations/${allPages}`
-        ),
-        { observe: "response" }
-      )
-      .pipe(
-        map((res) => {
-          const response = <Response>res.body;
+  async downloadWebsiteCSV(website: string, allPages: boolean): Promise<void> {
+    const results : any[] = await this.downloadEvaluations(website, allPages);
+    let data = "";
+    let i = 0;
+    for (const page of results || []) {
+      this.evaluation = page;
+      this.evaluation.processed = this.processData();
+      data += this.generateCSV(this.evaluation, i !== 0, website);
+      i++;
+    }
+    const blob = new Blob([data], { type: "text/csv" });
+    saveAs(blob, "eval.csv");
+  } 
 
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          let data = "";
-
-          let i = 0;
-          for (const page of response.result || []) {
-            this.evaluation = page;
-            this.evaluation.processed = this.processData();
-            data += this.generateCSV(this.evaluation, i !== 0, website);
-            i++;
-          }
-
-          const blob = new Blob([data], { type: "text/json" });
-          saveAs(blob, "eval.csv");
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
-  }
-
-  downloadWebsiteEARL(website: string, allPages: boolean): Observable<void> {
-    return this.http
-      .get<any>(
-        this.config.getServer(
-          `/evaluation/website/${encodeURIComponent(
-            website
-          )}/evaluations/${allPages}`
-        ),
-        { observe: "response" }
-      )
-      .pipe(
-        retry(3),
-        map((res) => {
-          const response = <Response>res.body;
-
-          if (!res.body || res.status === 404) {
-            throw new AdminError(404, "Service not found", "SERIOUS");
-          }
-
-          if (response.success !== 1) {
-            throw new AdminError(response.success, response.message);
-          }
-
-          const data = {
-            "@context": "https://act-rules.github.io/earl-context.json",
-            "@graph": new Array<any>(),
-          };
-
-          for (const page of response.result || []) {
-            this.evaluation = page;
-            this.evaluation.processed = this.processData();
-            const testSubject = this.generateEARL(this.evaluation);
-            data["@graph"].push(testSubject);
-          }
-
-          const blob = new Blob([JSON.stringify(data, null, 2)], {
-            type: "text/json",
-          });
-          saveAs(blob, "eval.json");
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of(null);
-        })
-      );
+  async downloadWebsiteEARL(website: string, allPages: boolean): Promise<void> {
+    const results : any[] = await this.downloadEvaluations(website, allPages);
+    const data = {
+      "@context": "https://act-rules.github.io/earl-context.json",
+      "@graph": new Array<any>(),
+    };
+    for (const page of results || []) {
+      this.evaluation = page;
+      this.evaluation.processed = this.processData();
+      const testSubject = this.generateEARL(this.evaluation);
+      data["@graph"].push(testSubject);
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "text/json",
+    });
+    saveAs(blob, "eval.json");
   }
 
   getTestResults(test: string): any {
@@ -1294,6 +1184,12 @@ export class EvaluationService {
     };
 
     for (const test in evaluation.data.tot.results || {}) {
+      // Skip test if it's not defined in the tests object
+      if (!tests[test]) {
+        console.warn(`Test definition not found for: ${test}`);
+        continue;
+      }
+      
       const value = evaluation.processed.results.filter(
         (r) => r.msg === test
       )[0].tech_list.tot;
@@ -1302,22 +1198,17 @@ export class EvaluationService {
 
       let pointers = new Array<any>();
 
-      if (test === "img_01a") {
-        pointers =
-          typeof evaluation.data.nodes["img"] === "string"
-            ? evaluation.data.nodes["img"].split(",")
-            : evaluation.data.nodes["img"][0].split(",");
-      } else if (evaluation.data.nodes[tests[test].test] !== undefined) {
+      if (evaluation.data.nodes[tests[test].test] !== undefined) {
         pointers =
           typeof evaluation.data.nodes[tests[test].test] === "string"
             ? evaluation.data.nodes[tests[test].test].split(",")
-            : evaluation.data.nodes[tests[test].test][0].split(",");
+            : evaluation.data.nodes[tests[test].test][0].elements;
       }
 
       for (const pointer of pointers || []) {
         const source = {
           result: {
-            pointer: pointer.trim(),
+            pointer: pointer.pointer.trim(),
             outcome:
               "earl:" +
               (tests_colors[test] !== "Y"
@@ -2085,4 +1976,45 @@ export class EvaluationService {
       );
     }
   }
+
+  private async downloadEvaluations(website: string, allPages: boolean): Promise<any[]> {
+    const responseBlob = await lastValueFrom(
+      this.http.get(this.config.getServer(`/evaluation/website/${encodeURIComponent(website)}/evaluations/${allPages}`), { responseType: 'blob' })
+    );
+    const stream = responseBlob.stream();
+    const reader = stream.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+    const results: any[] = [];
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break; 
+      const chunk = decoder.decode(value, { stream: true });
+      buffer += chunk;
+      let lineBreakIndex;
+      while ((lineBreakIndex = buffer.indexOf('\n')) >= 0) {
+        const line = buffer.slice(0, lineBreakIndex).trim();
+        buffer = buffer.slice(lineBreakIndex + 1);
+
+        if (line) {
+          try {
+            const parsed = JSON.parse(line);
+            results.push(parsed);
+          } catch (err) {
+            console.error('Error parsing JSON:', err);
+          }
+        }
+      }
+    }
+    if (buffer.trim()) {
+      try {
+        results.push(JSON.parse(buffer));
+      } catch (err) {
+        console.error('Error parsing final buffer:', err);
+      }
+    }
+
+    return results;
+  } 
 }
