@@ -181,11 +181,13 @@ export class ListOfPagesComponent implements OnInit, AfterViewInit {
             this.get.listOfWebsitePagesCount(this.websiteContext.user, this.websiteContext.website, value).subscribe((count) => {
               this.length = count;
               this.paginator.firstPage();
+              this.loadPagesData(value);
             });
           } else {
             this.get.listOfPageCount(value).subscribe((count) => {
               this.length = count;
               this.paginator.firstPage();
+              this.loadPagesData(value);
             });
           }
         });
