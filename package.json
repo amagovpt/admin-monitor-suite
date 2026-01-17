@@ -43,7 +43,7 @@
     "mat-table-exporter": "10.2.4",
     "ngx-gauge": "^4.0.0",
     "rxjs": "^7.4.0",
-    "socket.io": "^4.3.1",
+    "socket.io": "^4.6.1",
     "tslib": "^2.3.1",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.11.4"
