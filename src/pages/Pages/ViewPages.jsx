@@ -3,17 +3,8 @@ import { Button, StatisticsHeader, Breadcrumb, SortingTable } from "@a12e/access
 import "./style.users.css";
 import { useParams } from "react-router-dom";
 import { directoriesHeadersPage, dataRowsPage, columnsOptionsPage, nameOfIcons, paginationButtonsTexts } from "./table.config.jsx";
-import { RadarGraph } from "../../components/RadarGraph/index.jsx";
 import GoodBadTab from "../../components/GoodBadTab/GoodBadTab.jsx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BarLineGraphTabs } from "../../components/BarLineGraph/index.jsx";
-import { 
-  barData,
-  barOptions,
-  dataHeaders as dataHeadersBar,
-  columnsOptions as columnsOptionsBar,
-  dataList as dataListBar
- } from "../../components/BarLineGraph/table.config.jsx";
 import { useTheme } from '../../context/ThemeContext';
 import { api } from "../../config/api";
 import moment from "moment";

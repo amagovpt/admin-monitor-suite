@@ -1,8 +1,7 @@
 import { Button, StatisticsHeader, SortingTable } from "@a12e/accessmonitor-ds";
-import { BarLineGraphTabs } from "../../../components/BarLineGraph/index.jsx";
-import { RadarGraph } from "../../../components/RadarGraph/index.jsx";
+import { Bar, Radar } from "react-chartjs-2";
 import GoodBadTab from "../../../components/GoodBadTab/GoodBadTab.jsx";
-import { useState, useEffect, useMemo, memo } from "react";
+import { useState, useEffect, useMemo, useRef, memo } from "react";
 import { detailsTableHeaders, columnsOptionsDetails, ariaLabels, detailsTable } from "../../Directories/table.config.jsx";
 import Indicators from "../../../components/Indicators/index.jsx";
 import {api} from "../../../config/api.js";
@@ -41,7 +40,7 @@ const TabGlobalObservatoryComponent = ({ theme, statsTitle, columnsOptionsBar, b
           maintainAspectRatio: false, // allows custom aspect ratio
         }
     });
-    const [radarData, setRadarData] = useState([]);
+    const [radarWebsites, setRadarWebsites] = useState([]);
     const { t } = useTranslation();
     useEffect(() => {
         const fetchData = async () => {
@@ -116,7 +115,7 @@ const TabGlobalObservatoryComponent = ({ theme, statsTitle, columnsOptionsBar, b
                       },
                     ],
                   });
-                  setRadarData(Object.values(indicators.directories).map(directory =>( {score: directory.score.toFixed(1), domain: directory.name} )));
+                  setRadarWebsites(Object.values(indicators.directories).map(directory =>( {score: directory.score.toFixed(1), domain: directory.name} )));
                   const dataListBarArray = []
                   indicators.scoreDistributionFrequency.map((item, index) => {
                     dataListBarArray.push({
@@ -253,6 +252,37 @@ const TabGlobalObservatoryComponent = ({ theme, statsTitle, columnsOptionsBar, b
           type: "AcessMonitor",
         }
       ]);
+      const radarData = useMemo(() => ({
+        labels: radarWebsites.map(w => w.domain),
+        datasets: [{
+          label: "Pontuação por diretório",
+          data: radarWebsites.map(w => Number(w.score)),
+          backgroundColor: 'rgba(255, 136, 136, 0.4)',
+          borderColor: 'rgba(255, 136, 136, 1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(255, 136, 136, 1)',
+          pointRadius: 4,
+        }]
+      }), [radarWebsites]);
+
+      const radarOptions = useMemo(() => ({
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: theme === "light" ? "black" : "white" } }
+        },
+        scales: {
+          r: {
+            beginAtZero: true,
+            suggestedMin: 0,
+            suggestedMax: 10,
+            pointLabels: { display: false },
+            ticks: { color: theme === "light" ? "black" : "white", backdropColor: 'transparent' },
+            grid: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+            angleLines: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+          }
+        }
+      }), [theme]);
+
       const handleExportCSV = async () => {
         try {
           downloadCSVByDirectory(
@@ -355,18 +385,18 @@ const TabGlobalObservatoryComponent = ({ theme, statsTitle, columnsOptionsBar, b
 
       <div className="mt-5 bg-white p-4">
         <h3 className="mb-4">Distribuição das pontuações AccessMonitor no universo do Observatório</h3>
-        <BarLineGraphTabs 
-          columnsOptions={columnsOptionsBar}
-          barData={barData}
-          barOptions={barOptionsCopy}
-          dataHeaders={dataHeadersBar}
-          dataList={dataList}
-          headerBarline={headerBarlineBar}
+        <Bar
+          data={barData}
+          options={barOptionsCopy}
         />
       </div>
       <div className="mt-5 bg-white p-4">
         <h3 className="mb-4">Mancha Gráfica da Acessibilidade</h3>
-        <RadarGraph labelDataSet="Pontuação por diretório" websites={radarData} />
+        <Radar
+          aria-label="Gráfico de Radar mostrando a distribuição de pontuações de acessibilidade"
+          data={radarData}
+          options={radarOptions}
+        />
       </div>
       <div className="mt-5 bg-white p-4">
         <h2 className="mb-4">Distribuição detalhada das melhores práticas</h2>

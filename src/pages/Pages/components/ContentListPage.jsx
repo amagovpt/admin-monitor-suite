@@ -100,14 +100,12 @@ export default function ContentListPages ({
             checkedItems={checkboxesSelected}
             pagination={true}
             serverSidePagination={!useClientSideSorting}
-            {...(!useClientSideSorting && {
-              totalItems,
-              currentPage,
-              itemsPerPage,
-              onPageChange,
-              onItemsPerPageChange,
-              setItemsPerPage
-            })}
+            totalItems={useClientSideSorting ? filteredData.length : totalItems}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
+            onPageChange={onPageChange}
+            onItemsPerPageChange={onItemsPerPageChange}
             paginationButtonsTexts={[
               "Primeira página",
               "Página anterior",

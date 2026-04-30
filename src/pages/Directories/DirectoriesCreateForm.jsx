@@ -42,17 +42,23 @@ const DirectoriesCreateForm = () => {
             }
         }
         const fetchDirectory = async () => {
-            const response = await api.get(`/directory/info/${id}`);
-            const dir = response.data.result;
-            setValue("name", dir.Name);
-            setShowInObservatory(dir.Show_in_Observatory === 1 ? 'yes' : 'no');
-            setFormat(dir.Method ? String(dir.Method) : '1');
-            setTags(dir.tags.map(tag => tag.TagId));
-            setDefaultTags(dir.tags.map(tag => tag.TagId));
-            trigger("tags");
+            try {
+                const response = await api.get(`/directory/info/${id}`);
+                const dir = response.data.result;
+                setValue("name", dir.Name);
+                setShowInObservatory(dir.Show_in_Observatory === 1 ? 'yes' : 'no');
+                setFormat(dir.Method ? String(dir.Method) : '1');
+                setTags(dir.tags.map(tag => tag.TagId));
+                setDefaultTags(dir.tags.map(tag => tag.TagId));
+                trigger("tags");
+            } catch (error) {
+                console.error('Error fetching directory:', error);
+            }
         }
         fetchCategories();
-        fetchDirectory();
+        if (id) {
+            fetchDirectory();
+        }
     }, [id, reset]);
 
     // Dynamic breadcrumbs based on navigation context

@@ -3,17 +3,8 @@ import { Button, StatisticsHeader, Breadcrumb, TableComponent, StatsTable } from
 import "./style.users.css";
 import { useParams } from "react-router-dom";
 import { directoriesHeadersPage, dataRowsPage, columnsOptionsPage, nameOfIcons, paginationButtonsTexts } from "./table.config.jsx";
-import { RadarGraph } from "../../components/RadarGraph/index.jsx";
 import GoodBadTab from "../../components/GoodBadTab/GoodBadTab.jsx";
 import { Link, useLocation, useNavigate  } from "react-router-dom";
-import { BarLineGraphTabs } from "../../components/BarLineGraph/index.jsx";
-import { 
-  barData,
-  barOptions,
-  dataHeaders as dataHeadersBar,
-  columnsOptions as columnsOptionsBar,
-  dataList as dataListBar
- } from "../../components/BarLineGraph/table.config.jsx";
 import { useTheme } from '../../context/ThemeContext.jsx';
 import { api } from "../../config/api.js";
 import moment from "moment";
@@ -21,7 +12,7 @@ import Indicators from "../../components/Indicators/index.jsx";
 import { ruleset } from  "@a12e/accessmonitor-rulesets";
 import { useTranslation } from "react-i18next";
 import { getEffectiveNavigationContext } from "../../utils/navigation";
-import { calculateTotalElements } from "../../utils/utils";
+import { calculateTotalElements, getTestDisplayValue } from "../../utils/utils";
 const calculateMatrix = (data) => {
   const matrix = {
     A: { ok: 0, err: 0, war: 0 },
@@ -200,12 +191,13 @@ const DetailsPage = () => {
   const testData = ruleset[itemKey] || {};
   const level = testData.level?.toUpperCase() ?? '';
   const resultType = testData.result ?? 'passed';
-  const title = result.elems[testData.test] > 1 ? '.p' : '.s';
+  const displayValue = getTestDisplayValue(testData.test, itemKey, result.tot);
+  const title = typeof displayValue === 'number' && displayValue > 1 ? '.p' : '.s';
   const successCriteria = testData.scs ? testData.scs : [];
-  
+
   return {
-    id: itemKey, 
-    title: <div dangerouslySetInnerHTML={{__html: t('TESTS_RESULTS.' + itemKey + title, {value: result.elems[testData.test]})}} />,
+    id: itemKey,
+    title: <div dangerouslySetInnerHTML={{__html: t('TESTS_RESULTS.' + itemKey + title, {value: displayValue})}} />,
     lvl: level,
     component: (
       <div className="text-start">

@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useMemo, memo, useTransition, useRef } from "react";
 import { Button, StatisticsHeader, Breadcrumb, SortingTable, RadioGroup } from "@a12e/accessmonitor-ds";
 import "./style.users.css";
-import { RadarGraph } from "../../components/RadarGraph/index.jsx";
+import { Bar, Radar } from "react-chartjs-2";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { BarLineGraphTabs } from "../../components/BarLineGraph/index.jsx";
 import {
   barData,
   barOptions,
-  dataHeaders as dataHeadersBar,
-  columnsOptions as columnsOptionsBar,
 } from "../../components/BarLineGraph/table.config.jsx";
 import { downloadCSV, getSimplifiedPracticesData } from "../../utils/utils.js";
+import { translations } from "@a12e/accessmonitor-rulesets";
 import {
   columnsOptionsDetails,
   detailsTableHeaders,
@@ -29,6 +27,11 @@ import { setRootNavigationContext } from "../../utils/navigation";
 import { set } from "lodash";
 
 const buildPracticesData = (simplifiedPracticesData, t) => {
+  // Safe translation helper — avoids i18next v25 throwing on unresolved keys
+  const language = localStorage.getItem('i18nextLng')?.split('-')[0] ?? 'pt';
+  const getElemTrans = (key) =>
+    translations?.[language]?.translation?.ELEMS?.[key] ?? t(`ELEMS.${key}`);
+
   const practicesBySuccessCriteria = {
     success: {},
     errors: {}
@@ -41,7 +44,7 @@ const buildPracticesData = (simplifiedPracticesData, t) => {
       const trimmed = criteria.trim();
       if (!target[trimmed]) target[trimmed] = [];
       target[trimmed].push({
-        practice: t(`ELEMS.${item.practice}`),
+        practice: getElemTrans(item.practice),
         pages: item.pages,
         occurrences: item.occurrences,
         level: item.level.toUpperCase(),
@@ -68,13 +71,13 @@ const buildPracticesData = (simplifiedPracticesData, t) => {
 
   return {
     details: (simplifiedPracticesData.success || []).map(item => ({
-      practice: t(`ELEMS.${item.practice}`),
+      practice: getElemTrans(item.practice),
       pages: item.pages,
       occurrences: item.occurrences,
       level: item.level.toUpperCase()
     })),
     detailsBad: (simplifiedPracticesData.errors || []).map(item => ({
-      practice: t(`ELEMS.${item.practice}`),
+      practice: getElemTrans(item.practice),
       pages: item.pages,
       occurrences: item.occurrences,
       level: item.level.toUpperCase()
@@ -373,6 +376,37 @@ const ViewDirectoriesComponent = () => {
 
   const [barDataDynamic, setBarDataDynamic] = useState(barData);
   const barOptionsCopy = JSON.parse(JSON.stringify(barOptions || {}));
+
+  const radarData = useMemo(() => ({
+    labels: radarWebsites.map(w => w.url.split('/').slice(2).join('/') || w.url),
+    datasets: [{
+      label: "Pontuação por sítio Web",
+      data: radarWebsites.map(w => Number(w.averageScore)),
+      backgroundColor: 'rgba(255, 136, 136, 0.4)',
+      borderColor: 'rgba(255, 136, 136, 1)',
+      borderWidth: 2,
+      pointBackgroundColor: 'rgba(255, 136, 136, 1)',
+      pointRadius: 4,
+    }]
+  }), [radarWebsites]);
+
+  const radarOptions = useMemo(() => ({
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: theme === "light" ? "black" : "white" } }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        suggestedMin: 0,
+        suggestedMax: 10,
+        pointLabels: { display: false },
+        ticks: { color: theme === "light" ? "black" : "white", backdropColor: 'transparent' },
+        grid: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+        angleLines: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+      }
+    }
+  }), [theme]);
   // Client-side search filtering for directory websites
   useEffect(() => {
     // Only run after initial load is complete
@@ -581,13 +615,9 @@ const ViewDirectoriesComponent = () => {
         {isProcessingStats ? (
           <p className="text-muted">A preparar distribuição...</p>
         ) : (
-          <BarLineGraphTabs
-            columnsOptions={columnsOptionsBar}
-            barData={barDataDynamic}
-            barOptions={theme === "light" ? barOptionsCopy : barOptionsDark}
-            dataHeaders={dataHeadersBar}
-            dataList={dataListBar}
-            darkTheme={theme}
+          <Bar
+            data={barDataDynamic}
+            options={theme === "light" ? barOptionsCopy : barOptionsDark}
           />
         )}
       </div>
@@ -597,7 +627,11 @@ const ViewDirectoriesComponent = () => {
         {isProcessingStats ? (
           <p className="text-muted">A preparar gráfico radar...</p>
         ) : (
-          <RadarGraph darkTheme={theme} labelDataSet="Pontuação por sítio Web" websites={radarWebsites}showTabs={true} />
+          <Radar
+            aria-label="Gráfico de Radar mostrando a distribuição de pontuações de acessibilidade"
+            data={radarData}
+            options={radarOptions}
+          />
         )}
       </div>
 

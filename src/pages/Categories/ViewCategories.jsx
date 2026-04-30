@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useMemo, memo } from "react";
+import React, { useState, useEffect, useMemo, memo, useRef } from "react";
 import { useNavigate, Link, useLocation, useParams } from "react-router-dom";
 import { Button, StatisticsHeader, Breadcrumb, SortingTable, RadioGroup } from "@a12e/accessmonitor-ds";
-import { BarLineGraphTabs } from "../../components/BarLineGraph";
-import { RadarGraph } from "../../components/RadarGraph";
+import { Bar, Radar } from "react-chartjs-2";
 import GoodBadTab from "../../components/GoodBadTab/GoodBadTab";
 import { useTheme } from "../../context/ThemeContext";
 import ContentListWebSites from "../Websites/components/ContentListWebSites";
-import { dataRows as dataRowsWebSites, barOptionsDark } from "../Websites/table.config.jsx";
+import { barOptionsDark } from "../Websites/table.config.jsx";
 import {
   barData,
   barOptions,
-  dataHeaders as dataHeadersBar,
-  columnsOptions as columnsOptionsBar,
 } from "../../components/BarLineGraph/table.config.jsx";
 import Indicators from "../../components/Indicators";
 import { detailsTableHeaders, columnsOptionsDetails, ariaLabels } from "./table.config.jsx";
@@ -19,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from "../../config/api";
 import moment from "moment";
 import { downloadCSV, getSimplifiedPracticesData } from "../../utils/utils.js";
+import { translations } from "@a12e/accessmonitor-rulesets";
 import { Modal } from "../../components/Modal";
 import CrawlingModal from "../../components/CrawlingModal";
 import { setRootNavigationContext } from "../../utils/navigation";
@@ -263,11 +261,16 @@ const ViewCategoriesComponent = () => {
     setData(websitesRows);
     setOriginalData(websitesRows);
 
+    // Safe translation helper — avoids i18next v25 throwing on unresolved keys
+    const language = localStorage.getItem('i18nextLng')?.split('-')[0] ?? 'pt';
+    const getElemTrans = (key) =>
+      translations?.[language]?.translation?.ELEMS?.[key] ?? t(`ELEMS.${key}`);
+
     // Práticas (WCAG)
     const simplifiedPracticesData = getSimplifiedPracticesData(pages);
     setDataListDetails(
       simplifiedPracticesData.success.map(item => ({
-        practice: t(`ELEMS.${item.practice}`),
+        practice: getElemTrans(item.practice),
         pages: item.pages,
         occurrences: item.occurrences,
         level: item.level.toUpperCase()
@@ -275,7 +278,7 @@ const ViewCategoriesComponent = () => {
     );
     setDataListDetailsBad(
       simplifiedPracticesData.errors.map(item => ({
-        practice: t(`ELEMS.${item.practice}`),
+        practice: getElemTrans(item.practice),
         pages: item.pages,
         occurrences: item.occurrences,
         level: item.level.toUpperCase()
@@ -292,7 +295,7 @@ const ViewCategoriesComponent = () => {
           practicesBySuccessCriteria.success[criteria] = [];
         }
         practicesBySuccessCriteria.success[criteria].push({
-          practice: t(`ELEMS.${item.practice}`),
+          practice: getElemTrans(item.practice),
           pages: item.pages,
           occurrences: item.occurrences,
           level: item.level.toUpperCase(),
@@ -309,7 +312,7 @@ const ViewCategoriesComponent = () => {
           practicesBySuccessCriteria.errors[criteria] = [];
         }
         practicesBySuccessCriteria.errors[criteria].push({
-          practice: t(`ELEMS.${item.practice}`),
+          practice: getElemTrans(item.practice),
           pages: item.pages,
           occurrences: item.occurrences.toString().includes("lang") ? "N/A" : item.occurrences,
           level: item.level.toUpperCase(),
@@ -528,6 +531,38 @@ const ViewCategoriesComponent = () => {
   };
 
   const barOptionsCopy = JSON.parse(JSON.stringify(barOptions || {}));
+
+  const radarData = useMemo(() => ({
+    labels: radarWebsites.map(w => w.url.split('/').slice(2).join('/') || w.url),
+    datasets: [{
+      label: "Pontuação por sítio Web",
+      data: radarWebsites.map(w => Number(w.averageScore)),
+      backgroundColor: 'rgba(255, 136, 136, 0.4)',
+      borderColor: 'rgba(255, 136, 136, 1)',
+      borderWidth: 2,
+      pointBackgroundColor: 'rgba(255, 136, 136, 1)',
+      pointRadius: 4,
+    }]
+  }), [radarWebsites]);
+
+  const radarOptions = useMemo(() => ({
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: theme === "light" ? "black" : "white" } }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        suggestedMin: 0,
+        suggestedMax: 10,
+        pointLabels: { display: false },
+        ticks: { color: theme === "light" ? "black" : "white", backdropColor: 'transparent' },
+        grid: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+        angleLines: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+      }
+    }
+  }), [theme]);
+
   const handleExportCSV = async () => {
     try {
       downloadCSV(
@@ -610,13 +645,9 @@ const ViewCategoriesComponent = () => {
           {isProcessingStats ? (
             <p className="text-muted">A preparar distribuição...</p>
           ) : (
-            <BarLineGraphTabs
-              columnsOptions={columnsOptionsBar}
-              barData={barDataDynamic}
-              barOptions={theme === "light" ? barOptionsCopy : barOptionsDark}
-              dataHeaders={dataHeadersBar}
-              dataList={dataListBar}
-              darkTheme={theme}
+            <Bar
+              data={barDataDynamic}
+              options={theme === "light" ? barOptionsCopy : barOptionsDark}
             />
           )}
         </div>
@@ -626,7 +657,11 @@ const ViewCategoriesComponent = () => {
           {isProcessingStats ? (
             <p className="text-muted">A preparar gráfico radar...</p>
           ) : (
-            <RadarGraph websites={radarWebsites} labelDataSet="Pontuação por sítio Web" darkTheme={theme} showTabs={true} />
+            <Radar
+              aria-label="Gráfico de Radar mostrando a distribuição de pontuações de acessibilidade"
+              data={radarData}
+              options={radarOptions}
+            />
           )}
         </div>
 

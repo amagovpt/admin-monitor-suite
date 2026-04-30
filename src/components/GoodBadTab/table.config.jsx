@@ -2,21 +2,21 @@ const apiUrl = import.meta.env.VITE_API_URL + import.meta.env.VITE_ROUTE_URL;
 
 export const dataHeaders = [
   [
-    { type: "SortingText", nRow: 1, name: "Práticas ", property: "name", justifyCenter: true },
-    { type: "SortingText", nRow: 1, name: "Práticas por páginas", property: "praticesPerPage", justifyCenter: true },
-    { type: "SortingText", nRow: 1, name: "Páginas", property: "pages", justifyCenter: true },
-    { type: "SortingText", nRow: 1, name: "Ocorrência", property: "occurences", justifyCenter: true },
-    { type: "SortingText", nRow: 1, name: "Nível", property: "level", justifyCenter: true },
+    { type: "Text", nRow: 1, bigWidth: "40%", name: "Práticas ", property: "name", },
+    { type: "SortingText", nRow: 1, name: "Práticas por páginas", property: "praticesPerPage" },
+    { type: "SortingText", nRow: 1, name: "Páginas", property: "pages" },
+    { type: "SortingText", nRow: 1, name: "Ocorrência", property: "occurences" },
+    { type: "SortingText", nRow: 1, name: "Nível", property: "level" },
   ]
 ]
 
 export const columnsOptions = {
   name: {
-    type: "Link",
-    center: true,
+    type: "DangerousHTML",
+    center: false,
     bold: false,
     decimalPlace: false,
-    href: (row) => apiUrl + "dashboard/pages/view/" + row.name,
+
   },
   praticesPerPage: {
     type: "Text",   

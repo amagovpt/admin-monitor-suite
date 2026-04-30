@@ -1,32 +1,21 @@
-import { useState, useEffect, useMemo, useCallback, memo } from "react";
-import { Button, StatisticsHeader, Breadcrumb, SortingTable } from "@a12e/accessmonitor-ds";
+import { useState, useEffect, useMemo, useCallback, memo, useRef } from "react";
+import { Button, Breadcrumb, SortingTable } from "@a12e/accessmonitor-ds";
 import "./style.users.css";
-import { RadarGraph } from "../../components/RadarGraph/index.jsx";
-import GoodBadTab from "../../components/GoodBadTab/GoodBadTab.jsx";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { BarLineGraphTabs } from "../../components/BarLineGraph/index.jsx";
+import { Bar, Radar } from "react-chartjs-2";
 import ContentListPages from "../Pages/components/ContentListPage.jsx";
 import {
   dataHeaders as dataHeadersBad,
   columnsOptions as columnsOptionsBad,
-  dataRows as dataRowsBad
 } from "../../components/GoodBadTab/table.config.jsx";
-import { barOptionsDark, optionsHorizontalBar, optionsHorizontalBarDark } from "./table.config.jsx";
-import {
-  barData,
-  barOptions,
-  dataHeaders as dataHeadersBar,
-  columnsOptions as columnsOptionsBar,
-} from "../../components/BarLineGraph/table.config.jsx";
+import { barOptionsDark, barOptions } from "./table.config.jsx";
+import { barData } from "../../components/BarLineGraph/table.config.jsx";
 import { useTheme } from '../../context/ThemeContext';
-import {
-  dataRows as dataRowsBar
-} from "../Pages/table.config.jsx";
 import { useTranslation } from "react-i18next";
 import Indicators from "../../components/Indicators";
 import { api } from "../../config/api";
 import moment from "moment";
-import {ruleset} from "@a12e/accessmonitor-rulesets";
+import {ruleset, translations} from "@a12e/accessmonitor-rulesets";
 import { downloadCSV, downloadWebsiteCSV, getData, getSimplifiedPracticesData, getEvaluationStatus } from "../../utils/utils.js";
 import { isRequestSuccessful } from "../../utils/apiHelpers.js";
 import { Modal } from "../../components/Modal";
@@ -45,11 +34,74 @@ const calculateTotalElements = (elementCountJson) => {
   }
 };
 
+const LABEL_WIDTH = 320;
+
+function HtmlLabelBarChart({ data }) {
+  const overlayRef = useRef(null);
+
+  const plugin = useRef({
+    id: 'htmlLabels',
+    afterDraw(chart) {
+      const overlay = overlayRef.current;
+      if (!overlay) return;
+      const yScale = chart.scales.y;
+      if (!yScale) return;
+      overlay.innerHTML = '';
+      (chart.data.labels ?? []).forEach((label, i) => {
+        const y = yScale.getPixelForTick(i);
+        const el = document.createElement('div');
+        el.innerHTML = label;
+        Object.assign(el.style, {
+          position: 'absolute',
+          top: `${y - 24}px`,
+          left: '0',
+          width: `${LABEL_WIDTH - 16}px`,
+          fontSize: '1rem',
+          lineHeight: '1.5',
+          textAlign: 'right',
+          paddingRight: '8px',
+        });
+        overlay.appendChild(el);
+      });
+    }
+  }).current;
+
+  const BAR_HEIGHT = 84;
+  const count = data?.labels?.length ?? 0;
+  const chartHeight = count * BAR_HEIGHT + 60;
+
+  const chartOptions = useMemo(() => ({
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { left: LABEL_WIDTH } },
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { title: { display: true, text: 'Nº de Ocorrências' } },
+      y: {
+        ticks: { display: false },
+        grid: { display: false },
+        barThickness: 24,
+      },
+    },
+  }), []);
+
+  return (
+    <div style={{ position: 'relative', height: chartHeight }}>
+      <div
+        ref={overlayRef}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 1 }}
+      />
+      <Bar data={data} options={chartOptions} plugins={[plugin]} />
+    </div>
+  );
+}
+
 // Function to decode and format errors from base64
 const decodeAndFormatErrors = (errorsBase64) => {
   try {
     if (!errorsBase64) return [];
-
+    
     // Decode base64 to string
     const decodedString = atob(errorsBase64);
 
@@ -136,7 +188,7 @@ const ViewWebSitesComponent = () => {
     { children: <Link to="/dashboard/home">Início</Link> },
   ]);
   const [data, setData] = useState([]);
-  const [dataBad, setDataBad] = useState(dataRowsBad);
+  const [dataBad, setDataBad] = useState([]);
   const [checkboxesSelected, setCheckboxesSelected] = useUniqueCheckboxSelection([]);
   const [listItems, setListItems] = useState([]);
   const [listItemsGlobal, setListItemsGlobal] = useState([]);
@@ -146,7 +198,7 @@ const ViewWebSitesComponent = () => {
   const [search, setSearch] = useState("");
   const [totalItems, setTotalItems] = useState(100);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(50);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   // Issue #60: Using only allPagesData for client-side sorting/pagination
   const [allPagesData, setAllPagesData] = useState([]);
   const [horizontalDataGood, setHorizontalDataGood] = useState(
@@ -187,7 +239,7 @@ const ViewWebSitesComponent = () => {
   const [dataGood, setDataGood] = useState([]);
   const [feedbackMessage, setFeedbackMessage] = useState("")
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-
+  const [language, setLanguage] = useState(localStorage.getItem('i18nextLng').split("-")[0]);
   // Memoize initial empty states
   const initialSuccessCriteria = useMemo(() => ({}), []);
   const [successCriteriaSuccess, setSuccessCriteriaSuccess] = useState(initialSuccessCriteria);
@@ -365,8 +417,13 @@ const ViewWebSitesComponent = () => {
         ]
       });
 
+      const getLangTrans = (key, n) => {
+        const plural = n > 1 ? "p" : "s";
+        return translations?.[language]?.translation?.["TESTS_RESULTS"]?.[key]?.[plural]?.replace("{{value}}", n) ?? "";
+      };
+
       setHorizontalDataGood({
-        labels: websiteListForWebsitePage.successDetailsTable.practicesData.map(practice => t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`)) ?? [],
+        labels: websiteListForWebsitePage.successDetailsTable.practicesData.map(practice => getLangTrans(practice.key, practice.nOccurrences)) ?? [],
         datasets: [
           {
             label: "Nº de Páginas",
@@ -378,57 +435,45 @@ const ViewWebSitesComponent = () => {
         ]
       });
       setHorizontalDataBad({
-        labels: websiteListForWebsitePage.errorsDetailsTable.practicesData?.map(practice => t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`)),
+        labels: websiteListForWebsitePage.errorsDetailsTable.practicesData?.map(practice => getLangTrans(practice.key, practice.nOccurrences)) ?? [],
         datasets: [
           {
             label: "Nº de Páginas",
             type: 'bar',
-            data: websiteListForWebsitePage.errorsDetailsTable.practicesData?.map(practice => Number(practice.nOccurrences)),
+            data: websiteListForWebsitePage.errorsDetailsTable.practicesData?.map(practice => Number(practice.nOccurrences)) ?? [],
             backgroundColor: "red",
             borderWidth: 0,
           }
         ]
       });
-      setDataBad(websiteListForWebsitePage.errorsDetailsTable.practicesData.map(practice => ({
-        name: t(`TEST_RESULTS.${practice.key}`),
+
+      setDataBad((websiteListForWebsitePage.errorsDetailsTable.practicesData ?? []).map(practice => ({
+        name: translations?.[language]?.translation?.["TESTS_RESULTS"]?.[practice.key]?.[practice.nOccurrences > 1 ? "p" : "s"]?.replace("{{value}}", practice.nOccurrences) ?? "",
+        praticesPerPage: 1,
+        pages: practice.n_pages,
+        occurences: practice.nOccurrences,
+        level: ruleset[practice.key]?.level ?? ""
+      })));
+
+      setDataGood((websiteListForWebsitePage.successDetailsTable.practicesData ?? []).map(practice => ({
+        name: translations?.[language]?.translation?.["TESTS_RESULTS"]?.[practice.key]?.[practice.nOccurrences > 1 ? "p" : "s"]?.replace("{{value}}", practice.nOccurrences) ?? "",
         praticesPerPage: 1,
         pages: practice.n_pages,
         occurences: practice.nOccurrences,
         level: practice.lvl
-      })))
+      })));
 
-      setDataGood(websiteListForWebsitePage.successDetailsTable.practicesData.map(practice => ({
-        name: t(`TEST_RESULTS.${practice.key}`),
-        praticesPerPage: 1,
-        pages: practice.n_pages,
-        occurences: practice.nOccurrences,
-        level: practice.lvl
-      })))
+      const mapTop = (list) => (list ?? []).sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
+        level: practice.lvl,
+        practice: getLangTrans(practice.key, practice.nOccurrences),
+      }));
 
-      setTopGoodPracticesA(websiteListForWebsitePage.successDetailsTable.practicesData.filter(practice => practice.lvl === "A").sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
-        level: practice.lvl,
-        practice: t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`),
-      })));
-      setTopGoodPracticesAA(websiteListForWebsitePage.successDetailsTable.practicesData.filter(practice => practice.lvl === "AA").sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
-        level: practice.lvl,
-        practice: t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`),
-      })));
-      setTopGoodPracticesAAA(websiteListForWebsitePage.successDetailsTable.practicesData.filter(practice => practice.lvl === "AAA").sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
-        level: practice.lvl,
-        practice: t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`),
-      })));
-      setTopBadPracticesA(websiteListForWebsitePage.errorsDetailsTable.practicesData.filter(practice => practice.lvl === "A").sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
-        level: practice.lvl,
-        practice: t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`),
-      })));
-      setTopBadPracticesAA(websiteListForWebsitePage.errorsDetailsTable.practicesData.filter(practice => practice.lvl === "AA").sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
-        level: practice.lvl,
-        practice: t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`),
-      })));
-      setTopBadPracticesAAA(websiteListForWebsitePage.errorsDetailsTable.practicesData.filter(practice => practice.lvl === "AAA").sort((a, b) => b.nOccurrences - a.nOccurrences).slice(0, 5).map(practice => ({
-        level: practice.lvl,
-        practice: t(`TESTS_RESULTS.${practice.key}.${practice.nOccurrences > 1 ? "p" : "s"}`),
-      })));
+      setTopGoodPracticesA(mapTop((websiteListForWebsitePage.successDetailsTable.practicesData ?? []).filter(p => p.lvl === "A")));
+      setTopGoodPracticesAA(mapTop((websiteListForWebsitePage.successDetailsTable.practicesData ?? []).filter(p => p.lvl === "AA")));
+      setTopGoodPracticesAAA(mapTop((websiteListForWebsitePage.successDetailsTable.practicesData ?? []).filter(p => p.lvl === "AAA")));
+      setTopBadPracticesA(mapTop((websiteListForWebsitePage.errorsDetailsTable.practicesData ?? []).filter(p => p.lvl === "A")));
+      setTopBadPracticesAA(mapTop((websiteListForWebsitePage.errorsDetailsTable.practicesData ?? []).filter(p => p.lvl === "AA")));
+      setTopBadPracticesAAA(mapTop((websiteListForWebsitePage.errorsDetailsTable.practicesData ?? []).filter(p => p.lvl === "AAA")));
 
       // Process practices by WCAG Success Criteria using simplified practices data
       const simplifiedPracticesData = getSimplifiedPracticesData(pagesData);
@@ -504,9 +549,6 @@ const ViewWebSitesComponent = () => {
   }, []);
 
 
-  // Note: fetchWebsitePages removed - using client-side sorting/pagination now (Issue #60)
-  
-  // Handle search change - for client-side filtering
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -516,6 +558,37 @@ const ViewWebSitesComponent = () => {
     setItemsPerPage(n);
     setCurrentPage(1);
   };
+
+  const radarData = useMemo(() => ({
+    labels: radarWebsites.map(w => w.domain.split('/').slice(3).join('/') || w.domain),
+    datasets: [{
+      label: "Pontuação por página",
+      data: radarWebsites.map(w => Number(w.averageScore)),
+      backgroundColor: 'rgba(255, 136, 136, 0.4)',
+      borderColor: 'rgba(255, 136, 136, 1)',
+      borderWidth: 2,
+      pointBackgroundColor: 'rgba(255, 136, 136, 1)',
+      pointRadius: 4,
+    }]
+  }), [radarWebsites]);
+
+  const radarOptions = useMemo(() => ({
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: theme === "light" ? "black" : "white" } }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        suggestedMin: 0,
+        suggestedMax: 10,
+        pointLabels: { display: false },
+        ticks: { color: theme === "light" ? "black" : "white", backdropColor: 'transparent' },
+        grid: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+        angleLines: { color: theme === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)" },
+      }
+    }
+  }), [theme]);
 
   const handleDeletePages = async () => {
     if (checkboxesSelected.length === 0) {
@@ -572,7 +645,6 @@ const ViewWebSitesComponent = () => {
     const response = await api.post("/page/reEvaluateMulti", {
       pages: pagesIds,
     });
-    console.log(response.status);
     if (response.status === 201) {
       setFeedbackMessage("A reavaliação foi iniciada com sucesso!");
       setShowFeedbackModal(true);
@@ -627,6 +699,7 @@ const ViewWebSitesComponent = () => {
           totalItems={totalItems}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           onPageChange={handlePageChange}
           onItemsPerPageChange={handleItemsPerPageChange}
           search={search}
@@ -661,37 +734,33 @@ const ViewWebSitesComponent = () => {
       </div>
       <div className="mt-5 bg-white p-4">
         <h2 className="mb-4">Distribuição das pontuações AccessMonitor no universo das páginas analisadas no sítio web</h2>
-        <BarLineGraphTabs
-          barData={barDataDynamic}
-          barOptions={theme === "light" ? barOptions : barOptionsDark}
-          columnsOptions={columnsOptionsBar}
-          dataHeaders={dataHeadersBar}
-          dataList={dataListBar}
-        />
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <Bar
+            role="img"
+            aria-label="Histograma das pontuações do AccessMonitor"
+            data={barDataDynamic}
+            options={theme === "light" ? barOptions : barOptionsDark}
+          />
+        </div>
       </div>
       <div className="mt-5 bg-white p-4">
-        <h2 className="mb-4">Boas Práticas de acessibilidade encontradas no sítio web        </h2>
-        <BarLineGraphTabs
-          barData={horizontalDataGood}
-          barOptions={theme === "light" ? optionsHorizontalBar : optionsHorizontalBarDark}
-          columnsOptions={columnsOptionsBad}
-          dataHeaders={dataHeadersBad}
-          dataList={dataBad}
-        />
+        <h2 className="mb-4">Boas Práticas de acessibilidade encontradas no sítio web</h2>
+        <HtmlLabelBarChart data={horizontalDataGood} />
       </div>
       <div className="mt-5 bg-white p-4">
-        <h2 className="mb-4">Más Práticas de acessibilidade encontradas no sítio web        </h2>
-        <BarLineGraphTabs
-          barData={horizontalDataBad}
-          barOptions={theme === "light" ? optionsHorizontalBar : optionsHorizontalBarDark}
-          columnsOptions={columnsOptionsBad}
-          dataHeaders={dataHeadersBad}
-          dataList={dataBad}
-        />
+        <h2 className="mb-4">Más Práticas de acessibilidade encontradas no sítio web</h2>
+        <HtmlLabelBarChart data={horizontalDataBad} />
       </div>
       <div className="mt-5 bg-white p-4">
         <h2 className="mb-4">Mancha Gráfica da Acessibilidade</h2>
-        <RadarGraph websites={radarWebsites} labelDataSet="Pontuação por página" darkTheme={theme} showTabs={true} />
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+          <Radar
+            role="img"
+            aria-label="Gráfico de Radar mostrando a distribuição de pontuações de acessibilidade"
+            data={radarData}
+            options={radarOptions}
+          />
+        </div>
       </div>
       <div className="mt-5 bg-white p-4 d-flex flex-column gap-4">
         <h2 className="mb-4">Top 5 dos erros mais frequentes por nível de conformidade
@@ -707,7 +776,7 @@ const ViewWebSitesComponent = () => {
           dataList={topBadPracticesA}
           columnsOptions={{
             level: { type: "Text", center: false, bold: true },
-            practice: { type: "Text", center: false, bold: false },
+            practice: { type: "DangerousHTML", center: false, bold: false },
           }}
           pagination={false}
           caption="Top 5 dos erros de Nível A"
@@ -723,7 +792,7 @@ const ViewWebSitesComponent = () => {
           dataList={topBadPracticesAA}
           columnsOptions={{
             level: { type: "Text", center: false, bold: true },
-            practice: { type: "Text", center: false, bold: false },
+            practice: { type: "DangerousHTML", center: false, bold: false },
           }}
           pagination={false}
           caption="Top 5 dos erros de Nível AA"
@@ -739,7 +808,7 @@ const ViewWebSitesComponent = () => {
           dataList={topBadPracticesAAA}
           columnsOptions={{
             level: { type: "Text", center: false, bold: true },
-            practice: { type: "Text", center: false, bold: false },
+            practice: { type: "DangerousHTML", center: false, bold: false },
           }}
           pagination={false}
           caption="Top 5 dos erros de Nível AAA"
@@ -758,7 +827,7 @@ const ViewWebSitesComponent = () => {
           dataList={topGoodPracticesA}
           columnsOptions={{
             level: { type: "Text", center: false, bold: true },
-            practice: { type: "Text", center: false, bold: false },
+            practice: { type: "DangerousHTML", center: false, bold: false },
           }}
           pagination={false}
           caption="Top 5 das boas práticas de Nível A"
@@ -774,7 +843,7 @@ const ViewWebSitesComponent = () => {
           dataList={topGoodPracticesAA}
           columnsOptions={{
             level: { type: "Text", center: false, bold: true },
-            practice: { type: "Text", center: false, bold: false },
+            practice: { type: "DangerousHTML", center: false, bold: false },
           }}
           pagination={false}
           caption="Top 5 das boas práticas de Nível AA"
@@ -790,7 +859,7 @@ const ViewWebSitesComponent = () => {
           dataList={topGoodPracticesAAA}
           columnsOptions={{
             level: { type: "Text", center: false, bold: true },
-            practice: { type: "Text", center: false, bold: false },
+            practice: { type: "DangerousHTML", center: false, bold: false },
           }}
           pagination={false}
           caption="Top 5 das boas práticas de Nível AAA"

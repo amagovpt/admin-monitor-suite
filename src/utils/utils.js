@@ -1706,6 +1706,19 @@ export function groupPracticesBySuccessCriteria(practiceTable = []) {
  return result;
 }
 
+export function getTestDisplayValue(testName, testKey, tot) {
+  if (tot.elems[testName] !== undefined) {
+    if (testName === "titleOk") return tot.info.title;
+    if (testName === "lang") return tot.info.lang;
+    if (testName === "langNo") return "lang";
+    if (testName === "titleLong") return tot.info.title?.length;
+    return tot.elems[testName];
+  }
+  if (testName === "imgAltNo") return tot.elems["img"];
+  if (testName === "inputLabelNo") return tot.elems["label"];
+  return tot.elems[ruleset[testKey]?.elem];
+}
+
 export const calculateTotalElements = (elementCount) => {
   if (!elementCount || typeof elementCount !== 'object') {
     return 0;

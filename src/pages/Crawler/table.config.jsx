@@ -56,16 +56,14 @@ export const dataRows = [
 
 export const directoriesHeadersCrawlDetails = [
   [
-    { type: "Checkbox", nRow: 1, justifyCenter: true, name: "Importar", property: "Import" },
-    { type: "SortingText", nRow: 1, name: "Páginas", property: "Uri" },
+    { type: "Checkbox", bigWidth: "5%", nRow: 1, name: "Importar", property: "id", label: "Importar"},
+    { type: "SortingText", bigWidth: "95%", nRow: 1, name: "Páginas", property: "Uri" },
   ]
 ];
 
 export const columnsOptionsCrawlDetails = {
-  Import: { type: "Checkbox", center: true, bold: false, decimalPlace: false },
-  Uri: { type: "Link", center: false, isCheckboxLabel: true, href: (row) => {
-    return `${row.Uri}`
-  }, bold: false, decimalPlace: false },
+  id: { type: "Checkbox", center: false, bold: false, decimalPlace: false },
+  Uri: { type: "Text", center: false, isCheckboxLabel: true, bold: false, decimalPlace: false },
 };
 
 

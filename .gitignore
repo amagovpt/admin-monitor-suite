@@ -31,3 +31,4 @@ dist-ssr
 .env.preprod
 .env.prod
 admin-scripts/
+*.bat
