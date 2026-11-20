@@ -12,7 +12,7 @@ export const getDefaultApiUrl = () => {
   return normalizeBaseUrl(envUrl);
 }
 
-export const DEFAULT_API_VERSION = 'v2';
+export const DEFAULT_API_VERSION = '';
 
 /**
  * Caminho da API com a versão, ex.: "/v2" ou "/v3". Fonte única para axios e SSE.
@@ -22,7 +22,10 @@ export const getApiPath = () => {
   // Usar "import.meta.env" sem "?." a seguir a "meta": o Vite só injeta o .env quando deteta este texto exato.
   const raw = import.meta.env?.VITE_API_VERSION || import.meta.env?.VITE_PATH_API || DEFAULT_API_VERSION;
   const trimmed = String(raw).trim().replace(/^\/+|\/+$/g, '');
-  return `/${trimmed || DEFAULT_API_VERSION}`;
+  if (!trimmed) {
+    return '';
+  }
+  return `/${trimmed}`;
 };
 
 const resolveBaseUrl = () => {
@@ -37,7 +40,7 @@ const resolveBaseUrl = () => {
   return base ? `${base}${pathApi}` : pathApi;
 };
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: resolveBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
@@ -97,4 +100,3 @@ api.interceptors.response.use(
   }
 );
 */
-export { api };
