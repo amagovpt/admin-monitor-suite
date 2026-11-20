@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { getDefaultApiUrl } from "../config/api.js";
+import { getDefaultApiUrl, getApiPath } from "../config/api.js";
 
 const STREAM_PATH = "/notifications/stream";
 const RETRY_BASE_MS = 2000;
@@ -8,8 +8,7 @@ const RETRY_MAX_MS = 30000;
 const resolveStreamUrl = () => {
   const stored = localStorage.getItem("@AMS:apiUrl");
   const base = (stored || getDefaultApiUrl() || "").replace(/\/+$/, "");
-  const pathApi = import.meta.env?.VITE_PATH_API || "/v2";
-  return `${base}${pathApi}${STREAM_PATH}`;
+  return `${base}${getApiPath()}${STREAM_PATH}`;
 };
 
 const seenEvents = new Set();

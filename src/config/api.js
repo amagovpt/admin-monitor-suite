@@ -8,18 +8,31 @@ const normalizeBaseUrl = (url) => {
 };
 
 export const getDefaultApiUrl = () => {
-  const envUrl = import.meta?.env?.VITE_API_URL;
+  const envUrl = import.meta.env?.VITE_API_URL;
   return normalizeBaseUrl(envUrl);
 }
 
+export const DEFAULT_API_VERSION = 'v2';
+
+/**
+ * Caminho da API com a versão, ex.: "/v2" ou "/v3". Fonte única para axios e SSE.
+ * Ordem: VITE_API_VERSION ("v3" ou "/v3"), VITE_PATH_API (legado), "v2".
+ */
+export const getApiPath = () => {
+  // Usar "import.meta.env" sem "?." a seguir a "meta": o Vite só injeta o .env quando deteta este texto exato.
+  const raw = import.meta.env?.VITE_API_VERSION || import.meta.env?.VITE_PATH_API || DEFAULT_API_VERSION;
+  const trimmed = String(raw).trim().replace(/^\/+|\/+$/g, '');
+  return `/${trimmed || DEFAULT_API_VERSION}`;
+};
+
 const resolveBaseUrl = () => {
+  const pathApi = getApiPath();
   if (typeof window === 'undefined') {
-    return '/v2';
+    return pathApi;
   }
 
   const storedUrl = localStorage.getItem('@AMS:apiUrl');
   const base = normalizeBaseUrl(storedUrl || getDefaultApiUrl());
-  const pathApi = import.meta.env?.VITE_PATH_API || '/v2';
 
   return base ? `${base}${pathApi}` : pathApi;
 };
